@@ -1,0 +1,21 @@
+@import url(https://fonts.googleapis.com/css2?family=Nunito+Sans);
+
+:root{
+	--app-background: hsl(234, 31%, 6%);
+	--app-text: hsl(0, 0%, 100%);
+	--nav-text-inactive: hsl(236, 7%, 42%);
+}
+
+html, body{
+	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: 700;
+	background: var(--app-background);
+	color: var(--app-text);
+	letter-spacing: -1%;
+}
+
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
