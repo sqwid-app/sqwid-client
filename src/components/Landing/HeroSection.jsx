@@ -5,8 +5,8 @@ import InfoContainer from "./InfoContainer";
 
 const Wrapper = styled.div`
 	margin-top:8rem;
-	padding: 0 8rem;
-	padding-right:0;
+	padding: 0 4rem;
+	// padding-right:0;
 	height: 65vh;
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));

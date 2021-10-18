@@ -9,13 +9,13 @@ const SearchContainer = styled.div`
 		font-size: 1rem;
 		font-weight: 600;
 		padding: 0.75rem 1.25rem;
-		padding-left: 2.75rem;
-		border-radius: 0.5rem;
+		padding-left: 2.5rem;
+		border-radius: 1000rem;
 		background: var(--app-container-bg-primary);
 		color: var(--app-text);
 		outline: none;
 		border: none;
-		max-height: 3rem;
+		max-height: 2.5rem;
 		min-width: 20rem;
 		&:placeholder{
 			color: var(--app-container-text-primary);

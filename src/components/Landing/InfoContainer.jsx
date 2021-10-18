@@ -6,7 +6,7 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	// padding: 0 2rem;
+	padding-left: 4rem;
 	line-height: 1.125;
 	gap: 2rem;
 	h1{
