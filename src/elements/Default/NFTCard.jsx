@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { LazyMotion, domAnimation, m } from "framer-motion"
 
-const NFTCardContainer = styled(motion.div)`
+const NFTCardContainer = styled(m.div)`
 	cursor: pointer;
 	user-select:none;
 	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%), url(${props=>props.src&&props.src});
@@ -31,25 +31,27 @@ const NFTCardContainer = styled(motion.div)`
 
 const NFTCard = ({ src, title, author, fullHeight }) => {
 	return (
-		<NFTCardContainer
-			fullHeight={fullHeight}
-			src={src}
-			whileHover={{
-				y: -10,
-				x: 0,
-				scale:1.02
-			}}
-			whileTap={{
-				scale:0.99
-			}}
-			transition={{
-				type: "tween",
-				ease:"backOut",
-			}}
-		>
-			<h1>{title}</h1>
-			<h4>by {author}</h4>
-		</NFTCardContainer>
+		<LazyMotion features={domAnimation}>
+			<NFTCardContainer
+				fullHeight={fullHeight}
+				src={src}
+				whileHover={{
+					y: -10,
+					x: 0,
+					scale:1.02
+				}}
+				whileTap={{
+					scale:0.99
+				}}
+				transition={{
+					type: "tween",
+					ease:"backOut",
+				}}
+			>
+				<h1>{title}</h1>
+				<h4>by {author}</h4>
+			</NFTCardContainer>
+		</LazyMotion>
 	)
 }
 
