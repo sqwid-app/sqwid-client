@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { useSpring, animated } from 'react-spring';
 
-const NFTCardContainer = styled.div`
+const NFTCardContainer = styled(animated.div)`
 	cursor: pointer;
 	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%), url(${props=>props.src&&props.src});
 	background-repeat: no-repeat;
@@ -28,8 +29,28 @@ const NFTCardContainer = styled.div`
 `
 
 const NFTCard = ({ src, title, author, fullHeight }) => {
+	const calc = (x, y) => [-(y - window.innerHeight / 2) / 200, (x - window.innerWidth / 2) / 200, 1]
+	const trans = (x, y, s) => `perspective(500px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`
+	const [props, set] = useSpring(() => ({
+			xys: [0, 0, 1],
+			config: {
+				mass: 10,
+				tension: 750,
+				friction: 50
+			}
+		})
+	);
 	return (
-		<NFTCardContainer fullHeight={fullHeight} src={src}>
+		<NFTCardContainer
+			fullHeight={fullHeight}
+			src={src}
+			onMouseMove={({
+				clientX: x,
+				clientY: y
+			}) => set({ xys: calc(x, y) })}
+			onMouseLeave={() => set({ xys: [0, 0, 1] })}
+			style={{ transform: props.xys.to(trans) }}
+		>
 			<h1>{title}</h1>
 			<h4>by {author}</h4>
 		</NFTCardContainer>

@@ -17,7 +17,7 @@ const Btn = styled.a`
 const SignInBtn = () => {
 	return (
 		<Btn>
-			Sign In
+			Connect
 		</Btn>
 	)
 }
