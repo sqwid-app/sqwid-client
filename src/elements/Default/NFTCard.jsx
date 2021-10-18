@@ -13,15 +13,13 @@ const NFTCardContainer = styled(m.div)`
 	height: 100%;
 	padding: 1.5rem 1.25rem;
 	min-width: 10rem;
-	max-width: 12rem;
 	&:first-child{
 		grid-column: span 1;
 		grid-row-start: span 2;
 		min-width: 16rem;
-		max-width: 20rem;
 	}
 	h1{
-		font-size: ${props=>props.fullHeight?`1.75rem`:`1rem`};
+		font-size: ${props=>props.fullHeight?`1.75rem`:`1.125rem`};
 		font-weight: ${props=>props.fullHeight?`900`:`800`};
 	}
 	h4{

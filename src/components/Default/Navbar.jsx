@@ -23,6 +23,8 @@ const Nav = styled.nav`
 `
 
 const LogoContainer = styled.div`
+	cursor: pointer;
+	user-select: none;
 	display: inline-block;
 	align-items: center;
 	font-size: 2rem;
