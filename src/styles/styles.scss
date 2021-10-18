@@ -1,6 +1,6 @@
 .animate-icon {
 	cursor: pointer;
-	svg {
+	&:hover svg {
 		stroke: currentColor;
 		stroke-width: 0.5px;
 		stroke-dasharray: 50px;

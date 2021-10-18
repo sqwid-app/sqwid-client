@@ -5,7 +5,7 @@ import InfoContainer from "./InfoContainer";
 
 const Wrapper = styled.div`
 	margin-top:8rem;
-	padding: 0 5rem;
+	padding: 0 8rem;
 	padding-right:0;
 	height: 65vh;
 	display: grid;

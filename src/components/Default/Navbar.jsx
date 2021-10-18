@@ -47,7 +47,6 @@ const ContentContainer = styled.div`
 const Navbar = () => {
 	const [isAtTop, setIsAtTop] = useState(true)
 	const isTabletOrMobile = useIsTabletOrMobile();
-	const location = useLocation();
 	const logoRef = useRef();
 	useEffect(() => {
 		window.onscroll = () => {
@@ -57,18 +56,9 @@ const Navbar = () => {
 		}
 		return () => (window.onscroll = null);
 	});
-	useEffect(() => {
-		if(location.pathname==="/"){
-			logoRef.current.classList.add("animate-icon")
-			setTimeout(() => {
-				logoRef.current.classList.remove("animate-icon")
-			}, 1000);
-		}
-	// eslint-disable-next-line
-	}, [])
 	return (
 		<Nav blur={!isAtTop}>
-			<LogoContainer ref={logoRef}>
+			<LogoContainer ref={logoRef} className="animate-icon">
 				<LogoIcon/>
 				<span>{constants.APP_NAME}</span>
 			</LogoContainer>
