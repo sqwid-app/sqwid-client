@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 	gap: 2rem;
 	h1{
 		font-weight: 900;
-		font-size: 8rem;
+		font-size: 6rem;
 	}
 	h2{
 		font-weight: 500;

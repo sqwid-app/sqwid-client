@@ -33,7 +33,7 @@ const CardsContainer = () => {
 		<Wrapper>
 			<Cards>
 				{cards.map((item,index)=>(
-					<NFTCard {...item} fullHeight={index===0&&true}/>
+					<NFTCard key={index} {...item} fullHeight={index===0&&true}/>
 				))}
 			</Cards>
 		</Wrapper>
