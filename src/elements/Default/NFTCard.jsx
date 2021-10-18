@@ -12,7 +12,7 @@ const NFTCardContainer = styled(m.div)`
 	border-radius: 1rem;
 	height: 100%;
 	padding: 1.5rem 1.25rem;
-	min-width: 8rem;
+	min-width: 10rem;
 	&:first-child{
 		grid-column: span 1;
 		grid-row-start: span 2;
