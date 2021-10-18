@@ -7,7 +7,6 @@ import LogoIcon from "@static/svg/Logo";
 import constants from "@utils/constants";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation } from 'react-router-dom';
 import styled from "styled-components";
 
 const Nav = styled.nav`
