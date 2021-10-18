@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { useSpring, animated } from 'react-spring';
+import { motion } from "framer-motion";
 
-const NFTCardContainer = styled(animated.div)`
+const NFTCardContainer = styled(motion.div)`
 	cursor: pointer;
+	user-select:none;
 	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%), url(${props=>props.src&&props.src});
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -29,27 +30,22 @@ const NFTCardContainer = styled(animated.div)`
 `
 
 const NFTCard = ({ src, title, author, fullHeight }) => {
-	const calc = (x, y) => [-(y - window.innerHeight / 2) / 200, (x - window.innerWidth / 2) / 200, 1]
-	const trans = (x, y, s) => `perspective(500px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`
-	const [props, set] = useSpring(() => ({
-			xys: [0, 0, 1],
-			config: {
-				mass: 10,
-				tension: 750,
-				friction: 50
-			}
-		})
-	);
 	return (
 		<NFTCardContainer
 			fullHeight={fullHeight}
 			src={src}
-			onMouseMove={({
-				clientX: x,
-				clientY: y
-			}) => set({ xys: calc(x, y) })}
-			onMouseLeave={() => set({ xys: [0, 0, 1] })}
-			style={{ transform: props.xys.to(trans) }}
+			whileHover={{
+				y: -10,
+				x: 0,
+				scale:1.02
+			}}
+			whileTap={{
+				scale:0.99
+			}}
+			transition={{
+				type: "tween",
+				ease:"backOut",
+			}}
 		>
 			<h1>{title}</h1>
 			<h4>by {author}</h4>
