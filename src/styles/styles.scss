@@ -7,7 +7,7 @@
 		stroke-dashoffset: 50px;
 		stroke-linecap: round;
 		stroke-linejoin: round;
-		animation: animate-logo 0.85s linear forwards;
+		animation: animate-logo 0.85s ease forwards;
 	}
 }
 
@@ -19,10 +19,10 @@
 	15% {
 		fill: transparent;
 	}
-	85% {
+	50% {
 		fill: transparent;
 	}
-	99%{
+	75%{
 		stroke-width: 2.5px;
 	}
 	100%{
