@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import NFTCard from "@elements/Default/NFTCard";
+import NFTCard from "@elements/Landing/NFTCard";
 
 const Wrapper = styled.div`
 	padding: 0 2rem;

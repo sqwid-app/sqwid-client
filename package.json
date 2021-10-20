@@ -17,6 +17,7 @@
 		"redux": "^4.1.1",
 		"redux-thunk": "^2.3.0",
 		"sass": "^1.43.2",
+		"simplebar-react": "^2.3.6",
 		"styled-components": "^5.3.1",
 		"web-vitals": "^1.0.1"
 	},

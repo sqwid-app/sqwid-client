@@ -21,13 +21,15 @@ const Nav = styled.nav`
 	backdrop-filter: ${props=>props.blur?`blur(5px)`:`none`};
 `
 
-const LogoContainer = styled.div`
+const LogoContainer = styled.a`
 	cursor: pointer;
 	user-select: none;
 	display: inline-block;
 	align-items: center;
 	font-size: 2rem;
 	font-weight: 900;
+	text-decoration: none;
+	color: var(--app-text);
 	span, svg{
 		vertical-align:middle;
 	}
@@ -57,7 +59,7 @@ const Navbar = () => {
 	});
 	return (
 		<Nav blur={!isAtTop}>
-			<LogoContainer ref={logoRef} className="animate-icon">
+			<LogoContainer href="/" ref={logoRef} className="animate-icon">
 				<LogoIcon/>
 				<span>{constants.APP_NAME}</span>
 			</LogoContainer>

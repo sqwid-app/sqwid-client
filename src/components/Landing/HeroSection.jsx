@@ -4,8 +4,7 @@ import CardsContainer from "./CardsContainer";
 import InfoContainer from "./InfoContainer";
 
 const Wrapper = styled.div`
-	margin-top:8rem;
-	padding: 0 4rem;
+	padding: 0 6rem;
 	// padding-right:0;
 	height: 65vh;
 	display: grid;

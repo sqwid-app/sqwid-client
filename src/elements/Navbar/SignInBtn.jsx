@@ -9,7 +9,7 @@ const Btn = styled.a`
 	font-weight: 700;
 	padding: 0 1.25rem;
 	border-radius: 1000rem;
-	background: hsl(168, 87%, 58%);
+	background: var(--app-theme-primary);
 	color: var(--app-background);
 	outline: none;
 	border: none;

@@ -1,4 +1,6 @@
+import Collections from "@pages/Collections";
 import Landing from "@pages/Landing";
+import Profile from "@pages/Profile";
 import React from "react";
 
 import {
@@ -15,6 +17,16 @@ const App = () => {
 					path="/"
 					exact
 					component={Landing}
+				/>
+				<Route
+					path="/collections/:id?"
+					exact
+					component={Collections}
+				/>
+				<Route
+					path="/profile/:id?"
+					exact
+					component={Profile}
 				/>
 			</Switch>
 		</Router>
