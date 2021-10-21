@@ -79,6 +79,7 @@ const Modal = styled.div`
 	flex-direction: column;
 	gap: 0.5rem;
 	p{
+		font-size: 1.5rem;
 		user-select:none;
 		background: hsl(236deg 10% 23%);
 		padding: 0.5rem 1.25rem;
@@ -86,12 +87,19 @@ const Modal = styled.div`
 		border-radius: 0.25rem;
 		box-shadow:  0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	}
+	label{
+		display: block;
+		font-weight: 500;
+		font-size: 1rem;
+	}
 	${props=>!props.remove?modalEntryAnim:modalExitAnim}
 `
 
 const elemContains =  (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
 }
+
+
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
@@ -103,6 +111,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		setSelectedAccount (account);
 		await Connect (account);
 	}
+	const truncateAddress = (addr) => `${addr.slice(0,4)}...${addr.slice(-4)}`
 	useEffect(() => {
 		if(isActive===false){
 			setTimeout(() => {
@@ -141,7 +150,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 								}}
 								onClick={()=>_onAccountChange(account.meta.name)}
 								key = { index }
-							> { account.meta.name } </m.p>
+							> { account.meta.name }<label title={account.address}>{truncateAddress(account.address)}</label> </m.p>
 							}) : null }
 						</>
 						: 'Please connect your wallet'}
