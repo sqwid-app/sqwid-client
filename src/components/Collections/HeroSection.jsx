@@ -1,12 +1,12 @@
 import React from "react";
 // import styled from "styled-components";
 
-const Create = () => {
+const HeroSection = ({ id }) => {
 	return (
 		<>
-			
+			{id}
 		</>
 	)
 }
 
-export default Create
+export default HeroSection

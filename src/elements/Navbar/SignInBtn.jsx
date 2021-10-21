@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Init, Connect } from "../../utils/connect";
+import AccountSelect from "./AccountSelect";
+import { LazyMotion, domAnimation, m } from "framer-motion"
 
-const Btn = styled.a`
+
+const Btn = styled(m.a)`
 	display: flex;
 	align-items: center;
 	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -15,13 +19,37 @@ const Btn = styled.a`
 	border: none;
 	height: 2.5rem;
 	cursor: pointer;
+	z-index:2;
+	user-select:none;
 `
 
+const AnimBtn = ({ children, onClick }) => (
+	<Btn
+		whileTap={{
+			scale:0.97
+		}}
+		onClick={onClick}
+	>{children}</Btn>
+)
+
 const SignInBtn = () => {
+	const isConnected = true;
+	const [isSelectionActive, setIsSelectionActive] = useState(false)
+	const [currentAccounts, setCurrentAccounts] = useState (null);
+	//eslint-disable-next-line
+	useEffect (() => {
+		(async () => {
+			let accs = await Init ();
+			setCurrentAccounts (accs);
+		}) ();
+	}, []);
 	return (
-		<Btn>
-			Connect
-		</Btn>
+		<LazyMotion features={domAnimation}>
+			<AnimBtn onClick={()=>setIsSelectionActive(!isSelectionActive)}>
+				Connect
+			</AnimBtn>
+			<AccountSelect isActive={isSelectionActive} setIsActive={setIsSelectionActive} accounts={currentAccounts}/>
+		</LazyMotion>
 	)
 }
 

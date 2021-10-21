@@ -1,4 +1,5 @@
 import Collections from "@pages/Collections";
+import Create from "@pages/Create";
 import Landing from "@pages/Landing";
 import Profile from "@pages/Profile";
 import React from "react";
@@ -27,6 +28,11 @@ const App = () => {
 					path="/profile/:id?"
 					exact
 					component={Profile}
+				/>
+				<Route
+					path="/create"
+					exact
+					component={Create}
 				/>
 			</Switch>
 		</Router>
