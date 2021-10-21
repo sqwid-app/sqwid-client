@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Init, Connect } from "../../utils/connect";
+import { Init } from "../../utils/connect";
 import AccountSelect from "./AccountSelect";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 
@@ -33,7 +33,6 @@ const AnimBtn = ({ children, onClick }) => (
 )
 
 const SignInBtn = () => {
-	const isConnected = true;
 	const [isSelectionActive, setIsSelectionActive] = useState(false)
 	const [currentAccounts, setCurrentAccounts] = useState (null);
 	//eslint-disable-next-line

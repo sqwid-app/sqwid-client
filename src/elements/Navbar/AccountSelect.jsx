@@ -95,10 +95,6 @@ const elemContains =  (rect, x, y) => {
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
-	const variants = {
-		rotate: { rotate: [0, -30, 0], transition: { duration: 0.5 } },
-		stop: { y: [0, -10, 0], transition: { repeat: Infinity, repeatDelay: 3 } }
-	};
 	const modalRef = useRef()
 	//eslint-disable-next-line
 	const [selectedAccount, setSelectedAccount] = useState (null);

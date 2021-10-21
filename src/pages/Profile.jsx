@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from "react-router";
-import Wrapper from '@components/Default/Wrapper';
+import ProfileSection from '@components/Profile/ProfileSection';
+import Navbar from '@components/Default/Navbar'
+
+const Wrapper = ({ children }) => (
+	<>
+		<Navbar/>
+		{children}
+	</>
+)
 
 const Profile = () => {
 	// eslint-disable-next-line
@@ -11,7 +19,7 @@ const Profile = () => {
 	}, [])
 	return (
 		<Wrapper>
-			{id}
+			<ProfileSection id={id}/>
 		</Wrapper>
 	)
 }

@@ -3,9 +3,9 @@ import React from "react";
 
 const HeroSection = ({ id }) => {
 	return (
-		<>
+		<div>
 			{id}
-		</>
+		</div>
 	)
 }
 
