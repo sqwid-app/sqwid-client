@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { Connect } from "@utils/connect";
 import { LazyMotion, domAnimation, m } from "framer-motion"
+import { truncateAddress } from "@utils/truncateAddr";
 
 const shiftBackgroundForwards = keyframes`
 	0% {
@@ -118,7 +119,6 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		setSelectedAccount (account);
 		await Connect (account);
 	}
-	const truncateAddress = (addr) => `${addr.slice(0,4)}...${addr.slice(-4)}`
 	useEffect(() => {
 		if(isActive===false){
 			setTimeout(() => {
