@@ -14,10 +14,7 @@ const BackgroundContainer = styled.div`
 `
 
 const Background = ({ seed }) => {
-	const { innerWidth: width } = window;
-	return (
-		<BackgroundContainer seed={seed} w={width}/>
-	)
+	return <BackgroundContainer seed={seed}/>
 }
 
-export default Background
+export default React.memo(Background)

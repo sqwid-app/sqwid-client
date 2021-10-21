@@ -36,7 +36,7 @@ const Tooltip = styled.div`
 	border-radius: 0.5rem;
 	box-shadow:  0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	background: var(--app-container-bg-primary);
-	color: var(--app-container-text-primary);
+	user-select:none;
 	${props=>!props.remove?entryAnim:exitAnim};
 `
 
@@ -101,7 +101,7 @@ const ProfileCard = () => {
 			<AddressContainer>
 				<Address>{truncateAddress(userData.address,6)}</Address>
 				<CopyIcon onClick={copyAddress}/>
-				<Tooltip ref={tooltipRef} remove={!tooltipVisible}>Copied to clipboard!</Tooltip>
+				<Tooltip style={{display:"none"}} ref={tooltipRef} remove={!tooltipVisible}>Copied to clipboard!</Tooltip>
 			</AddressContainer>
 		</Card>
 	)
