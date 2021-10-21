@@ -72,9 +72,11 @@ const Modal = styled.div`
 	margin-right:4rem;
 	margin-top: 7rem;
 	padding: 2rem 1.5rem;
+	padding-top: 1.5rem;
 	background:var(--app-container-bg-primary);
 	border-radius: 0.5rem;
 	z-index:3;
+	min-width: 14rem;
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
@@ -91,15 +93,20 @@ const Modal = styled.div`
 		display: block;
 		font-weight: 500;
 		font-size: 1rem;
+		color: var(--app-container-text-primary-hover);
+		cursor: pointer;
 	}
 	${props=>!props.remove?modalEntryAnim:modalExitAnim}
+`
+
+const Title = styled.h1`
+	font-size: 1rem;
+	margin-bottom: 0.25rem;
 `
 
 const elemContains =  (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
 }
-
-
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
@@ -137,6 +144,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 						remove={!isActive}
 						ref={modalRef}
 					>
+						<Title>Choose an account</Title>
 						{accounts?.length ?
 						<>
 							{ accounts ? accounts.map ((account, index) => {
