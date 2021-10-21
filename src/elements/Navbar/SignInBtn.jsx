@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Init } from "../../utils/connect";
 import AccountSelect from "./AccountSelect";
@@ -36,15 +36,22 @@ const SignInBtn = () => {
 	const [isSelectionActive, setIsSelectionActive] = useState(false)
 	const [currentAccounts, setCurrentAccounts] = useState (null);
 	//eslint-disable-next-line
-	useEffect (() => {
+	// useEffect (() => {
+	// 	(async () => {
+	// 		let accs = await Init ();
+	// 		setCurrentAccounts (accs);
+	// 	}) ();
+	// }, []);
+	const handleClick = () => {
 		(async () => {
 			let accs = await Init ();
 			setCurrentAccounts (accs);
 		}) ();
-	}, []);
+		setIsSelectionActive(!isSelectionActive)
+	}
 	return (
 		<LazyMotion features={domAnimation}>
-			<AnimBtn onClick={()=>setIsSelectionActive(!isSelectionActive)}>
+			<AnimBtn onClick={handleClick}>
 				Connect
 			</AnimBtn>
 			<AccountSelect isActive={isSelectionActive} setIsActive={setIsSelectionActive} accounts={currentAccounts}/>
