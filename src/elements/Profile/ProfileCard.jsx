@@ -37,6 +37,7 @@ const Tooltip = styled.div`
 	box-shadow:  0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	background: var(--app-container-bg-primary);
 	user-select:none;
+	z-index: 5;
 	${props=>!props.remove?entryAnim:exitAnim};
 `
 

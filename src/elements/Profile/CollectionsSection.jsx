@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import CollectionCard from "./CollectionCard";
 
 const Wrapper = styled.div`
+	position: relative;
 	margin-top: 25%;
 	padding-top: 0.5rem;
 	padding-left: 2rem;
@@ -9,7 +11,11 @@ const Wrapper = styled.div`
 `
 
 const Container = styled.div`
-	padding: 1rem 0.75rem;
+	position: absolute;
+	display: flex;
+	align-items: center;
+	padding: 1.5rem 0.75rem;
+	gap: 1rem;
 `
 
 const Title = styled.h1`
@@ -18,11 +24,26 @@ const Title = styled.h1`
 `
 
 const CollectionsSection = () => {
+	const cards = [{
+		src:"https://images.unsplash.com/photo-1634498948540-3d4a2ec4d007?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1072&q=80",
+		title:"You've got",
+		link:"/"
+	},{
+		src:"https://images.unsplash.com/photo-1634425101299-65e872cdbca6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=435&q=80",
+		title:"A friend",
+		link:"/"
+	},{
+		src:"https://images.unsplash.com/photo-1634370058500-ebaeece3e395?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=327&q=80",
+		title:"In me",
+		link:"/"
+	}]
 	return (
 		<Wrapper>
 			<Title>Collections</Title>
 			<Container>
-				ok👍
+				{cards.map((item,index)=>(
+					<CollectionCard key={index} {...item} fullHeight={index===0&&true}/>
+				))}
 			</Container>
 		</Wrapper>
 	)
