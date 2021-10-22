@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { Connect } from "@utils/connect";
 import { LazyMotion, domAnimation, m } from "framer-motion"
-import { truncateAddress } from "@utils/truncateAddr";
+import { truncateAddress } from "@utils/textUtils";
 
 const shiftBackgroundForwards = keyframes`
 	0% {

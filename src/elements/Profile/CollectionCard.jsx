@@ -30,6 +30,8 @@ const CollectionCard = ({ src, title, link }) => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<CollectionCardContainer
+				target="_blank"
+				referrer="no-referrer"
 				href={link}
 				src={src}
 				whileHover={{

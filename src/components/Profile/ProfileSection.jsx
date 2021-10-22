@@ -14,6 +14,7 @@ const Cont = styled.div`
 	position: absolute;
 	bottom: 0;
 	z-index:1;
+	width: 100%;
 `
 
 const ProfileSection = ({id}) => {

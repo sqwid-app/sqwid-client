@@ -1,6 +1,6 @@
 import ProfilePicture from "@components/Profile/ProfilePicture";
 import CopyIcon from "@static/svg/CopyIcon";
-import { truncateAddress } from "@utils/truncateAddr";
+import { clamp, truncateAddress } from "@utils/textUtils";
 import React, { useState, useRef, useEffect } from "react";
 import styled, { css, keyframes } from "styled-components";
 
@@ -41,6 +41,15 @@ const Tooltip = styled.div`
 	${props=>!props.remove?entryAnim:exitAnim};
 `
 
+const Description = styled.p`
+	margin: 1.5rem 0;
+	padding: 0 1rem;
+	width: 75%;
+	text-align:center;
+	font-weight: 200;
+	color: var(--app-container-text-primary-hover);
+	max-height: 16rem;
+`
 
 const swipeDownwards = keyframes`
 	0% {
@@ -76,7 +85,8 @@ const ProfileCard = () => {
 	const [tooltipVisible, setTooltipVisible] = useState(false)
 	let userData = {
 		avatar:"https://avatars.dicebear.com/api/identicon/boidushya.svg",
-		address: "5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J"
+		address: "5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J",
+		description: "I am not crazy! I know he swapped those numbers. I knew it was 1216. One after Magna Carta. As if I could ever make such a mistake. Never. Never! I just - I just couldn't prove it. He covered his tracks, he got that idiot at the copy shop to lie for him. You think this is something? You think this is bad? This? This chicanery? He's done worse. That billboard! Are you telling me that a man just happens to fall like that? No! *He* orchestrated it! Jimmy! He *defecated* through a *sunroof*! And I saved him! And I shouldn't have. I took him into my own firm! What was I *thinking*? He'll never change. He'll *never* change! Ever since he was 9, *always* the same! Couldn't keep his hands out of the cash drawer! But not our Jimmy! Couldn't be precious *Jimmy*! Stealing them blind! And *HE* gets to be a lawyer? What a sick joke! I should've stopped him when I had the chance!"
 	}
 	const copyAddress = () => {
 		navigator.clipboard.writeText(userData.address)
@@ -104,6 +114,7 @@ const ProfileCard = () => {
 				<CopyIcon onClick={copyAddress}/>
 				<Tooltip style={{display:"none"}} ref={tooltipRef} remove={!tooltipVisible}>Copied to clipboard!</Tooltip>
 			</AddressContainer>
+			<Description>{clamp(userData.description)}</Description>
 		</Card>
 	)
 }
