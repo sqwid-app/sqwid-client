@@ -21,7 +21,7 @@ const PreviewContainer = styled.div`
 	overflow: hidden;
 	${props=>props.src?backgroundImage:noBackgroundImage}
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-size: 100% auto;
 	background-position: center;
 	p{
 		padding: 1.5rem;
