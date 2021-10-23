@@ -2,9 +2,8 @@ export const initialState = {
 	files:{
 		name:"",
 		description:"",
-		file:[],
+		file:null,
 		royalty:"",
 		copies:""
-	},
-	ipfsURL:""
+	}
 }
