@@ -49,7 +49,7 @@ const DropzoneButton = styled(m.a)`
 `
 
 const Dropzone = (props) => {
-	const initialDragText = "PNG, GIF, WEBP or MP3. Max 100mb."
+	const initialDragText = "PNG, GIF, WEBP or MP3. Max 30mb."
 	const { files, setFiles } = useContext(FileContext)
 	const [dragText, setDragText] = useState(initialDragText)
 	const {getRootProps, getInputProps, open, acceptedFiles,isDragActive,fileRejections} = useDropzone({

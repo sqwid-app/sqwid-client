@@ -1,6 +1,14 @@
 import FileContext from "@contexts/File/FileContext";
 import React, { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+const backgroundImage = css`
+	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%), url(${props=>props.src&&props.src});
+`
+
+const noBackgroundImage = css`
+	background-image:none;
+`
 
 const PreviewContainer = styled.div`
 	height:80%;
@@ -11,7 +19,7 @@ const PreviewContainer = styled.div`
 	place-items:center;
 	font-size: 0.9rem;
 	overflow: hidden;
-	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%), url(${props=>props.src&&props.src});
+	${props=>props.src?backgroundImage:noBackgroundImage}
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -32,11 +40,6 @@ const PreviewContainer = styled.div`
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-`
-
-const ImageContainer = styled.div`
-	height: 100%;
-	width: 100%;
 `
 
 const PreviewSection = () => {
