@@ -1,6 +1,12 @@
-import Upload from "@elements/Create/Upload";
 import React from "react";
 import styled from "styled-components";
+import FileProvider from "@contexts/File/FileProvider";
+import UploadSection from "@elements/Create/UploadSection";
+import TitleSection from "@elements/Create/TitleSection";
+import DescriptionSection from "@elements/Create/DescriptionSection";
+import RoyaltySection from "@elements/Create/RoyaltySection";
+import PreviewSection from "@elements/Create/PreviewSection";
+import CopiesSection from "@elements/Create/CopiesSection";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -21,20 +27,38 @@ const MainSection = styled.div`
 	width: 75vw;
 	height: 100%;
 	display: grid;
-	grid-template-columns: repeat(2,1fr);
+	grid-template-columns: 2fr repeat(2,1fr) ;
+	gap: 4rem;
 `
+
+const LeftContainer = styled.div`
+	display: flex;
+	flex-direction:column;
+	height: 100%;
+	gap: 2.75rem;
+`
+
+const RightContainer = styled(LeftContainer)``
 
 const HeroSection = () => {
 	return (
-		<Wrapper>
-			<Title>Create a Collectible</Title>
-			<MainSection>
-				<div>
-					<Upload/>
-				</div>
-				<div>👍</div>
-			</MainSection>
-		</Wrapper>
+		<FileProvider>
+			<Wrapper>
+				<Title>Create a Collectible</Title>
+				<MainSection>
+					<LeftContainer>
+						<UploadSection/>
+						<TitleSection/>
+						<DescriptionSection/>
+					</LeftContainer>
+					<RightContainer>
+						<RoyaltySection/>
+						<CopiesSection/>
+					</RightContainer>
+					<PreviewSection/>
+				</MainSection>
+			</Wrapper>
+		</FileProvider>
 	)
 }
 

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
+import FileContext from "@contexts/File/FileContext";
 
 const Wrapper = styled.div`
 	.dropzone{
@@ -11,15 +12,13 @@ const Wrapper = styled.div`
 		flex-direction:column;
 		gap: 1.5rem;
 		padding: 2rem;
-		margin: 1rem 0;
+		margin-top: 1rem;
 		width: 100%;
 		height: 10rem;
 		border: 2px dashed var(--app-container-text-primary);
 		border-radius: 1.2rem;
 		outline:none;
-		@media (max-width: 1224px){
-			height: 20%;
-		}
+		@media (max-width: 1224px){}
 	}
 `
 
@@ -51,6 +50,7 @@ const DropzoneButton = styled(m.a)`
 
 const Dropzone = (props) => {
 	const initialDragText = "PNG, GIF, WEBP or MP3. Max 100mb."
+	const { files, setFiles } = useContext(FileContext)
 	const [dragText, setDragText] = useState(initialDragText)
 	const {getRootProps, getInputProps, open, acceptedFiles,isDragActive,fileRejections} = useDropzone({
 		noClick: true,
@@ -59,8 +59,14 @@ const Dropzone = (props) => {
 		accept: 'image/gif, image/png, image/webp, audio/mpeg'
 	});
 	useEffect(() => {
-		console.log("Accepted: ")
-		console.log(acceptedFiles);
+		if(acceptedFiles.length){
+			setFiles({
+				...files,
+				file: acceptedFiles[0]
+			});
+		}
+		console.log(acceptedFiles)
+	//eslint-disable-next-line
 	}, [acceptedFiles])
 	useEffect(() => {
 		isDragActive?setDragText(`Drop your files here`):setDragText(initialDragText)
@@ -104,7 +110,7 @@ const CustomDropzone = () => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
-				<Dropzone/>
+				<Dropzone maxSize={30000000}/>
 			</Wrapper>
 		</LazyMotion>
 	)
