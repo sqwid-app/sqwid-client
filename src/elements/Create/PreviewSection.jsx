@@ -2,71 +2,111 @@ import FileContext from "@contexts/File/FileContext";
 import React, { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 
-const backgroundImage = css`
-	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%), url(${props=>props.src&&props.src});
-`
-
-const noBackgroundImage = css`
-	background-image:none;
-`
-
-const PreviewContainer = styled.div`
-	height:80%;
-	width:100%;
+const border = css`
 	border: 2px solid var(--app-container-text-primary);
 	border-radius: 1rem;
-	display: grid;
-	place-items:center;
-	font-size: 0.9rem;
+`;
+
+const noBorder = css`
+	border: none;
+`;
+
+const Title = styled.h1`
+	font-size: 1.125rem;
+	font-weight: 900;
+`;
+
+const PreviewContainer = styled.div`
+	max-width: 100%;
+	max-height: 100%;
+	margin-top: 0.5rem;
+`
+
+const FilePreview = styled.div`
+	${props => props.fileType === 'audio' ? noBorder : border}
+	display: inline-block;
 	overflow: hidden;
-	${props=>props.src?backgroundImage:noBackgroundImage}
-	background-repeat: no-repeat;
-	background-size: 100% auto;
-	background-position: center;
+	padding: 0;
+
+	max-width: 100%;
+	max-height: 100%;
+
+	img{
+		max-width:100%;
+		max-height:100%;
+		margin: 0 auto;
+		display: block;
+	}
+	video{
+		max-width:100%;
+		max-height:100%;
+		margin: 0 auto;
+		display: block;
+	}
+	audio{
+		max-width:100%;
+		max-height:100%;
+		margin: 0 auto;
+		display: block;
+	}
 	p{
 		padding: 1.5rem;
+		padding-top: 5rem;
+		padding-bottom: 5rem;
 		text-align: center;
 		color: var(--app-container-text-primary);
 	}
-	h1{
-		padding: 1.5rem 1.25rem;
-		margin-right: auto;
-		align-self: flex-start;
-		text-align:left;
-		font-size: 1.75rem;
-		font-weight: 800;
-		max-width: 90%;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-`
+`;
 
 const PreviewSection = () => {
 	const { files } = useContext(FileContext)
-	const [imageURL, setImageURL] = useState("")
+	const [fileURL, setFileURL] = useState("")
 	const [title, setTitle] = useState("")
+	const [fileType, setFileType] = useState("")
 
-	useEffect(() => {
-		if(files.file){
-			setImageURL(window.URL.createObjectURL(files.file))
+	useEffect (() => {
+		if (files.file){
+			console.log (files.file);
+			const { file } = files;
+			if (file.type.startsWith ("image")) {
+				setFileType ("image")
+			} else if (file.type.startsWith ("video")) {
+				setFileType ("video")
+			} else if (file.type.startsWith ("audio")) {
+				setFileType ("audio")
+			}
+
+			setFileURL (window.URL.createObjectURL (files.file))
 		}
-	}, [files.file])
+	}, [files.file, files])
 
 	useEffect(() => {
 		setTitle(files.name)
 	}, [files.name])
 
 	return (
-		<PreviewContainer src={imageURL}>
-			{!imageURL.length?(
-				<p>
-					Your preview will appear here once you upload a file
-				</p>
-			):(
-				<h1>{title}</h1>
-			)}
-		</PreviewContainer>
+		<div>
+			<Title>Preview</Title>
+			<PreviewContainer>
+				{!fileURL.length?(
+					<FilePreview>
+						<p>
+							Your preview will appear here once you upload a file
+						</p>
+					</FilePreview>
+				):(
+					<FilePreview fileType = { fileType }>
+						{ fileType === "image" ? (
+							<img src = { fileURL } alt = { title } />
+						) : fileType === "video" ? (
+							<video controls src = { fileURL } alt = { title } />
+						) : fileType === "audio" ? (
+							<audio controls src = { fileURL } alt = { title } />
+						) : null}
+					</FilePreview>
+				)}
+			</PreviewContainer>
+		</div>
 	)
 }
 

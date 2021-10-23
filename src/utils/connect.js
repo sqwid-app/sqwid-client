@@ -12,11 +12,13 @@ const Init = async () => {
 const Connect = async (account) => {
 	const injector = await web3FromSource (account.meta.source);
 
+    console.log (process.env.REACT_APP_API_URL);
+
 	const signRaw = injector?.signer?.signRaw;
 
 	if (!!signRaw) {
 
-        let res = await fetch (`/api/nonce?address=${account.address}`);
+        let res = await fetch (`${process.env.REACT_APP_API_URL}/api/nonce?address=${account.address}`);
         let { nonce } = await res.json ();
 
         const sres = await signRaw ({
@@ -27,7 +29,7 @@ const Connect = async (account) => {
 
         const { signature } = sres;
 
-        res = await fetch (`/api/auth`, {
+        res = await fetch (`${process.env.REACT_APP_API_URL}/api/auth`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
