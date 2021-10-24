@@ -127,7 +127,8 @@ const PreviewSection = () => {
 
 			setFileURL (window.URL.createObjectURL (files.file))
 		}
-	}, [files.file, files])
+	//eslint-disable-next-line
+	}, [files.file])
 
 	useEffect(() => {
 		setTitle(files.name)
