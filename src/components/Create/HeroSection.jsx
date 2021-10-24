@@ -7,6 +7,7 @@ import DescriptionSection from "@elements/Create/DescriptionSection";
 import RoyaltySection from "@elements/Create/RoyaltySection";
 import PreviewSection from "@elements/Create/PreviewSection";
 import CopiesSection from "@elements/Create/CopiesSection";
+import CollectionSection from "@elements/Create/CollectionSection";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -54,6 +55,7 @@ const HeroSection = () => {
 					<RightContainer>
 						<RoyaltySection/>
 						<CopiesSection/>
+						<CollectionSection/>
 					</RightContainer>
 					<PreviewSection/>
 				</MainSection>

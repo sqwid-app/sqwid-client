@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Init } from "../../utils/connect";
+import { Init } from "@utils/connect";
 import AccountSelect from "./AccountSelect";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 

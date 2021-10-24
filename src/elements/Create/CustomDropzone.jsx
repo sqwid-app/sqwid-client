@@ -15,8 +15,8 @@ const Wrapper = styled.div`
 		margin-top: 1rem;
 		width: 100%;
 		height: 10rem;
-		border: 2px dashed var(--app-container-text-primary);
-		border-radius: 1.2rem;
+		background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='16' ry='16' stroke='%23787987FF' stroke-width='4' stroke-dasharray='6%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+	border-radius: 16px;
 		outline:none;
 		@media (max-width: 1224px){}
 	}
