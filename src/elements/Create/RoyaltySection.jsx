@@ -79,7 +79,7 @@ const RoyaltySection = () => {
 					type="number"
 					min="0"
 					max="50"
-					onBlur={()=>setFiles({
+					onBlur={(e)=>e.target.value==="0"&&setFiles({
 						...files,
 						royalty: ""
 					})}
