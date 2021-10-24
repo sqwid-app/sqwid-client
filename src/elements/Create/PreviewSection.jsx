@@ -18,6 +18,7 @@ const PreviewContainer = styled.div`
 	height: 75%;
 	max-height: 75%;
 	margin-top: 0.5rem;
+	user-select: none;
 `
 
 
@@ -137,7 +138,9 @@ const PreviewSection = () => {
 		if(files.file&&files.name.length){
 			uploadNFT(files.file,files.title,files.description)
 		}
-		else{}
+		else{
+			console.log("no 💖")
+		}
 	}
 
 	return (

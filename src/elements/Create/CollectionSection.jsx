@@ -50,7 +50,7 @@ const NewBtn = styled(m.a)`
 	user-select:none;
 `
 
-const TitleSection = () => {
+const CollectionSection = () => {
 	return (
 		<Container>
 			<Title>Collection</Title>
@@ -90,4 +90,4 @@ const TitleSection = () => {
 	)
 }
 
-export default TitleSection
+export default CollectionSection
