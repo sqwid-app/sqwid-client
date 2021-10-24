@@ -118,6 +118,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		let account = accounts.find (acc => acc.meta.name === val)
 		setSelectedAccount (account);
 		await Connect (account);
+		setIsActive(false);
 	}
 	useEffect(() => {
 		if(isActive===false){

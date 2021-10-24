@@ -26,6 +26,16 @@ const InputContainer = styled.input`
 	&:focus{
 		border-bottom: 2px solid var(--app-container-text-primary-hover);
 	}
+	&::-webkit-outer-spin-button,
+	&::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	/* Firefox */
+	&[type=number] {
+		-moz-appearance: textfield;
+	}
 `
 
 const InputWrapper = styled.div`
@@ -51,9 +61,11 @@ const HelperText = styled.p`
 const RoyaltySection = () => {
 	const { files, setFiles } = useContext(FileContext)
 	const handleInput = (e) => {
+		let { value, min, max } = e.target;
+		value = Math.max(Number(min), Math.min(Number(max), Number(value)));
 		setFiles({
 			...files,
-			royalty: e.target.value
+			royalty: value
 		})
 	}
 	return (
@@ -64,6 +76,13 @@ const RoyaltySection = () => {
 					value={files.royalty}
 					onChange = {handleInput}
 					placeholder={`10`}
+					type="number"
+					min="0"
+					max="50"
+					onBlur={()=>setFiles({
+						...files,
+						royalty: ""
+					})}
 				/>
 			</InputWrapper>
 			<HelperText>Suggested: 0%, 10%, 20%, 30%</HelperText>
