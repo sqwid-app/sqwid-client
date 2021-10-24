@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import { uploadNFT } from "@utils/uploadNFT";
-import { createCollection } from "@utils/createCollection";
 
 const border = css`
 	border: 2px solid var(--app-container-text-primary);

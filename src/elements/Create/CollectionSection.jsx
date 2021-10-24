@@ -65,10 +65,6 @@ const CollectionSection = () => {
 						whileTap={{
 							scale:0.99
 						}}
-						transition={{
-							type: "tween",
-							ease:"backOut",
-						}}
 					>Choose from existing</ChooseBtn>
 					<NewBtn
 						whileHover={{
@@ -78,10 +74,6 @@ const CollectionSection = () => {
 						}}
 						whileTap={{
 							scale:0.98
-						}}
-						transition={{
-							type: "tween",
-							ease:"backOut",
 						}}
 					>+</NewBtn>
 				</LazyMotion>
