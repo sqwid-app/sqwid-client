@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import { uploadNFT } from "@utils/uploadNFT";
+import { createCollection } from "@utils/createCollection";
 
 const border = css`
 	border: 2px solid var(--app-container-text-primary);
@@ -116,7 +117,6 @@ const PreviewSection = () => {
 
 	useEffect (() => {
 		if (files.file){
-			console.log (files.file);
 			const { file } = files;
 			if (file.type.startsWith ("image")) {
 				setFileType ("image")
@@ -136,7 +136,8 @@ const PreviewSection = () => {
 
 	const handleClick = () => {
 		if(files.file&&files.name.length){
-			uploadNFT(files.file,files.title,files.description)
+			uploadNFT(files.file,files.name,files.description)
+			// createCollection(files.file,files.name,files.description);
 		}
 		else{
 			console.log("no 💖")
