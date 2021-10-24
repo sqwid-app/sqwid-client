@@ -6,7 +6,7 @@ const uploadNFT = (file,title,description) => {
 	data.append("name", title)
 	data.append("description", description)
 	console.log(data)
-	axios.post(`${process.env.REACT_APP_API_URL_DEV}/api/upload`, data)
+	axios.post(`${process.env.REACT_APP_API_URL}/api/upload`, data)
 	.then(res => {
 		console.log(res.data)
 	})
