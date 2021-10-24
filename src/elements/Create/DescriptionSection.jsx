@@ -37,7 +37,6 @@ const DescriptionSection = () => {
 			...files,
 			description: e.target.value
 		})
-		console.log(files.description)
 	}
 	return (
 		<Container>
