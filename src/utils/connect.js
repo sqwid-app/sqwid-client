@@ -20,7 +20,7 @@ const Connect = async (account) => {
 	if (!!signRaw) {
 
         let res = await axios.get(`${process.env.REACT_APP_API_URL}/api/nonce?address=${account.address}`);
-        let { nonce } = res;
+        let { nonce } = res.data;
 
         const sres = await signRaw ({
 			address: account.address,
@@ -45,7 +45,7 @@ const Connect = async (account) => {
 			console.log("err",err)
 		}
 
-        let json = res;
+        let json = res.data;
 
         if (json.status === 'success') {
             console.log ('auth success');
