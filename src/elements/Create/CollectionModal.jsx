@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 //eslint-disable-next-line
 import { LazyMotion, domAnimation, m } from "framer-motion"
-import CustomDropzone from "./CustomDropzone";
+import CustomDropzoneModal from "./CustomDropzoneModal";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -157,9 +157,11 @@ const New = () => {
 					placeholder={`e.g "So? I like Breaking Bad sue me"`}
 				/>
 				<Title>Cover Image</Title>
-				<CustomDropzone modal/>
+				<CustomDropzoneModal modal info={info} setInfo={setInfo}/>
 				<BtnContainer>
-					<AnimBtn>Create Collection</AnimBtn>
+					<AnimBtn
+						onClick={()=>console.log(info)}
+					>Create Collection</AnimBtn>
 				</BtnContainer>
 			</NewContainer>
 		</>

@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
-import FileContext from "@contexts/File/FileContext";
 
 const Wrapper = styled.div`
 	.dropzone{
@@ -50,7 +49,6 @@ const DropzoneButton = styled(m.a)`
 
 const Dropzone = (props) => {
 	const initialDragText = props.modal?"PNG, JPEG, GIF or WEBP. Max 30mb.":"PNG, GIF, WEBP, MP4, or MP3. Max 30mb."
-	const { files, setFiles } = useContext(FileContext)
 	const [dragText, setDragText] = useState(initialDragText)
 	const {getRootProps, getInputProps, open, acceptedFiles,isDragActive,fileRejections} = useDropzone({
 		noClick: true,
@@ -60,8 +58,8 @@ const Dropzone = (props) => {
 	});
 	useEffect(() => {
 		if(acceptedFiles.length){
-			setFiles({
-				...files,
+			props.setInfo({
+				...props.info,
 				file: acceptedFiles[0]
 			});
 		}
@@ -108,14 +106,14 @@ const Dropzone = (props) => {
 
 }
 
-const CustomDropzone = ({modal}) => {
+const CustomDropzoneModal = ({modal, info, setInfo}) => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
-				<Dropzone modal={modal} maxSize={30000000}/>
+				<Dropzone info={info} setInfo={setInfo} modal={modal} maxSize={30000000}/>
 			</Wrapper>
 		</LazyMotion>
 	)
 }
 
-export default CustomDropzone
+export default CustomDropzoneModal
