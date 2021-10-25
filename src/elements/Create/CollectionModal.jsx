@@ -1,28 +1,26 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
-import { Connect } from "@utils/connect";
+//eslint-disable-next-line
 import { LazyMotion, domAnimation, m } from "framer-motion"
-import { truncateAddress } from "@utils/textUtils";
-import AuthContext from "@contexts/Auth/AuthContext";
 
 const swipeDownwards = keyframes`
 	0% {
-		transform: translateX(100%);
+		transform: translate(-50%,-50%);
 		opacity: 0;
 	}
 	100% {
-		transform: translateX(0);
+		transform: translate(-50%,0);
 		opacity: 1;
 	}
 `
 
 const swipeUpwards = keyframes`
 	0% {
-		transform: translateX(0);
+		transform: translate(-50%,0);
 		opacity: 1;
 	}
 	100% {
-		transform: translateX(100%);
+		transform: translate(-50%,-50%);
 		opacity: 0;
 	}
 `
@@ -47,11 +45,10 @@ const BackDrop = styled.div`
 
 const Modal = styled.div`
 	position:absolute;
-	right: 0;
-	margin-right:4rem;
-	margin-top: 7rem;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
 	padding: 2rem 1.5rem;
-	padding-top: 1.5rem;
 	background:var(--app-container-bg-primary);
 	border-radius: 0.5rem;
 	z-index:3;
@@ -87,78 +84,36 @@ const elemContains =  (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
 }
 
-const AccountSelect = ({ isActive, setIsActive, accounts }) => {
-	const [elemIsVisible, setElemIsVisible] = useState(isActive)
-	const { auth, login, setLoading } = useContext(AuthContext);
+const CollectionModal = ({ isActive, setIsActive, accounts }) => {
+	const [elemIsVisible, setElemIsVisible] = useState(isActive.status)
 	const modalRef = useRef()
 	//eslint-disable-next-line
-	const [selectedAccount, setSelectedAccount] = useState (null);
-	const _onAccountChange = async (val) => {
-		setLoading(true);
-		let account = accounts.find (acc => acc.meta.name === val)
-		setSelectedAccount (account);
-		Connect (account)
-		.then(()=>{
-			login({auth:account})
-			console.log(auth)
-		})
-		.catch(err=>{
-			console.log(err)
-		})
-		.finally(()=>{
-			setIsActive(false);
-			setLoading(false);
-		})
-	}
 	useEffect(() => {
-		if(isActive===false){
+		if(isActive.status===false){
 			setTimeout(() => {
-				setElemIsVisible(isActive);
+				setElemIsVisible(isActive.status);
 			}, 200);
 		}
 		else{
-			setElemIsVisible(isActive);
+			setElemIsVisible(isActive.status);
 		}
-	}, [isActive])
+	}, [isActive.status])
 
 	const handleClickOutside = (e) => {
 		let rect = modalRef.current.getBoundingClientRect();
 		if(!elemContains(rect,e.clientX,e.clientY)){
-			setIsActive(false)
-			setLoading(false)
+			setIsActive({...isActive,status: false})
 		}
 	}
-
-	useEffect(() => {
-		console.log(auth)
-	}, [])
-
 	return (
 		<LazyMotion features={domAnimation}>
 			{elemIsVisible&&(
-				<BackDrop remove={!isActive} onClick={handleClickOutside}>
+				<BackDrop remove={!isActive.status} onClick={handleClickOutside}>
 					<Modal
-						remove={!isActive}
+						remove={!isActive.status}
 						ref={modalRef}
 					>
-						<Title>Choose an account</Title>
-						{accounts?.length ?
-						<>
-							{ accounts ? accounts.map ((account, index) => {
-								return <m.p
-								whileHover={{
-									y: -5,
-									x: 0
-								}}
-								whileTap={{
-									scale:0.99
-								}}
-								onClick={()=>_onAccountChange(account.meta.name)}
-								key = { index }
-							> { account.meta.name }<label title={account.address}>{truncateAddress(account.address)}</label> </m.p>
-							}) : null }
-						</>
-						: 'Please connect your wallet'}
+						<Title>gaming</Title>
 					</Modal>
 				</BackDrop>
 			)}
@@ -166,4 +121,4 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	)
 }
 
-export default AccountSelect
+export default CollectionModal

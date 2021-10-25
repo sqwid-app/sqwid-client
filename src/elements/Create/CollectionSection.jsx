@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
+import CollectionModal from "./CollectionModal";
 
 const Container = styled.div``
 
@@ -51,6 +52,7 @@ const NewBtn = styled(m.a)`
 `
 
 const CollectionSection = () => {
+	const [isCollectionActive, setIsCollectionActive] = useState({status:false,type:""})
 	return (
 		<Container>
 			<Title>Collection</Title>
@@ -65,6 +67,7 @@ const CollectionSection = () => {
 						whileTap={{
 							scale:0.99
 						}}
+						onClick={()=>setIsCollectionActive({status:true,type:"choose"})}
 					>Choose from existing</ChooseBtn>
 					<NewBtn
 						whileHover={{
@@ -75,9 +78,11 @@ const CollectionSection = () => {
 						whileTap={{
 							scale:0.98
 						}}
+						onClick={()=>setIsCollectionActive({status:true,type:"new"})}
 					>+</NewBtn>
 				</LazyMotion>
 			</ButtonsContainer>
+			<CollectionModal isActive={isCollectionActive} setIsActive={setIsCollectionActive}/>
 		</Container>
 	)
 }

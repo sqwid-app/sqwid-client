@@ -54,11 +54,15 @@ const Changes = () => {
 		const equalityCheck = (deepEqual({
 			file:initialState.files.file,
 			name:initialState.files.name,
-			description:initialState.files.description
+			description:initialState.files.description,
+			royalty:initialState.files.royalty,
+			copies:initialState.files.copies,
 		},{
 			file:files.file,
 			name:files.name,
-			description:files.description
+			description:files.description,
+			royalty:files.royalty,
+			copies:files.copies,
 		}))
 		if(!equalityCheck){
 			setAnimateOut(false)

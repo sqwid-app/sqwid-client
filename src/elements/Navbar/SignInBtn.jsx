@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { Init } from "@utils/connect";
 import AccountSelect from "./AccountSelect";
-import { LazyMotion, domAnimation, m } from "framer-motion"
+import { LazyMotion, domAnimation, m } from "framer-motion";
+import AuthContext from "@contexts/Auth/AuthContext";
+import Loading from "@elements/Default/Loading";
 
 
 const Btn = styled(m.a)`
@@ -35,6 +37,8 @@ const AnimBtn = ({ children, onClick }) => (
 const SignInBtn = () => {
 	const [isSelectionActive, setIsSelectionActive] = useState(false)
 	const [currentAccounts, setCurrentAccounts] = useState (null);
+	const [username, setUsername] = useState("")
+	const { loading,auth } = useContext(AuthContext);
 	//eslint-disable-next-line
 	// useEffect (() => {
 	// 	(async () => {
@@ -49,10 +53,19 @@ const SignInBtn = () => {
 		}) ();
 		setIsSelectionActive(!isSelectionActive)
 	}
+	useEffect(() => {
+		auth&&setUsername(auth.meta.name)
+	}, [auth])
 	return (
 		<LazyMotion features={domAnimation}>
 			<AnimBtn onClick={handleClick}>
-				Connect
+				{loading?(
+					<Loading/>
+				):(
+					<>
+						{username.length?username:`Connect`}
+					</>
+				)}
 			</AnimBtn>
 			<AccountSelect isActive={isSelectionActive} setIsActive={setIsSelectionActive} accounts={currentAccounts}/>
 		</LazyMotion>
