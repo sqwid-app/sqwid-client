@@ -2,25 +2,26 @@ import React, { useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 //eslint-disable-next-line
 import { LazyMotion, domAnimation, m } from "framer-motion"
+import CustomDropzone from "./CustomDropzone";
 
 const swipeDownwards = keyframes`
 	0% {
-		transform: translate(-50%,-50%);
+		transform: translate(0,-50%);
 		opacity: 0;
 	}
 	100% {
-		transform: translate(-50%,0);
+		transform: translate(0,0);
 		opacity: 1;
 	}
 `
 
 const swipeUpwards = keyframes`
 	0% {
-		transform: translate(-50%,0);
+		transform: translate(0,0);
 		opacity: 1;
 	}
 	100% {
-		transform: translate(-50%,-50%);
+		transform: translate(0,-50%);
 		opacity: 0;
 	}
 `
@@ -37,17 +38,16 @@ const BackDrop = styled.div`
 	position: absolute;
 	top:0;
 	left:0;
-	height: 100vh;
-	width: 100vw;
+	bottom:0;
+	right:0;
+	min-height: 100vh;
 	background: rgba(0, 0, 0,0.5);
 	overflow:hidden;
+	display: grid;
+	place-items:center;
 `
 
 const Modal = styled.div`
-	position:absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
 	padding: 2rem 1.5rem;
 	background:var(--app-container-bg-primary);
 	border-radius: 0.5rem;
@@ -56,22 +56,6 @@ const Modal = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
-	p{
-		font-size: 1.5rem;
-		user-select:none;
-		background: hsl(236deg 10% 23%);
-		padding: 0.5rem 1.25rem;
-		cursor:pointer;
-		border-radius: 0.25rem;
-		box-shadow:  0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-	}
-	label{
-		display: block;
-		font-weight: 500;
-		font-size: 1rem;
-		color: var(--app-container-text-primary-hover);
-		cursor: pointer;
-	}
 	${props=>!props.remove?modalEntryAnim:modalExitAnim}
 `
 
@@ -80,8 +64,112 @@ const Title = styled.h1`
 	margin-bottom: 0.25rem;
 `
 
+const InputContainer = styled.input`
+	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: 600;
+	font-size: 1rem;
+	background: transparent;
+	outline:none;
+	border: none;
+	color: var(--app-text);
+	padding: 0.5rem 0;
+	margin-bottom: 1rem;
+	border-bottom: 2px solid var(--app-container-text-primary);
+	width: 100%;
+	transition: border-bottom 0.2s ease;
+	&:focus{
+		border-bottom: 2px solid var(--app-container-text-primary-hover);
+	}
+`
+
+const Btn = styled(m.a)`
+	display: grid;
+	place-items:center;
+	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 1rem;
+	font-weight: 700;
+	padding: 0 1.25rem;
+	border-radius: 1000rem;
+	background: var(--app-theme-primary);
+	color: var(--app-background);
+	outline: none;
+	border: none;
+	height: 2.5rem;
+	cursor: pointer;
+	z-index:2;
+	user-select:none;
+`
+
+const AnimBtn = ({ children, onClick }) => (
+	<Btn
+		whileHover={{
+			y: -5,
+			x: 0,
+			scale:1.02
+		}}
+		whileTap={{
+			scale:0.99
+		}}
+		onClick={onClick}
+	>{children}</Btn>
+)
+
+const NewContainer = styled.div`
+	padding: 0 1rem;
+`
+
+const BtnContainer = styled.div`
+	display: flex;
+	align-items:center;
+	justify-content:flex-end;
+	padding-top:1.5rem;
+`
+
+const Header = styled.h1`
+	font-size: 1.5rem;
+	margin-bottom: 1rem;
+`
+
 const elemContains =  (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
+}
+
+const New = () => {
+	const [info, setInfo] = useState({
+		name:"",
+		description:"",
+		file:null,
+	})
+	return (
+		<>
+			<Header>Create new collection</Header>
+			<NewContainer>
+				<Title>Name</Title>
+				<InputContainer
+					value={info.name}
+					onChange = {(e)=>setInfo({...info,name:e.target.value})}
+					placeholder={`e.g "Walter White collections"`}
+				/>
+				<Title>Description</Title>
+				<InputContainer
+					value={info.description}
+					onChange = {(e)=>setInfo({...info,description:e.target.value})}
+					placeholder={`e.g "So? I like Breaking Bad sue me"`}
+				/>
+				<Title>Cover Image</Title>
+				<CustomDropzone modal/>
+				<BtnContainer>
+					<AnimBtn>Create Collection</AnimBtn>
+				</BtnContainer>
+			</NewContainer>
+		</>
+	)
+}
+
+const Existing = () => {
+	return (
+		<Title>not epic</Title>
+	)
 }
 
 const CollectionModal = ({ isActive, setIsActive, accounts }) => {
@@ -113,7 +201,13 @@ const CollectionModal = ({ isActive, setIsActive, accounts }) => {
 						remove={!isActive.status}
 						ref={modalRef}
 					>
-						<Title>gaming</Title>
+						{(() => {
+							switch (isActive.type) {
+								case "new":  return <New/>;
+								case "choose": return <Existing/>;
+								default: return "u wot m8";
+							}
+						})()}
 					</Modal>
 				</BackDrop>
 			)}

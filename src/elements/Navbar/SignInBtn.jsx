@@ -6,7 +6,6 @@ import { LazyMotion, domAnimation, m } from "framer-motion";
 import AuthContext from "@contexts/Auth/AuthContext";
 import Loading from "@elements/Navbar/Loading";
 
-
 const Btn = styled(m.a)`
 	display: flex;
 	align-items: center;

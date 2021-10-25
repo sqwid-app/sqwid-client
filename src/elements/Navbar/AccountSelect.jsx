@@ -89,7 +89,7 @@ const elemContains =  (rect, x, y) => {
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
-	const { auth, login, setLoading } = useContext(AuthContext);
+	const { login, setLoading } = useContext(AuthContext);
 	const modalRef = useRef()
 	//eslint-disable-next-line
 	const [selectedAccount, setSelectedAccount] = useState (null);
@@ -100,7 +100,6 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		Connect (account)
 		.then(()=>{
 			login({auth:account})
-			console.log(auth)
 		})
 		.catch(err=>{
 			console.log(err)

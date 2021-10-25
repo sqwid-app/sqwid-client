@@ -39,7 +39,7 @@ const DropzoneButton = styled(m.a)`
 	font-weight: 700;
 	padding: 0.675rem 1.25rem;
 	border-radius: 1000rem;
-	background: var(--app-container-bg-primary);
+	background: ${props=>props.modal?`var(--app-modal-btn-primary)`:`var(--app-container-bg-primary)`};
 	color: var(--app-container-text-primary);
 	outline: none;
 	border: none;
@@ -49,14 +49,14 @@ const DropzoneButton = styled(m.a)`
 `
 
 const Dropzone = (props) => {
-	const initialDragText = "PNG, GIF, WEBP, MP4, or MP3. Max 30mb."
+	const initialDragText = props.modal?"PNG, JPEG, GIF or WEBP. Max 30mb.":"PNG, GIF, WEBP, MP4, or MP3. Max 30mb."
 	const { files, setFiles } = useContext(FileContext)
 	const [dragText, setDragText] = useState(initialDragText)
 	const {getRootProps, getInputProps, open, acceptedFiles,isDragActive,fileRejections} = useDropzone({
 		noClick: true,
 		noKeyboard: true,
 		maxFiles:1,
-		accept: 'image/gif, image/png, image/webp, audio/mpeg, video/mp4'
+		accept: `image/jpeg, image/gif, image/png, image/webp, ${props.modal&&`audio/mpeg, video/mp4`}`
 	});
 	useEffect(() => {
 		if(acceptedFiles.length){
@@ -89,6 +89,7 @@ const Dropzone = (props) => {
 				{dragText}
 			</DropzoneText>
 			<DropzoneButton
+				modal={props.modal}
 				onClick={open}
 				whileHover={{
 					y: -5,
@@ -106,11 +107,11 @@ const Dropzone = (props) => {
 
 }
 
-const CustomDropzone = () => {
+const CustomDropzone = ({modal}) => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
-				<Dropzone maxSize={30000000}/>
+				<Dropzone modal={modal} maxSize={30000000}/>
 			</Wrapper>
 		</LazyMotion>
 	)
