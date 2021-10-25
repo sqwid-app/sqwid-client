@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import { uploadNFT } from "@utils/uploadNFT";
+import Loading from "@elements/Create/Loading";
 
 const border = css`
 	border: 2px solid var(--app-container-text-primary);
@@ -113,6 +114,7 @@ const PreviewSection = () => {
 	const [fileURL, setFileURL] = useState("")
 	const [title, setTitle] = useState("")
 	const [fileType, setFileType] = useState("")
+	const [buttonText, setButtonText] = useState("Create Item")
 
 	useEffect (() => {
 		if (files.file){
@@ -135,13 +137,17 @@ const PreviewSection = () => {
 	}, [files.name])
 
 	const handleClick = () => {
+		setButtonText(<Loading/>)
 		if(files.file&&files.name.length){
 			uploadNFT(files.file,files.name,files.description)
-			// createCollection(files.file,files.name,files.description);
 		}
 		else{
 			console.log("no 💖")
 		}
+		setButtonText("Uploaded NFT!")
+		setTimeout(() => {
+			setButtonText("Create Item")
+		}, 2000);
 	}
 
 	return (
@@ -170,7 +176,7 @@ const PreviewSection = () => {
 			</Group>
 
 			<LazyMotion features={domAnimation}>
-				<AnimBtn onClick={handleClick}>Create Item</AnimBtn>
+				<AnimBtn onClick={handleClick}>{buttonText}</AnimBtn>
 			</LazyMotion>
 		</Wrapper>
 	)

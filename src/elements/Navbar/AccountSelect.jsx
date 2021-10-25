@@ -129,10 +129,6 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		}
 	}
 
-	useEffect(() => {
-		console.log(auth)
-	}, [])
-
 	return (
 		<LazyMotion features={domAnimation}>
 			{elemIsVisible&&(

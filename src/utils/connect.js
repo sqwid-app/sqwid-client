@@ -2,6 +2,7 @@
 // import { WsProvider, Keyring } from "@polkadot/api";
 import { web3Accounts, web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import { stringToHex } from '@polkadot/util';
+import axios from "axios";
 // const WS_URL = 'wss://rpc-testnet.reefscan.com/ws';
 
 const Init = async () => {
@@ -18,8 +19,8 @@ const Connect = async (account) => {
 
 	if (!!signRaw) {
 
-        let res = await fetch (`${process.env.REACT_APP_API_URL}/api/nonce?address=${account.address}`);
-        let { nonce } = await res.json ();
+        let res = await axios.get(`${process.env.REACT_APP_API_URL}/api/nonce?address=${account.address}`);
+        let { nonce } = res;
 
         const sres = await signRaw ({
 			address: account.address,
@@ -28,19 +29,23 @@ const Connect = async (account) => {
 		});
 
         const { signature } = sres;
+		try{
+			res = await axios (`${process.env.REACT_APP_API_URL}/api/auth`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: JSON.stringify ({
+					address: account.address,
+					signature: signature
+				})
+			});
+		}
+		catch(err){
+			console.log("err",err)
+		}
 
-        res = await fetch (`${process.env.REACT_APP_API_URL}/api/auth`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify ({
-                address: account.address,
-                signature: signature
-            })
-        });
-
-        let json = await res.json ();
+        let json = res;
 
         if (json.status === 'success') {
             console.log ('auth success');
