@@ -13,8 +13,7 @@ const LoadingContainer = styled.div`
 		background: ${props=>props.color?props.color:`var(--app-container-bg-primary)`};
 		background: linear-gradient(to right, ${props=>props.color?props.color:`var(--app-container-bg-primary)`} 10%, rgba(255, 255, 255, 0) 42%);
 		position: relative;
-		-webkit-animation: load3 1.4s infinite linear;
-		animation: load3 1.4s infinite linear;
+		animation: load3 1s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
 		-webkit-transform: translateZ(0);
 		-ms-transform: translateZ(0);
 		transform: translateZ(0);

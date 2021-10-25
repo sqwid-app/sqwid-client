@@ -4,7 +4,7 @@ import { Init } from "@utils/connect";
 import AccountSelect from "./AccountSelect";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import AuthContext from "@contexts/Auth/AuthContext";
-import Loading from "@elements/Default/Loading";
+import Loading from "@elements/Navbar/Loading";
 
 
 const Btn = styled(m.a)`
