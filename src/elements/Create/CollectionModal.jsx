@@ -212,7 +212,9 @@ const New = () => {
 	const handleClick = () => {
 		setButtonText(<Loading bg={`var(--app-theme-primary)`}/>)
 		if(info.file&&info.name.length){
-			createCollection(info.file,info.name,info.description)
+			createCollection (info.file,info.name,info.description).then (res => {
+				console.log (res.data);	
+			});
 		}
 		else{
 			console.log("no 💖")

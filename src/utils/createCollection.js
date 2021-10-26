@@ -1,22 +1,24 @@
 import axios from "axios";
 
-const createCollection = (file,name,description) => {
+const createCollection = async (file,name,description) => {
 	const data = new FormData();
 	data.append("fileData", file);
 	data.append("name", name);
 	data.append("description", description);
-	let jwt = JSON.parse (localStorage.getItem ("tokens")).find (token => token.address = '5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA');
-	axios.post (`${process.env.REACT_APP_API_URL}/api/create/collection`, data, {
-		headers: {
-			'Authorization': `Bearer ${jwt.token}`,
+	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
+	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address = address) : null;
+	console.log (jwt);
+	if (jwt) {
+		try {
+			return await axios.post (`${process.env.REACT_APP_API_URL}/api/create/collection`, data, {
+				headers: {
+					'Authorization': `Bearer ${jwt.token}`,
+				}
+			});
+		} catch (error) {
+			console.log (error);
 		}
-	})
-	.then(res => {
-		console.log(res.data)
-	})
-	.catch(err=>{
-		console.log(err)
-	})
+	} else return null;
 }
 
 export { createCollection }
