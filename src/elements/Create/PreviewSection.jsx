@@ -4,6 +4,7 @@ import styled, { css } from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import { uploadNFT } from "@utils/uploadNFT";
 import Loading from "@elements/Create/Loading";
+import UploadCover from "./UploadCover";
 
 const border = css`
 	border: 2px solid var(--app-container-text-primary);
@@ -16,7 +17,7 @@ const Title = styled.h1`
 `;
 
 const PreviewContainer = styled.div`
-	height: 75%;
+	min-height: 50%;
 	max-height: 75%;
 	margin-top: 0.5rem;
 	user-select: none;
@@ -28,13 +29,9 @@ const noPreview = css`
 	place-items:center;
 `
 
-const containsPreview = css`
-	display: inline-block;
-`
-
 const FilePreview = styled.div`
 	${props => !props.fileType&& border};
-	${props=>!props.fileType?noPreview:containsPreview}
+	${noPreview}
 	overflow: hidden;
 	padding: 0;
 
@@ -173,8 +170,10 @@ const PreviewSection = () => {
 						</FilePreview>
 					)}
 				</PreviewContainer>
+				{["video","audio"].includes(fileType)&&(
+					<UploadCover/>
+				)}
 			</Group>
-
 			<LazyMotion features={domAnimation}>
 				<AnimBtn onClick={handleClick}>{buttonText}</AnimBtn>
 			</LazyMotion>

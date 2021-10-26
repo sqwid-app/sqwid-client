@@ -3,6 +3,7 @@ export const initialState = {
 		name:"",
 		description:"",
 		file:null,
+		coverFile:null,
 		royalty:"",
 		copies:""
 	}

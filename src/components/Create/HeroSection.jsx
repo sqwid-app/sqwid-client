@@ -40,6 +40,10 @@ const LeftContainer = styled.div`
 	gap: 2.75rem;
 `
 
+const UploadContainer = styled.div`
+	width: 100%;
+`
+
 const RightContainer = styled(LeftContainer)``
 
 const HeroSection = () => {
@@ -49,7 +53,9 @@ const HeroSection = () => {
 				<Title>Create a Collectible</Title>
 				<MainSection>
 					<LeftContainer>
-						<UploadSection/>
+						<UploadContainer>
+							<UploadSection/>
+						</UploadContainer>
 						<TitleSection/>
 						<DescriptionSection/>
 						<Changes/>
