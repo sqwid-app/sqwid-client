@@ -3,6 +3,8 @@ import styled, { css, keyframes } from "styled-components";
 //eslint-disable-next-line
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import CustomDropzoneModal from "./CustomDropzoneModal";
+import { createCollection } from "@utils/createCollection";
+import Loading from "@elements/Create/Loading";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -45,14 +47,15 @@ const BackDrop = styled.div`
 	overflow:hidden;
 	display: grid;
 	place-items:center;
+	z-index: 15;
 `
 
 const Modal = styled.div`
 	padding: 2rem 1.5rem;
 	background:var(--app-container-bg-primary);
 	border-radius: 0.5rem;
-	z-index:3;
-	min-width: 14rem;
+	z-index:15;
+	min-width: 33vw;
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
@@ -95,6 +98,7 @@ const Btn = styled(m.a)`
 	outline: none;
 	border: none;
 	height: 2.5rem;
+	min-width: 10rem;
 	cursor: pointer;
 	z-index:2;
 	user-select:none;
@@ -130,16 +134,95 @@ const Header = styled.h1`
 	margin-bottom: 1rem;
 `
 
+const border = css`
+	border: 2px solid var(--app-container-text-primary);
+	border-radius: 0.5rem;
+`
+
+const containsPreview = css`
+	display: inline-block;
+`
+
+const PreviewContainer = styled.div`
+	display: flex;
+	align-items:center;
+	justify-content:space-around;
+	padding: 0.5rem 0;
+`
+
+const PreviewText = styled.p`
+	font-weight:800;
+	font-size: 0.85rem;
+	text-align:right;
+	color: var(--app-container-text-primary);
+`
+
+const PreviewTextContainer = styled.div`
+	max-width: 50%;
+`
+
+const FilePreview = styled.div`
+	${containsPreview}
+	overflow: hidden;
+	padding: 0;
+
+	max-width: 100%;
+	min-height: auto;
+	overflow: hidden;
+
+	img{
+		max-width:16rem;
+		max-height:10rem;
+		margin: 0 auto;
+		display: block;
+		${border}
+	}
+	p{
+		padding: 1.5rem;
+		padding-top: 5rem;
+		padding-bottom: 5rem;
+		text-align: center;
+		color: var(--app-container-text-primary);
+	}
+`;
+
 const elemContains =  (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
 }
 
 const New = () => {
-	const [info, setInfo] = useState({
+	const [buttonText, setButtonText] = useState("Create Collection")
+	const initialInfo = {
 		name:"",
 		description:"",
 		file:null,
-	})
+	}
+	const [info, setInfo] = useState(initialInfo)
+	const [fileURL, setFileURL] = useState("")
+	useEffect (() => {
+		if (info.file){
+			const { file } = info;
+			setFileURL (window.URL.createObjectURL (file))
+		}
+		else{
+			setFileURL ("")
+		}
+	//eslint-disable-next-line
+	}, [info.file])
+	const handleClick = () => {
+		setButtonText(<Loading bg={`var(--app-theme-primary)`}/>)
+		if(info.file&&info.name.length){
+			createCollection(info.file,info.name,info.description)
+		}
+		else{
+			console.log("no 💖")
+		}
+		setButtonText("Created Collection!")
+		setInfo(initialInfo)
+		setTimeout(() => {
+			setButtonText("Create Collection")
+		}, 2000);
+	}
 	return (
 		<>
 			<Header>Create new collection</Header>
@@ -157,11 +240,22 @@ const New = () => {
 					placeholder={`e.g "So? I like Breaking Bad sue me"`}
 				/>
 				<Title>Cover Image</Title>
-				<CustomDropzoneModal modal info={info} setInfo={setInfo}/>
+				{!fileURL.length?(
+					<CustomDropzoneModal modal info={info} setInfo={setInfo}/>
+				):(
+					<PreviewContainer>
+						<FilePreview>
+							<img src = {fileURL} alt = {info.name} />
+						</FilePreview>
+						<PreviewTextContainer>
+							<PreviewText>(This image will show up as your collection thumbnail)</PreviewText>
+						</PreviewTextContainer>
+					</PreviewContainer>
+				)}
 				<BtnContainer>
 					<AnimBtn
-						onClick={()=>console.log(info)}
-					>Create Collection</AnimBtn>
+						onClick={handleClick}
+					>{buttonText}</AnimBtn>
 				</BtnContainer>
 			</NewContainer>
 		</>

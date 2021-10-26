@@ -63,9 +63,9 @@ const LoadingContainer = styled.div`
 
 `
 
-const Loading = () => {
+const Loading = ({bg}) => {
 	return (
-		<LoadingContainer>
+		<LoadingContainer bg={bg}>
 			<div className="loader"></div>
 		</LoadingContainer>
 	)

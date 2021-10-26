@@ -54,7 +54,7 @@ const Dropzone = (props) => {
 		noClick: true,
 		noKeyboard: true,
 		maxFiles:1,
-		accept: `image/jpeg, image/gif, image/png, image/webp, ${props.modal&&`audio/mpeg, video/mp4`}`
+		accept: `image/jpeg, image/gif, image/png, image/webp, ${!props.modal&&`audio/mpeg, video/mp4`}`
 	});
 	useEffect(() => {
 		if(acceptedFiles.length){
