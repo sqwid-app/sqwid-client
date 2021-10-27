@@ -137,7 +137,7 @@ const PreviewSection = () => {
 		localStorage.removeItem("properties")
 		setButtonText(<Loading/>)
 		if(files.file&&files.name.length){
-			uploadNFT(files.file,files.name,files.description,files.properties)
+			uploadNFT(files.file,files.name,files.description,files.properties, files.coverFile)
 			.then(res=>{
 				console.log(res)
 				setButtonText("Uploaded NFT!")
@@ -181,7 +181,7 @@ const PreviewSection = () => {
 						</FilePreview>
 					)}
 				</PreviewContainer>
-				{["audio"].includes(fileType)&&(
+				{["video","audio"].includes(fileType)&&(
 					<UploadCover/>
 				)}
 			</Group>
