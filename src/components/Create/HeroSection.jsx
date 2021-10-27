@@ -8,6 +8,7 @@ import RoyaltySection from "@elements/Create/RoyaltySection";
 import PreviewSection from "@elements/Create/PreviewSection";
 import CopiesSection from "@elements/Create/CopiesSection";
 import CollectionSection from "@elements/Create/CollectionSection";
+import PropertiesSection from "@elements/Create/PropertiesSection";
 import Changes from "@elements/Create/Changes";
 
 const Wrapper = styled.div`
@@ -37,11 +38,18 @@ const LeftContainer = styled.div`
 	display: flex;
 	flex-direction:column;
 	height: 100%;
-	gap: 2.75rem;
+	gap: 1.5rem;
 `
 
 const UploadContainer = styled.div`
 	width: 100%;
+`
+
+const Group = styled.div`
+	height: 100%;
+	display: flex;
+	gap: 2.75rem;
+	flex-direction: column;
 `
 
 const RightContainer = styled(LeftContainer)``
@@ -53,17 +61,20 @@ const HeroSection = () => {
 				<Title>Create a Collectible</Title>
 				<MainSection>
 					<LeftContainer>
-						<UploadContainer>
-							<UploadSection/>
-						</UploadContainer>
-						<TitleSection/>
-						<DescriptionSection/>
+						<Group>
+							<UploadContainer>
+								<UploadSection/>
+							</UploadContainer>
+							<TitleSection/>
+							<DescriptionSection/>
+						</Group>
 						<Changes/>
 					</LeftContainer>
 					<RightContainer>
 						<RoyaltySection/>
 						<CopiesSection/>
 						<CollectionSection/>
+						<PropertiesSection/>
 					</RightContainer>
 					<PreviewSection/>
 				</MainSection>
