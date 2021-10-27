@@ -134,17 +134,27 @@ const PreviewSection = () => {
 	}, [files.name])
 
 	const handleClick = () => {
+		localStorage.removeItem("properties")
 		setButtonText(<Loading/>)
 		if(files.file&&files.name.length){
-			uploadNFT(files.file,files.name,files.description)
+			uploadNFT(files.file,files.name,files.description,files.properties)
+			.then(res=>{
+				console.log(res)
+				setButtonText("Uploaded NFT!")
+			})
+			.catch(err=>{
+				console.log(err)
+			})
+			.finally(()=>{
+				console.log("ok")
+				setTimeout(() => {
+					setButtonText("Create Item")
+				}, 2000);
+			})
 		}
 		else{
 			console.log("no 💖")
 		}
-		setButtonText("Uploaded NFT!")
-		setTimeout(() => {
-			setButtonText("Create Item")
-		}, 2000);
 	}
 
 	return (
@@ -170,7 +180,7 @@ const PreviewSection = () => {
 						</FilePreview>
 					)}
 				</PreviewContainer>
-				{["video","audio"].includes(fileType)&&(
+				{["audio"].includes(fileType)&&(
 					<UploadCover/>
 				)}
 			</Group>

@@ -1,10 +1,11 @@
 import axios from "axios";
 
-const uploadNFT = async (file,name,description) => {
+const uploadNFT = async (file,name,description,properties) => {
 	const data = new FormData();
 	data.append("fileData", file);
 	data.append("name", name);
 	data.append("description", description);
+	data.append("properties", properties);
 	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
 	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address = address) : null;
 	if (jwt) {

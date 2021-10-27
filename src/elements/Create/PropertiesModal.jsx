@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 //eslint-disable-next-line
 import { LazyMotion, domAnimation, m } from "framer-motion"
+import FileContext from "@contexts/File/FileContext";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -59,9 +60,7 @@ const Modal = styled.div`
 	${props=>!props.remove?modalEntryAnim:modalExitAnim}
 `
 
-const PropertiesContainer = styled.div`
-	
-`
+const PropertiesContainer = styled.div``
 
 const propertyIsFocused = css`
 	box-shadow:  0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -73,6 +72,8 @@ const Property = styled.div`
 	display: flex;
 	align-items: center;
 	padding: 1rem 1.5rem;
+	gap: 1rem;
+	transition: all 0.1s ease;
 	${props=>props.isFocused&&propertyIsFocused};
 `
 
@@ -93,33 +94,44 @@ const Input = styled.input`
 	}
 `
 
+const Title = styled.h1`
+	font-size: 1.5rem;
+    margin-bottom: 1rem;
+`
+
 const Properties = () => {
+	const { files, setFiles } = useContext(FileContext);
 	const initialValue = JSON.parse(localStorage.getItem("properties"))||[{key:"",value:"",isFocused:true}]
-	const [todoList, setTodoList] = useState(initialValue)
-	const addItem = () => setTodoList([...todoList,{key:"",value:"",isFocused:false}])
+	const [properties, setProperties] = useState(initialValue)
+	const addItem = () => setProperties([...properties,{key:"",value:"",isFocused:false}])
 	useEffect(() => {
-		todoList.forEach((item,index)=>{
+		properties.forEach((item,index)=>{
 			let isAllEmpty = Object.values({key:item.key,value:item.value}).every(x => x === null || x === '')
-			if(isAllEmpty && index!==todoList.length-1) {
-				setTodoList(todoList.filter((x,y) => y!==index).map((x,y)=>(y===index)?{...x,isFocused:true}:x))
+			if(isAllEmpty && index!==properties.length-1) {
+				setProperties(properties.filter((x,y) => y!==index).map((x,y)=>(y===index)?{...x,isFocused:true}:x))
 			}
 		})
 	//eslint-disable-next-line
-	}, [todoList])
+	}, [properties])
 	useEffect(() => {
-		let isSomeEmpty = todoList.some(item=>(
+		let isSomeEmpty = properties.some(item=>(
 			Object.values({key:item.key,value:item.value}).some(x => x === null || x === '')&&true
 			))
 		!isSomeEmpty && addItem()
 	//eslint-disable-next-line
-	}, [todoList])
+	}, [properties])
 	useEffect(() => {
-		localStorage.setItem("properties",JSON.stringify(todoList))
+		setFiles({
+			...files,
+			properties: properties
+		})
+		localStorage.setItem("properties",JSON.stringify(properties))
 	//eslint-disable-next-line
-	}, [todoList])
+	}, [properties])
 	return (
 		<PropertiesContainer>
-			{todoList.map((item,idx)=>{
+			<Title>Properties</Title>
+			{properties.map((item,idx)=>{
 				return (
 					<Property key={idx} isFocused={item.isFocused}>
 						<Input
@@ -127,19 +139,19 @@ const Properties = () => {
 							value={item.key}
 							placeholder="key"
 							onChange={(e)=>{
-								let newVal = [...todoList]
+								let newVal = [...properties]
 								newVal[idx].key = e.target.value
-								setTodoList(newVal)
+								setProperties(newVal)
 							}}
 							onFocus={()=>{
-								let newVal = [...todoList]
+								let newVal = [...properties]
 								newVal[idx].isFocused = true
-								setTodoList(newVal)
+								setProperties(newVal)
 							}}
 							onBlur={()=>{
-								let newVal = [...todoList]
+								let newVal = [...properties]
 								newVal[idx].isFocused = false
-								setTodoList(newVal)
+								setProperties(newVal)
 							}}
 						/>
 						<Input
@@ -147,19 +159,19 @@ const Properties = () => {
 							value={item.value}
 							placeholder="value"
 							onChange={(e)=>{
-								let newVal = [...todoList]
+								let newVal = [...properties]
 								newVal[idx].value = e.target.value
-								setTodoList(newVal)
+								setProperties(newVal)
 							}}
 							onFocus={()=>{
-								let newVal = [...todoList]
+								let newVal = [...properties]
 								newVal[idx].isFocused = true
-								setTodoList(newVal)
+								setProperties(newVal)
 							}}
 							onBlur={()=>{
-								let newVal = [...todoList]
+								let newVal = [...properties]
 								newVal[idx].isFocused = false
-								setTodoList(newVal)
+								setProperties(newVal)
 							}}
 						/>
 					</Property>

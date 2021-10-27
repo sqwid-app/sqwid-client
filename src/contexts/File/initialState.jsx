@@ -5,6 +5,7 @@ export const initialState = {
 		file:null,
 		coverFile:null,
 		royalty:"",
-		copies:""
+		copies:"",
+		properties:"",
 	}
 }

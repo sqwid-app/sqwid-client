@@ -1,5 +1,4 @@
-import FileContext from "@contexts/File/FileContext";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import PropertiesModal from "./PropertiesModal";
@@ -30,8 +29,6 @@ const ChooseBtn = styled(m.a)`
 
 const PropertiesSection = () => {
 	const [showModal, setShowModal] = useState(false)
-	//eslint-disable-next-line
-	const { files, setFiles } = useContext(FileContext)
 	return (
 		<Container>
 			<Title>Properties</Title>
