@@ -73,7 +73,7 @@ const Property = styled.div`
 	align-items: center;
 	padding: 1rem 1.5rem;
 	gap: 1rem;
-	transition: all 0.1s ease;
+	transition: all 0.12s ease;
 	${props=>props.isFocused&&propertyIsFocused};
 `
 
