@@ -190,7 +190,7 @@ const elemContains =  (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
 }
 
-const New = () => {
+const New = ({ closeModal }) => {
 	const [buttonText, setButtonText] = useState("Create Collection")
 	const initialInfo = {
 		name:"",
@@ -212,10 +212,15 @@ const New = () => {
 	const handleClick = () => {
 		setButtonText(<Loading bg={`var(--app-theme-primary)`}/>)
 		if(info.file&&info.name.length){
-			createCollection (info.file,info.name,info.description).then (res => {
+			createCollection (info.file,info.name,info.description)
+			.then (res => {
+				setButtonText("Created Collection!")
 				console.log (res.data);
+				setTimeout(() => {
+					closeModal()
+				}, 500);
 			})
-			.catch((err)=>{
+			.catch(err=>{
 				console.log(err)
 			})
 			.finally(()=>{
@@ -296,6 +301,9 @@ const CollectionModal = ({ isActive, setIsActive, accounts }) => {
 			setIsActive({...isActive,status: false})
 		}
 	}
+	const closeModal = () => {
+		setIsActive({...isActive,status: false});
+	}
 	return (
 		<LazyMotion features={domAnimation}>
 			{elemIsVisible&&(
@@ -306,8 +314,8 @@ const CollectionModal = ({ isActive, setIsActive, accounts }) => {
 					>
 						{(() => {
 							switch (isActive.type) {
-								case "new":  return <New/>;
-								case "choose": return <Existing/>;
+								case "new":  return <New closeModal={closeModal}/>;
+								case "choose": return <Existing />;
 								default: return "u wot m8";
 							}
 						})()}
