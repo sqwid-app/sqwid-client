@@ -154,6 +154,7 @@ const PreviewSection = () => {
 		}
 		else{
 			console.log("no 💖")
+			setButtonText("Create Item")
 		}
 	}
 
