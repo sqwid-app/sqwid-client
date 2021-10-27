@@ -213,17 +213,22 @@ const New = () => {
 		setButtonText(<Loading bg={`var(--app-theme-primary)`}/>)
 		if(info.file&&info.name.length){
 			createCollection (info.file,info.name,info.description).then (res => {
-				console.log (res.data);	
+				console.log (res.data);
+			})
+			.catch((err)=>{
+				console.log(err)
+			})
+			.finally(()=>{
+				setTimeout(() => {
+					setButtonText("Create Collection")
+				}, 2000);
 			});
 		}
 		else{
 			console.log("no 💖")
+			setButtonText("Created Collection!")
 		}
-		setButtonText("Created Collection!")
 		setInfo(initialInfo)
-		setTimeout(() => {
-			setButtonText("Create Collection")
-		}, 2000);
 	}
 	return (
 		<>
