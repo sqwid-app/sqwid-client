@@ -206,6 +206,7 @@ const CollectionContainer = styled(m.div)`
 	align-items:center;
 	justify-content: space-between;
 	cursor: pointer;
+	gap: 0.5rem;
 	user-select:none;
 	padding: 0.75rem 1.25rem;
 	margin-bottom: 0.5rem;
@@ -227,6 +228,11 @@ const CollectionContainer = styled(m.div)`
 	p{
 		font-size: 1.25rem;
 		font-weight: 800;
+		max-width: 30ch;
+		overflow: hidden;
+		white-space: nowrap;
+		display: block;
+		text-overflow: ellipsis;
 	}
 `
 
