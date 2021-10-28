@@ -8,7 +8,7 @@ import { createCollection } from "@utils/createCollection";
 import Loading from "@elements/Create/Loading";
 import axios from "axios";
 import AuthContext from "@contexts/Auth/AuthContext";
-import { getIPFSURL } from "@utils/getIPFSURL";
+import { getCloudflareURL } from "@utils/getIPFSURL";
 import FileContext from "@contexts/File/FileContext";
 
 const swipeDownwards = keyframes`
@@ -352,7 +352,7 @@ const Existing = ({ isActive, setIsActive }) => {
 							setIsActive({...isActive,status: false});
 						}}
 					>
-						<img src={getIPFSURL(item.data.image)} alt={item.data.description}/>
+						<img src={getCloudflareURL(item.data.image)} alt={item.data.description}/>
 						<p>{item.data.name}</p>
 					</CollectionContainer>
 				))}
