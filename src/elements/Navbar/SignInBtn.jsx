@@ -37,7 +37,7 @@ const SignInBtn = () => {
 	const [isSelectionActive, setIsSelectionActive] = useState(false)
 	const [currentAccounts, setCurrentAccounts] = useState (null);
 	const [username, setUsername] = useState("")
-	const { loading,auth } = useContext(AuthContext);
+	const { loading, auth } = useContext(AuthContext);
 	//eslint-disable-next-line
 	// useEffect (() => {
 	// 	(async () => {

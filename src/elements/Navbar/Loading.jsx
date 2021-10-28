@@ -29,7 +29,7 @@ const LoadingContainer = styled.div`
 		content: '';
 	}
 	.loader:after {
-		background: ${props=>props.bg?props.bg:`hsl(61, 79%, 49%)`};
+		background: ${props=>props.bg?props.bg:`var(--app-theme-primary)`};
 		width: 75%;
 		height: 75%;
 		border-radius: 50%;

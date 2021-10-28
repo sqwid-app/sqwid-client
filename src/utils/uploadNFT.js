@@ -1,11 +1,12 @@
 import axios from "axios";
 
-const uploadNFT = async (file, name, description, properties, cover) => {
+const uploadNFT = async (file, name, description, properties, cover, collection) => {
 	const data = new FormData();
 	data.append("fileData", file);
 	data.append("coverData", cover);
 	data.append("name", name);
 	data.append("description", description);
+	data.append("collection", collection);
 	let props = {};
 	if (properties && properties.length > 0) {
 		for (let p of properties) {

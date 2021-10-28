@@ -137,7 +137,7 @@ const PreviewSection = () => {
 		localStorage.removeItem("properties")
 		setButtonText(<Loading/>)
 		if(files.file&&files.name.length){
-			uploadNFT(files.file,files.name,files.description,files.properties, files.coverFile)
+			uploadNFT(files.file,files.name,files.description,files.properties, files.coverFile, files.collection)
 			.then(res=>{
 				console.log(res)
 				setButtonText("Uploaded NFT!")
