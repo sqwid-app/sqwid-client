@@ -1,4 +1,8 @@
+import AuthProvider from "@contexts/Auth/AuthProvider";
+import Collections from "@pages/Collections";
+import Create from "@pages/Create";
 import Landing from "@pages/Landing";
+import Profile from "@pages/Profile";
 import React from "react";
 
 import {
@@ -9,15 +13,32 @@ import {
 
 const App = () => {
 	return (
-		<Router>
-			<Switch>
-				<Route
-					path="/"
-					exact
-					component={Landing}
-				/>
-			</Switch>
-		</Router>
+		<AuthProvider>
+			<Router>
+				<Switch>
+					<Route
+						path="/"
+						exact
+						component={Landing}
+					/>
+					<Route
+						path="/collections/:id?"
+						exact
+						component={Collections}
+					/>
+					<Route
+						path="/profile/:id?"
+						exact
+						component={Profile}
+					/>
+					<Route
+						path="/create"
+						exact
+						component={Create}
+					/>
+				</Switch>
+			</Router>
+		</AuthProvider>
 	)
 }
 

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import NFTCard from "@elements/Default/NFTCard";
+import NFTCard from "@elements/Landing/NFTCard";
 
 const Wrapper = styled.div`
 	padding: 0 2rem;
@@ -33,7 +33,7 @@ const CardsContainer = () => {
 		<Wrapper>
 			<Cards>
 				{cards.map((item,index)=>(
-					<NFTCard {...item} fullHeight={index===0&&true}/>
+					<NFTCard key={index} {...item} fullHeight={index===0&&true}/>
 				))}
 			</Cards>
 		</Wrapper>

@@ -1,0 +1,33 @@
+.animate-icon {
+	cursor: pointer;
+	&:hover svg {
+		stroke: currentColor;
+		stroke-width: 2.5px;
+		stroke-dasharray: 50px;
+		stroke-dashoffset: 50px;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		animation: animate-logo 1.2s ease forwards;
+	}
+}
+
+@keyframes animate-logo{
+	0% {
+		stroke-dashoffset: 0px;
+		fill: currentColor;
+	}
+	15% {
+		fill: transparent;
+	}
+	50% {
+		fill: transparent;
+	}
+	75%{
+		stroke-width: 2.5px;
+	}
+	100%{
+		stroke-dashoffset: 110px;
+		fill: currentColor;
+		stroke-width: 0;
+	}
+}

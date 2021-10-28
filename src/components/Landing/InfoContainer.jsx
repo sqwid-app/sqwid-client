@@ -6,12 +6,12 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	padding-right: 2rem;
+	padding-left: 4rem;
 	line-height: 1.125;
 	gap: 2rem;
 	h1{
 		font-weight: 900;
-		font-size: 8rem;
+		font-size: 6rem;
 	}
 	h2{
 		font-weight: 500;

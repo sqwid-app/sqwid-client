@@ -1,5 +1,5 @@
 const constants = {
-	APP_NAME: "Uniqa"
+	APP_NAME: "Sqwid"
 }
 
 export default constants

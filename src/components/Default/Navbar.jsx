@@ -1,10 +1,12 @@
 import Divider from "@elements/Default/Divider";
 import LinkGroups from "@elements/Navbar/LinkGroups";
+import { MenuToggle } from "@elements/Navbar/MenuToggle";
 import Search from "@elements/Navbar/Search";
 import SignInBtn from "@elements/Navbar/SignInBtn";
 import LogoIcon from "@static/svg/Logo";
 import constants from "@utils/constants";
-import React, { useEffect, useState } from "react";
+import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const Nav = styled.nav`
@@ -17,13 +19,18 @@ const Nav = styled.nav`
 	font-size: 1.25rem;
 	padding: 2.5rem 3.75rem;
 	backdrop-filter: ${props=>props.blur?`blur(5px)`:`none`};
+	z-index: 10;
 `
 
-const LogoContainer = styled.div`
+const LogoContainer = styled.a`
+	cursor: pointer;
+	user-select: none;
 	display: inline-block;
 	align-items: center;
 	font-size: 2rem;
 	font-weight: 900;
+	text-decoration: none;
+	color: var(--app-text);
 	span, svg{
 		vertical-align:middle;
 	}
@@ -41,6 +48,8 @@ const ContentContainer = styled.div`
 
 const Navbar = () => {
 	const [isAtTop, setIsAtTop] = useState(true)
+	const isTabletOrMobile = useIsTabletOrMobile();
+	const logoRef = useRef();
 	useEffect(() => {
 		window.onscroll = () => {
 			console.log(window.pageYOffset)
@@ -51,18 +60,24 @@ const Navbar = () => {
 	});
 	return (
 		<Nav blur={!isAtTop}>
-			<LogoContainer>
+			<LogoContainer href="/" ref={logoRef} className="animate-icon">
 				<LogoIcon/>
 				<span>{constants.APP_NAME}</span>
 			</LogoContainer>
 			<ContentContainer>
-				<LinkGroups/>
-				<Divider/>
-				<Search/>
-				<SignInBtn/>
+				{!isTabletOrMobile?(
+					<>
+						<LinkGroups/>
+						<Divider/>
+						<Search/>
+						<SignInBtn/>
+					</>
+				):(
+					<MenuToggle toggle={null}/>
+				)}
 			</ContentContainer>
 		</Nav>
 	)
 }
 
-export default Navbar
+export default React.memo(Navbar)
