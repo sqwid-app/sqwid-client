@@ -1,8 +1,10 @@
 import AuthProvider from "@contexts/Auth/AuthProvider";
+import Collectible from "@pages/Collectible";
 import Collections from "@pages/Collections";
 import Create from "@pages/Create";
 import Landing from "@pages/Landing";
 import Profile from "@pages/Profile";
+import NotFound from "@pages/NotFound";
 import React from "react";
 
 import {
@@ -35,6 +37,15 @@ const App = () => {
 						path="/create"
 						exact
 						component={Create}
+					/>
+					<Route
+						path="/collectible/:slug"
+						exact
+						component={Collectible}
+					/>
+					<Route
+						path="*"
+						component={NotFound}
 					/>
 				</Switch>
 			</Router>

@@ -369,6 +369,8 @@ const Existing = ({ isActive, setIsActive }) => {
 
 const CollectionModal = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive.status)
+	const { auth } = useContext(AuthContext)
+	const isLoggedIn = !(auth === null)
 	const modalRef = useRef()
 	//eslint-disable-next-line
 	useEffect(() => {
@@ -395,14 +397,17 @@ const CollectionModal = ({ isActive, setIsActive, accounts }) => {
 					<Modal
 						remove={!isActive.status}
 						ref={modalRef}
-					>
-						{(() => {
+					>{isLoggedIn?(
+						(() => {
 							switch (isActive.type) {
 								case "new":  return <New isActive={isActive} setIsActive={setIsActive}/>;
 								case "choose": return <Existing isActive={isActive} setIsActive={setIsActive}/>;
 								default: return "u wot m8";
 							}
-						})()}
+						})()
+					):(
+						<Title>You need to connect your wallet first</Title>
+					)}
 					</Modal>
 				</BackDrop>
 			)}
