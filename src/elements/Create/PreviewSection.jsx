@@ -2,7 +2,7 @@ import FileContext from "@contexts/File/FileContext";
 import React, { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
-import { uploadNFT } from "@utils/uploadNFT";
+import { createCollectible } from "@utils/createCollectible";
 import Loading from "@elements/Create/Loading";
 import UploadCover from "./UploadCover";
 
@@ -137,10 +137,10 @@ const PreviewSection = () => {
 		localStorage.removeItem("properties")
 		setButtonText(<Loading/>)
 		if(files.file&&files.name.length){
-			uploadNFT(files.file,files.name,files.description,files.properties, files.coverFile, files.collection)
+			createCollectible (files)
 			.then(res=>{
 				console.log(res)
-				setButtonText("Uploaded NFT!")
+				setButtonText ("Uploaded NFT!")
 			})
 			.catch(err=>{
 				console.log(err)

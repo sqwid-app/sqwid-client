@@ -98,7 +98,16 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		let account = accounts.find (acc => acc.meta.name === val)
 		setSelectedAccount (account);
 		Connect (account)
-		.then(()=>{
+		.then (async response => {
+			if (response.evmClaimed === false) {
+				console.log ('evm account is not claimed. show popup.');
+				alert (`EVM account not claimed. Please claim it before logging in. You will get the address ${ await response.signer.getAddress () }`);
+				
+				await response.signer.claimDefaultAccount();
+			
+			} else {
+				console.log ('evm account is claimed');
+			}
 			login({auth:account})
 		})
 		.catch(err=>{
