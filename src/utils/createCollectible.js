@@ -4,13 +4,13 @@ import { ethers } from 'ethers';
 import contractABI from '../constants/contracts/SqwidERC1155';
 
 const createCollectible = async (files) => {
-	const { file, cover, name, description, properties, collection } = files;
+	const { file, coverFile, name, description, properties, collection } = files;
 	const copies = Number (files.copies) || 1;
 	const royalty = (Number (files.royalty) || 0) * 100;
 
 	const data = new FormData();
 	data.append("fileData", file);
-	data.append("coverData", cover);
+	data.append("coverData", coverFile);
 	data.append("name", name);
 	data.append("description", description);
 	data.append("collection", collection);
