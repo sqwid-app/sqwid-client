@@ -1,5 +1,5 @@
-// import { Provider, Signer } from "@reef-defi/evm-provider";
-// import { WsProvider, Keyring } from "@polkadot/api";
+import { Provider, Signer } from "@reef-defi/evm-provider";
+import { WsProvider } from "@polkadot/api";
 import { web3Accounts, web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import { stringToHex } from '@polkadot/util';
 import axios from "axios";
@@ -13,9 +13,9 @@ const Init = async () => {
 const Connect = async (account) => {
 	const injector = await web3FromSource (account.meta.source);
 
-    console.log (process.env.REACT_APP_API_URL);
-
 	const signRaw = injector?.signer?.signRaw;
+
+    const { signer } = await Interact (account.address);
 
 	if (!!signRaw) {
 
@@ -64,8 +64,42 @@ const Connect = async (account) => {
             }
 
             localStorage.setItem ('tokens', JSON.stringify (jwts));
+
+            if (!(await signer.isClaimed())) {
+                console.log(
+                    "No claimed EVM account found -> claimed default EVM account: ",
+                    await signer.getAddress()
+                );
+                return {
+                    evmClaimed: false,
+                    signer
+                }
+            } else {
+                return {
+                    evmClaimed: true,
+                    signer
+                }
+            }
         }
 	}
 }
 
-export { Connect, Init };
+const Interact = async (address = null) => {
+    if (!address) address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
+    const allInjected = await web3Enable ('Sqwid');
+    const injected = allInjected[0].signer;
+    const provider = new Provider ({
+        provider: new WsProvider (process.env.REACT_APP_RPC_URL)
+    });
+    await provider.api.isReady;
+
+    const signer = new Signer (provider, address, injected);
+
+    return {
+        signer,
+        provider
+    }
+}
+
+
+export { Connect, Init, Interact };
