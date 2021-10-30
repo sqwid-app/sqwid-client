@@ -39,7 +39,7 @@ const App = () => {
 						component={Create}
 					/>
 					<Route
-						path="/collectible/:slug"
+						path="/collectible/:addr"
 						exact
 						component={Collectible}
 					/>

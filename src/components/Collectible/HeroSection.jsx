@@ -3,10 +3,10 @@ import styled from "styled-components";
 
 const Wrapper = styled.div``
 
-const HeroSection = () => {
+const HeroSection = ({ addr }) => {
 	return (
 		<Wrapper>
-			ok
+			ok {addr}
 		</Wrapper>
 	)
 }

@@ -23,6 +23,7 @@ const Title = styled.h1`
 	position:fixed;
 	font-weight: 800;
 	font-size: 2rem;
+	user-select: none;
 `
 
 const CollectionsSection = () => {

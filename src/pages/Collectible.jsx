@@ -28,10 +28,10 @@ const Wrapper = ({ children }) => {
 }
 
 const Collectible = () => {
-	const { id } = useParams()
+	const { addr } = useParams()
 	return (
 		<Wrapper>
-			<HeroSection id={id}/>
+			<HeroSection addr={addr}/>
 		</Wrapper>
 	)
 }

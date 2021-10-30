@@ -1,63 +1,24 @@
 import React, { Component } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { SpringSystem, MathUtil } from 'rebound';
 
 class CustomScrollbar extends Component {
 
     constructor(props, ...rest) {
         super(props, ...rest);
-        this.state = { top: 0 };
-        this.handleUpdate = this.handleUpdate.bind(this);
         this.renderView = this.renderView.bind(this);
         this.renderThumb = this.renderThumb.bind(this);
-		this.handleSpringUpdate = this.handleSpringUpdate.bind(this);
     }
 
-	componentDidMount() {
-        this.springSystem = new SpringSystem();
-        this.spring = this.springSystem.createSpring();
-        this.spring.addListener({ onSpringUpdate: this.handleSpringUpdate });
-    }
-
-    componentWillUnmount() {
-        this.springSystem.deregisterSpring(this.spring);
-        this.springSystem.removeAllListeners();
-        this.springSystem = undefined;
-        this.spring.destroy();
-        this.spring = undefined;
-    }
-
-	scrollToLeft() {
-        return this.refs.scrollbars.scrollToLeft();
-    }
-
-    getScrollWidth() {
-        return this.refs.scrollbars.getScrollWidth();
-    }
-
-    getHeight() {
-        return this.refs.scrollbars.getHeight();
-    }
-
-    scrollLeft(left) {
-        const { scrollbars } = this.refs;
-        const scrollLeft = scrollbars.scrollToLeft();
-        const scrollWidth = scrollbars.getScrollWidth();
-        const val = MathUtil.mapValueInRange(left, 0, scrollWidth, scrollWidth * 0.2, scrollWidth * 0.8);
-        this.spring.setCurrentValue(scrollLeft).setAtRest();
-        this.spring.setEndValue(val);
-    }
-
-    handleSpringUpdate(spring) {
-        const { scrollbars } = this.refs;
-        const val = spring.getCurrentValue();
-        scrollbars.scrollLeft(val);
-    }
-
-    handleUpdate(values) {
-        const { top } = values;
-        this.setState({ top });
-    }
+	componentDidUpdate(prevProps) {
+		if (this.props.move !== prevProps.move) {
+			let scrollbars = this.refs.scrollbars
+			if(this.props.move > 0 && this.props.move < scrollbars.getThumbHorizontalWidth()){
+				let left = this.props.move
+				console.log(prevProps.move,this.props.move)
+				scrollbars.scrollLeft(left)
+			}
+		}
+	}
 
     renderView({ style, ...props }) {
 		const viewStyle = {
@@ -89,9 +50,9 @@ class CustomScrollbar extends Component {
                 renderView={this.renderView}
                 renderThumbHorizontal={this.renderThumb}
                 renderThumbVertical={this.renderThumb}
-                onUpdate={this.handleUpdate}
 				ref="scrollbars"
-                {...this.props}/>
+                {...this.props}
+			/>
         );
     }
 }
