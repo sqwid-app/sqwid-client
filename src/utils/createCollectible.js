@@ -29,7 +29,7 @@ const createCollectible = async (files) => {
 				'Authorization': `Bearer ${jwt.token}`
 			}
 		});
-		console.log (metadata);
+		console.log ('uploaded meta', metadata);
 		const uri = metadata.data.substring (7);
 
 		let { signer } = await Interact (address);
@@ -49,8 +49,20 @@ const createCollectible = async (files) => {
 			console.log (e);
 			receipt = null;
 		}
-		console.log (receipt);
-		return receipt;
+		console.log ('minted', receipt);
+		const verification = await axios ({
+			method: 'post',
+			url: `${process.env.REACT_APP_API_URL}/api/create/collectible/db`,
+			data: JSON.stringify ({
+				metadata: metadata.data
+			}),
+			headers: {
+				'Authorization': `Bearer ${jwt.token}`,
+				"Content-Type": "application/json"
+			}
+		});
+		console.log ('verified', verification.data);
+		return verification.data;
 
 	} else return null;
 }
