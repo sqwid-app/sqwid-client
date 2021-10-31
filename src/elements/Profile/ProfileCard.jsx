@@ -7,7 +7,8 @@ import axios from "axios";
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { useParams } from "react-router";
 import styled, { css, keyframes } from "styled-components";
-import { LazyMotion, domAnimation, m } from "framer-motion";
+import Loading from "@elements/Profile/Loading";
+import Changes from "@elements/Profile/Changes";
 
 const Card = styled.div`
 	display: flex;
@@ -130,28 +131,11 @@ const EditContainer = styled.div`
 	overflow:hidden;
 	white-space: nowrap;
 	height: 100%;
+	width: 100%;
 	padding-bottom: 4rem;
-	padding: 0 1.5rem;
+	padding: 0 2.5rem;
 	gap: 2rem;
 	${containerEntryAnim}
-`
-
-const Button = styled(m.a)`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-	font-size: 1rem;
-	font-weight: 700;
-	padding: 0.675rem 1.25rem;
-	border-radius: 1000rem;
-	background: var(--app-container-bg-primary);
-	box-shadow:  0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-	outline: none;
-	border: none;
-	cursor: pointer;
-	user-select:none;
-	margin-top: 1rem;
 `
 
 const Title = styled.h1`
@@ -178,66 +162,155 @@ const InputContainer = styled.input`
 	padding: 0.5rem 0;
 	border-bottom: 2px solid var(--app-container-text-primary);
 	width: 100%;
+	padding-right: 2rem;
 	transition: border-bottom 0.2s ease;
 	&:focus{
 		border-bottom: 2px solid var(--app-container-text-primary-hover);
 	}
 `
 
+const LoadingContainer = styled.div`
+	position: absolute;
+	top: 50%;
+	right:0;
+	transform: translateY(-50%);
+`
+
+const InputWrapper = styled.div`
+	position:relative;
+`
+
+const NameEditSection = ({ info, setInfo, name, setSync }) => {
+	const [isLoading, setIsLoading] = useState(false)
+	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
+	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address = address) : null;
+
+	useEffect(() => {
+		const delayDebounceFn = setTimeout(() => {
+			if(info.name.length){
+				axios.post(`${process.env.REACT_APP_API_URL}/api/edit/user/displayName`,{
+					displayName:info.name
+				},{
+					headers: {
+						'Authorization': `Bearer ${jwt.token}`,
+					}
+				})
+				.then(()=>{
+					setSync(false)
+				})
+				.finally(()=>{
+					setIsLoading(false)
+				})
+			}
+			else{
+				setSync(false)
+				setIsLoading(false)
+			}
+		}, 500)
+
+		return () => clearTimeout(delayDebounceFn)
+	//eslint-disable-next-line
+	}, [info.name])
+
+	const handleInput = (event) => {
+		setIsLoading(true)
+		setSync(true)
+		setInfo({
+			...info,
+			name: event.target.value
+		})
+	}
+
+	return (
+		<div>
+			<Title>Display Name</Title>
+			<InputWrapper>
+				<InputContainer
+					value={info.name}
+					onChange = {handleInput}
+					placeholder={name}
+				/>
+				{isLoading&&(
+					<LoadingContainer>
+						<Loading bg="#23232a"/>
+					</LoadingContainer>
+				)}
+			</InputWrapper>
+		</div>
+	)
+}
+
+const DescriptionEditSection = ({ info, setInfo, description, setSync }) => {
+	const [isLoading, setIsLoading] = useState(false)
+	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
+	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address = address) : null;
+
+	useEffect(() => {
+		const delayDebounceFn = setTimeout(() => {
+			if(info.description.length){
+				axios.post(`${process.env.REACT_APP_API_URL}/api/edit/user/bio`,{
+					bio:info.description
+				},{
+					headers: {
+						'Authorization': `Bearer ${jwt.token}`,
+					}
+				})
+				.then(()=>{
+					setSync(false)
+				})
+				.finally(()=>{
+					setIsLoading(false)
+				})
+			}
+			else{
+				setSync(false)
+				setIsLoading(false)
+			}
+		}, 500)
+
+		return () => clearTimeout(delayDebounceFn)
+	//eslint-disable-next-line
+	}, [info.description])
+
+	const handleInput = (event) => {
+		setIsLoading(true)
+		setSync(true)
+		setInfo({
+			...info,
+			description: event.target.value
+		})
+	}
+
+	return (
+		<div>
+			<Title>Description</Title>
+			<InputWrapper>
+				<InputContainer
+					value={info.description}
+					onChange = {handleInput}
+					placeholder={description.length?clamp(description,16):`Enter your bio here`}
+				/>
+				{isLoading&&(
+					<LoadingContainer>
+						<Loading bg="#1b1c23"/>
+					</LoadingContainer>
+				)}
+			</InputWrapper>
+		</div>
+	)
+}
+
 const EditSection = ({ userData }) => {
-	const [info, setInfo] = useState(JSON.parse(localStorage.getItem("editDetails"))||{
+	const [sync, setSync] = useState(true)
+	const [info, setInfo] = useState({
 		name:"",
 		description:""
 	})
-	const handleName = (event) => {
-		setInfo({
-			...info,
-			"name":event.target.value
-		})
-	}
-	const handleDescription = (event) => {
-		setInfo({
-			...info,
-			"description":event.target.value
-		})
-	}
-	useEffect(() => {
-		localStorage.setItem("editDetails",JSON.stringify(info))
-	}, [info])
-	const handleSubmit = () => {
-		localStorage.removeItem("editDetails")
-		console.log(info)
-	}
 	return (
 		<>
-			<div>
-				<Title>Display Name</Title>
-				<InputContainer
-					value={info.name}
-					onChange = {handleName}
-					placeholder={userData.name}
-				/>
-			</div>
-			<div>
-				<Title>Description</Title>
-				<InputContainer
-					value={info.description}
-					onChange = {handleDescription}
-					placeholder={userData.description.length?userData.description:`Enter your bio here`}
-				/>
-			</div>
-			<LazyMotion features={domAnimation}>
-				<Button
-					whileHover={{
-						y: -5,
-						x: 0
-					}}
-					whileTap={{
-						scale:0.99
-					}}
-					onClick={handleSubmit}
-				>Save Changes</Button>
-			</LazyMotion>
+			<NameEditSection name={userData.name} info={info} setInfo={setInfo} setSync={setSync}/>
+			<DescriptionEditSection description={userData.description} info={info} setInfo={setInfo} setSync={setSync}/>
+			<Changes info={info} sync={sync}/>
 		</>
 	)
 }
@@ -248,8 +321,9 @@ const ProfileCard = () => {
 	const { auth } = useContext(AuthContext)
 	const [isOwnAccount, setIsOwnAccount] = useState(false)
 	const [editIsActive, setEditIsActive] = useState(false)
+	const [isLoading, setIsLoading] = useState(true)
 	let initialState = {
-		avatar:"https://avatars.dicebear.com/api/identicon/boidushya.svg",
+		avatar:"",
 		address: "",
 		description: "",
 		name:""
@@ -278,6 +352,9 @@ const ProfileCard = () => {
 				})
 			}
 		})
+		.finally(()=>{
+			setIsLoading(false);
+		})
 		id?((id === auth.address)&&setIsOwnAccount(true)):setIsOwnAccount(true)
 	//eslint-disable-next-line
 	},[])
@@ -293,29 +370,32 @@ const ProfileCard = () => {
 	useEffect(() => {
 		if(tooltipVisible) tooltipRef.current.style.display="block";
 		else{
-			(tooltipRef.current!==null) &&
-			(setTimeout(() => {
-				tooltipRef.current.style.display="none";
-			}, 300))
+			setTimeout(() => {
+				if(tooltipRef.current) tooltipRef.current.style.display="none";
+			}, 400)
 		}
 	}, [tooltipVisible])
 	const tooltipRef = useRef();
 	return (
 		<Card>
 			{!editIsActive?(
-				<Container>
-					<ProfilePicture src={userData.avatar}/>
-					<Name>{userData.name}</Name>
-					<AddressContainer>
-						<label title={userData.address}><Address>{truncateAddress(userData.address,6)}</Address></label>
-						<CopyIcon onClick={copyAddress}/>
-						<Tooltip style={{display:"none"}} ref={tooltipRef} remove={!tooltipVisible}>Copied to clipboard!</Tooltip>
-					</AddressContainer>
-					<Description>
-						{clamp(userData.description)}
-					</Description>
-					{isOwnAccount&&(<label title={`${!editIsActive?`Enter`:`Exit`} Edit Mode`}><EditIcon onClick={()=>setEditIsActive(true)}/></label>)}
-				</Container>
+				!isLoading?(
+					<Container>
+						<ProfilePicture src={userData.avatar}/>
+						<Name>{userData.name}</Name>
+						<AddressContainer>
+							<label title={userData.address}><Address>{truncateAddress(userData.address,6)}</Address></label>
+							<CopyIcon onClick={copyAddress}/>
+							<Tooltip style={{display:"none"}} ref={tooltipRef} remove={!tooltipVisible}>Copied to clipboard!</Tooltip>
+						</AddressContainer>
+						<Description>
+							{clamp(userData.description)}
+						</Description>
+						{isOwnAccount&&(<label title={`${!editIsActive?`Enter`:`Exit`} Edit Mode`}><EditIcon onClick={()=>setEditIsActive(true)}/></label>)}
+					</Container>
+				):(
+					<Header>Loading...</Header>
+				)
 			):(
 				<>
 				<Header>Edit Details</Header>

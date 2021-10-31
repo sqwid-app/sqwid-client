@@ -39,7 +39,6 @@ const CollectionsSection = () => {
 		axios.get(`${process.env.REACT_APP_API_URL}/api/get/collections/owner/${userID}`)
 		.then((res)=>{
 			localStorage.setItem("collections",JSON.stringify(res.data.collections))
-			console.log(res.data.collections)
 			setCards(res.data.collections.map(item=>{
 				return {
 					src: getCloudflareURL(item.data.image),
