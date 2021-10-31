@@ -1,3 +1,4 @@
+import EditDetailsProvider from "@contexts/EditDetails/EditDetailsProvider";
 import Background from "@elements/Profile/Background";
 import CollectionsSection from "@elements/Profile/CollectionsSection";
 import ProfileCard from "@elements/Profile/ProfileCard";
@@ -17,15 +18,17 @@ const Cont = styled.div`
 	width: 100%;
 `
 
-const ProfileSection = ({id}) => {
+const ProfileSection = () => {
 	return (
-		<Section>
-			<Cont>
-				<ProfileCard/>
-				<CollectionsSection/>
-			</Cont>
-			<Background seed={id}/>
-		</Section>
+		<EditDetailsProvider>
+			<Section>
+				<Cont>
+					<ProfileCard/>
+					<CollectionsSection/>
+				</Cont>
+				<Background/>
+			</Section>
+		</EditDetailsProvider>
 	)
 }
 

@@ -1,6 +1,7 @@
+import EditDetailsContext from "@contexts/EditDetails/EditDetailsContext";
 import AlertIcon from "@static/svg/AlertIcon";
 import TickIcon from "@static/svg/TickIcon";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
 const Container = styled.div`
@@ -44,7 +45,8 @@ const Title = styled.h1`
 	animation: ${props=>!props.animateOut?fadeIn:fadeOut} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
 `
 
-const Changes = ({ info, sync }) => {
+const Changes = ({ sync }) => {
+	const {info} = useContext(EditDetailsContext)
 	const [animateOut, setAnimateOut] = useState(false)
 	useEffect(() => {
 		if(sync){

@@ -9,6 +9,7 @@ import { useParams } from "react-router";
 import styled, { css, keyframes } from "styled-components";
 import Loading from "@elements/Profile/Loading";
 import Changes from "@elements/Profile/Changes";
+import EditDetailsContext from "@contexts/EditDetails/EditDetailsContext";
 
 const Card = styled.div`
 	display: flex;
@@ -180,7 +181,8 @@ const InputWrapper = styled.div`
 	position:relative;
 `
 
-const NameEditSection = ({ info, setInfo, name, setSync }) => {
+const NameEditSection = ({ name, setSync }) => {
+	const {info, setInfo} = useContext(EditDetailsContext)
 	const [isLoading, setIsLoading] = useState(false)
 	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
 	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address = address) : null;
@@ -240,7 +242,8 @@ const NameEditSection = ({ info, setInfo, name, setSync }) => {
 	)
 }
 
-const DescriptionEditSection = ({ info, setInfo, description, setSync }) => {
+const DescriptionEditSection = ({ description, setSync }) => {
+	const {info, setInfo} = useContext(EditDetailsContext)
 	const [isLoading, setIsLoading] = useState(false)
 	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
 	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address = address) : null;
@@ -302,15 +305,11 @@ const DescriptionEditSection = ({ info, setInfo, description, setSync }) => {
 
 const EditSection = ({ userData }) => {
 	const [sync, setSync] = useState(true)
-	const [info, setInfo] = useState({
-		name:"",
-		description:""
-	})
 	return (
 		<>
-			<NameEditSection name={userData.name} info={info} setInfo={setInfo} setSync={setSync}/>
-			<DescriptionEditSection description={userData.description} info={info} setInfo={setInfo} setSync={setSync}/>
-			<Changes info={info} sync={sync}/>
+			<NameEditSection name={userData.name} setSync={setSync}/>
+			<DescriptionEditSection description={userData.description} setSync={setSync}/>
+			<Changes sync={sync}/>
 		</>
 	)
 }
@@ -329,6 +328,7 @@ const ProfileCard = () => {
 		name:""
 	}
 	const [userData, setUserData] = useState(initialState)
+	const {info} = useContext(EditDetailsContext)
 	useEffect(()=>{
 		let address = id?id:auth.address
 		axios.get(`${process.env.REACT_APP_API_URL}/api/get/user/${address}`)
@@ -357,7 +357,7 @@ const ProfileCard = () => {
 		})
 		id?((id === auth.address)&&setIsOwnAccount(true)):setIsOwnAccount(true)
 	//eslint-disable-next-line
-	},[])
+	},[info])
 	const copyAddress = () => {
 		navigator.clipboard.writeText(userData.address)
 		.then(()=>{
