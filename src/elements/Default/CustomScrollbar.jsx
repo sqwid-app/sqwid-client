@@ -7,11 +7,12 @@ class CustomScrollbar extends Component {
         super(props, ...rest);
         this.renderView = this.renderView.bind(this);
         this.renderThumb = this.renderThumb.bind(this);
+		this.scrollbars = React.createRef();
     }
 
 	componentDidUpdate(prevProps) {
 		if (this.props.move !== prevProps.move) {
-			let scrollbars = this.refs.scrollbars
+			let scrollbars = this.scrollbars
 			if(this.props.move > 0 && this.props.move < scrollbars.getThumbHorizontalWidth()){
 				let left = this.props.move
 				console.log(prevProps.move,this.props.move)
@@ -50,7 +51,7 @@ class CustomScrollbar extends Component {
                 renderView={this.renderView}
                 renderThumbHorizontal={this.renderThumb}
                 renderThumbVertical={this.renderThumb}
-				ref="scrollbars"
+				ref={this.scrollbars}
                 {...this.props}
 			/>
         );

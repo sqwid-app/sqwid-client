@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useParams } from "react-router";
 import ProfileSection from '@components/Profile/ProfileSection';
 import Navbar from '@components/Default/Navbar'
+import AuthContext from '@contexts/Auth/AuthContext';
+import NotFound from "./NotFound"
 
 const Wrapper = ({ children }) => (
 	<>
@@ -11,11 +13,18 @@ const Wrapper = ({ children }) => (
 )
 
 const Profile = () => {
-	const { id } = useParams()
+	const { auth } = useContext(AuthContext)
+	const { addr } = useParams()
 	return (
-		<Wrapper>
-			<ProfileSection id={id}/>
-		</Wrapper>
+		<>
+			{(addr||auth)?(
+				<Wrapper>
+					<ProfileSection/>
+				</Wrapper>
+			):(
+				<NotFound/>
+			)}
+		</>
 	)
 }
 

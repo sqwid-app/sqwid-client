@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 const ProfilePicture = styled.img`
-	background: ${props=>props.src?props.src:`https://avatars.dicebear.com/api/identicon/boidushya.svg`};
+	min-height: 8rem;
+	min-width: 8rem;
 	height: 8rem;
 	width: 8rem;
 	border: 10px solid #FFFFFF;

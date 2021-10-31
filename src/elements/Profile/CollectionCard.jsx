@@ -6,7 +6,7 @@ const CollectionCardContainer = styled(m.a)`
 	display: flex;
 	cursor: pointer;
 	user-select:none;
-	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%), url(${props=>props.src&&props.src});
+	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 100%), url(${props=>props.src&&props.src});
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -23,6 +23,10 @@ const CollectionCardContainer = styled(m.a)`
 		background: rgba(255, 255, 255, 0.75);
 		padding: 0.5rem 1rem;
 		width: 100%;
+		max-width: 100%;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 `
 

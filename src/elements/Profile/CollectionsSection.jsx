@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import CollectionCard from "./CollectionCard";
 import CustomScrollbar from "@elements/Default/CustomScrollbar";
+import AuthContext from "@contexts/Auth/AuthContext";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { getCloudflareURL } from "@utils/getIPFSURL";
 
 const Wrapper = styled.div`
 	position: relative;
@@ -27,31 +31,33 @@ const Title = styled.h1`
 `
 
 const CollectionsSection = () => {
-	const cards = [{
-		src:"https://images.unsplash.com/photo-1634337256330-aae44dc7b8f6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1964&q=80",
-		title:"You've got",
-		link:"/"
-	},{
-		src:"https://images.unsplash.com/photo-1634840150834-f6d4544f5b9b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1927&q=80",
-		title:"A friend",
-		link:"/"
-	},{
-		src:"https://images.unsplash.com/photo-1634819875292-83e02980a99b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1887&q=80",
-		title:"In me",
-		link:"/"
-	},{
-		src:"https://images.unsplash.com/photo-1634337256330-aae44dc7b8f6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1964&q=80",
-		title:"You've got",
-		link:"/"
-	},{
-		src:"https://images.unsplash.com/photo-1634840150834-f6d4544f5b9b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1927&q=80",
-		title:"A friend",
-		link:"/"
-	},{
-		src:"https://images.unsplash.com/photo-1634819875292-83e02980a99b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1887&q=80",
-		title:"In me",
-		link:"/"
-	}]
+	const { auth } = useContext(AuthContext)
+	const { id } = useParams()
+	const userID = id?id:auth?.address
+	const [cards, setCards] = useState(JSON.parse(localStorage.getItem("collections"))||[])
+	useEffect(() => {
+		axios.get(`${process.env.REACT_APP_API_URL}/api/get/collections/owner/${userID}`)
+		.then((res)=>{
+			localStorage.setItem("collections",JSON.stringify(res.data.collections))
+			console.log(res.data.collections)
+			setCards(res.data.collections.map(item=>{
+				return {
+					src: getCloudflareURL(item.data.image),
+					title:item.data.name,
+					link:`${window.location.origin}/collection/${item.id}`
+				}
+			}))
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+	//eslint-disable-next-line
+	}, [])
+	// {
+	// 	src:"https://images.unsplash.com/photo-1634819875292-83e02980a99b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1887&q=80",
+	// 	title:"In me",
+	// 	link:"/"
+	// }
 	return (
 		<Wrapper>
 			<CustomScrollbar autoHide>

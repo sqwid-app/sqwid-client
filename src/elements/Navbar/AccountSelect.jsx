@@ -83,13 +83,30 @@ const Title = styled.h1`
 	margin-bottom: 0.25rem;
 `
 
+const Button = styled(m.a)`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 1rem;
+	font-weight: 700;
+	padding: 0.675rem 1.25rem;
+	border-radius: 0.5rem;
+	background: hsl(236deg 10% 23%);
+	outline: none;
+	border: none;
+	cursor: pointer;
+	z-index:2;
+	user-select:none;
+`
+
 const elemContains =  (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
 }
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
-	const { login, setLoading } = useContext(AuthContext);
+	const { auth, login, logout, setLoading } = useContext(AuthContext);
 	const modalRef = useRef()
 	//eslint-disable-next-line
 	const [selectedAccount, setSelectedAccount] = useState (null);
@@ -102,9 +119,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 			if (response.evmClaimed === false) {
 				console.log ('evm account is not claimed. show popup.');
 				alert (`EVM account not claimed. Please claim it before logging in. You will get the address ${ await response.signer.getAddress () }`);
-				
 				await response.signer.claimDefaultAccount();
-			
 			} else {
 				console.log ('evm account is claimed');
 			}
@@ -151,7 +166,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 							{ accounts ? accounts.map ((account, index) => {
 								return <m.p
 								whileHover={{
-									y: -5,
+									y: -2.5,
 									x: 0
 								}}
 								whileTap={{
@@ -163,6 +178,22 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 							}) : null }
 						</>
 						: 'Please connect your wallet'}
+						{auth&&(
+							<Button
+								whileHover={{
+									y: -5,
+									x: 0,
+									scale:1.02
+								}}
+								whileTap={{
+									scale:0.99
+								}}
+								onClick={()=>{
+									logout()
+									window.location.reload()
+								}}
+							>Logout</Button>
+						)}
 					</Modal>
 				</BackDrop>
 			)}

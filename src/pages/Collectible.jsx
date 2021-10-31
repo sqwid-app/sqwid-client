@@ -1,7 +1,6 @@
 import HeroSection from "@components/Collectible/HeroSection";
 import Navbar from "@components/Default/Navbar";
 import React from "react";
-import { useParams } from "react-router";
 import styled from "styled-components";
 
 const MarginDiv = styled.div`
@@ -28,10 +27,9 @@ const Wrapper = ({ children }) => {
 }
 
 const Collectible = () => {
-	const { addr } = useParams()
 	return (
 		<Wrapper>
-			<HeroSection addr={addr}/>
+			<HeroSection/>
 		</Wrapper>
 	)
 }
