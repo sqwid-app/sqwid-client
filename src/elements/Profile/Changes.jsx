@@ -56,9 +56,6 @@ const Changes = ({ sync }) => {
 			setAnimateOut(true)
 		}
 	}, [info,sync])
-	useEffect(() => {
-		console.log(sync)
-	}, [sync])
 	return (
 		<Container>
 			<>

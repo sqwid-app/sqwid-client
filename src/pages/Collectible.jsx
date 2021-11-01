@@ -1,7 +1,9 @@
 import HeroSection from "@components/Collectible/HeroSection";
 import Navbar from "@components/Default/Navbar";
+import CollectibleProvider from "@contexts/Collectible/CollectibleProvider";
 import React from "react";
 import styled from "styled-components";
+import NotFound from "./NotFound";
 
 const MarginDiv = styled.div`
 	margin-top:8rem;
@@ -27,10 +29,20 @@ const Wrapper = ({ children }) => {
 }
 
 const Collectible = () => {
+	const isValidCollectible = true;
+	const text = `Collectible with id ${`123`} is not valid`
 	return (
-		<Wrapper>
-			<HeroSection/>
-		</Wrapper>
+		<>
+		{isValidCollectible?(
+			<CollectibleProvider>
+				<Wrapper>
+					<HeroSection/>
+				</Wrapper>
+			</CollectibleProvider>
+		):(
+			<NotFound stack={text} />
+		)}
+		</>
 	)
 }
 
