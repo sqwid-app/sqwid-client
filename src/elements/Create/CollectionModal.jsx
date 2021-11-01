@@ -109,9 +109,14 @@ const Btn = styled(m.a)`
 	cursor: pointer;
 	z-index:2;
 	user-select:none;
+	transition: background 0.2s ease;
+	&[disabled] {
+		background: var(--app-theme-primary-disabled);
+		pointer-events: none;
+	}
 `
 
-const AnimBtn = ({ children, onClick }) => (
+const AnimBtn = ({ children, onClick, disabled }) => (
 	<Btn
 		whileHover={{
 			y: -5,
@@ -122,6 +127,7 @@ const AnimBtn = ({ children, onClick }) => (
 			scale:0.99
 		}}
 		onClick={onClick}
+		disabled={disabled}
 	>{children}</Btn>
 )
 
@@ -242,6 +248,7 @@ const elemContains =  (rect, x, y) => {
 
 const New = ({ isActive, setIsActive }) => {
 	const [buttonText, setButtonText] = useState("Create Collection")
+	const [isSubmitting, setIsSubmitting] = useState(false)
 	const initialInfo = {
 		name:"",
 		description:"",
@@ -261,6 +268,7 @@ const New = ({ isActive, setIsActive }) => {
 	}, [info.file])
 	const handleClick = () => {
 		setButtonText(<Loading size="24"/>)
+		setIsSubmitting(true)
 		if(info.file&&info.name.length){
 			createCollection (info.file,info.name,info.description)
 			.then (res => {
@@ -269,6 +277,7 @@ const New = ({ isActive, setIsActive }) => {
 				setTimeout(() => {
 					setIsActive({...isActive,status: false});
 				}, 500);
+				setIsSubmitting(false)
 			})
 			.catch(err=>{
 				console.log(err)
@@ -316,6 +325,7 @@ const New = ({ isActive, setIsActive }) => {
 				)}
 				<BtnContainer>
 					<AnimBtn
+						disabled={(isSubmitting)?true:false}
 						onClick={handleClick}
 					>{buttonText}</AnimBtn>
 				</BtnContainer>

@@ -6,7 +6,7 @@ const CollectionCardContainer = styled(m.a)`
 	display: flex;
 	cursor: pointer;
 	user-select:none;
-	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 100%), url('${props=>props.src&&props.src}');
+	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%,rgba(0, 0, 0, 0.5) 65%, rgba(0, 0, 0, 0.75) 100%), url('${props=>props.src&&props.src}');
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -19,9 +19,8 @@ const CollectionCardContainer = styled(m.a)`
 		align-self: flex-end;
 		font-size: 1.5rem;
 		font-weight: 900;
-		color: var(--app-container-bg-primary);
-		background: rgba(255, 255, 255, 0.75);
-		padding: 0.5rem 1rem;
+		color: var(--app-text);
+		padding: 0.5rem 1.125rem;
 		width: 100%;
 		max-width: 100%;
 		overflow: hidden;

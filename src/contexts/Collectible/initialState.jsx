@@ -1,12 +1,16 @@
 export const initialState = {
 	title: "",
 	description: "",
-	creator:"",
+	creator:{
+		name:"",
+		id:""
+	},
 	owners:[],
 	collection: {
 		name:"",
 		cover:""
 	},
-	properties: {},
-	contentURL: ""
+	properties: [],
+	contentURL: "",
+	isOnSale:""
 }

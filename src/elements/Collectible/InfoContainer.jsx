@@ -37,8 +37,30 @@ const Content = styled.div`
 	align-items: center;
 	gap: 0.75rem;
 	p{
-		font-weight: 900;
-		font-size: 1.125rem;
+		font-weight: 700;
+		font-size: 1rem;
+		color: var(--app-container-text-primary);
+	}
+`
+
+const NotStyledLink = styled.a`
+	text-decoration: none;
+	color: inherit;
+	font-weight: 900;
+	font-size: 1.125rem;
+	max-width: 10rem;
+	text-overflow:ellipsis;
+	overflow: hidden;
+	white-space:nowrap;
+`
+
+const TextGroup = styled.div`
+	display: block;
+	label{
+		display: inline-block;
+		vertical-align: baseline;
+		line-height: normal;
+		padding-left: 0.5rem;
 	}
 `
 
@@ -50,29 +72,36 @@ const OwnerSection = styled.div``
 
 const InfoContainer = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
+	const getTitleLabelText = (data) => `owned by ${data.map((item)=>item.name).join(", ")}...`
 	return (
 		<Container>
 			<Group>
 				<CreatorSection>
 					<Heading>Creator</Heading>
 					<Content>
-						<Logo url={`https://avatars.dicebear.com/api/identicon/${collectibleInfo.creator}.svg`}/>
-						<p>{collectibleInfo.creator}</p>
+						<Logo url={`https://avatars.dicebear.com/api/identicon/${collectibleInfo.creator.name}.svg`}/>
+						<NotStyledLink href={`${window.location.origin}/profile/${collectibleInfo.creator.id}`}>{collectibleInfo.creator.name}</NotStyledLink>
 					</Content>
 				</CreatorSection>
 				<CollectionSection>
 					<Heading>Collection</Heading>
 					<Content>
 						<Logo url={collectibleInfo.collection.cover}/>
-						<p>{collectibleInfo.collection.name}</p>
+						<NotStyledLink href={`${window.location.origin}/collections/${collectibleInfo.collection.id}`}>{collectibleInfo.collection.name}</NotStyledLink>
 					</Content>
 				</CollectionSection>
 			</Group>
 			<OwnerSection>
 				<Heading>Owner</Heading>
 				<Content>
-					<Logo url={`https://avatars.dicebear.com/api/identicon/${collectibleInfo.owners[0]}.svg`}/>
-					<p>{collectibleInfo.owners[0]}</p>
+					{(()=>console.log(collectibleInfo))()}
+					<Logo url={`https://avatars.dicebear.com/api/identicon/${collectibleInfo.owners[0]?.name}.svg`}/>
+					<TextGroup>
+						<NotStyledLink href={`${window.location.origin}/profile/${collectibleInfo.owners[0]?.id}`}>{collectibleInfo.owners[0]?.name}</NotStyledLink>
+						{(collectibleInfo.owners.length>1)&&(
+							<label title={getTitleLabelText(collectibleInfo.owners)}><p>and {collectibleInfo.owners.length-1} other{!(collectibleInfo.owners.length-1===1)&&`s`}...</p></label>
+						)}
+					</TextGroup>
 				</Content>
 			</OwnerSection>
 		</Container>

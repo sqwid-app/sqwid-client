@@ -52,7 +52,7 @@ const CollectionsSection = () => {
 				return {
 					src: getCloudflareURL(item.data.image),
 					title:item.data.name,
-					link:`${window.location.origin}/collection/${item.id}`
+					link:`${window.location.origin}/collections/${item.id}`
 				}
 			}))
 		})

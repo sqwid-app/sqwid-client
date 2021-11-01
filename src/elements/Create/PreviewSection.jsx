@@ -84,6 +84,11 @@ const Btn = styled(m.a)`
 	border: none;
 	cursor: pointer;
 	user-select:none;
+	transition: background 0.2s ease;
+	&[disabled] {
+		background: var(--app-theme-primary-disabled);
+		pointer-events: none;
+	}
 `
 
 const Group = styled.div`
@@ -97,12 +102,13 @@ const Wrapper = styled.div`
 	gap:1rem;
 `
 
-const AnimBtn = ({ children, onClick }) => (
+const AnimBtn = ({ children, onClick,disabled }) => (
 	<Btn
 		whileTap={{
 			scale:0.97
 		}}
 		onClick={onClick}
+		disabled={disabled}
 	>{children}</Btn>
 )
 
@@ -112,6 +118,7 @@ const PreviewSection = () => {
 	const [title, setTitle] = useState("")
 	const [fileType, setFileType] = useState("")
 	const [buttonText, setButtonText] = useState("Create Item")
+	const [isSubmitting, setIsSubmitting] = useState(false)
 
 	useEffect (() => {
 		if (files.file){
@@ -136,11 +143,13 @@ const PreviewSection = () => {
 	const handleClick = () => {
 		localStorage.removeItem("properties")
 		setButtonText(<Loading/>)
+		setIsSubmitting(true)
 		if(files.file&&files.name.length){
 			createCollectible (files)
 			.then(res=>{
 				console.log(res)
 				setButtonText ("Uploaded NFT!")
+				setIsSubmitting(false)
 			})
 			.catch(err=>{
 				console.log(err)
@@ -186,7 +195,7 @@ const PreviewSection = () => {
 				)}
 			</Group>
 			<LazyMotion features={domAnimation}>
-				<AnimBtn onClick={handleClick}>{buttonText}</AnimBtn>
+				<AnimBtn disabled={(isSubmitting)?true:false} onClick={handleClick}>{buttonText}</AnimBtn>
 			</LazyMotion>
 		</Wrapper>
 	)

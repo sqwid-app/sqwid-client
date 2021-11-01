@@ -27,7 +27,6 @@ class CustomScrollbar extends Component {
         };
         return (
             <div
-                className="box"
                 style={{ ...style, ...viewStyle }}
                 {...props}/>
         );
@@ -52,6 +51,7 @@ class CustomScrollbar extends Component {
                 renderThumbHorizontal={this.renderThumb}
                 renderThumbVertical={this.renderThumb}
 				ref={this.scrollbars}
+				className="custom-scrollbars"
                 {...this.props}
 			/>
         );
