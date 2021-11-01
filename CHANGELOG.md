@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.9 (2021-11-01)
+
+
+### Features
+
+* **collectible:** added scrollbars to property ([504d582](https://github.com/boidushya/sqwid-client/commit/504d5824b4a5f5d5e19c88af92a36e0b39fe7376))
+
 ### 0.1.8 (2021-11-01)
 
 
