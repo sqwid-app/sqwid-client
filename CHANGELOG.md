@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 0.2.0 (2021-11-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* major styling overhaul, new pages
+
+* Merge pull request #2 from boidushya/master ([e413263](https://github.com/sqwid-app/sqwid-client/commit/e413263c99a9451e31b73814ceed1a7c8ff38996)), closes [#2](https://github.com/sqwid-app/sqwid-client/issues/2)
+
 ### 0.1.7 (2021-11-01)
 
 
