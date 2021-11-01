@@ -316,11 +316,12 @@ const EditSection = ({ userData }) => {
 
 const ProfileCard = () => {
 	const [tooltipVisible, setTooltipVisible] = useState(false)
-	const { id } = useParams()
-	const { auth } = useContext(AuthContext)
 	const [isOwnAccount, setIsOwnAccount] = useState(false)
 	const [editIsActive, setEditIsActive] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
+	const { info, setInfo } = useContext(EditDetailsContext)
+	const { id } = useParams()
+	const { auth } = useContext(AuthContext)
 	let initialState = {
 		avatar:"",
 		address: "",
@@ -328,7 +329,6 @@ const ProfileCard = () => {
 		name:""
 	}
 	const [userData, setUserData] = useState(initialState)
-	const {info} = useContext(EditDetailsContext)
 	useEffect(()=>{
 		let address = id?id:auth.address
 		axios.get(`${process.env.REACT_APP_API_URL}/api/get/user/${address}`)
@@ -382,14 +382,14 @@ const ProfileCard = () => {
 				!isLoading?(
 					<Container>
 						<ProfilePicture src={userData.avatar}/>
-						<Name>{userData.name}</Name>
+						<Name>{info.name.length?info.name:userData.name}</Name>
 						<AddressContainer>
 							<label title={userData.address}><Address>{truncateAddress(userData.address,6)}</Address></label>
 							<CopyIcon onClick={copyAddress}/>
 							<Tooltip style={{display:"none"}} ref={tooltipRef} remove={!tooltipVisible}>Copied to clipboard!</Tooltip>
 						</AddressContainer>
 						<Description>
-							{clamp(userData.description)}
+							{clamp(info.description.length?info.description:userData.description)}
 						</Description>
 						{isOwnAccount&&(<label title={`${!editIsActive?`Enter`:`Exit`} Edit Mode`}><EditIcon onClick={()=>setEditIsActive(true)}/></label>)}
 					</Container>
@@ -400,7 +400,7 @@ const ProfileCard = () => {
 				<>
 				<Header>Edit Details</Header>
 				<EditContainer>
-					<EditSection userData={userData}/>
+					<EditSection userData={userData} setUserData={setUserData}/>
 					{isOwnAccount&&(<label title={`${!editIsActive?`Enter`:`Exit`} Edit Mode`}><EditIcon onClick={()=>setEditIsActive(false)}/></label>)}
 				</EditContainer>
 				</>
@@ -409,4 +409,4 @@ const ProfileCard = () => {
 	)
 }
 
-export default React.memo(ProfileCard)
+export default ProfileCard
