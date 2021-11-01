@@ -2,10 +2,12 @@ import React,{ useContext } from "react";
 import styled from "styled-components";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { LazyMotion, domAnimation, m } from "framer-motion";
+import SimpleBarReact from "simplebar-react";
 
 const Container = styled.div`
 	display: flex;
 	gap: 1rem;
+	margin: 1rem 1px 1rem;
 `
 
 const Property = styled(m.div)`
@@ -40,25 +42,36 @@ const Property = styled(m.div)`
 	}
 `
 
+const Heading = styled.h3`
+	font-weight: 900;
+	color: var(--app-container-text-primary-hover);
+	font-size: 1rem;
+`
+
 const PropertiesSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
 	return (
-		<Container>
-			{collectibleInfo.properties.map(( item,index ) => (
-				<LazyMotion features={domAnimation}>
-					<Property
-						whileHover={{
-							y: -5,
-							x: 0,
-							scale:1.02
-						}}
-					>
-						<label title={item.key}><h3>{item.key}</h3></label>
-						<label title={item.value}><p>{item.value}</p></label>
-					</Property>
-				</LazyMotion>
-			))}
-		</Container>
+		<div>
+			<Heading>Properties</Heading>
+			<SimpleBarReact>
+				<Container>
+					{collectibleInfo.properties.map(( item,index ) => (
+						<LazyMotion features={domAnimation}>
+							<Property
+								whileHover={{
+									y: -5,
+									x: 0,
+									scale:1.02
+								}}
+							>
+								<label title={item.key}><h3>{item.key}</h3></label>
+								<label title={item.value}><p>{item.value}</p></label>
+							</Property>
+						</LazyMotion>
+					))}
+				</Container>
+			</SimpleBarReact>
+		</div>
 	)
 }
 
