@@ -1,5 +1,7 @@
+import AuthContext from "@contexts/Auth/AuthContext";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router";
 import styled from "styled-components";
 
 const Group = styled.div`
@@ -41,6 +43,11 @@ const Content = styled.div`
 		font-size: 1rem;
 		color: var(--app-container-text-primary);
 	}
+	h1{
+		color: inherit;
+		font-weight: 800;
+		font-size: 0.75rem;
+	}
 `
 
 const NotStyledLink = styled.a`
@@ -71,8 +78,19 @@ const CollectionSection = styled.div``
 const OwnerSection = styled.div``
 
 const InfoContainer = () => {
+	const { ownerID } = useParams()
 	const { collectibleInfo } = useContext(CollectibleContext)
+	const { auth } = useContext(AuthContext)
 	const getTitleLabelText = (data) => `owned by ${data.map((item)=>item.name).join(", ")}...`
+	const [currentOwner, setCurrentOwner] = useState("")
+
+	useEffect(() => {
+		let owner = ownerID ? collectibleInfo.owners.find(item=>item.id===ownerID) : (auth ? collectibleInfo.owners.find(item=>item.id===auth.address) : collectibleInfo.owners[0])
+		console.log(owner)
+		setCurrentOwner(owner?owner:collectibleInfo.owners[0])
+	//eslint-disable-next-line
+	}, [collectibleInfo, auth])
+
 	return (
 		<Container>
 			<Group>
@@ -91,19 +109,21 @@ const InfoContainer = () => {
 					</Content>
 				</CollectionSection>
 			</Group>
-			<OwnerSection>
-				<Heading>Owner</Heading>
-				<Content>
-					{(()=>console.log(collectibleInfo))()}
-					<Logo url={`https://avatars.dicebear.com/api/identicon/${collectibleInfo.owners[0]?.name}.svg`}/>
-					<TextGroup>
-						<NotStyledLink href={`${window.location.origin}/profile/${collectibleInfo.owners[0]?.id}`}>{collectibleInfo.owners[0]?.name}</NotStyledLink>
-						{(collectibleInfo.owners.length>1)&&(
-							<label title={getTitleLabelText(collectibleInfo.owners)}><p>and {collectibleInfo.owners.length-1} other{!(collectibleInfo.owners.length-1===1)&&`s`}...</p></label>
-						)}
-					</TextGroup>
-				</Content>
-			</OwnerSection>
+			<Group>
+				<OwnerSection>
+					<Heading>Owner</Heading>
+					<Content>
+						<Logo url={`https://avatars.dicebear.com/api/identicon/${currentOwner?.name}.svg`}/>
+						<TextGroup>
+							<NotStyledLink href={`${window.location.origin}/profile/${currentOwner?.id}`}>{currentOwner?.name}</NotStyledLink>
+							{(collectibleInfo.owners.length>1)&&(
+								<label title={getTitleLabelText(collectibleInfo.owners)}><p>and {collectibleInfo.owners.length-1} other{!(collectibleInfo.owners.length-1===1)&&`s`}...</p></label>
+							)}
+							<h1>Owns {currentOwner?.quantity?.owns} of {currentOwner?.quantity?.total}</h1>
+						</TextGroup>
+					</Content>
+				</OwnerSection>
+			</Group>
 		</Container>
 	)
 }

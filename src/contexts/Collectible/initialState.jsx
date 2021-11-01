@@ -12,5 +12,6 @@ export const initialState = {
 	},
 	properties: [],
 	contentURL: "",
-	isOnSale:""
+	isOnSale:"",
+	quantity:{},
 }

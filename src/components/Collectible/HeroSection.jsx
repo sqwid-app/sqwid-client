@@ -25,11 +25,26 @@ const HeroSection = ({ addr }) => {
 				id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA"
 			},
 			owners:[{
+				name:"ratthew",
+				id:"5DMKdZRQ93LqyAVt3aw8wGVADmPyUZmE8USLBkYP4QmgkgDA",
+				quantity:{
+					owns: 50,
+					total: 50
+				}
+			},{
 				name:"boidushya",
-				id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J"
+				id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J",
+				quantity:{
+					owns: 12,
+					total: 50
+				}
 			},{
 				name:"andi",
-				id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA"
+				id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
+				quantity:{
+					owns: 24,
+					total: 50
+				}
 			}],
 			collection: {
 				name: "sqwid moment epic",
@@ -48,22 +63,9 @@ const HeroSection = ({ addr }) => {
 			},{
 				key:"op op op oppa",
 				value:"gangam style"
-			},{
-				key:"scarcity",
-				value:"common"
-			},{
-				key:"tag",
-				value:"image"
-			},{
-				key:"what",
-				value:"okay"
-			},{
-				key:"op op op oppa",
-				value:"gangam style"
-			}
-			],
+			}],
 			contentURL: "https://images.unsplash.com/photo-1635711418987-0f129630e7b7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1965&q=80",
-			isOnSale: true
+			isOnSale: true,
 		}
 		setCollectibleInfo(infoStuff)
 		//eslint-disable-next-line

@@ -39,7 +39,7 @@ const App = () => {
 						component={Create}
 					/>
 					<Route
-						path="/collectible/:addr"
+						path="/collectible/:addr/:ownerID?"
 						exact
 						component={Collectible}
 					/>
