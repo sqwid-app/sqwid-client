@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.8 (2021-11-01)
+
+
+### Bug Fixes
+
+* **collectible:** added other owners ([0959906](https://github.com/boidushya/sqwid-client/commit/095990686489f8d2a52ecb51d387b4c92d0e397a))
+
 ### 0.1.7 (2021-11-01)
 
 
