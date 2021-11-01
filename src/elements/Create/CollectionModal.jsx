@@ -1,10 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
-//eslint-disable-next-line
+import SimpleBarReact from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import CustomDropzoneModal from "./CustomDropzoneModal";
 import { createCollection } from "@utils/createCollection";
-import Loading from "@elements/Create/Loading";
+import Loading from "@elements/Default/Loading";
+import axios from "axios";
+import AuthContext from "@contexts/Auth/AuthContext";
+import { getCloudflareURL } from "@utils/getIPFSURL";
+import FileContext from "@contexts/File/FileContext";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -56,9 +61,11 @@ const Modal = styled.div`
 	border-radius: 0.5rem;
 	z-index:15;
 	min-width: 33vw;
+	max-width: 50vw;
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+	word-wrap: break-word;
 	${props=>!props.remove?modalEntryAnim:modalExitAnim}
 `
 
@@ -186,6 +193,49 @@ const FilePreview = styled.div`
 	}
 `;
 
+const ExistingContainer = styled(SimpleBarReact)`
+	display: flex;
+	flex-direction: column;
+	padding: 0 1rem;
+	max-height: 50vw;
+	overflow-y:auto;
+`
+
+const CollectionContainer = styled(m.div)`
+	display: flex;
+	align-items:center;
+	justify-content: space-between;
+	cursor: pointer;
+	gap: 0.5rem;
+	user-select:none;
+	padding: 0.75rem 1.25rem;
+	margin-bottom: 0.5rem;
+	background: hsl(236deg 10% 23%);
+	border-radius: 0.25rem;
+	box-shadow:  0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	border: 2px solid rgba(0,0,0,0);
+	transition: border 0.1s ease;
+	&:hover{
+		border: 2px solid var(--app-container-text-primary);
+	}
+	img{
+		aspect-ratio:1;
+		height: 4rem;
+		display: block;
+		border-radius: 0.5rem;
+		object-fit:cover;
+	}
+	p{
+		font-size: 1.25rem;
+		font-weight: 800;
+		max-width: 30ch;
+		overflow: hidden;
+		white-space: nowrap;
+		display: block;
+		text-overflow: ellipsis;
+	}
+`
+
 const elemContains =  (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
 }
@@ -210,7 +260,7 @@ const New = ({ isActive, setIsActive }) => {
 	//eslint-disable-next-line
 	}, [info.file])
 	const handleClick = () => {
-		setButtonText(<Loading bg={`var(--app-theme-primary)`}/>)
+		setButtonText(<Loading size="24"/>)
 		if(info.file&&info.name.length){
 			createCollection (info.file,info.name,info.description)
 			.then (res => {
@@ -243,7 +293,7 @@ const New = ({ isActive, setIsActive }) => {
 				<InputContainer
 					value={info.name}
 					onChange = {(e)=>setInfo({...info,name:e.target.value})}
-					placeholder={`e.g "Walter White collections"`}
+					placeholder={`e.g "Walter White collection"`}
 				/>
 				<Title>Description</Title>
 				<InputContainer
@@ -274,14 +324,53 @@ const New = ({ isActive, setIsActive }) => {
 	)
 }
 
-const Existing = () => {
+const Existing = ({ isActive, setIsActive }) => {
+	const [ collections, setCollections ] = useState(JSON.parse(localStorage.getItem("collections"))||[])
+	const { auth } = useContext(AuthContext);
+	const { files, setFiles } = useContext(FileContext);
+	useEffect(() => {
+		axios.get(`${process.env.REACT_APP_API_URL}/api/get/collections/owner/${auth.address}`)
+		.then((res)=>{
+			localStorage.setItem("collections",JSON.stringify(res.data.collections))
+			setCollections(res.data.collections)
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+	//eslint-disable-next-line
+	}, [])
 	return (
-		<Title>not epic</Title>
+		<LazyMotion features={domAnimation}>
+			<Header>Choose Collection</Header>
+			<ExistingContainer>
+				{collections.map(item=>(
+					<CollectionContainer
+						key={item.id}
+						whileTap={{
+							scale:0.99
+						}}
+						onClick={()=>{
+							setFiles({
+								...files,
+								collection:item.id,
+								collectionName:item.data.name
+							})
+							setIsActive({...isActive,status: false});
+						}}
+					>
+						<img src={getCloudflareURL(item.data.image)} alt={item.data.description}/>
+						<p>{item.data.name}</p>
+					</CollectionContainer>
+				))}
+			</ExistingContainer>
+		</LazyMotion>
 	)
 }
 
 const CollectionModal = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive.status)
+	const { auth } = useContext(AuthContext)
+	const isLoggedIn = !(auth === null)
 	const modalRef = useRef()
 	//eslint-disable-next-line
 	useEffect(() => {
@@ -308,14 +397,17 @@ const CollectionModal = ({ isActive, setIsActive, accounts }) => {
 					<Modal
 						remove={!isActive.status}
 						ref={modalRef}
-					>
-						{(() => {
+					>{isLoggedIn?(
+						(() => {
 							switch (isActive.type) {
 								case "new":  return <New isActive={isActive} setIsActive={setIsActive}/>;
-								case "choose": return <Existing />;
+								case "choose": return <Existing isActive={isActive} setIsActive={setIsActive}/>;
 								default: return "u wot m8";
 							}
-						})()}
+						})()
+					):(
+						<Title>You need to connect your wallet first</Title>
+					)}
 					</Modal>
 				</BackDrop>
 			)}

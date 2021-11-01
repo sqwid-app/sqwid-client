@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import CollectionModal from "./CollectionModal";
+import FileContext from "@contexts/File/FileContext";
 
 const Container = styled.div``
 
@@ -33,6 +34,9 @@ const ChooseBtn = styled(m.a)`
 	outline: none;
 	cursor: pointer;
 	user-select:none;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 `
 
 const NewBtn = styled(m.a)`
@@ -51,8 +55,17 @@ const NewBtn = styled(m.a)`
 	user-select:none;
 `
 
+const ButtonText = styled.span`
+	max-width: 10rem;
+	overflow: hidden;
+	white-space: nowrap;
+	display: block;
+	text-overflow: ellipsis;
+`
+
 const CollectionSection = () => {
 	const [isCollectionActive, setIsCollectionActive] = useState({status:false,type:""})
+	const { files } = useContext(FileContext)
 	return (
 		<Container>
 			<Title>Collection</Title>
@@ -68,7 +81,7 @@ const CollectionSection = () => {
 							scale:0.99
 						}}
 						onClick={()=>setIsCollectionActive({status:true,type:"choose"})}
-					>Choose from existing</ChooseBtn>
+					><ButtonText>{`${files.collectionName.length?files.collectionName:`Choose from existing`}`}</ButtonText></ChooseBtn>
 					<NewBtn
 						whileHover={{
 							y: -2,

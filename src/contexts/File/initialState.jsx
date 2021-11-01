@@ -7,5 +7,7 @@ export const initialState = {
 		royalty:"",
 		copies:"",
 		properties:"",
+		collection:"",
+		collectionName:"",
 	}
 }
