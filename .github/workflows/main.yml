@@ -29,3 +29,6 @@ jobs:
 
       - name: Bump Version
         uses: qzb/standard-version-action@v1.0.1
+      - name: Release tag
+        run: |
+          git push --follow-tags origin master
