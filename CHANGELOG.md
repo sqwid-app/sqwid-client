@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.4 (2021-11-01)
+
+
+### Bug Fixes
+
+* change NFT contract ([39c7cb7](https://github.com/boidushya/sqwid-client/commit/39c7cb78d8af28d47db0ace485bb888c88f71ffd))
+
 ### 0.1.3 (2021-11-01)
 
 
