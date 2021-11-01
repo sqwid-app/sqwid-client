@@ -7,7 +7,7 @@ import axios from "axios";
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { useParams } from "react-router";
 import styled, { css, keyframes } from "styled-components";
-import Loading from "@elements/Profile/Loading";
+import Loading from "@elements/Default/Loading";
 import Changes from "@elements/Profile/Changes";
 import EditDetailsContext from "@contexts/EditDetails/EditDetailsContext";
 
@@ -234,7 +234,7 @@ const NameEditSection = ({ name, setSync }) => {
 				/>
 				{isLoading&&(
 					<LoadingContainer>
-						<Loading bg="#23232a"/>
+						<Loading/>
 					</LoadingContainer>
 				)}
 			</InputWrapper>

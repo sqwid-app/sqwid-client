@@ -4,7 +4,7 @@ import { Init } from "@utils/connect";
 import AccountSelect from "./AccountSelect";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import AuthContext from "@contexts/Auth/AuthContext";
-import Loading from "@elements/Navbar/Loading";
+import Loading from "@elements/Default/Loading";
 
 const Btn = styled(m.a)`
 	display: flex;
@@ -59,7 +59,7 @@ const SignInBtn = () => {
 		<LazyMotion features={domAnimation}>
 			<AnimBtn onClick={handleClick}>
 				{loading?(
-					<Loading/>
+					<Loading navbar/>
 				):(
 					<>
 						{username.length?username:`Connect`}
