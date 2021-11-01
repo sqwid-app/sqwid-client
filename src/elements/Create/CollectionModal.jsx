@@ -5,7 +5,7 @@ import 'simplebar/dist/simplebar.min.css';
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import CustomDropzoneModal from "./CustomDropzoneModal";
 import { createCollection } from "@utils/createCollection";
-import Loading from "@elements/Create/Loading";
+import Loading from "@elements/Default/Loading";
 import axios from "axios";
 import AuthContext from "@contexts/Auth/AuthContext";
 import { getCloudflareURL } from "@utils/getIPFSURL";
@@ -260,7 +260,7 @@ const New = ({ isActive, setIsActive }) => {
 	//eslint-disable-next-line
 	}, [info.file])
 	const handleClick = () => {
-		setButtonText(<Loading bg={`var(--app-theme-primary)`}/>)
+		setButtonText(<Loading size="24"/>)
 		if(info.file&&info.name.length){
 			createCollection (info.file,info.name,info.description)
 			.then (res => {

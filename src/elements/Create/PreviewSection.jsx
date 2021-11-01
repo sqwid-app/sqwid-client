@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import { createCollectible } from "@utils/createCollectible";
-import Loading from "@elements/Create/Loading";
+import Loading from "@elements/Default/Loading";
 import UploadCover from "./UploadCover";
 
 const border = css`
