@@ -1,6 +1,6 @@
 {
 	"name": "reef-client",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"private": true,
 	"dependencies": {
 		"@polkadot/extension-dapp": "^0.40.3",
@@ -33,7 +33,8 @@
 		"start": "craco start",
 		"build": "craco build",
 		"test": "craco test",
-		"eject": "craco eject"
+		"eject": "craco eject",
+		"release": "standard-version"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -54,6 +55,7 @@
 		]
 	},
 	"devDependencies": {
-		"craco-alias": "^3.0.1"
+		"craco-alias": "^3.0.1",
+		"standard-version": "^9.3.2"
 	}
 }
