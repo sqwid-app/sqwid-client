@@ -1,0 +1,2 @@
+- name: Bump Version
+  uses: qzb/standard-version-action@v1.0.1
