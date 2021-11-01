@@ -319,7 +319,7 @@ const ProfileCard = () => {
 	const [isOwnAccount, setIsOwnAccount] = useState(false)
 	const [editIsActive, setEditIsActive] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
-	const { info, setInfo } = useContext(EditDetailsContext)
+	const { info } = useContext(EditDetailsContext)
 	const { id } = useParams()
 	const { auth } = useContext(AuthContext)
 	let initialState = {
