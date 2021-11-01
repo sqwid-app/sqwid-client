@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.7 (2021-11-01)
+
+
+### Bug Fixes
+
+* change api url ([d141fe3](https://github.com/boidushya/sqwid-client/commit/d141fe3e30f606fd89f60fdad721115564f533ef))
+
 ### 0.1.6 (2021-11-01)
 
 ### 0.1.5 (2021-11-01)
