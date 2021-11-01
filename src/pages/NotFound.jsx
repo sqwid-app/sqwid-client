@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 const MarginDiv = styled.div`
 	margin-top:8rem;
+	width: 33vw;
+	text-align:center;
 `
 
 const Container = styled.div`
@@ -16,6 +18,14 @@ const Container = styled.div`
 
 const Main = styled.section`
 	height: 100vh;
+`
+
+const Content = styled.div`
+	display: inline-block;
+	text-align:left;
+	p {
+		padding-bottom: 1rem;
+	}
 `
 
 const Wrapper = ({ children }) => {
@@ -32,12 +42,20 @@ const Wrapper = ({ children }) => {
 	)
 }
 
-const NotFound = () => {
+const NotFound = ({stack}) => {
 	const { pathname } = window.location;
 	return (
 		<Wrapper>
-			<h1>404 not found</h1>
-			<p>{pathname}</p>
+			<Content>
+
+				<h1>404 not found</h1>
+				<p>{pathname}</p>
+				{stack&&(
+					<code>
+						{stack}
+					</code>
+				)}
+			</Content>
 		</Wrapper>
 	)
 }

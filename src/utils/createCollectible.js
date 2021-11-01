@@ -2,7 +2,7 @@ import axios from "axios";
 import { Interact } from "./connect";
 import { ethers } from 'ethers';
 import contractABI from '../constants/contracts/SqwidERC1155';
-import getMetaById from "./getMetaById";
+// import getMetaById from "./getMetaById";
 
 const createCollectible = async (files) => {
 	const { file, coverFile, name, description, properties, collection } = files;
