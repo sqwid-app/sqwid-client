@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.5 (2021-11-01)
+
+
+### Features
+
+* replaced all loading with sqwid loader ([78d5475](https://github.com/boidushya/sqwid-client/commit/78d54751b8e1034ff1bd97ae5f87d0295806b6f9))
+
 ### 0.1.4 (2021-11-01)
 
 
