@@ -52,15 +52,8 @@ const createCollectible = async (files) => {
 		}
 		console.log ('minted', receipt);
 		const verification = await axios ({
-			method: 'post',
-			url: `${process.env.REACT_APP_API_URL}/api/create/collectible/db`,
-			data: JSON.stringify ({
-				metadata: metadata.data
-			}),
-			headers: {
-				'Authorization': `Bearer ${jwt.token}`,
-				"Content-Type": "application/json"
-			}
+			method: 'get',
+			url: `${process.env.REACT_APP_API_URL}/api/create/collectible/sync`,
 		});
 		console.log ('verified', verification.data);
 		return verification.data;
