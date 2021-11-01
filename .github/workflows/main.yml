@@ -22,6 +22,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - name: Configure committer
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
 
       - name: Bump Version
         uses: qzb/standard-version-action@v1.0.1
