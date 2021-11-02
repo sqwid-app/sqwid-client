@@ -185,7 +185,7 @@ const NameEditSection = ({ name, setSync }) => {
 	const {info, setInfo} = useContext(EditDetailsContext)
 	const [isLoading, setIsLoading] = useState(false)
 	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
-	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address = address) : null;
+	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address === address) : null;
 
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
@@ -246,7 +246,7 @@ const DescriptionEditSection = ({ description, setSync }) => {
 	const {info, setInfo} = useContext(EditDetailsContext)
 	const [isLoading, setIsLoading] = useState(false)
 	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
-	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address = address) : null;
+	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address === address) : null;
 
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
