@@ -86,7 +86,6 @@ const InfoContainer = () => {
 
 	useEffect(() => {
 		let owner = ownerID ? collectibleInfo.owners.find(item=>item.id===ownerID) : (auth ? collectibleInfo.owners.find(item=>item.id===auth.address) : collectibleInfo.owners[0])
-		console.log(owner)
 		setCurrentOwner(owner?owner:collectibleInfo.owners[0])
 	//eslint-disable-next-line
 	}, [collectibleInfo, auth])

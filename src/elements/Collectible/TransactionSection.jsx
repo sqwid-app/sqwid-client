@@ -46,7 +46,7 @@ const AnimBtn = ({ children, ...props }) => (
 
 const Price = styled.p`
 	font-weight: 900;
-	font-size: 2rem;
+	font-size: 1.5rem;
 	display: flex;
 	align-items:flex-end;
 	gap: 0.25rem;

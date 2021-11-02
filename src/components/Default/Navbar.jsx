@@ -52,7 +52,6 @@ const Navbar = () => {
 	const logoRef = useRef();
 	useEffect(() => {
 		window.onscroll = () => {
-			console.log(window.pageYOffset)
 			isAtTop === true && setIsAtTop(false);
 			(window.pageYOffset === 0) && setIsAtTop(true);
 		}

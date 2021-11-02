@@ -7,7 +7,6 @@ const createCollection = async (file,name,description) => {
 	data.append("description", description);
 	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
 	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address = address) : null;
-	console.log (jwt);
 	if (jwt) {
 		try {
 			return await axios.post (`${process.env.REACT_APP_API_URL}/api/create/collection`, data, {
@@ -16,7 +15,7 @@ const createCollection = async (file,name,description) => {
 				}
 			});
 		} catch (error) {
-			console.log (error);
+			// console.log (error);
 		}
 	} else return null;
 }

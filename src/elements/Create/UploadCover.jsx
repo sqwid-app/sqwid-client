@@ -131,7 +131,6 @@ const Dropzone = (props) => {
 				coverFile: acceptedFiles[0]
 			});
 		}
-		console.log(acceptedFiles)
 	//eslint-disable-next-line
 	}, [acceptedFiles])
 	useEffect(() => {
@@ -145,8 +144,6 @@ const Dropzone = (props) => {
 				setDragText(initialDragText);
 			}, 3000);
 		}
-		console.log("Rejected: ");
-		console.log(fileRejections)
 	//eslint-disable-next-line
 	}, [fileRejections])
 	return (

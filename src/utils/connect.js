@@ -42,13 +42,12 @@ const Connect = async (account) => {
 			});
 		}
 		catch(err){
-			console.log("err",err)
+			// console.log("err",err)
 		}
 
         let json = res.data;
 
         if (json.status === 'success') {
-            console.log ('auth success');
             let jwts = localStorage.getItem ('tokens');
             jwts = jwts ? JSON.parse (jwts) : [];
 
@@ -66,10 +65,6 @@ const Connect = async (account) => {
             localStorage.setItem ('tokens', JSON.stringify (jwts));
 
             if (!(await signer.isClaimed())) {
-                console.log(
-                    "No claimed EVM account found -> claimed default EVM account: ",
-                    await signer.getAddress()
-                );
                 return {
                     evmClaimed: false,
                     signer

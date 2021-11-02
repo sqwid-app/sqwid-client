@@ -57,7 +57,7 @@ const CollectionsSection = () => {
 			}))
 		})
 		.catch(err=>{
-			console.log(err)
+			// handle err
 		})
 		.finally(()=>{
 			setIsLoading(false)

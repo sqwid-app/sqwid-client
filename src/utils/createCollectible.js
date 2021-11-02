@@ -30,7 +30,6 @@ const createCollectible = async (files) => {
 				'Authorization': `Bearer ${jwt.token}`
 			}
 		});
-		console.log ('uploaded meta', metadata);
 		const uri = metadata.data.substring (7);
 
 		let { signer } = await Interact (address);
@@ -46,16 +45,14 @@ const createCollectible = async (files) => {
 		try {
 			const nft = await contract.mint (to, copies, uri, to, royalty);
 			receipt = await nft.wait ();
-		} catch (e) {
-			console.log (e);
+		} catch (err) {
+			//eslint-disable-next-line
 			receipt = null;
 		}
-		console.log ('minted', receipt);
 		const verification = await axios ({
 			method: 'get',
 			url: `${process.env.REACT_APP_API_URL}/api/create/collectible/sync`,
 		});
-		console.log ('verified', verification.data);
 		return verification.data;
 
 	} else return null;

@@ -39,7 +39,7 @@ const Search = () => {
 	const handleChange = (e) => setSearchText(e.target.value);
 	const handleSubmit= (e) => {
 		if (e.key === "Enter" && searchText.length){
-			console.log(searchText)
+			// console.log(searchText)
 		}
 	}
 	return (

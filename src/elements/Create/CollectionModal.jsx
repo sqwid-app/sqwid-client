@@ -273,14 +273,13 @@ const New = ({ isActive, setIsActive }) => {
 			createCollection (info.file,info.name,info.description)
 			.then (res => {
 				setButtonText("Created Collection!")
-				console.log (res.data);
 				setTimeout(() => {
 					setIsActive({...isActive,status: false});
 				}, 500);
 				setIsSubmitting(false)
 			})
 			.catch(err=>{
-				console.log(err)
+				// handle err
 			})
 			.finally(()=>{
 				setTimeout(() => {
@@ -289,7 +288,6 @@ const New = ({ isActive, setIsActive }) => {
 			});
 		}
 		else{
-			console.log("no 💖")
 			setButtonText("Created Collection!")
 		}
 		setInfo(initialInfo)
@@ -345,7 +343,7 @@ const Existing = ({ isActive, setIsActive }) => {
 			setCollections(res.data.collections)
 		})
 		.catch(err=>{
-			console.log(err)
+			// handle err
 		})
 	//eslint-disable-next-line
 	}, [])

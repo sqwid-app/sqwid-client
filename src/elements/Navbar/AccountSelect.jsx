@@ -117,16 +117,15 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		Connect (account)
 		.then (async response => {
 			if (response.evmClaimed === false) {
-				console.log ('evm account is not claimed. show popup.');
 				alert (`EVM account not claimed. Please claim it before logging in. You will get the address ${ await response.signer.getAddress () }`);
 				await response.signer.claimDefaultAccount();
 			} else {
-				console.log ('evm account is claimed');
+				// console.log ('evm account is claimed');
 			}
 			login({auth:account})
 		})
 		.catch(err=>{
-			console.log(err)
+			// handle err
 		})
 		.finally(()=>{
 			setIsActive(false);

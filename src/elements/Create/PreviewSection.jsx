@@ -147,22 +147,19 @@ const PreviewSection = () => {
 		if(files.file&&files.name.length){
 			createCollectible (files)
 			.then(res=>{
-				console.log(res)
 				setButtonText ("Uploaded NFT!")
 				setIsSubmitting(false)
 			})
 			.catch(err=>{
-				console.log(err)
+				// handle err
 			})
 			.finally(()=>{
-				console.log("ok")
 				setTimeout(() => {
 					setButtonText("Create Item")
 				}, 2000);
 			})
 		}
 		else{
-			console.log("no 💖")
 			setButtonText("Create Item")
 		}
 	}
