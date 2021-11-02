@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.12 (2021-11-02)
+
+
+### Bug Fixes
+
+* account switching issues ([c5074cb](https://github.com/boidushya/sqwid-client/commit/c5074cbb8c5268a0e28714748593325dc337ca90))
+
 ### 0.1.11 (2021-11-02)
 
 ### 0.1.10 (2021-11-01)
