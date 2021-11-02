@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.10 (2021-11-01)
+
+
+### Features
+
+* **collectible:** added Price ([824e2f8](https://github.com/boidushya/sqwid-client/commit/824e2f88ada0c8a74d9d794e0552fa20e8c39b90))
+
 ### 0.1.9 (2021-11-01)
 
 
