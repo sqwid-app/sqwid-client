@@ -16,13 +16,13 @@ const approveMarketplace = async () => {
 };
 
 const isMarketplaceApproved = async () => {
-    let { signer } = await Interact ();
+    let { provider } = await Interact ();
     const address = await signer.getAddress ();
 
     let contract = new ethers.Contract (
         process.env.REACT_APP_COLLECTIBLE_CONTRACT_ADDRESS,
         contractABI,
-        signer
+        provider
     );
 
     const isApproved = await contract.isApprovedForAll (address, process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS);
