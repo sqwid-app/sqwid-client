@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Interact } from "./connect";
 import { ethers } from 'ethers';
-import contractABI from '../constants/contracts/SqwidERC1155';
+import contractABI from '../constants/contracts/SqwidMarketplace';
 // import getMetaById from "./getMetaById";
 
 const createCollectible = async (files) => {
@@ -35,12 +35,12 @@ const createCollectible = async (files) => {
 			let { signer } = await Interact (address);
 			const to = await signer.getAddress ();
 			let contract = new ethers.Contract (
-				process.env.REACT_APP_COLLECTIBLE_CONTRACT_ADDRESS,
+				process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS,
 				contractABI,
 				signer
 			);
 			try {
-				const nft = await contract.mint (to, copies, uri, to, royalty);
+				const nft = await contract.mint (to, copies, uri, to, royalty, process.env.REACT_APP_COLLECTIBLE_CONTRACT_ADDRESS);
 				await nft.wait ();
 				try {
 					const verification = await axios ({
