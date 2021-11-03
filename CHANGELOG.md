@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.15](https://github.com/boidushya/sqwid-client/compare/v0.1.14...v0.1.15) (2021-11-03)
+
+
+### Features
+
+* added bid condition sections ([c6cd950](https://github.com/boidushya/sqwid-client/commit/c6cd95014c2707feb61dc3ae48da099f4bfbaa62))
+* added lazy loading for landing ([bea7536](https://github.com/boidushya/sqwid-client/commit/bea7536b495ee2cc564cff9da1724cc9ccb9312a))
+* added loading stack to fullpage loader ([f1e395f](https://github.com/boidushya/sqwid-client/commit/f1e395fa840d26047399ce21454a48408b5877ba))
+* added page loader ([b2fa248](https://github.com/boidushya/sqwid-client/commit/b2fa248314ebefb52fa2f8c2dd5a3475ac81df5a))
+
+
+### Bug Fixes
+
+* merge conflicts ([a14276c](https://github.com/boidushya/sqwid-client/commit/a14276c9a4da28a3c22d790fc08bdeabc04145a3))
+* multiple routes rendering ([76dc919](https://github.com/boidushya/sqwid-client/commit/76dc91948c4419dc9def20966ebaccf9015bee7d))
+
 ### 0.1.14 (2021-11-02)
 
 ### 0.1.13 (2021-11-02)
