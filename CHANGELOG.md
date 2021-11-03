@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.17](https://github.com/boidushya/sqwid-client/compare/v0.1.16...v0.1.17) (2021-11-03)
+
+
+### Bug Fixes
+
+* removed individual suspense for landing ([72e78be](https://github.com/boidushya/sqwid-client/commit/72e78be4d70a0b03a9b6584d8db16e8c4c072d68))
+
 ### [0.1.16](https://github.com/boidushya/sqwid-client/compare/v0.1.15...v0.1.16) (2021-11-03)
 
 ### [0.1.15](https://github.com/boidushya/sqwid-client/compare/v0.1.14...v0.1.15) (2021-11-03)
