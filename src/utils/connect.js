@@ -48,6 +48,7 @@ const Connect = async (account) => {
         let json = res.data;
 
         if (json.status === 'success') {
+            localStorage.removeItem ('collections');
             let jwts = localStorage.getItem ('tokens');
             jwts = jwts ? JSON.parse (jwts) : [];
 

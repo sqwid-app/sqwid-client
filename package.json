@@ -1,6 +1,6 @@
 {
 	"name": "sqwid-client",
-	"version": "0.1.10",
+	"version": "0.1.14",
 	"private": true,
 	"dependencies": {
 		"@polkadot/extension-dapp": "^0.40.3",
@@ -42,7 +42,7 @@
 			"react-app/jest"
 		],
 		"rules": {
-			"no-console":"warn"
+			"no-console": "warn"
 		}
 	},
 	"browserslist": {

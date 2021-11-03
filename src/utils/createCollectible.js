@@ -23,38 +23,46 @@ const createCollectible = async (files) => {
 	}
 	data.append("properties", JSON.stringify(props));
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
-	let jwt = address ? JSON.parse(localStorage.getItem("tokens")).find(token => token.address = address) : null;
+	let jwt = address ? JSON.parse(localStorage.getItem("tokens")).find(token => token.address === address) : null;
 	if (jwt) {
-		const metadata = await axios.post(`${process.env.REACT_APP_API_URL}/api/create/collectible`, data, {
-			headers: {
-				'Authorization': `Bearer ${jwt.token}`
-			}
-		});
-		const uri = metadata.data.substring (7);
-
-		let { signer } = await Interact (address);
-		const to = await signer.getAddress ();
-		let contract = new ethers.Contract (
-			process.env.REACT_APP_COLLECTIBLE_CONTRACT_ADDRESS,
-			contractABI,
-			signer
-		);
-
-		let receipt;
-
 		try {
-			const nft = await contract.mint (to, copies, uri, to, royalty);
-			receipt = await nft.wait ();
+			const metadata = await axios.post(`${process.env.REACT_APP_API_URL}/api/create/collectible`, data, {
+				headers: {
+					'Authorization': `Bearer ${jwt.token}`
+				}
+			});
+			const uri = metadata.data.substring (7);
+			let { signer } = await Interact (address);
+			const to = await signer.getAddress ();
+			let contract = new ethers.Contract (
+				process.env.REACT_APP_COLLECTIBLE_CONTRACT_ADDRESS,
+				contractABI,
+				signer
+			);
+			try {
+				const nft = await contract.mint (to, copies, uri, to, royalty);
+				await nft.wait ();
+				try {
+					const verification = await axios ({
+						method: 'get',
+						url: `${process.env.REACT_APP_API_URL}/api/create/collectible/sync`,
+					});
+					return verification.data;
+				} catch (e) {
+					// eslint-disable-next-line no-console
+					console.error (e);
+					return null;
+				}
+			} catch (err) {
+				// eslint-disable-next-line no-console
+				console.error (err);
+				return null;
+			}
 		} catch (err) {
-			//eslint-disable-next-line
-			receipt = null;
+			// eslint-disable-next-line no-console
+			console.error (err);
+			return null;
 		}
-		const verification = await axios ({
-			method: 'get',
-			url: `${process.env.REACT_APP_API_URL}/api/create/collectible/sync`,
-		});
-		return verification.data;
-
 	} else return null;
 }
 
