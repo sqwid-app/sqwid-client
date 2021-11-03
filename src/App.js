@@ -1,52 +1,20 @@
+import React, { Suspense } from "react";
 import AuthProvider from "@contexts/Auth/AuthProvider";
-import Collectible from "@pages/Collectible";
-import Collections from "@pages/Collections";
-import Create from "@pages/Create";
-import Landing from "@pages/Landing";
-import Profile from "@pages/Profile";
-import NotFound from "@pages/NotFound";
-import React from "react";
-
 import {
 	BrowserRouter as Router,
 	Switch,
-	Route,
 } from "react-router-dom";
+import FullPageLoading from "@elements/Default/FullPageLoading";
+const Routes = React.lazy(() => import("./routes"))
 
 const App = () => {
 	return (
 		<AuthProvider>
 			<Router>
 				<Switch>
-					<Route
-						path="/"
-						exact
-						component={Landing}
-					/>
-					<Route
-						path="/collections/:id?"
-						exact
-						component={Collections}
-					/>
-					<Route
-						path="/profile/:id?"
-						exact
-						component={Profile}
-					/>
-					<Route
-						path="/create"
-						exact
-						component={Create}
-					/>
-					<Route
-						path="/collectible/:addr/:ownerID?"
-						exact
-						component={Collectible}
-					/>
-					<Route
-						path="*"
-						component={NotFound}
-					/>
+					<Suspense fallback={<FullPageLoading init/>}>
+						<Routes />
+					</Suspense>
 				</Switch>
 			</Router>
 		</AuthProvider>
