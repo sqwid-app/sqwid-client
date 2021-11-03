@@ -6,7 +6,7 @@ const Routes = React.lazy(() => import("./routes"))
 const App = () => {
 	return (
 		<AuthProvider>
-			<Suspense fallback={<FullPageLoading init/>}>
+			<Suspense fallback={<FullPageLoading init component="app"/>}>
 				<Routes />
 			</Suspense>
 		</AuthProvider>

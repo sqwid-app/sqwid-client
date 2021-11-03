@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import FadeLoaderIcon from "@static/svg/FadeLoader";
 
 const LoadingContainer = styled.div`
 	height: ${props=>props.init?`100vh`:`70vh`};
@@ -14,6 +15,19 @@ const LoadingContainer = styled.div`
 	h1{
 		font-weight: 900;
 		font-size: 2.75rem;
+	}
+	p{
+		position:absolute;
+		bottom:0;
+		right:0;
+		display: flex;
+		align-items:center;
+		justify-content:center;
+		gap: 0.5rem;
+		padding: 0.75rem 1.25rem;
+		font-family: var(--font-family);
+		color: var(--app-container-text-primary-hover);
+		font-weight: 600;
 	}
 `
 const FullPageLoading = (props) => {
@@ -30,6 +44,7 @@ const FullPageLoading = (props) => {
 		<LoadingContainer {...props}>
 			<LoadingIcon size={props.init?72:48}/>
 			<h1>{props.init&&`Sqwid`}</h1>
+			{(props.init&&props.component)&&<p><span>Preparing {props.component} </span><FadeLoaderIcon/></p>}
 		</LoadingContainer>
 	)
 }
