@@ -25,12 +25,12 @@ const LinkGroups = () => {
 	const isLoggedIn = auth !== null
 	return (
 		<LinkContainer>
-			<NavLink to="/" exact className="nav-links" activeClassName="nav-selected">
+			<NavLink to="/explore" exact className="nav-links" activeClassName="nav-selected">
 				Explore
 			</NavLink>
 			{isLoggedIn&&(
 				<>
-					<NavLink to="/profile" exact className="nav-links" activeClassName="nav-selected">
+					<NavLink to="/profile" exact className="nav-links" activeClassName="nav-selected" target="_blank" rel="noopener noreferrer">
 						Profile
 					</NavLink>
 					<NavLink to="/create" exact className="nav-links" activeClassName="nav-selected">
