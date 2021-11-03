@@ -70,7 +70,7 @@ const DropzoneText = styled.p`
 const DropzoneButton = styled(m.a)`
 	display: flex;
 	align-items: center;
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: var(--font-family);
 	font-size: 0.75rem;
 	font-weight: 700;
 	padding: 0.5rem 1rem;

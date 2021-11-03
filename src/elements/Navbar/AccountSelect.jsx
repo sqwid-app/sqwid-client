@@ -87,7 +87,7 @@ const Button = styled(m.a)`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: var(--font-family);
 	font-size: 1rem;
 	font-weight: 700;
 	padding: 0.675rem 1.25rem;

@@ -14,7 +14,7 @@ const Title = styled.h1`
 `
 
 const InputContainer = styled.input`
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: var(--font-family);
 	font-weight: 600;
 	font-size: 1rem;
 	background: transparent;

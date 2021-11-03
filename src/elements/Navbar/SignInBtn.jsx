@@ -2,26 +2,20 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { Init } from "@utils/connect";
 import AccountSelect from "./AccountSelect";
-import { LazyMotion, domAnimation, m } from "framer-motion";
+import { LazyMotion, domAnimation } from "framer-motion";
 import AuthContext from "@contexts/Auth/AuthContext";
 import Loading from "@elements/Default/Loading";
+import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 
-const Btn = styled(m.a)`
+const Btn = styled(BtnBaseAnimated)`
 	display: flex;
 	align-items: center;
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 	font-size: 1rem;
 	font-weight: 700;
 	padding: 0 1.25rem;
 	border-radius: 1000rem;
-	background: var(--app-theme-primary);
-	color: var(--app-background);
-	outline: none;
-	border: none;
 	height: 2.5rem;
-	cursor: pointer;
 	z-index:2;
-	user-select:none;
 `
 
 const AnimBtn = ({ children, onClick }) => (

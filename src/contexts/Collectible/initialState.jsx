@@ -14,5 +14,6 @@ export const initialState = {
 	contentURL: "",
 	isOnSale:false,
 	quantity:{},
-	price:""
+	price:"",
+	highestBid:"",
 }

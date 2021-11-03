@@ -8,7 +8,7 @@ const SVG = styled.svg`
 
 const ReefIcon = () => {
 	return (
-		<SVG xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 800 800">
+		<SVG xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="100 0 800 800">
 			<g transform="translate(0.000000,800.000000) scale(0.100000,-0.100000)"
 				fill="#fff" stroke="none">
 				<path d="M3540 6450 c-285 -21 -585 -90 -860 -197 -517 -202 -960 -565 -1145

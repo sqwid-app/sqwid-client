@@ -24,7 +24,7 @@ const ChooseBtn = styled(m.a)`
 	display: flex;
 	align-items: center;
 	justify-content:center;
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: var(--font-family);
 	font-size: 1rem;
 	font-weight: 700;
 	padding: 0.675rem 0;
@@ -42,7 +42,7 @@ const ChooseBtn = styled(m.a)`
 const NewBtn = styled(m.a)`
 	display: grid;
 	place-items: center;
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: var(--font-family);
 	font-size: 1.25rem;
 	font-weight: 700;
 	background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%23787987FF' stroke-width='4' stroke-dasharray='2%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");

@@ -5,7 +5,7 @@ import styled from "styled-components";
 const SearchContainer = styled.div`
 	position: relative;
 	& input{
-		font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+		font-family: var(--font-family);
 		font-size: 1rem;
 		font-weight: 600;
 		padding: 0.75rem 1.25rem;

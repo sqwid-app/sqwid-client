@@ -1,8 +1,9 @@
 import FileContext from "@contexts/File/FileContext";
 import React, { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { LazyMotion, domAnimation, m } from "framer-motion"
+import { LazyMotion, domAnimation } from "framer-motion"
 import { createCollectible } from "@utils/createCollectible";
+import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import Loading from "@elements/Default/Loading";
 import UploadCover from "./UploadCover";
 
@@ -69,11 +70,11 @@ const FilePreview = styled.div`
 	}
 `;
 
-const Btn = styled(m.a)`
+const Btn = styled(BtnBaseAnimated)`
 	width: 75%;
 	display: grid;
 	place-items: center;
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: var(--font-family);
 	font-size: 1rem;
 	font-weight: 700;
 	padding: 0.75rem 1.25rem;

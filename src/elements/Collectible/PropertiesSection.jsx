@@ -55,20 +55,21 @@ const PropertiesSection = () => {
 			<Heading>Properties</Heading>
 			<SimpleBarReact>
 				<Container>
+				<LazyMotion features={domAnimation}>
 					{collectibleInfo.properties.map(( item,index ) => (
-						<LazyMotion features={domAnimation}>
 							<Property
 								whileHover={{
 									y: -5,
 									x: 0,
 									scale:1.02
 								}}
+								key={index}
 							>
 								<label title={item.key}><h3>{item.key}</h3></label>
 								<label title={item.value}><p>{item.value}</p></label>
 							</Property>
-						</LazyMotion>
 					))}
+				</LazyMotion>
 				</Container>
 			</SimpleBarReact>
 		</div>
