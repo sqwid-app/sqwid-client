@@ -1,11 +1,14 @@
 import Wrapper from '@components/Default/Wrapper'
-import HeroSection from '@components/Landing/HeroSection'
-import React from 'react'
+import FullPageLoading from '@elements/Default/FullPageLoading'
+import React, { Suspense } from 'react'
+const HeroSection = React.lazy(() => import("@components/Landing/HeroSection"))
 
 const Landing = () => {
 	return (
 		<Wrapper>
-			<HeroSection/>
+			<Suspense fallback={<FullPageLoading/>}>
+				<HeroSection/>
+			</Suspense>
 		</Wrapper>
 	)
 }

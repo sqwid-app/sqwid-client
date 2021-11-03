@@ -1,7 +1,8 @@
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import InfoContent from "@elements/Collectible/InfoContent";
 import NFTContent from "@elements/Collectible/NFTContent";
-import React, { useContext, useEffect } from "react";
+import LoadingIcon from "@static/svg/LoadingIcon";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -12,8 +13,16 @@ const Wrapper = styled.div`
 	gap: 1rem;
 `
 
+const LoadingContainer = styled.div`
+	height: 70vh;
+	width: 100%;
+	display: grid;
+	place-items:center;
+`
+
 const HeroSection = ({ addr }) => {
 	const { setCollectibleInfo } = useContext(CollectibleContext);
+	const [isLoading, setIsLoading] = useState(true)
 	useEffect(() => {
 		// Axios request goes here ebin...
 		let infoStuff = {
@@ -69,14 +78,25 @@ const HeroSection = ({ addr }) => {
 			price:"1250000000.11254592",
 			highestBid:"99000"
 		}
-		setCollectibleInfo(infoStuff)
+		setTimeout(() => {
+			setIsLoading(false)
+			setCollectibleInfo(infoStuff)
+		}, 1000);
 		//eslint-disable-next-line
 	}, [])
 	return (
-		<Wrapper>
-			<InfoContent/>
-			<NFTContent/>
-		</Wrapper>
+		<>
+			{isLoading?(
+				<LoadingContainer>
+					<LoadingIcon size={64}/>
+				</LoadingContainer>
+			):(
+			<Wrapper>
+						<InfoContent/>
+						<NFTContent/>
+						</Wrapper>
+			)}
+		</>
 	)
 }
 
