@@ -5,6 +5,7 @@ import {
 	Switch,
 	Route
 } from "react-router-dom";
+const Explore = React.lazy(() => import("@pages/Explore"));
 const Collectible = React.lazy(() => import("@pages/Collectible")) ;
 const Collections = React.lazy(() => import("@pages/Collections")) ;
 const Create = React.lazy(() => import("@pages/Create")) ;
@@ -21,6 +22,11 @@ const Routes = () => {
 						path="/"
 						exact
 						component={Landing}
+					/>
+					<Route
+						path="/explore"
+						exact
+						component={Explore}
 					/>
 					<Route
 						path="/collections/:id?"

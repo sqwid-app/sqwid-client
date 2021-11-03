@@ -33,7 +33,7 @@ const LoadingContainer = styled.div`
 const FullPageLoading = (props) => {
 	useEffect(() => {
 		if(props.init){
-			NProgress.configure({ showSpinner: false });
+			NProgress.configure({ showSpinner: false, easing: "ease" });
 			NProgress.start();
 			return () => {
 				NProgress.done();
