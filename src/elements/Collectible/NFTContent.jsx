@@ -23,4 +23,4 @@ const NFTContent = () => {
 	)
 }
 
-export default NFTContent
+export default React.memo(NFTContent)

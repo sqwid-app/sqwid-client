@@ -12,6 +12,7 @@ const Container = styled.div`
 	align-items:center;
 	justify-content: space-between;
 	width: 100%;
+	margin-top:auto;
 `
 
 const Btn = styled(BtnBaseAnimated)`

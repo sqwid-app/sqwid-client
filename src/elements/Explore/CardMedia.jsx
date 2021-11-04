@@ -11,7 +11,7 @@ const ImageContainer = styled.div`
 	overflow:hidden;
 	&:hover {
 		img{
-			transform: scale(1.5);
+			transform: scale(1.1);
 		}
 	}
 	&:before {

@@ -3,11 +3,16 @@ import styled from "styled-components";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import SimpleBarReact from "simplebar-react";
+import 'simplebar/dist/simplebar.min.css';
 
 const Container = styled.div`
 	display: flex;
 	gap: 1rem;
 	margin: 1rem 1px 1rem;
+`
+
+const Wrapper = styled.div`
+	padding-top: 0.5rem;
 `
 
 const Property = styled(m.div)`
@@ -51,7 +56,7 @@ const Heading = styled.h3`
 const PropertiesSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
 	return (
-		<div>
+		<Wrapper>
 			<Heading>Properties</Heading>
 			<SimpleBarReact>
 				<Container>
@@ -72,7 +77,7 @@ const PropertiesSection = () => {
 				</LazyMotion>
 				</Container>
 			</SimpleBarReact>
-		</div>
+		</Wrapper>
 	)
 }
 

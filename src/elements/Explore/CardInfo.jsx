@@ -1,4 +1,5 @@
 import ReefIcon from "@static/svg/ReefIcon";
+import { numberSeparator } from "@utils/numberSeparator";
 import React from "react";
 import styled from "styled-components";
 import CardHeaderIcons from "./CardHeaderIcons";
@@ -31,14 +32,21 @@ const Title = styled.h1`
 	font-weight: 900;
 `
 
-const HighestBidText = styled.p`
+const HighestBidText = styled.label`
 	font-weight: 900;
 	color: var(--app-container-text-primary);
 	font-size: 0.875rem;
 	display: flex;
 	align-items:center;
+	cursor: pointer;
 	svg{
 		margin-left: 0.2rem;
+	}
+	span{
+		max-width: 10rem;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow:ellipsis;
 	}
 `
 
@@ -47,12 +55,19 @@ const Quantity = styled.h3`
 	color: var(--app-container-text-primary);
 `
 
-const Price = styled.p`
+const Price = styled.label`
 	font-weight: 900;
 	font-size: 1.25rem;
+	cursor: pointer;
 	svg{
 		display: inline-block;
 		vertical-align: sub;
+	}
+	span{
+		max-width: 10rem;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow:ellipsis;
 	}
 `
 
@@ -64,11 +79,11 @@ const CardInfo = ({ data }) => {
 				<CardHeaderIcons data={data}/>
 			</TopContainer>
 			<MiddleContainer>
-				<HighestBidText>Highest Bid: <ReefIcon size={`1.25rem`} centered /> {data.highestBid}</HighestBidText>
+				<HighestBidText title={numberSeparator(data.highestBid)}>Highest Bid: <ReefIcon size={`1.25rem`} centered /> <span>{numberSeparator(data.highestBid)}</span></HighestBidText>
 			</MiddleContainer>
 			<BottomContainer>
 				<Quantity>{data.quantity.available} of {data.quantity.total}</Quantity>
-				<Price><ReefIcon size={`1.5rem`} />{data.price}</Price>
+				<Price title={numberSeparator(data.price)}><ReefIcon size={`1.5rem`} /><span>{numberSeparator(data.price)}</span></Price>
 			</BottomContainer>
 		</Wrapper>
 	)
