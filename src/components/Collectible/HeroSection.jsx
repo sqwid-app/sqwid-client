@@ -2,7 +2,9 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import InfoContent from "@elements/Collectible/InfoContent";
 import NFTContent from "@elements/Collectible/NFTContent";
 import LoadingIcon from "@static/svg/LoadingIcon";
+import { fetchMarketplaceItem } from "@utils/marketplace";
 import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -20,11 +22,23 @@ const LoadingContainer = styled.div`
 	place-items:center;
 `
 
-const HeroSection = ({ addr }) => {
+const HeroSection = () => {
 	const { setCollectibleInfo } = useContext(CollectibleContext);
 	const [isLoading, setIsLoading] = useState(true)
-	useEffect(() => {
+	const { addr } = useParams ();
+
+	// console.log (addr);
+	useEffect (() => {
 		// Axios request goes here ebin...
+		const getData = async () => {
+			const data = await fetchMarketplaceItem (Number (addr));
+			console.log (data);
+			setIsLoading (false)
+			setCollectibleInfo (infoStuff)
+		}
+
+		getData ();
+
 		let infoStuff = {
 			address: addr,
 			title: "The Sloth",
@@ -91,10 +105,10 @@ const HeroSection = ({ addr }) => {
 			highestBid:"99000",
 			royalty: "12"
 		}
-		setTimeout(() => {
-			setIsLoading(false)
-			setCollectibleInfo(infoStuff)
-		}, 1000);
+		// setTimeout(() => {
+		// 	setIsLoading(false)
+		// 	setCollectibleInfo(infoStuff)
+		// }, 1000);
 		//eslint-disable-next-line
 	}, [])
 	return (

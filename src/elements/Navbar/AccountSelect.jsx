@@ -117,12 +117,12 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		Connect (account)
 		.then (async response => {
 			if (response.evmClaimed === false) {
-				alert (`EVM account not claimed. Please claim it before logging in. You will get the address ${ await response.signer.getAddress () }`);
+				alert (`EVM account not claimed. Please claim it and try logging in again.\nYou will get the address ${ await response.signer.getAddress () }\nYou will need some Reef in order to pay for the transaction.`);
 				await response.signer.claimDefaultAccount();
 			} else {
 				// console.log ('evm account is claimed');
+				login({auth:account})
 			}
-			login({auth:account})
 		})
 		.catch(err=>{
 			// handle err

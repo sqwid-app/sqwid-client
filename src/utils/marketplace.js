@@ -59,7 +59,6 @@ const fetchMarketplaceItem = async (itemId) => {
     const item = await mContract.fetchMarketItem (itemId);
     let info;
     try {
-        let highestBid = await mContract.fetchHighestBid (item.itemId);
         let metaURI = await cContract.uri (item.tokenId);
         let res = await axios (getDwebURL (metaURI));
         let meta = res.data;
@@ -67,21 +66,32 @@ const fetchMarketplaceItem = async (itemId) => {
         let collection = res.data?.collection?.data;
         info = {
             itemId: Number (item.itemId),
-            onSale: item.onSale,
-            price: Number (item.price),
-            seller: item.seller,
-            creator: item.royaltyReceiver,
-            highestBid: Number (highestBid.price),
+            isOnSale: item.onSale,
+            price: (Number (item.price) / 10 ** 18).toString (),
+            owners: {
+                current: {
+                    id: item.seller,
+                    name: '',
+                    quantity: {
+                        owns: 1,
+                        total: 1
+                    }
+                },
+                total: 1
+            },
+            creator: {
+                id: item.royaltyReceiver,
+                name: ''
+            },
+            bids: [],
             collection: {
                 name: collection.name,
-                image: getDwebURL (collection.image),
+                id: meta.properties.collection,
+                cover: getDwebURL (collection.image),
             },
             title: meta.name,
-            media: {
-                cover: getDwebURL (meta.image),
-                mimeType: meta.properties.mimetype,
-                media: getDwebURL (meta.properties.media)
-            }
+            contentURL: getDwebURL (meta.properties.media),
+            properties: meta.properties.custom
         }
     } catch (err) {
         console.error (err);

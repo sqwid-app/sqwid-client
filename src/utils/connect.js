@@ -18,7 +18,13 @@ const Connect = async (account) => {
     const { signer } = await Interact (account.address);
 
 	if (!!signRaw) {
-
+        if (!(await signer.isClaimed())) {
+            console.log ("claiming");
+            return {
+                evmClaimed: false,
+                signer
+            }
+        }
         let res = await axios.get(`${process.env.REACT_APP_API_URL}/api/nonce?address=${account.address}`);
         let { nonce } = res.data;
 
@@ -37,12 +43,14 @@ const Connect = async (account) => {
 				},
 				data: JSON.stringify ({
 					address: account.address,
-					signature: signature
+					signature: signature,
+                    evmAddress: await signer.getAddress (),
 				})
 			});
 		}
 		catch(err){
-			// console.log("err",err)
+            // eslint-disable-next-line no-console
+			console.log("err",err)
 		}
 
         let json = res.data;
@@ -65,16 +73,9 @@ const Connect = async (account) => {
 
             localStorage.setItem ('tokens', JSON.stringify (jwts));
 
-            if (!(await signer.isClaimed())) {
-                return {
-                    evmClaimed: false,
-                    signer
-                }
-            } else {
-                return {
-                    evmClaimed: true,
-                    signer
-                }
+            return {
+                evmClaimed: await signer.isClaimed (),
+                signer
             }
         }
 	}
