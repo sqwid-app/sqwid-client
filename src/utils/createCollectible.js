@@ -38,9 +38,9 @@ const createCollectible = async (files) => {
 	// console.log (items);
 
 	//eslint-disable-next-line
-	const item = await fetchMarketplaceItem (1);
+	// const item = await fetchMarketplaceItem (1);
 
-	jwt = null;
+	// jwt = null;
 	if (jwt) {
 		try {
 			const metadata = await axios.post(`${process.env.REACT_APP_API_URL}/api/create/collectible`, data, {
