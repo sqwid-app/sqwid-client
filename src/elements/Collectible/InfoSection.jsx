@@ -1,6 +1,7 @@
+//eslint-disable-next-line
 import AuthContext from "@contexts/Auth/AuthContext";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -74,7 +75,7 @@ const NotStyledLink = styled.a`
 
 const TextGroup = styled.div`
 	display: block;
-	label{
+	p{
 		display: inline-block;
 		vertical-align: baseline;
 		line-height: normal;
@@ -89,17 +90,17 @@ const CollectionSection = styled.div``
 const OwnerSection = styled.div``
 
 const InfoSection = () => {
+	//eslint-disable-next-line
 	const { ownerID } = useParams()
 	const { collectibleInfo } = useContext(CollectibleContext)
-	const { auth } = useContext(AuthContext)
-	const getTitleLabelText = (data) => `owned by ${data.map((item)=>item.name).join(", ")}...`
-	const [currentOwner, setCurrentOwner] = useState("")
 
-	useEffect(() => {
-		let owner = ownerID ? collectibleInfo.owners.find(item=>item.id===ownerID) : (auth ? collectibleInfo.owners.find(item=>item.id===auth.address) : collectibleInfo.owners[0])
-		setCurrentOwner(owner?owner:collectibleInfo.owners[0])
-	//eslint-disable-next-line
-	}, [collectibleInfo, auth])
+	// Do stuff to handle change uhhh idk lmao
+	//
+	// useEffect(() => {
+	// 	let owner = ownerID ? collectibleInfo.owners.find(item=>item.id===ownerID) : (auth ? collectibleInfo.owners.find(item=>item.id===auth.address) : collectibleInfo.owners[0])
+	// 	setCurrentOwner(owner?owner:collectibleInfo.owners[0])
+	// //eslint-disable-next-line
+	// }, [collectibleInfo, auth])
 	return (
 		<GroupContainer>
 			<Group>
@@ -122,13 +123,13 @@ const InfoSection = () => {
 				<OwnerSection>
 					<Heading>Owner</Heading>
 					<Content>
-						<Logo url={`https://avatars.dicebear.com/api/identicon/${currentOwner?.name}.svg`}/>
+						<Logo url={`https://avatars.dicebear.com/api/identicon/${collectibleInfo.owners.current.name}.svg`}/>
 						<TextGroup>
-							<NotStyledLink href={`${window.location.origin}/profile/${currentOwner?.id}`}>{currentOwner?.name}</NotStyledLink>
-							{(collectibleInfo.owners.length>1)&&(
-								<label title={getTitleLabelText(collectibleInfo.owners)}><p>and {collectibleInfo.owners.length-1} other{!(collectibleInfo.owners.length-1===1)&&`s`}...</p></label>
+							<NotStyledLink href={`${window.location.origin}/profile/${collectibleInfo.owners.current.id}`}>{collectibleInfo.owners.current.name}</NotStyledLink>
+							{(collectibleInfo.owners.total>1)&&(
+								<p>and {collectibleInfo.owners.total-1} other{!(collectibleInfo.owners.total-1===1)&&`s`}...</p>
 							)}
-							<h1>Owns {currentOwner?.quantity?.owns} of {currentOwner?.quantity?.total}</h1>
+							<h1>Owns {collectibleInfo.owners.current.quantity?.owns} of {collectibleInfo.owners.current.quantity?.total}</h1>
 						</TextGroup>
 					</Content>
 				</OwnerSection>

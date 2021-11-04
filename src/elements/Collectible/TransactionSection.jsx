@@ -131,9 +131,11 @@ const PutOnSale = () => {
 }
 
 const Sale = () => {
+	//eslint-disable-next-line
 	const { auth } = useContext(AuthContext)
 	const { collectibleInfo } = useContext(CollectibleContext)
-	const isOwner =  auth?collectibleInfo.owners.some((item)=>item.id === auth.address):null
+	const isOwner =  auth?collectibleInfo.owners.current.id===auth.address:null
+	// const isOwner =  auth?collectibleInfo.owners.some((item)=>item.id === auth.address):null
 	return (
 		<>
 			<PriceInfoContainer>

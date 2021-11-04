@@ -2,6 +2,7 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import InfoContent from "@elements/Collectible/InfoContent";
 import NFTContent from "@elements/Collectible/NFTContent";
 import LoadingIcon from "@static/svg/LoadingIcon";
+//eslint-disable-next-line
 import { fetchMarketplaceItem } from "@utils/marketplace";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -29,15 +30,6 @@ const HeroSection = () => {
 
 	useEffect (() => {
 		// Axios request goes here ebin...
-		const getData = async () => {
-			//eslint-disable-next-line
-			const data = await fetchMarketplaceItem (Number (addr));
-			setIsLoading (false)
-			setCollectibleInfo (infoStuff)
-		}
-
-		getData ();
-
 		let infoStuff = {
 			address: addr,
 			title: "The Sloth",
@@ -46,28 +38,17 @@ const HeroSection = () => {
 				name:"andi",
 				id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA"
 			},
-			owners:[{
-				name:"ratthew",
-				id:"5DMKdZRQ93LqyAVt3aw8wGVADmPyUZmE8USLBkYP4QmgkgDA",
-				quantity:{
-					owns: 50,
-					total: 50
-				}
-			},{
-				name:"boidushya",
-				id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J",
-				quantity:{
-					owns: 12,
-					total: 50
-				}
-			},{
-				name:"andi",
-				id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
-				quantity:{
-					owns: 24,
-					total: 50
-				}
-			}],
+			owners:{
+				current: {
+					id: "5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J",
+					name: 'Boidushya',
+					quantity: {
+						owns: 20,
+						total: 50
+					}
+				},
+				total: 3
+			},
 			collection: {
 				name: "sqwid moment epic",
 				cover:"https://images.unsplash.com/photo-1635709045508-c07a580c97b6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1171&q=80",
@@ -104,6 +85,15 @@ const HeroSection = () => {
 			highestBid:"99000",
 			royalty: "12"
 		}
+		const getData = async () => {
+			//eslint-disable-next-line
+			// const data = await fetchMarketplaceItem (Number (addr));
+			setIsLoading (false)
+			setCollectibleInfo (infoStuff)
+		}
+
+		getData ();
+
 		// setTimeout(() => {
 		// 	setIsLoading(false)
 		// 	setCollectibleInfo(infoStuff)
