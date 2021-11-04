@@ -2,7 +2,7 @@ import axios from "axios";
 import { Interact } from "./connect";
 import { ethers } from 'ethers';
 import contractABI from '../constants/contracts/SqwidMarketplace';
-
+//eslint-disable-next-line
 import { fetchMarketplaceItem, fetchMarketplaceItems } from "./marketplace";
 import { isMarketplaceApproved, approveMarketplace } from "./marketplaceApproval";
 // import getMetaById from "./getMetaById";
@@ -37,8 +37,8 @@ const createCollectible = async (files) => {
 	// const items = await fetchMarketplaceItems ();
 	// console.log (items);
 
+	//eslint-disable-next-line
 	const item = await fetchMarketplaceItem (1);
-	console.log (item);
 
 	jwt = null;
 	if (jwt) {
@@ -66,18 +66,12 @@ const createCollectible = async (files) => {
 					});
 					return verification.data;
 				} catch (e) {
-					// eslint-disable-next-line no-console
-					console.error (e);
 					return null;
 				}
 			} catch (err) {
-				// eslint-disable-next-line no-console
-				console.error (err);
 				return null;
 			}
 		} catch (err) {
-			// eslint-disable-next-line no-console
-			console.error (err);
 			return null;
 		}
 	} else return null;

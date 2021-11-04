@@ -43,11 +43,9 @@ const fetchMarketplaceItems = async () => {
             }
             itemsWithDetails.push (obj);
         } catch (err) {
-            console.error (err);
+            // process err
         }
     }
-    
-    console.log (itemsWithDetails);
     return itemsWithDetails;
 };
 
@@ -94,7 +92,7 @@ const fetchMarketplaceItem = async (itemId) => {
             properties: meta.properties.custom
         }
     } catch (err) {
-        console.error (err);
+        // handle err
     }
 
     return info;
@@ -107,7 +105,7 @@ const putOnSale = async (itemId, price) => {
 
 // removes an item from sale (owner / seller only)
 const removeFromSale = async (itemId) => {
-    
+
 };
 
 // buy an item for asking price

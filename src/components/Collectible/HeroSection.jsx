@@ -27,12 +27,11 @@ const HeroSection = () => {
 	const [isLoading, setIsLoading] = useState(true)
 	const { addr } = useParams ();
 
-	// console.log (addr);
 	useEffect (() => {
 		// Axios request goes here ebin...
 		const getData = async () => {
+			//eslint-disable-next-line
 			const data = await fetchMarketplaceItem (Number (addr));
-			console.log (data);
 			setIsLoading (false)
 			setCollectibleInfo (infoStuff)
 		}

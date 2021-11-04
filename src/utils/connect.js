@@ -19,7 +19,6 @@ const Connect = async (account) => {
 
 	if (!!signRaw) {
         if (!(await signer.isClaimed())) {
-            console.log ("claiming");
             return {
                 evmClaimed: false,
                 signer
@@ -49,8 +48,7 @@ const Connect = async (account) => {
 			});
 		}
 		catch(err){
-            // eslint-disable-next-line no-console
-			console.log("err",err)
+            // handle err like a normal person 👍
 		}
 
         let json = res.data;

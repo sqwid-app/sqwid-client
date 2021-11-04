@@ -1,6 +1,6 @@
 import PropertiesSection from "@elements/Collectible/PropertiesSection";
 import React, { useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import BidsSection from "./BidsSection";
 import InfoSection from "./InfoSection";
 
@@ -22,11 +22,6 @@ const Navbar = styled.nav`
 	user-select:none;
 `
 
-const activeBorder = css`
-	border-bottom: 0.1rem solid var(--app-text);
-	border-radius: 0.1rem;
-`
-
 const NavContent = styled.p`
 	position:relative;
 	padding: 0.1rem 0.5rem;
@@ -34,6 +29,7 @@ const NavContent = styled.p`
 	color: ${props=>props.active?`inherit`:`var(--app-container-text-primary)`};
 	cursor: pointer;
 	text-decoration:none;
+	transition: all 0.2s ease;
 	&:before{
 		content: "";
 		height: 100%;
@@ -41,7 +37,11 @@ const NavContent = styled.p`
 		left:0;
 		top: 0;
 		position: absolute;
-		${props=>props.active&&activeBorder};
+		border-bottom: 0.1rem solid var(--app-text);
+		border-radius: 0.1rem;
+		opacity: 0;
+		opacity: ${props=>props.active?`1`:`0`};
+		transition: opacity 0.1s ease;
 	}
 `
 
