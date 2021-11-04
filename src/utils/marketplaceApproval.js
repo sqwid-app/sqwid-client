@@ -16,7 +16,7 @@ const approveMarketplace = async () => {
 };
 
 const isMarketplaceApproved = async () => {
-    let { provider } = await Interact ();
+    let { provider, signer } = await Interact ();
     const address = await signer.getAddress ();
 
     let contract = new ethers.Contract (

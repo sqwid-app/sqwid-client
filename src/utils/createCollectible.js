@@ -2,6 +2,9 @@ import axios from "axios";
 import { Interact } from "./connect";
 import { ethers } from 'ethers';
 import contractABI from '../constants/contracts/SqwidMarketplace';
+
+import { fetchMarketplaceItem, fetchMarketplaceItems } from "./marketplace";
+import { isMarketplaceApproved, approveMarketplace } from "./marketplaceApproval";
 // import getMetaById from "./getMetaById";
 
 const createCollectible = async (files) => {
@@ -24,6 +27,20 @@ const createCollectible = async (files) => {
 	data.append("properties", JSON.stringify(props));
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 	let jwt = address ? JSON.parse(localStorage.getItem("tokens")).find(token => token.address === address) : null;
+
+	const approved = await isMarketplaceApproved ();
+	if (!approved) {
+		await approveMarketplace ();
+	}
+
+	// console.log ('wot');
+	// const items = await fetchMarketplaceItems ();
+	// console.log (items);
+
+	const item = await fetchMarketplaceItem (1);
+	console.log (item);
+
+	jwt = null;
 	if (jwt) {
 		try {
 			const metadata = await axios.post(`${process.env.REACT_APP_API_URL}/api/create/collectible`, data, {
