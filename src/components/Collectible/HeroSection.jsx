@@ -72,11 +72,24 @@ const HeroSection = ({ addr }) => {
 			},{
 				key:"op op op oppa",
 				value:"gangam style"
+			},{
+				key:"scarcity",
+				value:"common"
+			},{
+				key:"tag",
+				value:"image"
+			},{
+				key:"what",
+				value:"okay"
+			},{
+				key:"op op op oppa",
+				value:"gangam style"
 			}],
 			contentURL: "https://images.unsplash.com/photo-1635711418987-0f129630e7b7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1965&q=80",
 			isOnSale: true,
 			price:"1250000000.11254592",
-			highestBid:"99000"
+			highestBid:"99000",
+			royalty: "12"
 		}
 		setTimeout(() => {
 			setIsLoading(false)
@@ -92,9 +105,9 @@ const HeroSection = ({ addr }) => {
 				</LoadingContainer>
 			):(
 			<Wrapper>
-						<InfoContent/>
-						<NFTContent/>
-						</Wrapper>
+				<InfoContent/>
+				<NFTContent/>
+			</Wrapper>
 			)}
 		</>
 	)

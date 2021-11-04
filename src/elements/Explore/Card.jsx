@@ -4,7 +4,7 @@ import CardMedia from "./CardMedia";
 import CardInfo from "./CardInfo";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 
-const Wrapper = styled(m.div)`
+const Wrapper = styled(m.a)`
 	display: grid;
 	grid-template-rows: 2fr 1fr;
 	border: 2px solid var(--app-container-bg-primary);
@@ -14,6 +14,8 @@ const Wrapper = styled(m.div)`
 	aspect-ratio: calc(2/3);
 	cursor: pointer;
 	user-select: none;
+	text-decoration: none;
+	color: var(--app-text);
 `
 
 const Card = ({ data }) => {
@@ -22,8 +24,11 @@ const Card = ({ data }) => {
 			<Wrapper
 				whileHover = {{
 					x:0,
-					y:-5,
+					y:-7.5,
 				}}
+				href={`${window.location.origin}/collectible/${data.id}`}
+				target="_blank"
+				rel="noreferrer"
 			>
 				<CardMedia media={data.media} />
 				<CardInfo data={data} />

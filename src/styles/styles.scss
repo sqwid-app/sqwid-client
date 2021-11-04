@@ -11,9 +11,9 @@
 	}
 }
 
-.simplebar-track.simplebar-horizontal .simplebar-scrollbar:before {
+.simplebar-track.simplebar-horizontal .simplebar-scrollbar:before,
+.simplebar-track.simplebar-vertical .simplebar-scrollbar:before {
 	background: var(--app-container-text-primary);
-
 }
 
 @keyframes animate-logo{
