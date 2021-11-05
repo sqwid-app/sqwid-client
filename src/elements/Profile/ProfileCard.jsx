@@ -356,7 +356,7 @@ const ProfileCard = () => {
 		.finally(()=>{
 			setIsLoading(false);
 		})
-		id?((id === auth.address)&&setIsOwnAccount(true)):setIsOwnAccount(true)
+		id?((id === auth?.address)&&setIsOwnAccount(true)):setIsOwnAccount(true)
 	//eslint-disable-next-line
 	},[info])
 	const copyAddress = () => {
