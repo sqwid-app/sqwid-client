@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.18](https://github.com/boidushya/sqwid-client/compare/v0.1.17...v0.1.18) (2021-11-05)
+
+
+### Features
+
+* added Bid screen in collectible ([51df973](https://github.com/boidushya/sqwid-client/commit/51df9736df3ec8d887ad3468bfc9a11268126b03))
+* added explore page and cards ([b6fa33e](https://github.com/boidushya/sqwid-client/commit/b6fa33ea9c267e35196e0ca36e81c31cadce5518))
+* mint through marketplace contract ([6368e88](https://github.com/boidushya/sqwid-client/commit/6368e88c55d55e04db6af89c51c0f650d20a1e34))
+* started adding marketplace utils ([16ebd4d](https://github.com/boidushya/sqwid-client/commit/16ebd4dae1be6e9875b33aa28c94fc5236597ce9))
+
+
+### Bug Fixes
+
+* colletible changes ([da4ab63](https://github.com/boidushya/sqwid-client/commit/da4ab63aef37af9f9c1bfd227615db80a0149320))
+* fixed eslint errors for prod ([bdb09a8](https://github.com/boidushya/sqwid-client/commit/bdb09a8a11e08ad50228c1a2a250708b7b38f774))
+* merge conflicts ([6e5eaa6](https://github.com/boidushya/sqwid-client/commit/6e5eaa6a352583176b11dcc23573315215c2f2b5))
+* move some contract interactions to the backend ([1a2e294](https://github.com/boidushya/sqwid-client/commit/1a2e2944a840adf39822b90bf938cd56ac0ea474))
+* owner structure revamp ([89b9894](https://github.com/boidushya/sqwid-client/commit/89b9894e967685cccd870b65f9402402a61bb5b8))
+* send evm address on auth ([ddad354](https://github.com/boidushya/sqwid-client/commit/ddad35454281aee5a97d4ec4bd2446090e204e50))
+
 ### [0.1.17](https://github.com/boidushya/sqwid-client/compare/v0.1.16...v0.1.17) (2021-11-03)
 
 
