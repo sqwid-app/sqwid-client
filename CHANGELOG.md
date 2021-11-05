@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.19](https://github.com/boidushya/sqwid-client/compare/v0.1.18...v0.1.19) (2021-11-05)
+
+
+### Features
+
+* added collections ([a810b18](https://github.com/boidushya/sqwid-client/commit/a810b182c8280962999aee0e7842bf26b21127d9))
+* added video element to reusable cards ([da555c8](https://github.com/boidushya/sqwid-client/commit/da555c82dcf315706fd8af4607078ddf7a4fca14))
+
+
+### Bug Fixes
+
+* changed marketplace contract address, show evm address on profile ([e4f55b3](https://github.com/boidushya/sqwid-client/commit/e4f55b32bf53dd53f919a34aa5ca697ab6eeec94))
+* refactor NFT cards ([f9e7555](https://github.com/boidushya/sqwid-client/commit/f9e7555592efdffe1770fddaea6c49cb16219dab))
+
 ### [0.1.18](https://github.com/boidushya/sqwid-client/compare/v0.1.17...v0.1.18) (2021-11-05)
 
 
