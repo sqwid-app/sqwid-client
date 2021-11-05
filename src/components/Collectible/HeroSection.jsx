@@ -2,7 +2,7 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import InfoContent from "@elements/Collectible/InfoContent";
 import NFTContent from "@elements/Collectible/NFTContent";
 import LoadingIcon from "@static/svg/LoadingIcon";
-//eslint-disable-next-line
+//eslint-disable-next-line_
 import { fetchMarketplaceItem } from "@utils/marketplace";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
