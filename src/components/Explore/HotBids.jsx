@@ -127,8 +127,8 @@ const HotBids = () => {
 			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
 		},
 		media:{
-			url:"https://images.unsplash.com/photo-1635910160061-4b688344bd20?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-			type:"image/jpeg"
+			url:"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+			type:"video/mp4"
 		},
 		price:"1000",
 		highestBid:"900",
