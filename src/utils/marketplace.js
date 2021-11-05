@@ -1,102 +1,42 @@
-import { ethers } from 'ethers';
-import { Interact } from './connect';
-import collectibleContractABI from '../constants/contracts/SqwidERC1155';
-import marketplaceContractABI from '../constants/contracts/SqwidMarketplace';
-import { getDwebURL } from './getIPFSURL';
 import axios from 'axios';
 
-const collectibleContract = (signerOrProvider, address = null) => new ethers.Contract (address || process.env.REACT_APP_COLLECTIBLE_CONTRACT_ADDRESS, collectibleContractABI, signerOrProvider);
-const marketplaceContract = (signerOrProvider) => new ethers.Contract (process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS, marketplaceContractABI, signerOrProvider);
+// const getNameByAddress = async (address) => {
+//     try {
+//         const res = await axios (`${process.env.REACT_APP_API_URL}/api/get/user/${address}`);
+//         return res.data.displayName;
+//     } catch (e) {
+//         return address;
+//     }
+// }
 
 // returns all marketplace items
 const fetchMarketplaceItems = async () => {
-    const { provider } = await Interact ();
-    const mContract = marketplaceContract (provider);
-    const cContract = collectibleContract (provider);
-    const items = await mContract.fetchMarketItems ();
-    const itemsWithDetails = [];
-    for (let item of items) {
-        try {
-            let highestBid = await mContract.fetchHighestBid (item.itemId);
-            let metaURI = await cContract.uri (item.tokenId);
-            let res = await axios (getDwebURL (metaURI));
-            let meta = res.data;
-            res = await axios (`${process.env.REACT_APP_API_URL}/api/get/collections/id/${meta.properties.collection}`);
-            let collection = res.data?.collection?.data;
-            let obj = {
-                itemId: Number (item.itemId),
-                onSale: item.onSale,
-                price: Number (item.price),
-                seller: item.seller,
-                creator: item.royaltyReceiver,
-                highestBid: Number (highestBid.price),
-                collection: {
-                    name: collection.name,
-                    image: getDwebURL (collection.image),
-                },
-                title: meta.name,
-                media: {
-                    cover: getDwebURL (meta.image),
-                    mimeType: meta.properties.mimetype,
-                    media: getDwebURL (meta.properties.media)
-                }
-            }
-            itemsWithDetails.push (obj);
-        } catch (err) {
-            // process err
-        }
+    const res = await axios (`${process.env.REACT_APP_API_URL}/api/get/r/marketplace/fetchMarketItems`);
+    const { data } = res;
+    if (data.error) {
+        return [];
     }
-    return itemsWithDetails;
+    return data;
 };
-
 // returns a certain marketplace item
 const fetchMarketplaceItem = async (itemId) => {
-    const { provider } = await Interact ();
-    const mContract = marketplaceContract (provider);
-    const cContract = collectibleContract (provider);
-    const item = await mContract.fetchMarketItem (itemId);
-    let info;
-    try {
-        let metaURI = await cContract.uri (item.tokenId);
-        let res = await axios (getDwebURL (metaURI));
-        let meta = res.data;
-        res = await axios (`${process.env.REACT_APP_API_URL}/api/get/collections/id/${meta.properties.collection}`);
-        let collection = res.data?.collection?.data;
-        info = {
-            itemId: Number (item.itemId),
-            isOnSale: item.onSale,
-            price: (Number (item.price) / 10 ** 18).toString (),
-            owners: {
-                current: {
-                    id: item.seller,
-                    name: '',
-                    quantity: {
-                        owns: 1,
-                        total: 1
-                    }
-                },
-                total: 1
-            },
-            creator: {
-                id: item.royaltyReceiver,
-                name: ''
-            },
-            bids: [],
-            collection: {
-                name: collection.name,
-                id: meta.properties.collection,
-                cover: getDwebURL (collection.image),
-            },
-            title: meta.name,
-            contentURL: getDwebURL (meta.properties.media),
-            properties: meta.properties.custom
-        }
-    } catch (err) {
-        // handle err
+    const res = await axios (`${process.env.REACT_APP_API_URL}/api/get/r/marketplace/fetchMarketItem/${itemId}`);
+    const { data } = res;
+    if (data.error) {
+        return null;
     }
-
-    return info;
+    return data;
 };
+
+const marketplaceItemExists = async (itemId) => {
+    const res = await axios (`${process.env.REACT_APP_API_URL}/api/get/r/marketplace/itemExists/${itemId}`);
+    const { data } = res;
+    if (data.error) {
+        return false;
+    }
+    return data;
+};
+
 
 // puts an item up for sale (owner only)
 const putOnSale = async (itemId, price) => {
@@ -149,6 +89,7 @@ const getTokenSupplyByItemId = async (itemId) => {
 };
 
 export {
+    marketplaceItemExists,
     fetchMarketplaceItems,
     fetchMarketplaceItem,
     putOnSale,
