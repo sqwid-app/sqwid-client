@@ -30,6 +30,7 @@ const BottomContainer = styled.div`
 
 const Title = styled.h1`
 	font-weight: 900;
+	font-size: 1.5rem;
 `
 
 const HighestBidText = styled.label`

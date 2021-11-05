@@ -1,12 +1,15 @@
 import Wrapper from '@components/Default/Wrapper'
-import React from 'react'
-import HeroSection  from "@components/Explore/HeroSection"
+import FullPageLoading from '@elements/Default/FullPageLoading'
+import React, { Suspense } from 'react'
+const HeroSection = React.lazy(() => import("@components/Explore/HeroSection"))
 
 const Landing = () => {
 	return (
-		<Wrapper>
-			<HeroSection/>
-		</Wrapper>
+		<Suspense fallback={<FullPageLoading init component="explore"/>}>
+			<Wrapper>
+				<HeroSection/>
+			</Wrapper>
+		</Suspense>
 	)
 }
 

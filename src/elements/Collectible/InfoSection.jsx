@@ -1,6 +1,7 @@
 //eslint-disable-next-line
 import AuthContext from "@contexts/Auth/AuthContext";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
+import { getAvatarFromId } from "@utils/getAvatarFromId";
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -107,7 +108,9 @@ const InfoSection = () => {
 				<CreatorSection>
 					<Heading>Creator</Heading>
 					<Content>
-						<Logo url={`https://avatars.dicebear.com/api/identicon/${collectibleInfo.creator.name}.svg`}/>
+						<Logo
+							url={getAvatarFromId(collectibleInfo.creator.id)}
+						/>
 						<NotStyledLink href={`${window.location.origin}/profile/${collectibleInfo.creator.id}`}>{collectibleInfo.creator.name} <span> ({collectibleInfo.royalty}% royalty)</span></NotStyledLink>
 					</Content>
 				</CreatorSection>
@@ -123,7 +126,9 @@ const InfoSection = () => {
 				<OwnerSection>
 					<Heading>Owner</Heading>
 					<Content>
-						<Logo url={`https://avatars.dicebear.com/api/identicon/${collectibleInfo.owners.current.name}.svg`}/>
+						<Logo
+							url={getAvatarFromId(collectibleInfo.owners.current.id)}
+						/>
 						<TextGroup>
 							<NotStyledLink href={`${window.location.origin}/profile/${collectibleInfo.owners.current.id}`}>{collectibleInfo.owners.current.name}</NotStyledLink>
 							{(collectibleInfo.owners.total>1)&&(

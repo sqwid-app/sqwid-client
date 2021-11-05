@@ -10,6 +10,7 @@ import styled, { css, keyframes } from "styled-components";
 import Loading from "@elements/Default/Loading";
 import Changes from "@elements/Profile/Changes";
 import EditDetailsContext from "@contexts/EditDetails/EditDetailsContext";
+import { getAvatarFromId } from "@utils/getAvatarFromId";
 
 const Card = styled.div`
 	display: flex;
@@ -339,7 +340,7 @@ const ProfileCard = () => {
 					name:data.displayName,
 					description:data.bio,
 					address:id,
-					avatar:`https://avatars.dicebear.com/api/identicon/${id}.svg`
+					avatar: getAvatarFromId(id),
 				})
 			}
 			else if(auth){
@@ -347,7 +348,7 @@ const ProfileCard = () => {
 					...userData,
 					address:auth.address,
 					name: data.displayName,
-					avatar:`https://avatars.dicebear.com/api/identicon/${auth.address}.svg`,
+					avatar: getAvatarFromId(auth.address),
 					description:data.bio
 				})
 			}

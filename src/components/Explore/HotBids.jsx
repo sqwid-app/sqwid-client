@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import styled from "styled-components";
-const Card = React.lazy(()=>import("@elements/Explore/Card"));
+const Card = React.lazy(()=>import("@elements/Default/Card"));
 
 const Container = styled.div`
 	width: 100%;

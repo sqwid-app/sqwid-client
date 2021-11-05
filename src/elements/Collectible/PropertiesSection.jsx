@@ -56,28 +56,32 @@ const Heading = styled.h3`
 const PropertiesSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
 	return (
-		<Wrapper>
-			<Heading>Properties</Heading>
-			<SimpleBarReact>
-				<Container>
-				<LazyMotion features={domAnimation}>
-					{collectibleInfo.properties.map(( item,index ) => (
-							<Property
-								whileHover={{
-									y: -5,
-									x: 0,
-									scale:1.02
-								}}
-								key={index}
-							>
-								<label title={item.key}><h3>{item.key}</h3></label>
-								<label title={item.value}><p>{item.value}</p></label>
-							</Property>
-					))}
-				</LazyMotion>
-				</Container>
-			</SimpleBarReact>
-		</Wrapper>
+		<>
+			{Object.keys(collectibleInfo.properties).length !== 0&&(
+				<Wrapper>
+					<Heading>Properties</Heading>
+					<SimpleBarReact>
+						<Container>
+						<LazyMotion features={domAnimation}>
+							{collectibleInfo.properties.map(( item,index ) => (
+									<Property
+										whileHover={{
+											y: -5,
+											x: 0,
+											scale:1.02
+										}}
+										key={index}
+									>
+										<label title={item.key}><h3>{item.key}</h3></label>
+										<label title={item.value}><p>{item.value}</p></label>
+									</Property>
+							))}
+						</LazyMotion>
+						</Container>
+					</SimpleBarReact>
+				</Wrapper>
+			)}
+		</>
 	)
 }
 

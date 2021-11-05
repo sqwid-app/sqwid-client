@@ -76,7 +76,7 @@ const BidsSection = () => {
 	const bidsHistory = [{
 		bidder: {
 			name:"Andi",
-			thumb:"https://avatars.dicebear.com/api/identicon/andi.svg",
+			thumb:"https://avatars.dicebear.com/api/identicon/5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA.svg",
 			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA"
 		},
 		price:"1000",
@@ -84,7 +84,7 @@ const BidsSection = () => {
 	},{
 		bidder: {
 			name:"Boidushya",
-			thumb:"https://avatars.dicebear.com/api/identicon/boidushya.svg",
+			thumb:"https://avatars.dicebear.com/api/identicon/5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J.svg",
 			id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J"
 		},
 		price:"2000",
@@ -92,7 +92,7 @@ const BidsSection = () => {
 	},{
 		bidder: {
 			name:"Andi",
-			thumb:"https://avatars.dicebear.com/api/identicon/andi.svg",
+			thumb:"https://avatars.dicebear.com/api/identicon/5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA.svg",
 			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA"
 		},
 		price:"1000",
@@ -100,7 +100,7 @@ const BidsSection = () => {
 	},{
 		bidder: {
 			name:"Boidushya",
-			thumb:"https://avatars.dicebear.com/api/identicon/boidushya.svg",
+			thumb:"https://avatars.dicebear.com/api/identicon/5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J.svg",
 			id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J"
 		},
 		price:"2000",
@@ -108,7 +108,7 @@ const BidsSection = () => {
 	},{
 		bidder: {
 			name:"Andi",
-			thumb:"https://avatars.dicebear.com/api/identicon/andi.svg",
+			thumb:"https://avatars.dicebear.com/api/identicon/5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA.svg",
 			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA"
 		},
 		price:"1000",
@@ -116,7 +116,7 @@ const BidsSection = () => {
 	},{
 		bidder: {
 			name:"Boidushya",
-			thumb:"https://avatars.dicebear.com/api/identicon/boidushya.svg",
+			thumb:"https://avatars.dicebear.com/api/identicon/5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J.svg",
 			id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J"
 		},
 		price:"2000",
@@ -124,7 +124,7 @@ const BidsSection = () => {
 	},{
 		bidder: {
 			name:"Andi",
-			thumb:"https://avatars.dicebear.com/api/identicon/andi.svg",
+			thumb:"https://avatars.dicebear.com/api/identicon/5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA.svg",
 			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA"
 		},
 		price:"1000",
@@ -132,7 +132,7 @@ const BidsSection = () => {
 	},{
 		bidder: {
 			name:"Boidushya",
-			thumb:"https://avatars.dicebear.com/api/identicon/boidushya.svg",
+			thumb:"https://avatars.dicebear.com/api/identicon/5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J.svg",
 			id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J"
 		},
 		price:"2000",

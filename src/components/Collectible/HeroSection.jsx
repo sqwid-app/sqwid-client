@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 	height: 75vh;
 	display: grid;
 	grid-template-columns: repeat(2,minmax(0,1fr));
-	gap: 1rem;
+	gap: 2rem;
 `
 
 const LoadingContainer = styled.div`
@@ -84,7 +84,7 @@ const HeroSection = () => {
 		// 	price:"1250000000.11254592",
 		// 	highestBid:"99000",
 		// 	royalty: "12"
-		// 
+		//
 		const getData = async () => {
 			const data = await fetchMarketplaceItem (Number (addr));
 			if (data) {
