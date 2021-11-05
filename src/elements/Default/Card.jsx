@@ -22,9 +22,10 @@ const Card = ({ data }) => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper
-				whileHover = {{
+				whileTap = {{
 					x:0,
-					y:-7.5,
+					y:0,
+					scale:0.99
 				}}
 				href={`${window.location.origin}/collectible/${data.id}`}
 				target="_blank"

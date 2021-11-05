@@ -12,17 +12,17 @@ const Header = styled.h1`
 
 const SectionContainer = styled.div`
 	display: grid;
-	grid-template-columns: repeat(4,minmax(auto,12rem));
+	grid-template-columns: repeat(auto-fill,minmax(0,16rem));
 	width: 100%;
 	justify-content: space-around;
 	padding: 1rem 1.25rem;
-	gap: 2rem 0;
+	grid-gap: 2rem 1rem;
 `
 
 const HotBids = () => {
 	const cardContent = [{
 		id:"1",
-		name: "The POG",
+		name: "The NFT",
 		collection : {
 			thumb: "https://images.unsplash.com/photo-1635924941939-2b58521c61fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=263&q=80",
 			name: "Sqwid Collection",
@@ -51,7 +51,7 @@ const HotBids = () => {
 		}
 	},{
 		id:"1",
-		name: "The POG",
+		name: "The NFT",
 		collection : {
 			thumb: "https://images.unsplash.com/photo-1635924941939-2b58521c61fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=263&q=80",
 			name: "Sqwid Collection",
@@ -109,7 +109,7 @@ const HotBids = () => {
 		}
 	},{
 		id:"1",
-		name: "The POG",
+		name: "The NFT",
 		collection : {
 			thumb: "https://images.unsplash.com/photo-1635924941939-2b58521c61fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=263&q=80",
 			name: "Sqwid Collection",
@@ -138,7 +138,7 @@ const HotBids = () => {
 		}
 	},{
 		id:"1",
-		name: "The POG",
+		name: "The NFT",
 		collection : {
 			thumb: "https://images.unsplash.com/photo-1635924941939-2b58521c61fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=263&q=80",
 			name: "Sqwid Collection",
@@ -157,6 +157,35 @@ const HotBids = () => {
 		},
 		media:{
 			url:"https://images.unsplash.com/photo-1635372885681-0e0915d7b44d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+			type:"image/jpeg"
+		},
+		price:"1000",
+		highestBid:"900",
+		quantity:{
+			available:"10",
+			total:"24"
+		}
+	},{
+		id:"1",
+		name: "Bnnuy",
+		collection : {
+			thumb: "https://images.unsplash.com/photo-1635924941939-2b58521c61fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=263&q=80",
+			name: "Sqwid Collection",
+			id:"123"
+		},
+		owner:{
+			thumb:"https://avatars.dicebear.com/api/identicon/boidushya.svg",
+			name: "Boidushya",
+			id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J",
+			others:10,
+		},
+		creator:{
+			thumb:"https://avatars.dicebear.com/api/identicon/andi.svg",
+			name: "Andi",
+			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
+		},
+		media:{
+			url:"https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
 			type:"image/jpeg"
 		},
 		price:"1000",

@@ -44,13 +44,13 @@ const VideoContainer = styled.div`
 	width: 100%;
 	text-align: center;
 	object-fit: cover;
-	border-radius: 0.5rem;
 	overflow: hidden;
 	& video{
 		width: 100% !important;
 		height: 100% !important;
 		object-fit: cover;
 		object-position: center;
+		border-radius: 0.25rem;
 	}
 	&:before{
 		content:"▶";

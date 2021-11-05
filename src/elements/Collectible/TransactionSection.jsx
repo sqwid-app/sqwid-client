@@ -101,7 +101,11 @@ const HighestBid = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
 	return (
 		<HighestBidSection>
-			Highest Bid: <label title={numberSeparator(collectibleInfo.highestBid)}>{numberSeparator(collectibleInfo.highestBid)}</label>
+			{collectibleInfo.highestBid!=="0"&&(
+				<>
+					Highest Bid: <label title={numberSeparator(collectibleInfo.highestBid)}>{numberSeparator(collectibleInfo.highestBid)}</label>
+				</>
+			)}
 		</HighestBidSection>
 	)
 }

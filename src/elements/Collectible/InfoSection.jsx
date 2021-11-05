@@ -33,6 +33,7 @@ const Container = styled.div`
 
 const GroupContainer = styled(Container)`
 	gap: 1rem;
+	justify-content: center;
 `
 
 const Heading = styled.h3`
