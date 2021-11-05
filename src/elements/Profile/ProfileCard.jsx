@@ -346,7 +346,7 @@ const ProfileCard = () => {
 			else if(auth){
 				setUserData({
 					...userData,
-					address:auth.address,
+					address:auth.evmAddress,
 					name: data.displayName,
 					avatar: getAvatarFromId(auth.address),
 					description:data.bio
