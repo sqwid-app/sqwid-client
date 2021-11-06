@@ -29,6 +29,9 @@ const center = css`
 
 const PlyrContainer = styled.div`
 	height: 100%;
+	.plyr{
+		height: ${props=>props.audio?`auto`:`100%`};
+	}
 	${props=>props.audio&&center};
 `
 
@@ -51,12 +54,23 @@ const VideoContainer = ({ data }) => {
 
 const NFTContent = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
-	// const test={
-	// 	media:{
-	// 		type:"video/mp4",
-	// 		url:"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
-	// 	}
-	// }
+	/*
+	Couldn't be arsed to change the value every time so two constants 👍
+
+	const test={
+		media:{
+			type:"audio/mp3",
+			url:"https://samplelib.com/lib/preview/mp3/sample-9s.mp3"
+		}
+	}
+
+	const test={
+		media:{
+			type:"video/mp4",
+			url:"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+		}
+	}
+	*/
 	return (
 		<Container>
 			{collectibleInfo.media?.type.startsWith("image")?(
