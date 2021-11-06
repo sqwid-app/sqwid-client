@@ -11,6 +11,7 @@ import Loading from "@elements/Default/Loading";
 import Changes from "@elements/Profile/Changes";
 import EditDetailsContext from "@contexts/EditDetails/EditDetailsContext";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
+import { respondTo } from "@styles/styledMediaQuery";
 
 const Card = styled.div`
 	display: flex;
@@ -23,6 +24,12 @@ const Card = styled.div`
 	margin-left: 6rem;
 	z-index:10;
 	background:linear-gradient(180deg, #25252D 0%, #25252D 25%, rgba(64, 68, 84, 0) 100%);
+	${respondTo.md`
+		margin-left:0;
+		height: 100%;
+		padding-bottom: 2rem;
+		z-index:5;
+	`}
 `
 
 const Address = styled.h1`
@@ -356,7 +363,7 @@ const ProfileCard = () => {
 		.finally(()=>{
 			setIsLoading(false);
 		})
-		id?((id === auth?.address)&&setIsOwnAccount(true)):setIsOwnAccount(true)
+		id?((id === auth?.address ||id === auth?.evmAddress )&&setIsOwnAccount(true)):setIsOwnAccount(true)
 	//eslint-disable-next-line
 	},[info])
 	const copyAddress = () => {
@@ -386,8 +393,8 @@ const ProfileCard = () => {
 						<Name>{info.name.length?info.name:userData.name}</Name>
 						<AddressContainer>
 							<label title={userData.address}><Address>{truncateAddress(userData.address,6)}</Address></label>
-							<CopyIcon onClick={copyAddress}/>
-							<Tooltip style={{display:"none"}} ref={tooltipRef} remove={!tooltipVisible}>Copied to clipboard!</Tooltip>
+							{window.isSecureContext&&(<CopyIcon onClick={copyAddress}/>)}
+							<Tooltip style={{display:"none"}} ref={tooltipRef} remove={!tooltipVisible}>Copied!</Tooltip>
 						</AddressContainer>
 						<Description>
 							{clamp(info.description.length?info.description:userData.description)}

@@ -4,6 +4,8 @@ import CollectionsSection from "@elements/Profile/CollectionsSection";
 import ProfileCard from "@elements/Profile/ProfileCard";
 import React from "react";
 import styled from "styled-components";
+import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
+import MobileProfileSection from "./MobileProfileSection";
 
 const Section = styled.section`
 	min-height: 100vh;
@@ -19,16 +21,23 @@ const Cont = styled.div`
 `
 
 const ProfileSection = () => {
+	const isTabletOrMobile = useIsTabletOrMobile();
 	return (
-		<EditDetailsProvider>
-			<Section>
-				<Cont>
-					<ProfileCard/>
-					<CollectionsSection/>
-				</Cont>
-				<Background/>
-			</Section>
-		</EditDetailsProvider>
+		<>
+			{isTabletOrMobile?(
+				<MobileProfileSection/>
+			):(
+				<EditDetailsProvider>
+					<Section>
+						<Cont>
+							<ProfileCard/>
+							<CollectionsSection/>
+						</Cont>
+						<Background/>
+					</Section>
+				</EditDetailsProvider>
+			)}
+		</>
 	)
 }
 

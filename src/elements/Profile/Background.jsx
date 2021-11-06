@@ -1,3 +1,4 @@
+import { respondTo } from "@styles/styledMediaQuery";
 import React from "react";
 import styled from "styled-components";
 
@@ -11,6 +12,11 @@ const BackgroundContainer = styled.div`
 	height: 30vh;
 	width: 100vw;
 	z-index:0;
+	${respondTo.md`
+		top: 6rem;
+		background: url("https://images.unsplash.com/photo-1634662488276-087e4e126917?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80");
+		width: 100%;
+	`}
 `
 
 const Background = ({ seed }) => {

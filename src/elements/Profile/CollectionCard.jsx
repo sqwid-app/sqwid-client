@@ -11,6 +11,8 @@ const CollectionCardContainer = styled(m.a)`
 	background-size: cover;
 	background-position: center;
 	border-radius: 1rem;
+	min-height: 16rem;
+	min-width: 16rem;
 	height: 16rem;
 	width: 16rem;
 	overflow: hidden;
