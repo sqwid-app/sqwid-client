@@ -43,6 +43,8 @@ const Btn = styled(BtnBaseAnimated)`
 	height: 3.5rem;
 	z-index:2;
 	text-decoration: none;
+	width:90%;
+	justify-content:center;
 `
 
 const AnimBtn = ({ children, ...props }) => (

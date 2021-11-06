@@ -394,7 +394,7 @@ const ProfileCard = () => {
 						<AddressContainer>
 							<label title={userData.address}><Address>{truncateAddress(userData.address,6)}</Address></label>
 							{window.isSecureContext&&(<CopyIcon onClick={copyAddress}/>)}
-							<Tooltip style={{display:"none"}} ref={tooltipRef} remove={!tooltipVisible}>Copied!</Tooltip>
+							<Tooltip style={{display:"none"}} ref={tooltipRef} remove={!tooltipVisible}>Copied to clipboard!</Tooltip>
 						</AddressContainer>
 						<Description>
 							{clamp(info.description.length?info.description:userData.description)}
