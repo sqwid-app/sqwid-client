@@ -1,9 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import NFTCard from "@elements/Landing/NFTCard";
+import { respondTo } from "@styles/styledMediaQuery";
 
 const Wrapper = styled.div`
 	padding: 0 2rem;
+	${respondTo.md`
+		padding: 0rem;
+	`}
 `
 
 const Cards = styled.div`
@@ -13,6 +17,10 @@ const Cards = styled.div`
 	gap: 1.5rem;
 	padding-right: 4rem;
 	height: 100%;
+	${respondTo.md`
+		display: block;
+		padding-right: 0rem;
+	`}
 `
 
 const CardsContainer = () => {

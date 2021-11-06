@@ -1,12 +1,12 @@
 import React, { useRef } from "react";
-import { motion, useCycle } from "framer-motion";
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
 const Path = props => (
 	<motion.path
 		fill="transparent"
 		strokeWidth="3"
-		stroke="hsl(0, 0%, 18%)"
+		stroke="#fff"
 		strokeLinecap="round"
 		{...props}
 	/>
@@ -18,17 +18,17 @@ const Button = styled.button`
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+	user-select:none;
     cursor: pointer;
     width: 2.5rem;
     height: 2.5rem;
 	display: grid;
 	place-items:center;
     border-radius: 1000rem;
-    background: white;
+    background: var(--app-container-bg-primary);
 `
 
-export const MenuToggle = () => {
-	const [isOpen, toggleOpen] = useCycle(false, true);
+export const MenuToggle = ({ isOpen, toggleOpen }) => {
 	const containerRef = useRef(null);
 	return (
 		<motion.nav

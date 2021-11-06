@@ -4,7 +4,7 @@ import HeroSection  from "@components/Landing/HeroSection"
 
 const Landing = () => {
 	return (
-		<Wrapper>
+		<Wrapper landing>
 			<HeroSection/>
 		</Wrapper>
 	)

@@ -1,3 +1,4 @@
+import { respondTo } from "@styles/styledMediaQuery";
 import React from "react";
 import styled from "styled-components";
 import HotBids from "./HotBids";
@@ -9,6 +10,12 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+	${respondTo.md`
+		padding: 0;
+		h1{
+			padding-left: 3rem;
+		}
+	`}
 `
 
 const HeroSection = () => {

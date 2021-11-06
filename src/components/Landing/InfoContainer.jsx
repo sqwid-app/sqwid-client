@@ -1,3 +1,4 @@
+import { respondTo } from "@styles/styledMediaQuery";
 import constants from "@utils/constants";
 import React from "react";
 import styled from "styled-components";
@@ -18,13 +19,26 @@ const Wrapper = styled.div`
 		font-size: 2rem;
 		margin-right: 8rem;
 	}
+	${respondTo.md`
+		padding-left: 0;
+		h1{
+			text-align:center;
+			background: -webkit-linear-gradient(0deg,var(--app-text) 0%, var(--app-theme-primary) 150%);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+		}
+		h2{
+			text-align:center;
+			margin-right:0;
+		}
+	`}
 `
 
 const InfoContainer = () => {
 	return (
 		<Wrapper>
 			<h1>{constants.APP_NAME}</h1>
-			<h2>DeFi & Cross-chain Interoperability and other crypto/NFT buzzwords here</h2>
+			<h2>{constants.APP_DESCRIPTION}</h2>
 		</Wrapper>
 	)
 }

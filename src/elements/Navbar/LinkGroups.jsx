@@ -1,4 +1,5 @@
 import AuthContext from "@contexts/Auth/AuthContext";
+import { respondTo } from "@styles/styledMediaQuery";
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
@@ -18,6 +19,9 @@ const LinkContainer = styled.div`
 			color: var(--app-container-text-primary-hover);
 		}
 	}
+	${respondTo.md`
+		grid-auto-flow: row;
+	`}
 `
 
 const LinkGroups = () => {
@@ -30,7 +34,7 @@ const LinkGroups = () => {
 			</NavLink>
 			{isLoggedIn&&(
 				<>
-					<NavLink to="/profile" exact className="nav-links" activeClassName="nav-selected" target="_blank" rel="noopener noreferrer">
+					<NavLink to="/profile" exact className="nav-links" activeClassName="nav-selected">
 						Profile
 					</NavLink>
 					<NavLink to="/create" exact className="nav-links" activeClassName="nav-selected">

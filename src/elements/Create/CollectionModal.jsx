@@ -198,7 +198,7 @@ const ExistingContainer = styled(SimpleBarReact)`
 	display: flex;
 	flex-direction: column;
 	padding: 0 1rem;
-	max-height: 50vw;
+	max-height: 24rem;
 	overflow-y:auto;
 `
 
