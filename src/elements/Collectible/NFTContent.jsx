@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { respondTo } from "@styles/styledMediaQuery";
 import Plyr from "plyr-react";
-import "plyr-react/dist/plyr.css";
+import "@styles/plyr.css";
 
 const Container = styled.div`
 	flex:1;
