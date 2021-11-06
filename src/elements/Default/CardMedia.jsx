@@ -50,7 +50,7 @@ const VideoContainer = styled.div`
 		height: 100% !important;
 		object-fit: cover;
 		object-position: center;
-		border-radius: 0.25rem;
+		border-radius: 0.25rem 0.25rem 0 0;
 	}
 	&:before{
 		content:"▶";
