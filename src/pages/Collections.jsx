@@ -3,6 +3,7 @@ import FullPageLoading from "@elements/Default/FullPageLoading";
 import React,{ Suspense } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
+import NotFound from "./NotFound";
 const HeroSection = React.lazy(() => import("@components/Collections/HeroSection"))
 
 const MarginDiv = styled.div`
@@ -32,11 +33,17 @@ const Wrapper = ({ children }) => {
 const Collections = () => {
 	const { id } = useParams()
 	return (
-		<Suspense fallback={<FullPageLoading init component="collections"/>}>
-			<Wrapper>
-				<HeroSection id={id}/>
-			</Wrapper>
-		</Suspense>
+		<>
+			{(id)?(
+				<Suspense fallback={<FullPageLoading init component="collections"/>}>
+					<Wrapper>
+						<HeroSection id={id}/>
+					</Wrapper>
+				</Suspense>
+			):(
+				<NotFound stack={`Not a valid collections id`}/>
+			)}
+		</>
 	)
 }
 

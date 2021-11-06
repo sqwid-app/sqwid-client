@@ -1,11 +1,17 @@
 import Navbar from "@components/Default/Navbar";
 import React from "react";
 import styled from "styled-components";
+import { respondTo } from "@styles/styledMediaQuery";
 
 const MarginDiv = styled.div`
 	margin-top:8rem;
 	width: 33vw;
 	text-align:center;
+	${respondTo.md`
+		width: 100%;
+		margin-top: 3.75rem;
+		padding: 2rem;
+	`}
 `
 
 const Container = styled.div`

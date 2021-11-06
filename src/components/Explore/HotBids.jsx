@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import styled from "styled-components";
+import CardSectionContainer from "@elements/Default/CardSectionContainer";
 const Card = React.lazy(()=>import("@elements/Default/Card"));
 
 const Container = styled.div`
@@ -8,15 +9,6 @@ const Container = styled.div`
 
 const Header = styled.h1`
 	font-weight: 900;
-`
-
-const SectionContainer = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fill,minmax(0,16rem));
-	width: 100%;
-	justify-content: space-around;
-	padding: 1.5rem 1.25rem;
-	grid-gap: 2rem 1rem;
 `
 
 const HotBids = () => {
@@ -198,7 +190,7 @@ const HotBids = () => {
 	return (
 		<Container>
 			<Header>Hot Bids 🔥</Header>
-			<SectionContainer>
+			<CardSectionContainer>
 				<Suspense>
 					{cardContent.map((item,index)=>(
 						<Card
@@ -207,7 +199,7 @@ const HotBids = () => {
 						/>
 					))}
 				</Suspense>
-			</SectionContainer>
+			</CardSectionContainer>
 		</Container>
 	)
 }

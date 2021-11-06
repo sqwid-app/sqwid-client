@@ -28,7 +28,7 @@ const BottomContainer = styled.div`
 	justify-content: space-between;
 `
 
-const Title = styled.h1`
+const Title = styled.h2`
 	font-weight: 900;
 	font-size: 1.5rem;
 `

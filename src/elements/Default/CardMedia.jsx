@@ -85,7 +85,13 @@ const VideoCard = ({ url }) => {
 		isPlaying ? videoRef.current.play() : videoRef.current.pause();
 	}, [isPlaying]);
 	return (
-		<VideoContainer playing={isPlaying} onMouseEnter={togglePlay} onMouseLeave={togglePlay}>
+		<VideoContainer
+			playing={isPlaying}
+			onMouseEnter={togglePlay}
+			onMouseLeave={togglePlay}
+			onTouchStart={togglePlay}
+			onTouchEnd={togglePlay}
+		>
 			<video
 			ref={videoRef}
 			loop

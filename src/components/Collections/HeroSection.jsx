@@ -1,3 +1,5 @@
+import CardSectionContainer from "@elements/Default/CardSectionContainer";
+import { respondTo } from "@styles/styledMediaQuery";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import React, { Suspense } from "react";
 import styled from "styled-components";
@@ -9,6 +11,9 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+	${respondTo.md`
+		padding: 0 2rem;
+	`}
 `
 
 const Header = styled.h1`
@@ -23,15 +28,10 @@ const HeaderContainer = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-`
-
-const SectionContainer = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fill,minmax(0,16rem));
-	width: 100%;
-	justify-content: space-around;
-	padding: 1.5rem 1.25rem;
-	grid-gap: 2rem 1rem;
+	${respondTo.md`
+		flex-direction: column;
+		gap: 0.5rem;
+	`}
 `
 
 const CollectionsLogo = styled.div`
@@ -240,7 +240,7 @@ const HeroSection = ({ id }) => {
 					{collectionsInfo.creator.name}
 				</Creator>
 			</HeaderContainer>
-			<SectionContainer>
+			<CardSectionContainer>
 				<Suspense>
 					{collectionsInfo.content.map((item,index)=>(
 						<Card
@@ -250,7 +250,7 @@ const HeroSection = ({ id }) => {
 						/>
 					))}
 				</Suspense>
-			</SectionContainer>
+			</CardSectionContainer>
 		</Wrapper>
 	)
 }
