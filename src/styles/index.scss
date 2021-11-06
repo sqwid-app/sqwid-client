@@ -1,9 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap');
 
 :root{
+	/*
+		app config
+	*/
 	--app-background: hsl(230, 36%, 4%);
 	--app-text: hsl(0, 0%, 100%);
-	// --app-theme-primary: linear-gradient(45deg, #fd5392, #fe988b);
 	--app-theme-primary: rgb(13, 104, 216);
 	--app-theme-primary-transparent: rgba(13, 104, 216, 0.5);
 	--app-theme-primary-disabled: #135cb5;
@@ -12,6 +14,12 @@
 	--app-container-text-primary-hover: hsl(240, 6%, 75%);
 	--app-modal-btn-primary:hsl(225, 14%, 9%);
 	--font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	/*
+		plyr config
+	*/
+	--plyr-audio-controls-background: var(--app-container-bg-primary);
+	--plyr-audio-control-color: var(--app-text);
+	--plyr-color-main: var(--app-theme-primary);
 }
 
 html, body{
