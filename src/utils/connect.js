@@ -24,7 +24,7 @@ const Connect = async (account) => {
                 signer
             }
         }
-        let res = await axios.get(`${process.env.REACT_APP_API_URL}/api/nonce?address=${account.address}`);
+        let res = await axios.get(`${process.env.REACT_APP_API_URL}/nonce?address=${account.address}`);
         let { nonce } = res.data;
 
         const sres = await signRaw ({
@@ -35,7 +35,7 @@ const Connect = async (account) => {
 
         const { signature } = sres;
 		try{
-			res = await axios (`${process.env.REACT_APP_API_URL}/api/auth`, {
+			res = await axios (`${process.env.REACT_APP_API_URL}/auth`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

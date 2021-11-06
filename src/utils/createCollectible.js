@@ -43,7 +43,7 @@ const createCollectible = async (files) => {
 	// jwt = null;
 	if (jwt) {
 		try {
-			const metadata = await axios.post(`${process.env.REACT_APP_API_URL}/api/create/collectible`, data, {
+			const metadata = await axios.post(`${process.env.REACT_APP_API_URL}/create/collectible`, data, {
 				headers: {
 					'Authorization': `Bearer ${jwt.token}`
 				}
@@ -62,7 +62,7 @@ const createCollectible = async (files) => {
 				try {
 					const verification = await axios ({
 						method: 'get',
-						url: `${process.env.REACT_APP_API_URL}/api/create/collectible/sync`,
+						url: `${process.env.REACT_APP_API_URL}/create/collectible/sync`,
 					});
 					return verification.data;
 				} catch (e) {

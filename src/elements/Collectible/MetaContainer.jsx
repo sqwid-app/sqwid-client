@@ -1,5 +1,4 @@
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
-import { respondTo } from "@styles/styledMediaQuery";
 import { clamp } from "@utils/textUtils";
 import React, { useContext } from "react";
 import styled from "styled-components";
@@ -12,13 +11,10 @@ const Title = styled.h1`
 `
 
 const Description = styled.h3`
-	margin-top:1rem;
+	margin-top:0.5rem;
 	font-weight: 800;
 	font-size: 1rem;
 	color: var(--app-container-text-primary-hover);
-	${respondTo.md`
-		margin-top:0.5rem;
-	`}
 `
 
 const MetaContainer = () => {

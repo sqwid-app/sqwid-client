@@ -36,3 +36,11 @@
 		stroke-width: 0;
 	}
 }
+
+// plyr configs
+
+:root{
+	--plyr-audio-controls-background: var(--app-container-bg-primary);
+	--plyr-audio-control-color: var(--app-text);
+	--plyr-color-main: var(--app-theme-primary);
+}

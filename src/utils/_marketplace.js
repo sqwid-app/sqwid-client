@@ -10,7 +10,7 @@ const marketplaceContract = (signerOrProvider) => new ethers.Contract (process.e
 
 const getNameByAddress = async (address) => {
     try {
-        const res = await axios (`${process.env.REACT_APP_API_URL}/api/get/user/${address}`);
+        const res = await axios (`${process.env.REACT_APP_API_URL}/get/user/${address}`);
         return res.data.displayName;
     } catch (e) {
         return address;
@@ -30,7 +30,7 @@ const fetchMarketplaceItems = async () => {
             let metaURI = await cContract.uri (item.tokenId);
             let res = await axios (getDwebURL (metaURI));
             let meta = res.data;
-            res = await axios (`${process.env.REACT_APP_API_URL}/api/get/collections/id/${meta.properties.collection}`);
+            res = await axios (`${process.env.REACT_APP_API_URL}/get/collections/id/${meta.properties.collection}`);
             let collection = res.data?.collection?.data;
             let obj = {
                 itemId: Number (item.itemId),
@@ -77,7 +77,7 @@ const fetchMarketplaceItem = async (itemId) => {
         let res = await axios (getDwebURL (metaURI));
         let meta = res.data;
         const creator = meta.properties.creator;
-        res = await axios (`${process.env.REACT_APP_API_URL}/api/get/collections/id/${meta.properties.collection}`);
+        res = await axios (`${process.env.REACT_APP_API_URL}/get/collections/id/${meta.properties.collection}`);
         let collection = res.data?.collection?.data;
         info = {
             itemId: Number (item.itemId),

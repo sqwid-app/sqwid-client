@@ -140,8 +140,8 @@ const BidsSection = () => {
 	}]
 	return (
 		<Wrapper>
-			{bidsHistory.map(item=>(
-				<BidsCard {...item}/>
+			{bidsHistory.map((item,index)=>(
+				<BidsCard key={index} {...item}/>
 			))}
 		</Wrapper>
 	)

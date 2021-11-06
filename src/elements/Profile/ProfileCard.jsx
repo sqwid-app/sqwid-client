@@ -198,7 +198,7 @@ const NameEditSection = ({ name, setSync }) => {
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
 			if(info.name.length){
-				axios.post(`${process.env.REACT_APP_API_URL}/api/edit/user/displayName`,{
+				axios.post(`${process.env.REACT_APP_API_URL}/edit/user/displayName`,{
 					displayName:info.name
 				},{
 					headers: {
@@ -259,7 +259,7 @@ const DescriptionEditSection = ({ description, setSync }) => {
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
 			if(info.description.length){
-				axios.post(`${process.env.REACT_APP_API_URL}/api/edit/user/bio`,{
+				axios.post(`${process.env.REACT_APP_API_URL}/edit/user/bio`,{
 					bio:info.description
 				},{
 					headers: {
@@ -339,7 +339,7 @@ const ProfileCard = () => {
 	const [userData, setUserData] = useState(initialState)
 	useEffect(()=>{
 		let address = id?id:auth.address
-		axios.get(`${process.env.REACT_APP_API_URL}/api/get/user/${address}`)
+		axios.get(`${process.env.REACT_APP_API_URL}/get/user/${address}`)
 		.then(({data})=>{
 			if(id){
 				setUserData({

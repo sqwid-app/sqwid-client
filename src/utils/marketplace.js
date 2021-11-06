@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // const getNameByAddress = async (address) => {
 //     try {
-//         const res = await axios (`${process.env.REACT_APP_API_URL}/api/get/user/${address}`);
+//         const res = await axios (`${process.env.REACT_APP_API_URL}/get/user/${address}`);
 //         return res.data.displayName;
 //     } catch (e) {
 //         return address;
@@ -11,7 +11,7 @@ import axios from 'axios';
 
 // returns all marketplace items
 const fetchMarketplaceItems = async () => {
-    const res = await axios (`${process.env.REACT_APP_API_URL}/api/get/r/marketplace/fetchMarketItems`);
+    const res = await axios (`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItems`);
     const { data } = res;
     if (data.error) {
         return [];
@@ -20,7 +20,7 @@ const fetchMarketplaceItems = async () => {
 };
 // returns a certain marketplace item
 const fetchMarketplaceItem = async (itemId) => {
-    const res = await axios (`${process.env.REACT_APP_API_URL}/api/get/r/marketplace/fetchMarketItem/${itemId}`);
+    const res = await axios (`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItem/${itemId}`);
     const { data } = res;
     if (data.error) {
         return null;
@@ -29,7 +29,7 @@ const fetchMarketplaceItem = async (itemId) => {
 };
 
 const marketplaceItemExists = async (itemId) => {
-    const res = await axios (`${process.env.REACT_APP_API_URL}/api/get/r/marketplace/itemExists/${itemId}`);
+    const res = await axios (`${process.env.REACT_APP_API_URL}/get/r/marketplace/itemExists/${itemId}`);
     const { data } = res;
     if (data.error) {
         return false;
