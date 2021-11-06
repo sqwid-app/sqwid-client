@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { respondTo } from '@styles/styledMediaQuery'
 
 const MarginDiv = styled.div`
-	margin-top:8rem;
+	margin-top:${props=>props.landing?`10rem`:`8rem`};
 	${respondTo.md`
 		margin-top:4rem;
 	`}
@@ -16,7 +16,7 @@ const Wrapper = ({ children, landing }) => {
 		<>
 		<Navbar/>
 		<Container landing={landing}>
-			<MarginDiv>
+			<MarginDiv landing={landing}>
 				{children}
 			</MarginDiv>
 		</Container>

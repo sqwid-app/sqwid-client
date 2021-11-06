@@ -1,6 +1,7 @@
 //eslint-disable-next-line
 import AuthContext from "@contexts/Auth/AuthContext";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
+import { respondTo } from "@styles/styledMediaQuery";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
@@ -10,6 +11,11 @@ const Group = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	${respondTo.md`
+		flex-direction: column;
+		align-items:flex-start;
+		gap: 1rem;
+	`}
 `
 
 const Logo = styled.div`

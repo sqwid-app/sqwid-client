@@ -2,6 +2,7 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import InfoContent from "@elements/Collectible/InfoContent";
 import NFTContent from "@elements/Collectible/NFTContent";
 import LoadingIcon from "@static/svg/LoadingIcon";
+import { respondTo } from "@styles/styledMediaQuery";
 //eslint-disable-next-line
 import { fetchMarketplaceItem, marketplaceItemExists } from "@utils/marketplace";
 import React, { useContext, useEffect, useState } from "react";
@@ -11,9 +12,15 @@ import styled from "styled-components";
 const Wrapper = styled.div`
 	padding: 0 6rem;
 	height: 75vh;
-	display: grid;
-	grid-template-columns: repeat(2,minmax(0,1fr));
+	display: flex;
+	/* grid-template-columns: repeat(2,minmax(0,1fr)); */
 	gap: 2rem;
+	${respondTo.md`
+		padding: 0 2rem;
+		flex-direction: column-reverse;
+		min-height: 85vh;
+		height: auto;
+	`}
 `
 
 const LoadingContainer = styled.div`
