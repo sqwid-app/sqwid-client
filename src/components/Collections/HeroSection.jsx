@@ -1,8 +1,10 @@
 import CardSectionContainer from "@elements/Default/CardSectionContainer";
 import { respondTo } from "@styles/styledMediaQuery";
-import { getAvatarFromId } from "@utils/getAvatarFromId";
-import React, { Suspense } from "react";
+// import { getAvatarFromId } from "@utils/getAvatarFromId";
+import React, { Suspense, useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from 'axios';
+import LoadingIcon from "@static/svg/LoadingIcon";
 const Card = React.lazy(()=>import("@elements/Default/Card"));
 
 const Wrapper = styled.div`
@@ -63,195 +65,74 @@ const Creator = styled.a`
 	text-decoration: none;
 	color: var(--app-text);
 `
+const LoadingContainer = styled.div`
+	height: 70vh;
+	width: 100%;
+	display: grid;
+	place-items:center;
+`
+
+const NoItems = styled.div`
+	text-align: center;
+	font-size: 1.5rem;
+`
 
 const HeroSection = ({ id }) => {
-	const cardContent = [{
-		id:"1",
-		name: "The POG",
-		collection : {
-			thumb: "https://images.unsplash.com/photo-1635924941939-2b58521c61fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=263&q=80",
-			name: "Sqwid Collection",
-			id:"123"
-		},
-		owner:{
-			thumb:"https://avatars.dicebear.com/api/identicon/boidushya.svg",
-			name: "Boidushya",
-			id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J",
-			others:10,
-		},
-		creator:{
-			thumb:"https://avatars.dicebear.com/api/identicon/andi.svg",
-			name: "Andi",
-			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
-		},
-		media:{
-			url:"https://images.unsplash.com/photo-1635944095210-23114a1fb7c0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-			type:"image/jpeg"
-		},
-		price:"1000",
-		highestBid:"900",
-		quantity:{
-			available:"10",
-			total:"24"
+	const [collectionsInfo, setCollectionsInfo] = useState({});
+	const [isLoading, setIsLoading] = useState(true)
+
+	useEffect (() => {
+		const fetchData = async () => {
+			const result = await axios (`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItems/collection/${id}`);
+			let items = result.data;
+			setCollectionsInfo (items);
+			setIsLoading (false);
 		}
-	},{
-		id:"1",
-		name: "The POG",
-		collection : {
-			thumb: "https://images.unsplash.com/photo-1635924941939-2b58521c61fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=263&q=80",
-			name: "Sqwid Collection",
-			id:"123"
-		},
-		owner:{
-			thumb:"https://avatars.dicebear.com/api/identicon/boidushya.svg",
-			name: "Boidushya",
-			id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J",
-			others:10,
-		},
-		creator:{
-			thumb:"https://avatars.dicebear.com/api/identicon/andi.svg",
-			name: "Andi",
-			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
-		},
-		media:{
-			url:"https://images.unsplash.com/photo-1635954641242-cb2a356a0e6d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-			type:"image/jpeg"
-		},
-		price:"1000",
-		highestBid:"900",
-		quantity:{
-			available:"10",
-			total:"24"
-		}
-	},{
-		id:"1",
-		name: "1261",
-		collection : {
-			thumb: "https://images.unsplash.com/photo-1635924941939-2b58521c61fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=263&q=80",
-			name: "Sqwid Collection",
-			id:"123"
-		},
-		owner:{
-			thumb:"https://avatars.dicebear.com/api/identicon/boidushya.svg",
-			name: "Boidushya",
-			id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J",
-			others:10,
-		},
-		creator:{
-			thumb:"https://avatars.dicebear.com/api/identicon/andi.svg",
-			name: "Andi",
-			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
-		},
-		media:{
-			url:"https://images.unsplash.com/photo-1471897488648-5eae4ac6686b?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-			type:"image/jpeg"
-		},
-		price:"1000",
-		highestBid:"900",
-		quantity:{
-			available:"10",
-			total:"24"
-		}
-	},{
-		id:"1",
-		name: "The POG",
-		collection : {
-			thumb: "https://images.unsplash.com/photo-1635924941939-2b58521c61fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=263&q=80",
-			name: "Sqwid Collection",
-			id:"123"
-		},
-		owner:{
-			thumb:"https://avatars.dicebear.com/api/identicon/boidushya.svg",
-			name: "Boidushya",
-			id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J",
-			others:10,
-		},
-		creator:{
-			thumb:"https://avatars.dicebear.com/api/identicon/andi.svg",
-			name: "Andi",
-			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
-		},
-		media:{
-			url:"https://images.unsplash.com/photo-1635910160061-4b688344bd20?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-			type:"image/jpeg"
-		},
-		price:"1000",
-		highestBid:"900",
-		quantity:{
-			available:"10",
-			total:"24"
-		}
-	},{
-		id:"1",
-		name: "The POG",
-		collection : {
-			thumb: "https://images.unsplash.com/photo-1635924941939-2b58521c61fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=263&q=80",
-			name: "Sqwid Collection",
-			id:"123"
-		},
-		owner:{
-			thumb:"https://avatars.dicebear.com/api/identicon/boidushya.svg",
-			name: "Boidushya",
-			id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J",
-			others:10,
-		},
-		creator:{
-			thumb:"https://avatars.dicebear.com/api/identicon/andi.svg",
-			name: "Andi",
-			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
-		},
-		media:{
-			url:"https://images.unsplash.com/photo-1635372885681-0e0915d7b44d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-			type:"image/jpeg"
-		},
-		price:"1000",
-		highestBid:"900",
-		quantity:{
-			available:"10",
-			total:"24"
-		}
-	}]
-	const collectionsInfo = {
-		name:"Sqwid Originals",
-		creator: {
-			id:"5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J",
-			name:"Boidushya",
-			thumb: getAvatarFromId("5DMKdZRQ93LqyAVt3aw8wYHGyxofKcxbsBfBytUBgTEHCT4J"),
-		},
-		thumb:"https://images.unsplash.com/photo-1635924941939-2b58521c61fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=263&q=80",
-		content: cardContent
-	}
+		fetchData ();
+	}, [id]);
+
 	return (
-		<Wrapper>
-			<HeaderContainer>
-				<Header>
-					<CollectionsLogo
-						url={collectionsInfo.thumb}
-					/>
-					{collectionsInfo.name}
-				</Header>
-				<Creator
-					href={`${window.location.origin}/profile/${collectionsInfo.creator.id}`}
-				>
-					by
-					<CreatorLogo
-						url = {collectionsInfo.creator.thumb}
-					/>
-					{collectionsInfo.creator.name}
-				</Creator>
-			</HeaderContainer>
-			<CardSectionContainer>
-				<Suspense>
-					{collectionsInfo.content.map((item,index)=>(
-						<Card
-							key={index}
-							data={item}
-							collections
-						/>
-					))}
-				</Suspense>
-			</CardSectionContainer>
-		</Wrapper>
+		<>
+			{isLoading?(
+				<LoadingContainer>
+					<LoadingIcon size={64}/>
+				</LoadingContainer>
+			):(
+				<Wrapper>
+					<HeaderContainer>
+						<Header>
+							<CollectionsLogo
+								url={collectionsInfo.thumb}
+							/>
+							{collectionsInfo.name}
+						</Header>
+						<Creator
+							href={`${window.location.origin}/profile/${collectionsInfo.creator.id}`}
+						>
+							by
+							<CreatorLogo
+								url = {collectionsInfo.creator.thumb}
+							/>
+							{collectionsInfo.creator.name}
+						</Creator>
+					</HeaderContainer>
+					{collectionsInfo.content.length === 0 ? (
+								<NoItems>No items in this collection 💀</NoItems>
+					) : <CardSectionContainer>
+							<Suspense>
+								{collectionsInfo.content.map((item,index)=>(
+									<Card
+										key={index}
+										data={item}
+										collections
+									/>
+								))}
+							</Suspense>
+						</CardSectionContainer>
+					}
+				</Wrapper>
+			)}
+		</>
 	)
 }
 
