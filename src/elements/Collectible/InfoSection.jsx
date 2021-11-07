@@ -23,7 +23,7 @@ const Logo = styled.div`
 	width: 2rem;
 	border-radius: 1000rem;
 	border: 0.1rem solid var(--app-text);
-	background-image: url(${props=>props.url&&props.url});
+	background-image: url("${props=>props.url&&props.url}");
 	background-size:cover;
 	background-repeat:no-repeat;
 	background-position: center;
