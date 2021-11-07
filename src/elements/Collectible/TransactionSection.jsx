@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import AuthContext from "@contexts/Auth/AuthContext";
@@ -6,6 +6,7 @@ import { domAnimation, LazyMotion } from "framer-motion";
 import ReefIcon from "@static/svg/ReefIcon";
 import { numberSeparator } from "@utils/numberSeparator";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
+import { BidsModal, PutOnSaleModal, BuyModal } from "./Modals";
 
 const Container = styled.div`
 	display: flex;
@@ -90,10 +91,14 @@ const CurrentPrice = () => {
 }
 
 const BuyNow = () => {
+	const [showModal, setShowModal] = useState(false)
 	return (
-		<AnimBtn>
-			Buy Now
-		</AnimBtn>
+		<>
+			<AnimBtn>
+				Buy Now
+			</AnimBtn>
+			<BuyModal isActive={showModal} setIsActive={setShowModal}/>
+		</>
 	)
 }
 
@@ -111,10 +116,14 @@ const HighestBid = () => {
 }
 
 const Bid = () => {
+	const [showModal, setShowModal] = useState(false)
 	return (
-		<AnimBtn>
+		<>
+		<AnimBtn onClick={()=>setShowModal(!showModal)}>
 			Bid
 		</AnimBtn>
+		<BidsModal isActive={showModal} setIsActive={setShowModal}/>
+		</>
 	)
 }
 
@@ -127,10 +136,14 @@ const StopSale = () => {
 }
 
 const PutOnSale = () => {
+	const [showModal, setShowModal] = useState(false)
 	return (
-		<AnimBtn>
-			Put on Sale
-		</AnimBtn>
+		<>
+			<AnimBtn>
+				Put on Sale
+			</AnimBtn>
+			<PutOnSaleModal isActive={showModal} setIsActive={setShowModal}/>
+		</>
 	)
 }
 

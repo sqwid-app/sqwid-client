@@ -5,7 +5,7 @@ export const initialState = {
 		name:"",
 		id:""
 	},
-	owners:[],
+	owners:{},
 	collection: {
 		name:"",
 		cover:""
