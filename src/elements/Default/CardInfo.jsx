@@ -79,12 +79,12 @@ const CardInfo = ({ data }) => {
 				<Title>{data.name}</Title>
 				<CardHeaderIcons data={data}/>
 			</TopContainer>
-			<MiddleContainer>
+			{data.highestBid !== '0' ? <MiddleContainer>
 				<HighestBidText title={numberSeparator(data.highestBid)}>Highest Bid: <ReefIcon size={`1.25rem`} centered /> <span>{numberSeparator(data.highestBid)}</span></HighestBidText>
-			</MiddleContainer>
+			</MiddleContainer> : null }
 			<BottomContainer>
 				<Quantity>{data.quantity.available} of {data.quantity.total}</Quantity>
-				<Price title={numberSeparator(data.price)}><ReefIcon size={`1.5rem`} /><span>{numberSeparator(data.price)}</span></Price>
+				{data.price !== '0' ? <Price title={numberSeparator(data.price)}><ReefIcon size={`1.5rem`} /><span>{numberSeparator(data.price)}</span></Price> : null }
 			</BottomContainer>
 		</Wrapper>
 	)

@@ -1,7 +1,9 @@
 import { respondTo } from "@styles/styledMediaQuery";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import HotBids from "./HotBids";
+import LoadingIcon from "@static/svg/LoadingIcon";
 import RecentlyListed from "./RecentlyListed";
 
 const Wrapper = styled.div`
@@ -18,12 +20,43 @@ const Wrapper = styled.div`
 	`}
 `
 
+const LoadingContainer = styled.div`
+	height: 70vh;
+	width: 100%;
+	display: grid;
+	place-items:center;
+`
+
 const HeroSection = () => {
+	const [hotBids, setHotBids] = useState([]);
+	const [recentlyListed, setRecentlyListed] = useState([]);
+	const [isLoading, setIsLoading] = useState(true)
+	useEffect (() => {
+		const fetchData = async () => {
+			const result = await axios (`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItems`);
+			let items = result.data;
+			setHotBids (items.sort ((a, b) => Number (b.highestBid) - Number (a.highestBid)).slice (0, 3));
+			setRecentlyListed (items.sort ((itemA, itemB) => {
+				return Number (itemB.id) - Number (itemA.id);
+			}));
+			setIsLoading (false);
+		}
+		fetchData ();
+	}, []);
+
 	return (
-		<Wrapper>
-			<HotBids/>
-			<RecentlyListed/>
-		</Wrapper>
+		<>
+			{isLoading?(
+				<LoadingContainer>
+					<LoadingIcon size={64}/>
+				</LoadingContainer>
+			):(
+				<Wrapper>
+				<HotBids items = { hotBids } />
+				<RecentlyListed items = { recentlyListed }/>
+			</Wrapper>
+			)}
+		</>
 	)
 }
 
