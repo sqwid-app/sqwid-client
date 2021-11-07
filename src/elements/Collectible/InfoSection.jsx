@@ -33,8 +33,6 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
-	flex:1 1 0;
-	height: 100%;
 `
 
 const GroupContainer = styled(Container)`
