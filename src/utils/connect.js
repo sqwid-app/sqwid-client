@@ -5,9 +5,7 @@ import { stringToHex } from '@polkadot/util';
 import axios from "axios";
 // const WS_URL = 'wss://rpc-testnet.reefscan.com/ws';
 
-const provider = new Provider ({
-    provider: new WsProvider (process.env.REACT_APP_RPC_URL)
-});
+let provider;
 
 const Init = async () => {
     await web3Enable ('Sqwid');
@@ -87,7 +85,9 @@ const Interact = async (address = null) => {
     if (!address) address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
     const allInjected = await web3Enable ('Sqwid');
     const injected = allInjected[0].signer;
-    
+    if (!provider) provider = new Provider ({
+        provider: new WsProvider (process.env.REACT_APP_RPC_URL)
+    });
     await provider.api.isReady;
 
     const signer = new Signer (provider, address, injected);
