@@ -7,6 +7,9 @@ import "@styles/plyr.css";
 
 const Container = styled.div`
 	flex:1;
+	${respondTo.md`
+		flex: none;
+	`}
 `
 
 const ImageContainer = styled.div`
@@ -43,10 +46,22 @@ const VideoContainer = ({ data }) => {
 			src: data.url
 		}]
 	}
+	const options = {
+		controls: [
+			'play',
+			'progress',
+			'current-time',
+			'duration',
+			'mute',
+			'volume',
+			'fullscreen'
+		],
+	}
 	return (
 		<PlyrContainer audio={type==="audio"}>
 			<Plyr
 				source={settings}
+				options={options}
 			/>
 		</PlyrContainer>
 	)
