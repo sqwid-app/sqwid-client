@@ -24,6 +24,7 @@
 		"react-responsive": "^9.0.0-beta.4",
 		"react-router-dom": "^5.3.0",
 		"react-scripts": "4.0.3",
+		"react-wavify": "^1.5.4",
 		"rebound": "^0.1.0",
 		"sass": "^1.43.2",
 		"simplebar-react": "^2.3.6",
