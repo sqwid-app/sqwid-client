@@ -43,13 +43,13 @@ const LoadingContainer = styled.div`
 `
 
 const Title = styled.h1`
-	position:fixed;
+	position:absolute;
 	font-weight: 800;
 	font-size: 2rem;
 	user-select: none;
+	padding-left: 2rem;
 	${respondTo.md`
 		position: relative;
-		padding-left: 2rem;
 		margin-top: 2rem;
 	`}
 `
@@ -99,8 +99,9 @@ const CollectionsSection = () => {
 					)}
 				</>
 			):(
+				<>
+				<Title>Collections</Title>
 				<CustomScrollbar autoHide>
-					<Title>Collections</Title>
 					{isLoading?(
 						<LoadingContainer>
 							<LoadingIcon/>
@@ -113,6 +114,7 @@ const CollectionsSection = () => {
 						</Container>
 					)}
 				</CustomScrollbar>
+				</>
 			)}
 		</Wrapper>
 	)

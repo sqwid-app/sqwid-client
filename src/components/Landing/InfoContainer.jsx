@@ -10,6 +10,7 @@ const Wrapper = styled.div`
 	padding-left: 4rem;
 	line-height: 1.125;
 	gap: 2rem;
+	min-height: 100%;
 	h1{
 		font-weight: 900;
 		font-size: 6rem;

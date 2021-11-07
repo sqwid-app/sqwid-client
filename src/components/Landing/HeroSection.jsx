@@ -70,6 +70,7 @@ const MobileContainer = () => {
 const HeroSection = () => {
 	const isTabletOrMobile = useIsTabletOrMobile();
 	return (
+		<>
 		<Wrapper>
 			<InfoContainer/>
 			{isTabletOrMobile?(
@@ -78,6 +79,7 @@ const HeroSection = () => {
 				<CardsContainer/>
 			)}
 		</Wrapper>
+		</>
 	)
 }
 

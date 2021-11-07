@@ -4,11 +4,11 @@ import CollectionsSection from "@elements/Profile/CollectionsSection";
 import ProfileCard from "@elements/Profile/ProfileCard";
 import React from "react";
 import styled from "styled-components";
-import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
-import MobileProfileSection from "./MobileProfileSection";
+import { respondTo } from "@styles/styledMediaQuery";
+import OwnedNFTSection from "@elements/Profile/OwnedNFTSection";
 
 const Section = styled.section`
-	min-height: 100vh;
+	min-height: 90vh;
 	max-width: 100vw;
 `
 
@@ -18,25 +18,28 @@ const Cont = styled.div`
 	bottom: 0;
 	z-index:1;
 	width: 100%;
+	${respondTo.md`
+		position: static;
+		margin-top: 8rem;
+		flex-direction: column;
+		align-items:center;
+		padding-top: 8rem;
+	`}
 `
 
 const ProfileSection = () => {
-	const isTabletOrMobile = useIsTabletOrMobile();
 	return (
 		<>
-			{isTabletOrMobile?(
-				<MobileProfileSection/>
-			):(
-				<EditDetailsProvider>
-					<Section>
-						<Cont>
-							<ProfileCard/>
-							<CollectionsSection/>
-						</Cont>
-						<Background/>
-					</Section>
-				</EditDetailsProvider>
-			)}
+			<EditDetailsProvider>
+				<Section>
+					<Cont>
+						<ProfileCard/>
+						<CollectionsSection/>
+					</Cont>
+					<Background/>
+				</Section>
+				<OwnedNFTSection/>
+			</EditDetailsProvider>
 		</>
 	)
 }

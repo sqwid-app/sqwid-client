@@ -1,6 +1,6 @@
 import ReefIcon from "@static/svg/ReefIcon";
 import { numberSeparator } from "@utils/numberSeparator";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styled, { css } from "styled-components";
 import SimpleBarReact from "simplebar-react";
 import 'simplebar/dist/simplebar.min.css';
@@ -236,9 +236,19 @@ const BidsSection = () => {
 		price:"2000",
 		copies:"10",
 	}]
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+	useEffect(()=>{
+		// axios black magic moment
+		// basically put this inside .then 👍
+		setCollectibleInfo({
+			...collectibleInfo,
+			bidsHistory: bidsHistory,
+		})
+	//eslint-disable-next-line
+	},[])
 	return (
 		<Wrapper>
-			{bidsHistory.map((item,index)=>(
+			{collectibleInfo.bidsHistory.map((item,index)=>(
 				<BidsCard key={index} {...item}/>
 			))}
 		</Wrapper>

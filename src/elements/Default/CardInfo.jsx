@@ -14,7 +14,6 @@ const Wrapper = styled.div`
 
 const TopContainer = styled.div`
 	display: flex;
-	align-items:center;
 	justify-content: space-between;
 `
 
@@ -31,6 +30,10 @@ const BottomContainer = styled.div`
 const Title = styled.h2`
 	font-weight: 900;
 	font-size: 1.5rem;
+	max-width: 9rem;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow: ellipsis;
 `
 
 const HighestBidText = styled.label`
@@ -76,7 +79,7 @@ const CardInfo = ({ data }) => {
 	return (
 		<Wrapper>
 			<TopContainer>
-				<Title>{data.name}</Title>
+				<Title><label title={data.name}>{data.name}</label></Title>
 				<CardHeaderIcons data={data}/>
 			</TopContainer>
 			{data.highestBid !== '0' ? <MiddleContainer>

@@ -10,7 +10,7 @@ const BackgroundContainer = styled.div`
 	background-position: center;
 	background-repeat: no-repeat;
 	height: 30vh;
-	width: 100vw;
+	width: 100%;
 	z-index:0;
 	${respondTo.md`
 		top: 6rem;
