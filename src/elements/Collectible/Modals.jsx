@@ -3,6 +3,8 @@ import styled, { css, keyframes } from "styled-components";
 import { LazyMotion, domAnimation } from "framer-motion"
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 
+import { buyNow, putOnSale } from "@utils/marketplace";
+
 const swipeDownwards = keyframes`
 	0% {
 		transform: translate(0,-50%);
@@ -221,6 +223,13 @@ const PutOnSaleModal = (props) => {
 	const handleInput = (e) => {
 		setPrice(e.target.value)
 	}
+	const handleClick = () => {
+		putOnSale (props.itemId, price).then (res => {
+			props.setIsActive (false)
+		}).catch (err => {
+			// console.log (err)
+		});
+	}
 	return (
 		<ModalContainer {...props}>
 			<Title>Put on sale</Title>
@@ -232,7 +241,7 @@ const PutOnSaleModal = (props) => {
 					onChange = {handleInput}
 					placeholder={`Enter Price (in Reef)`}
 				/>
-				<AnimBtn>Submit</AnimBtn>
+				<AnimBtn onClick = {handleClick}>Submit</AnimBtn>
 			</Group>
 		</ModalContainer>
 	)
@@ -241,20 +250,29 @@ const PutOnSaleModal = (props) => {
 const BuyModal = (props) => {
 	const [amount, setAmount] = useState("")
 	const handleInput = (e) => {
-		setAmount(e.target.value)
+		if (Number (e.target.value) <= Number (props.itemInfo.maxAmount)) {
+			setAmount(e.target.value)
+		}
+	}
+	const handleClick = () => {
+		buyNow (props.itemInfo.itemId, amount, props.itemInfo.price).then (res => {
+			props.setIsActive (false)
+		}).catch (err => {
+			// console.log (err)
+		});
 	}
 	return (
 		<ModalContainer {...props}>
 			<Title>Buy</Title>
 			<Group>
-				<InputTitle>Amount</InputTitle>
+				<InputTitle>Amount (max { props.maxAmount })</InputTitle>
 				<InputContainer
 					type="number"
 					value={amount}
 					onChange = {handleInput}
-					placeholder={`Enter Amount (in Reef)`}
+					placeholder={`Enter Amount (number of copies you wish to buy)`}
 				/>
-				<AnimBtn>Submit</AnimBtn>
+				<AnimBtn onClick = {handleClick}>Submit</AnimBtn>
 			</Group>
 		</ModalContainer>
 	)

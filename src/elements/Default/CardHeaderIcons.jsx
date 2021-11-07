@@ -89,9 +89,9 @@ const CardHeaderIcons = ({ data }) => {
 	return (
 		<Wrapper>
 			<LazyMotion features={domAnimation}>
-				<AnimatedIcons url={collection.thumb} tooltip={`Collection: ${collection.name}`}></AnimatedIcons>
-				<AnimatedIcons url={creator.thumb} tooltip={`Creator: ${creator.name}`}></AnimatedIcons>
 				<AnimatedIcons url={owner.thumb} tooltip={`Owner: ${owner.name}`}></AnimatedIcons>
+				<AnimatedIcons url={creator.thumb} tooltip={`Creator: ${creator.name}`}></AnimatedIcons>
+				<AnimatedIcons url={collection.thumb} tooltip={`Collection: ${collection.name}`}></AnimatedIcons>
 			</LazyMotion>
 		</Wrapper>
 	)

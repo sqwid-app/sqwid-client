@@ -1,5 +1,7 @@
 import axios from 'axios';
-
+import { ethers } from 'ethers';
+import marketplaceContractABI from '../constants/contracts/SqwidMarketplace';
+import { Interact } from './connect';
 // const getNameByAddress = async (address) => {
 //     try {
 //         const res = await axios (`${process.env.REACT_APP_API_URL}/get/user/${address}`);
@@ -8,6 +10,8 @@ import axios from 'axios';
 //         return address;
 //     }
 // }
+const marketplaceContract = (signerOrProvider) => new ethers.Contract (process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS, marketplaceContractABI, signerOrProvider);
+
 
 // returns all marketplace items
 const fetchMarketplaceItems = async () => {
@@ -40,17 +44,37 @@ const marketplaceItemExists = async (itemId) => {
 
 // puts an item up for sale (owner only)
 const putOnSale = async (itemId, price) => {
+    let realPrice = ethers.utils.parseEther (price);
 
+    const { signer } = await Interact ();
+    const marketplaceContractInstance = marketplaceContract (signer);
+    const tx = await marketplaceContractInstance.putOnSale (itemId, realPrice);
+    const receipt = await tx.wait ();
+
+    return receipt;
 };
 
 // removes an item from sale (owner / seller only)
 const removeFromSale = async (itemId) => {
+    const { signer } = await Interact ();
+    const marketplaceContractInstance = marketplaceContract (signer);
+    const tx = await marketplaceContractInstance.removeFromSale (itemId);
+    const receipt = await tx.wait ();
 
+    return receipt;
 };
 
 // buy an item for asking price
-const buyNow = async (itemId) => {
-
+const buyNow = async (itemId, amount, itemPrice) => {
+    const { signer } = await Interact ();
+    const marketplaceContractInstance = marketplaceContract (signer);
+    let reefAmount = Number (itemPrice) * Number (amount);
+    const val = ethers.utils.parseEther (reefAmount.toString ());
+    const tx = await marketplaceContractInstance.buyNow (itemId, amount, {
+        value: val,
+    });
+    const receipt = await tx.wait ();
+    return receipt;
 };
 
 // fetch all bids for an item

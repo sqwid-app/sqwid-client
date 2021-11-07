@@ -8,6 +8,8 @@ import { numberSeparator } from "@utils/numberSeparator";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import { BidsModal, PutOnSaleModal, BuyModal } from "./Modals";
 
+import { removeFromSale } from "@utils/marketplace";
+
 const Container = styled.div`
 	display: flex;
 	align-items:center;
@@ -90,17 +92,7 @@ const CurrentPrice = () => {
 	)
 }
 
-const BuyNow = () => {
-	const [showModal, setShowModal] = useState(false)
-	return (
-		<>
-			<AnimBtn>
-				Buy Now
-			</AnimBtn>
-			<BuyModal isActive={showModal} setIsActive={setShowModal}/>
-		</>
-	)
-}
+
 
 const HighestBid = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
@@ -117,32 +109,60 @@ const HighestBid = () => {
 
 const Bid = () => {
 	const [showModal, setShowModal] = useState(false)
+	const { collectibleInfo } = useContext (CollectibleContext)
 	return (
 		<>
 		<AnimBtn onClick={()=>setShowModal(!showModal)}>
 			Bid
 		</AnimBtn>
-		<BidsModal isActive={showModal} setIsActive={setShowModal}/>
+		<BidsModal itemId = { collectibleInfo.itemId } isActive={showModal} setIsActive={setShowModal}/>
 		</>
 	)
 }
 
 const StopSale = () => {
+	const { collectibleInfo } = useContext (CollectibleContext)
+	const handleClick = () => {
+		// console.log("stop sale")
+		removeFromSale (collectibleInfo.itemId).then (res => {
+			// console.log (res);
+		}).catch (err => {
+			// console.log (err);
+		});
+	}
 	return (
-		<AnimBtn>
+		<AnimBtn onClick = { handleClick }>
 			Stop Sale
 		</AnimBtn>
 	)
 }
 
-const PutOnSale = () => {
+const BuyNow = () => {
 	const [showModal, setShowModal] = useState(false)
+	const { collectibleInfo } = useContext (CollectibleContext)
 	return (
 		<>
-			<AnimBtn>
+			<AnimBtn onClick={()=>setShowModal(!showModal)}>
+				Buy Now
+			</AnimBtn>
+			<BuyModal itemInfo = {{
+				itemId: collectibleInfo.itemId,
+				price: collectibleInfo.price,
+				maxAmount: collectibleInfo.owners.current.quantity.owns
+			}} isActive={showModal} setIsActive={setShowModal}/>
+		</>
+	)
+}
+
+const PutOnSale = () => {
+	const [showModal, setShowModal] = useState(false)
+	const { collectibleInfo } = useContext (CollectibleContext)
+	return (
+		<>
+			<AnimBtn onClick={()=>setShowModal(!showModal)}>
 				Put on Sale
 			</AnimBtn>
-			<PutOnSaleModal isActive={showModal} setIsActive={setShowModal}/>
+			<PutOnSaleModal itemId = { collectibleInfo.itemId } isActive={showModal} setIsActive={setShowModal}/>
 		</>
 	)
 }

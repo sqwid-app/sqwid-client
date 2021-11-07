@@ -84,7 +84,7 @@ const CardInfo = ({ data }) => {
 			</MiddleContainer> : null }
 			<BottomContainer>
 				<Quantity>{data.quantity.available} of {data.quantity.total}</Quantity>
-				{data.price !== '0' ? <Price title={numberSeparator(data.price)}><ReefIcon size={`1.5rem`} /><span>{numberSeparator(data.price)}</span></Price> : null }
+				{(data.isOnSale && data.price !== '0') ? <Price title={numberSeparator(data.price)}><ReefIcon size={`1.5rem`} /><span>{numberSeparator(data.price)}</span></Price> : null }
 			</BottomContainer>
 		</Wrapper>
 	)
