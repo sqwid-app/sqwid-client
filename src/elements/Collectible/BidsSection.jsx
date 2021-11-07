@@ -132,9 +132,9 @@ const AcceptContainer = styled(m.a)`
 const BidsCard = (info) => {
 	const { auth } = useContext(AuthContext)
 	const { collectibleInfo } = useContext(CollectibleContext)
-	// const isSeller = (auth.evmAddress === collectibleInfo.owners.current.id)
-	const isSeller = true
-	const isBidder = (auth.evmAddress === info.bidder.id) && !isSeller
+	const isSeller = auth&&(auth.evmAddress === collectibleInfo.owners.current.id)
+	// const isSeller = true
+	const isBidder = auth&&(auth.evmAddress === info.bidder.id) && !isSeller
 	return (
 		<CardsContainer isBidder={isBidder} tooltip={isBidder&&`Cancel Bid`}>
 			<InfoContainer>
