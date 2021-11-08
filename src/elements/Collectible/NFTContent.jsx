@@ -51,6 +51,11 @@ const PlyrContainer = styled.div`
 			max-height: 65vh;
 		}
 	}
+	.plyr:-webkit-full-screen{
+		video{
+			max-height: 100%;
+		}
+	}
 	${props=>props.audio&&center};
 `
 
