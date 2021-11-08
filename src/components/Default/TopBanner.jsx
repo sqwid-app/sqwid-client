@@ -1,4 +1,5 @@
 import CancelIcon from "@static/svg/CancelIcon";
+import { respondTo } from "@styles/styledMediaQuery";
 import React, { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 
@@ -47,6 +48,11 @@ const TopBannerContainer = styled.div`
 	background: var(--app-theme-primary);
 	z-index: 15;
 	${props=>!props.remove?modalEntryAnim:modalExitAnim};
+	${respondTo.md`
+		top:auto;
+		bottom: 0;
+		height: 3rem;
+	`}
 `
 
 const CancelContainer = styled.div`
