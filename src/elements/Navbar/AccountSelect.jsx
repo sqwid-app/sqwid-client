@@ -157,7 +157,7 @@ const Content = styled.p`
 `
 
 const elemContains =  (rect, x, y) => {
-	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
+	return rect?(rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height):false;
 }
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
@@ -224,7 +224,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const handleClickOutside = (e) => {
 		let rect = modalRef?.current?.getBoundingClientRect();
 		let rect2 = alertRef?.current?.getBoundingClientRect();
-		if(rect&&rect2&&!elemContains(rect,e.clientX,e.clientY)&&!elemContains(rect2,e.clientX,e.clientY)){
+		if(!elemContains(rect,e.clientX,e.clientY)&&!elemContains(rect2,e.clientX,e.clientY)){
 			setAlert({
 				...alert,
 				isActive: false,
