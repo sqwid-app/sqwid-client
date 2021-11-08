@@ -95,10 +95,10 @@ const HeroSection = () => {
 						fill="url(#gradient)"
 						paused={false}
 						options={{
-							height: 20,
+							height: 30,
 							amplitude: 50,
-							speed: 0.2,
-							points: 2
+							speed: 0.25,
+							points: 3
 						}}
 					>
 						<defs>
