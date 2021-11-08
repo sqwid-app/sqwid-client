@@ -54,6 +54,16 @@ const bidderContainer = css`
 	border: 0.1rem solid red;
 	cursor: pointer;
 	${toolTip};
+	&:first-child{
+		&:before{
+			top: 50%;
+			transform: translate(-0.1rem,0.1rem);
+			border-radius:0 0.25rem 0 0.25rem;
+		}
+		&:hover {
+			border-radius: 0.375rem;
+		}
+	}
 `
 
 const CardsContainer = styled.div`
@@ -63,6 +73,7 @@ const CardsContainer = styled.div`
 	height: 4rem;
 	padding: 1rem 1.25rem;
 	margin: 0 0.75rem;
+	margin-bottom: 0.5rem;
 	gap: 1rem;
 	${props=>props.isBidder&&bidderContainer};
 
