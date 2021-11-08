@@ -5,33 +5,63 @@ import { LazyMotion, domAnimation, m } from "framer-motion"
 import { truncateAddress } from "@utils/textUtils";
 import AuthContext from "@contexts/Auth/AuthContext";
 
-const swipeDownwards = keyframes`
+const swipeRightToLeft = keyframes`
 	0% {
 		transform: translateX(100%);
 		opacity: 0;
 	}
 	100% {
 		transform: translateX(0);
+		opacity: 1;
+	}
+`
+
+const swipeLeftToRight = keyframes`
+	0% {
+		transform: translateX(0);
+		opacity: 1;
+	}
+	100% {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+`
+
+const swipeDownwards = keyframes`
+	0% {
+		transform: translate(-50%,-100px);
+		opacity: 0;
+	}
+	100% {
+		transform: translate(-50%,0);
 		opacity: 1;
 	}
 `
 
 const swipeUpwards = keyframes`
 	0% {
-		transform: translateX(0);
+		transform: translate(-50%,0);
 		opacity: 1;
 	}
 	100% {
-		transform: translateX(100%);
+		transform: translate(-50%,-100px);
 		opacity: 0;
 	}
 `
 
 const modalEntryAnim = css`
-	animation: ${swipeDownwards} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+	animation: ${swipeRightToLeft} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
 `
 
 const modalExitAnim = css`
+	animation: ${swipeLeftToRight} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+`
+
+const alertEntryAnim = css`
+	animation: ${swipeDownwards} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+`
+
+const alertExitAnim = css`
 	animation: ${swipeUpwards} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
 `
 
@@ -87,7 +117,7 @@ const Button = styled(m.a)`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: var(--font-family);
 	font-size: 1rem;
 	font-weight: 700;
 	padding: 0.675rem 1.25rem;
@@ -100,14 +130,46 @@ const Button = styled(m.a)`
 	user-select:none;
 `
 
+const Alert = styled.div`
+	position: absolute;
+	margin-top: 7rem;
+	left: 50%;
+	transform: translateX(-50%);
+	max-width: 24rem;
+	margin-right: 0;
+	width: fit-content;
+	margin-top: 7rem;
+	padding: 2rem 1.5rem;
+	padding-top: 1.5rem;
+	background:var(--app-container-bg-primary);
+	border-radius: 0.5rem;
+	z-index: 3;
+	display: flex;
+	flex-direction: column;
+	${props=>!props.remove?alertEntryAnim:alertExitAnim}
+`
+
+const Content = styled.p`
+	padding-top: 0.25rem;
+	padding-bottom: 1rem;
+	font-size: 1.125rem;
+	color:var(--app-container-text-primary-hover);
+`
+
 const elemContains =  (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
 }
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
+	const [signer, setSigner] = useState("")
 	const { auth, login, logout, setLoading } = useContext(AuthContext);
+	const [ alert, setAlert ] = useState({
+		isActive: false,
+	})
+	const [alertIsVisible, setAlertIsVisible] = useState(alert.isActive)
 	const modalRef = useRef()
+	const alertRef = useRef()
 	//eslint-disable-next-line
 	const [selectedAccount, setSelectedAccount] = useState (null);
 	const _onAccountChange = async (val) => {
@@ -117,19 +179,23 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		Connect (account)
 		.then (async response => {
 			if (response.evmClaimed === false) {
-				console.log ('evm account is not claimed. show popup.');
-				alert (`EVM account not claimed. Please claim it before logging in. You will get the address ${ await response.signer.getAddress () }`);
-				await response.signer.claimDefaultAccount();
+				setAlert({
+					...alert,
+					isActive: true,
+				})
+				setSigner(response.signer)
+				// alert (`EVM account not claimed. Please claim it and try logging in again.\nYou will get the address ${ await response.signer.getAddress () }\nYou will need some Reef in order to pay for the transaction.`);
 			} else {
-				console.log ('evm account is claimed');
+				const acc = await response.signer.getAddress ();
+				// console.log ('evm account is claimed');
+				login({auth: { ...account, evmAddress: acc }});
+				setIsActive(false);
 			}
-			login({auth:account})
 		})
 		.catch(err=>{
-			console.log(err)
+			// handle err
 		})
 		.finally(()=>{
-			setIsActive(false);
 			setLoading(false);
 		})
 	}
@@ -144,9 +210,25 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		}
 	}, [isActive])
 
+	useEffect(() => {
+		if(alert.isActive===false){
+			setTimeout(() => {
+				setAlertIsVisible(alert.isActive);
+			}, 200);
+		}
+		else{
+			setAlertIsVisible(alert.isActive);
+		}
+	}, [alert.isActive])
+
 	const handleClickOutside = (e) => {
-		let rect = modalRef.current.getBoundingClientRect();
-		if(!elemContains(rect,e.clientX,e.clientY)){
+		let rect = modalRef?.current?.getBoundingClientRect();
+		let rect2 = alertRef?.current?.getBoundingClientRect();
+		if(rect&&rect2&&!elemContains(rect,e.clientX,e.clientY)&&!elemContains(rect2,e.clientX,e.clientY)){
+			setAlert({
+				...alert,
+				isActive: false,
+			})
 			setIsActive(false)
 			setLoading(false)
 		}
@@ -195,6 +277,38 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 							>Logout</Button>
 						)}
 					</Modal>
+					{alertIsVisible&&(<Alert
+						remove={!alert.isActive}
+						ref={alertRef}
+					>
+						<Title>Claim EVM Account</Title>
+						<Content>
+							EVM account not claimed.<br/>
+							Please claim it and try logging in again.<br/>
+							You will need some Reef in order to pay for the transaction.
+						</Content>
+						<Button
+							whileHover={{
+								y: -5,
+								x: 0,
+								scale:1.02
+							}}
+							whileTap={{
+								scale:0.99
+							}}
+							onClick={()=>{
+								setAlert({
+									...alert,
+									isActive: false,
+								})
+								signer.claimDefaultAccount()
+								.finally(()=>{
+									setIsActive(false)
+								})
+
+							}}
+						>I Accept</Button>
+					</Alert>)}
 				</BackDrop>
 			)}
 		</LazyMotion>

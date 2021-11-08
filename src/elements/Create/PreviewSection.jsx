@@ -1,8 +1,9 @@
 import FileContext from "@contexts/File/FileContext";
 import React, { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { LazyMotion, domAnimation, m } from "framer-motion"
+import { LazyMotion, domAnimation } from "framer-motion"
 import { createCollectible } from "@utils/createCollectible";
+import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import Loading from "@elements/Default/Loading";
 import UploadCover from "./UploadCover";
 
@@ -69,21 +70,26 @@ const FilePreview = styled.div`
 	}
 `;
 
-const Btn = styled(m.a)`
+const Btn = styled(BtnBaseAnimated)`
 	width: 75%;
 	display: grid;
 	place-items: center;
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: var(--font-family);
 	font-size: 1rem;
 	font-weight: 700;
 	padding: 0.75rem 1.25rem;
 	border-radius: 1000rem;
 	background: var(--app-theme-primary);
-	color: var(--app-background);
+	color: var(--app-text);
 	outline: none;
 	border: none;
 	cursor: pointer;
 	user-select:none;
+	transition: background 0.2s ease;
+	&[disabled] {
+		background: var(--app-theme-primary-disabled);
+		pointer-events: none;
+	}
 `
 
 const Group = styled.div`
@@ -97,12 +103,13 @@ const Wrapper = styled.div`
 	gap:1rem;
 `
 
-const AnimBtn = ({ children, onClick }) => (
+const AnimBtn = ({ children, onClick,disabled }) => (
 	<Btn
 		whileTap={{
 			scale:0.97
 		}}
 		onClick={onClick}
+		disabled={disabled}
 	>{children}</Btn>
 )
 
@@ -112,6 +119,7 @@ const PreviewSection = () => {
 	const [title, setTitle] = useState("")
 	const [fileType, setFileType] = useState("")
 	const [buttonText, setButtonText] = useState("Create Item")
+	const [isSubmitting, setIsSubmitting] = useState(false)
 
 	useEffect (() => {
 		if (files.file){
@@ -136,24 +144,23 @@ const PreviewSection = () => {
 	const handleClick = () => {
 		localStorage.removeItem("properties")
 		setButtonText(<Loading/>)
+		setIsSubmitting(true)
 		if(files.file&&files.name.length){
 			createCollectible (files)
 			.then(res=>{
-				console.log(res)
 				setButtonText ("Uploaded NFT!")
+				setIsSubmitting(false)
 			})
 			.catch(err=>{
-				console.log(err)
+				// handle err
 			})
 			.finally(()=>{
-				console.log("ok")
 				setTimeout(() => {
 					setButtonText("Create Item")
 				}, 2000);
 			})
 		}
 		else{
-			console.log("no 💖")
 			setButtonText("Create Item")
 		}
 	}
@@ -186,7 +193,7 @@ const PreviewSection = () => {
 				)}
 			</Group>
 			<LazyMotion features={domAnimation}>
-				<AnimBtn onClick={handleClick}>{buttonText}</AnimBtn>
+				<AnimBtn disabled={(isSubmitting)?true:false} onClick={handleClick}>{buttonText}</AnimBtn>
 			</LazyMotion>
 		</Wrapper>
 	)

@@ -5,6 +5,8 @@ import { stringToHex } from '@polkadot/util';
 import axios from "axios";
 // const WS_URL = 'wss://rpc-testnet.reefscan.com/ws';
 
+let provider;
+
 const Init = async () => {
     await web3Enable ('Sqwid');
     return await web3Accounts();
@@ -18,8 +20,13 @@ const Connect = async (account) => {
     const { signer } = await Interact (account.address);
 
 	if (!!signRaw) {
-
-        let res = await axios.get(`${process.env.REACT_APP_API_URL}/api/nonce?address=${account.address}`);
+        if (!(await signer.isClaimed())) {
+            return {
+                evmClaimed: false,
+                signer
+            }
+        }
+        let res = await axios.get(`${process.env.REACT_APP_API_URL}/nonce?address=${account.address}`);
         let { nonce } = res.data;
 
         const sres = await signRaw ({
@@ -30,25 +37,26 @@ const Connect = async (account) => {
 
         const { signature } = sres;
 		try{
-			res = await axios (`${process.env.REACT_APP_API_URL}/api/auth`, {
+			res = await axios (`${process.env.REACT_APP_API_URL}/auth`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				data: JSON.stringify ({
 					address: account.address,
-					signature: signature
+					signature: signature,
+                    evmAddress: await signer.getAddress (),
 				})
 			});
 		}
 		catch(err){
-			console.log("err",err)
+            // handle err like a normal person 👍
 		}
 
         let json = res.data;
 
         if (json.status === 'success') {
-            console.log ('auth success');
+            localStorage.removeItem ('collections');
             let jwts = localStorage.getItem ('tokens');
             jwts = jwts ? JSON.parse (jwts) : [];
 
@@ -65,20 +73,9 @@ const Connect = async (account) => {
 
             localStorage.setItem ('tokens', JSON.stringify (jwts));
 
-            if (!(await signer.isClaimed())) {
-                console.log(
-                    "No claimed EVM account found -> claimed default EVM account: ",
-                    await signer.getAddress()
-                );
-                return {
-                    evmClaimed: false,
-                    signer
-                }
-            } else {
-                return {
-                    evmClaimed: true,
-                    signer
-                }
+            return {
+                evmClaimed: await signer.isClaimed (),
+                signer
             }
         }
 	}
@@ -88,7 +85,7 @@ const Interact = async (address = null) => {
     if (!address) address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
     const allInjected = await web3Enable ('Sqwid');
     const injected = allInjected[0].signer;
-    const provider = new Provider ({
+    if (!provider) provider = new Provider ({
         provider: new WsProvider (process.env.REACT_APP_RPC_URL)
     });
     await provider.api.isReady;

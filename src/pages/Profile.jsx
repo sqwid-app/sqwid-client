@@ -14,10 +14,10 @@ const Wrapper = ({ children }) => (
 
 const Profile = () => {
 	const { auth } = useContext(AuthContext)
-	const { addr } = useParams()
+	const { id } = useParams()
 	return (
 		<>
-			{(addr||auth)?(
+			{(id||auth)?(
 				<Wrapper>
 					<ProfileSection/>
 				</Wrapper>

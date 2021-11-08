@@ -1,0 +1,1 @@
+export const numberSeparator = (n) => n.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");

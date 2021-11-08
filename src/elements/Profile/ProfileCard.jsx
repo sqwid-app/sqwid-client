@@ -10,6 +10,8 @@ import styled, { css, keyframes } from "styled-components";
 import Loading from "@elements/Default/Loading";
 import Changes from "@elements/Profile/Changes";
 import EditDetailsContext from "@contexts/EditDetails/EditDetailsContext";
+import { getAvatarFromId } from "@utils/getAvatarFromId";
+import { respondTo } from "@styles/styledMediaQuery";
 
 const Card = styled.div`
 	display: flex;
@@ -22,6 +24,12 @@ const Card = styled.div`
 	margin-left: 6rem;
 	z-index:10;
 	background:linear-gradient(180deg, #25252D 0%, #25252D 25%, rgba(64, 68, 84, 0) 100%);
+	${respondTo.md`
+		margin-left:0;
+		height: 100%;
+		padding-bottom: 2rem;
+		z-index:5;
+	`}
 `
 
 const Address = styled.h1`
@@ -153,7 +161,7 @@ const Header = styled.h1`
 `
 
 const InputContainer = styled.input`
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: var(--font-family);
 	font-weight: 600;
 	font-size: 1rem;
 	background: transparent;
@@ -185,12 +193,12 @@ const NameEditSection = ({ name, setSync }) => {
 	const {info, setInfo} = useContext(EditDetailsContext)
 	const [isLoading, setIsLoading] = useState(false)
 	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
-	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address = address) : null;
+	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address === address) : null;
 
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
 			if(info.name.length){
-				axios.post(`${process.env.REACT_APP_API_URL}/api/edit/user/displayName`,{
+				axios.post(`${process.env.REACT_APP_API_URL}/edit/user/displayName`,{
 					displayName:info.name
 				},{
 					headers: {
@@ -246,12 +254,12 @@ const DescriptionEditSection = ({ description, setSync }) => {
 	const {info, setInfo} = useContext(EditDetailsContext)
 	const [isLoading, setIsLoading] = useState(false)
 	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
-	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address = address) : null;
+	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address === address) : null;
 
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
 			if(info.description.length){
-				axios.post(`${process.env.REACT_APP_API_URL}/api/edit/user/bio`,{
+				axios.post(`${process.env.REACT_APP_API_URL}/edit/user/bio`,{
 					bio:info.description
 				},{
 					headers: {
@@ -331,7 +339,7 @@ const ProfileCard = () => {
 	const [userData, setUserData] = useState(initialState)
 	useEffect(()=>{
 		let address = id?id:auth.address
-		axios.get(`${process.env.REACT_APP_API_URL}/api/get/user/${address}`)
+		axios.get(`${process.env.REACT_APP_API_URL}/get/user/${address}`)
 		.then(({data})=>{
 			if(id){
 				setUserData({
@@ -339,15 +347,15 @@ const ProfileCard = () => {
 					name:data.displayName,
 					description:data.bio,
 					address:id,
-					avatar:`https://avatars.dicebear.com/api/identicon/${id}.svg`
+					avatar: getAvatarFromId(id),
 				})
 			}
 			else if(auth){
 				setUserData({
 					...userData,
-					address:auth.address,
+					address:auth.evmAddress,
 					name: data.displayName,
-					avatar:`https://avatars.dicebear.com/api/identicon/${auth.address}.svg`,
+					avatar: getAvatarFromId(auth.address),
 					description:data.bio
 				})
 			}
@@ -355,7 +363,7 @@ const ProfileCard = () => {
 		.finally(()=>{
 			setIsLoading(false);
 		})
-		id?((id === auth.address)&&setIsOwnAccount(true)):setIsOwnAccount(true)
+		id?((id === auth?.address ||id === auth?.evmAddress )&&setIsOwnAccount(true)):setIsOwnAccount(true)
 	//eslint-disable-next-line
 	},[info])
 	const copyAddress = () => {
@@ -385,7 +393,7 @@ const ProfileCard = () => {
 						<Name>{info.name.length?info.name:userData.name}</Name>
 						<AddressContainer>
 							<label title={userData.address}><Address>{truncateAddress(userData.address,6)}</Address></label>
-							<CopyIcon onClick={copyAddress}/>
+							{window.isSecureContext&&(<CopyIcon onClick={copyAddress}/>)}
 							<Tooltip style={{display:"none"}} ref={tooltipRef} remove={!tooltipVisible}>Copied to clipboard!</Tooltip>
 						</AddressContainer>
 						<Description>

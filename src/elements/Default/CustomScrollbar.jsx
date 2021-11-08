@@ -15,7 +15,6 @@ class CustomScrollbar extends Component {
 			let scrollbars = this.scrollbars
 			if(this.props.move > 0 && this.props.move < scrollbars.getThumbHorizontalWidth()){
 				let left = this.props.move
-				console.log(prevProps.move,this.props.move)
 				scrollbars.scrollLeft(left)
 			}
 		}
@@ -27,7 +26,6 @@ class CustomScrollbar extends Component {
         };
         return (
             <div
-                className="box"
                 style={{ ...style, ...viewStyle }}
                 {...props}/>
         );
@@ -52,6 +50,7 @@ class CustomScrollbar extends Component {
                 renderThumbHorizontal={this.renderThumb}
                 renderThumbVertical={this.renderThumb}
 				ref={this.scrollbars}
+				className="custom-scrollbars"
                 {...this.props}
 			/>
         );

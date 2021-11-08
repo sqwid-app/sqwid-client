@@ -10,6 +10,7 @@ import axios from "axios";
 import AuthContext from "@contexts/Auth/AuthContext";
 import { getCloudflareURL } from "@utils/getIPFSURL";
 import FileContext from "@contexts/File/FileContext";
+import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -75,7 +76,7 @@ const Title = styled.h1`
 `
 
 const InputContainer = styled.input`
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: var(--font-family);
 	font-weight: 600;
 	font-size: 1rem;
 	background: transparent;
@@ -92,26 +93,25 @@ const InputContainer = styled.input`
 	}
 `
 
-const Btn = styled(m.a)`
+const Btn = styled(BtnBaseAnimated)`
 	display: grid;
 	place-items:center;
-	font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 	font-size: 1rem;
 	font-weight: 700;
 	padding: 0 1.25rem;
 	border-radius: 1000rem;
-	background: var(--app-theme-primary);
-	color: var(--app-background);
-	outline: none;
-	border: none;
 	height: 2.5rem;
 	min-width: 10rem;
-	cursor: pointer;
 	z-index:2;
 	user-select:none;
+	transition: background 0.2s ease;
+	&[disabled] {
+		background: var(--app-theme-primary-disabled);
+		pointer-events: none;
+	}
 `
 
-const AnimBtn = ({ children, onClick }) => (
+const AnimBtn = ({ children, onClick, disabled }) => (
 	<Btn
 		whileHover={{
 			y: -5,
@@ -122,6 +122,7 @@ const AnimBtn = ({ children, onClick }) => (
 			scale:0.99
 		}}
 		onClick={onClick}
+		disabled={disabled}
 	>{children}</Btn>
 )
 
@@ -197,7 +198,7 @@ const ExistingContainer = styled(SimpleBarReact)`
 	display: flex;
 	flex-direction: column;
 	padding: 0 1rem;
-	max-height: 50vw;
+	max-height: 24rem;
 	overflow-y:auto;
 `
 
@@ -242,6 +243,7 @@ const elemContains =  (rect, x, y) => {
 
 const New = ({ isActive, setIsActive }) => {
 	const [buttonText, setButtonText] = useState("Create Collection")
+	const [isSubmitting, setIsSubmitting] = useState(false)
 	const initialInfo = {
 		name:"",
 		description:"",
@@ -261,17 +263,18 @@ const New = ({ isActive, setIsActive }) => {
 	}, [info.file])
 	const handleClick = () => {
 		setButtonText(<Loading size="24"/>)
+		setIsSubmitting(true)
 		if(info.file&&info.name.length){
 			createCollection (info.file,info.name,info.description)
 			.then (res => {
 				setButtonText("Created Collection!")
-				console.log (res.data);
 				setTimeout(() => {
 					setIsActive({...isActive,status: false});
 				}, 500);
+				setIsSubmitting(false)
 			})
 			.catch(err=>{
-				console.log(err)
+				// handle err
 			})
 			.finally(()=>{
 				setTimeout(() => {
@@ -280,7 +283,6 @@ const New = ({ isActive, setIsActive }) => {
 			});
 		}
 		else{
-			console.log("no 💖")
 			setButtonText("Created Collection!")
 		}
 		setInfo(initialInfo)
@@ -316,6 +318,7 @@ const New = ({ isActive, setIsActive }) => {
 				)}
 				<BtnContainer>
 					<AnimBtn
+						disabled={(isSubmitting)?true:false}
 						onClick={handleClick}
 					>{buttonText}</AnimBtn>
 				</BtnContainer>
@@ -329,13 +332,13 @@ const Existing = ({ isActive, setIsActive }) => {
 	const { auth } = useContext(AuthContext);
 	const { files, setFiles } = useContext(FileContext);
 	useEffect(() => {
-		axios.get(`${process.env.REACT_APP_API_URL}/api/get/collections/owner/${auth.address}`)
+		axios.get(`${process.env.REACT_APP_API_URL}/get/collections/owner/${auth.address}`)
 		.then((res)=>{
 			localStorage.setItem("collections",JSON.stringify(res.data.collections))
 			setCollections(res.data.collections)
 		})
 		.catch(err=>{
-			console.log(err)
+			// handle err
 		})
 	//eslint-disable-next-line
 	}, [])

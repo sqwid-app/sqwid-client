@@ -5,7 +5,7 @@ import styled from "styled-components";
 const SearchContainer = styled.div`
 	position: relative;
 	& input{
-		font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+		font-family: var(--font-family);
 		font-size: 1rem;
 		font-weight: 600;
 		padding: 0.75rem 1.25rem;
@@ -39,7 +39,7 @@ const Search = () => {
 	const handleChange = (e) => setSearchText(e.target.value);
 	const handleSubmit= (e) => {
 		if (e.key === "Enter" && searchText.length){
-			console.log(searchText)
+			// console.log(searchText)
 		}
 	}
 	return (

@@ -1,12 +1,16 @@
 import HeroSection from "@components/Collectible/HeroSection";
 import Navbar from "@components/Default/Navbar";
 import CollectibleProvider from "@contexts/Collectible/CollectibleProvider";
+import { respondTo } from "@styles/styledMediaQuery";
 import React from "react";
 import styled from "styled-components";
 import NotFound from "./NotFound";
 
 const MarginDiv = styled.div`
 	margin-top:8rem;
+	${respondTo.md`
+		margin-top:6rem;
+	`}
 `
 
 const Container = styled.div`

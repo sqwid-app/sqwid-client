@@ -1,8 +1,16 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
+import { respondTo } from "@styles/styledMediaQuery";
+import Plyr from "plyr-react";
+import "@styles/plyr.css";
 
-const Container = styled.div``
+const Container = styled.div`
+	flex:1;
+	${respondTo.md`
+		flex: none;
+	`}
+`
 
 const ImageContainer = styled.div`
 	height: 100%;
@@ -12,15 +20,85 @@ const ImageContainer = styled.div`
 	background-position: center;
 	object-fit: contain;
     max-width: 100%;
+	${respondTo.md`
+		min-height: 16rem;
+	`}
 `
+
+const center = css`
+	display: grid;
+	place-items:center;
+`
+
+const PlyrContainer = styled.div`
+	height: 100%;
+	.plyr{
+		height: ${props=>props.audio?`auto`:`100%`};
+	}
+	${props=>props.audio&&center};
+`
+
+const VideoContainer = ({ data }) => {
+	let type = data.type.split("/")[0];
+	const settings = {
+		type: type,
+		sources: [{
+			src: data.url
+		}]
+	}
+	const options = {
+		controls: [
+			'play',
+			'progress',
+			'current-time',
+			'duration',
+			'mute',
+			'volume',
+			'fullscreen'
+		],
+	}
+	return (
+		<PlyrContainer audio={type==="audio"}>
+			<Plyr
+				source={settings}
+				options={options}
+			/>
+		</PlyrContainer>
+	)
+}
 
 const NFTContent = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
+	/*
+	Couldn't be arsed to change the value every time so two constants 👍
+
+	const test={
+		media:{
+			type:"audio/mp3",
+			url:"https://samplelib.com/lib/preview/mp3/sample-9s.mp3"
+		}
+	}
+
+	const test={
+		media:{
+			type:"video/mp4",
+			url:"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+		}
+	}
+	*/
 	return (
 		<Container>
-			<label title={collectibleInfo.title}><ImageContainer url={collectibleInfo.contentURL}/></label>
+			{collectibleInfo.media?.type.startsWith("image")?(
+				<label title={collectibleInfo.title}>
+					<ImageContainer url={collectibleInfo.media.url}/>
+				</label>
+			):(
+				<>
+					<VideoContainer data={collectibleInfo.media}/>
+				</>
+			)}
 		</Container>
 	)
 }
 
-export default NFTContent
+export default React.memo(NFTContent)

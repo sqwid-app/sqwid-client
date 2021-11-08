@@ -1,80 +1,84 @@
-import CollectibleContext from "@contexts/Collectible/CollectibleContext";
-import React, { useContext } from "react";
+import PropertiesSection from "@elements/Collectible/PropertiesSection";
+import React, { useState } from "react";
 import styled from "styled-components";
-
-const Group = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-`
-
-const Logo = styled.div`
-	height: 2rem;
-	width: 2rem;
-	border-radius: 1000rem;
-	border: 0.1rem solid var(--app-text);
-	background-image: url(${props=>props.url&&props.url});
-	background-size:cover;
-	background-repeat:no-repeat;
-	background-position: center;
-`
+import BidsSection from "./BidsSection";
+import InfoSection from "./InfoSection";
 
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 1.5rem;
+	gap: 0.5rem;
+	flex:1 1 0;
+	height: 100%;
 `
 
-const Heading = styled.h3`
+const Navbar = styled.nav`
+	display:flex;
+	gap:0.5rem;
+	width: 100%;
+	border-bottom: 0.1rem solid var(--app-container-bg-primary);
+	border-radius: 0.1rem;
+	margin-bottom: 0.5rem;
+	user-select:none;
+`
+
+const NavContent = styled.p`
+	position:relative;
+	padding: 0.1rem 0.5rem;
 	font-weight: 900;
-	color: var(--app-container-text-primary-hover);
-	font-size: 1rem;
-	margin-bottom: 0.375rem;
-`
-
-const Content = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	p{
-		font-weight: 900;
-		font-size: 1.125rem;
+	color: ${props=>props.active?`inherit`:`var(--app-container-text-primary)`};
+	cursor: pointer;
+	text-decoration:none;
+	transition: all 0.2s ease;
+	&:before{
+		content: "";
+		height: 100%;
+		width: 100%;
+		left:0;
+		top: 0;
+		position: absolute;
+		border-bottom: 0.1rem solid var(--app-text);
+		border-radius: 0.1rem;
+		opacity: 0;
+		opacity: ${props=>props.active?`1`:`0`};
+		transition: opacity 0.1s ease;
 	}
 `
 
-const CreatorSection = styled.div``
-
-const CollectionSection = styled.div``
-
-const OwnerSection = styled.div``
-
 const InfoContainer = () => {
-	const { collectibleInfo } = useContext(CollectibleContext)
+	const [navRoutes, setNavRoutes] = useState([{
+		name: "Info",
+		isActive: true,
+		component: (
+			<>
+				<InfoSection/>
+				<PropertiesSection/>
+			</>
+		)
+	},{
+		name: "Bids",
+		isActive: false,
+		component: <BidsSection/>
+	}])
 	return (
 		<Container>
-			<Group>
-				<CreatorSection>
-					<Heading>Creator</Heading>
-					<Content>
-						<Logo url={`https://avatars.dicebear.com/api/identicon/${collectibleInfo.creator}.svg`}/>
-						<p>{collectibleInfo.creator}</p>
-					</Content>
-				</CreatorSection>
-				<CollectionSection>
-					<Heading>Collection</Heading>
-					<Content>
-						<Logo url={collectibleInfo.collection.cover}/>
-						<p>{collectibleInfo.collection.name}</p>
-					</Content>
-				</CollectionSection>
-			</Group>
-			<OwnerSection>
-				<Heading>Owner</Heading>
-				<Content>
-					<Logo url={`https://avatars.dicebear.com/api/identicon/${collectibleInfo.owners[0]}.svg`}/>
-					<p>{collectibleInfo.owners[0]}</p>
-				</Content>
-			</OwnerSection>
+			<Navbar>
+				{navRoutes.map((item,index)=>(
+					<NavContent
+						key={index}
+						active={item.isActive}
+						disabled={item.isActive}
+						onClick = {()=>{
+							if(!item.isActive){
+								let newVal = [...navRoutes.map(a=>({...a,isActive:false}))]
+								newVal[index].isActive = true
+								setNavRoutes(newVal)
+							}
+						}}
+					>{item.name}</NavContent>
+				))}
+			</Navbar>
+			{navRoutes.find(item=>item.isActive).component}
 		</Container>
 	)
 }

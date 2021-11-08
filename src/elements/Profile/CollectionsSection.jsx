@@ -7,12 +7,17 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { getCloudflareURL } from "@utils/getIPFSURL";
 import LoadingIcon from "@static/svg/LoadingIcon";
+import { respondTo } from "@styles/styledMediaQuery";
+import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 
 const Wrapper = styled.div`
 	position: relative;
 	margin-top: 9.5rem;
 	padding: 0.5rem 0;
 	flex:1;
+	${respondTo.md`
+		margin: 0;
+	`}
 `
 
 const Container = styled.div`
@@ -22,6 +27,12 @@ const Container = styled.div`
 	padding: 1.5rem 0.75rem;
 	padding-top: 4.5rem;
 	gap: 1.25rem;
+	${respondTo.md`
+		position: relative;
+		max-width: 95vw;
+		overflow: auto;
+		padding: 1.5rem 2rem;
+	`}
 `
 
 const LoadingContainer = styled.div`
@@ -32,10 +43,15 @@ const LoadingContainer = styled.div`
 `
 
 const Title = styled.h1`
-	position:fixed;
+	position:absolute;
 	font-weight: 800;
 	font-size: 2rem;
 	user-select: none;
+	padding-left: 2rem;
+	${respondTo.md`
+		position: relative;
+		margin-top: 2rem;
+	`}
 `
 
 const CollectionsSection = () => {
@@ -44,20 +60,21 @@ const CollectionsSection = () => {
 	const userID = id?id:auth?.address
 	const [cards, setCards] = useState(JSON.parse(localStorage.getItem("collections"))||[])
 	const [isLoading, setIsLoading] = useState(true)
+	const isTabletOrMobile = useIsTabletOrMobile();
 	useEffect(() => {
-		axios.get(`${process.env.REACT_APP_API_URL}/api/get/collections/owner/${userID}`)
+		axios.get(`${process.env.REACT_APP_API_URL}/get/collections/owner/${userID}`)
 		.then((res)=>{
 			localStorage.setItem("collections",JSON.stringify(res.data.collections))
 			setCards(res.data.collections.map(item=>{
 				return {
 					src: getCloudflareURL(item.data.image),
 					title:item.data.name,
-					link:`${window.location.origin}/collection/${item.id}`
+					link:`${window.location.origin}/collections/${item.id}`
 				}
 			}))
 		})
 		.catch(err=>{
-			console.log(err)
+			// handle err
 		})
 		.finally(()=>{
 			setIsLoading(false)
@@ -66,9 +83,10 @@ const CollectionsSection = () => {
 	}, [])
 	return (
 		<Wrapper>
-			<CustomScrollbar autoHide>
-				<Title>Collections</Title>
-				{isLoading?(
+			{isTabletOrMobile?(
+				<>
+					<Title>Collections</Title>
+					{isLoading?(
 						<LoadingContainer>
 							<LoadingIcon/>
 						</LoadingContainer>
@@ -79,7 +97,25 @@ const CollectionsSection = () => {
 							))}
 						</Container>
 					)}
-			</CustomScrollbar>
+				</>
+			):(
+				<>
+				<Title>Collections</Title>
+				<CustomScrollbar autoHide>
+					{isLoading?(
+						<LoadingContainer>
+							<LoadingIcon/>
+						</LoadingContainer>
+					):(
+						<Container>
+							{cards.map((item,index)=>(
+								<CollectionCard key={index} {...item} fullHeight={index===0&&true}/>
+							))}
+						</Container>
+					)}
+				</CustomScrollbar>
+				</>
+			)}
 		</Wrapper>
 	)
 }

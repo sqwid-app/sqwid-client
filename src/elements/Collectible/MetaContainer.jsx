@@ -11,7 +11,7 @@ const Title = styled.h1`
 `
 
 const Description = styled.h3`
-	margin-top:1rem;
+	margin-top:0.5rem;
 	font-weight: 800;
 	font-size: 1rem;
 	color: var(--app-container-text-primary-hover);

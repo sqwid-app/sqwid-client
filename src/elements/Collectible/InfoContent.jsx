@@ -3,14 +3,14 @@ import styled from "styled-components";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import MetaContainer from "./MetaContainer";
 import InfoContainer from "./InfoContainer";
-import PropertiesSection from "./PropertiesSection";
 import TransactionSection from "./TransactionSection";
 
 const Container = styled.div`
+	flex:1;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-	padding: 1rem 0;
+	padding: 0.5rem 0;
+	gap: 1rem;
 `
 
 const InfoContent = () => {
@@ -20,7 +20,6 @@ const InfoContent = () => {
 		<Container>
 			<MetaContainer/>
 			<InfoContainer/>
-			<PropertiesSection/>
 			<TransactionSection/>
 		</Container>
 	)
