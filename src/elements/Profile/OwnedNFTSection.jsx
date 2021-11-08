@@ -41,20 +41,24 @@ const OwnedNFTSection = () => {
 		fetchData ();
 	}, [auth.evmAddress]);
 	return (
-		<Wrapper>
-			<Header>Owned NFTs </Header>
-			<CardSectionContainer>
-				<Suspense>
-					{items.map((item,index)=>(
-						<Card
-							key={index}
-							data={item}
-							collections
-						/>
-					))}
-				</Suspense>
-			</CardSectionContainer>
-		</Wrapper>
+		<>
+			{items.length!==0&&(
+				<Wrapper>
+					<Header>Owned NFTs </Header>
+					<CardSectionContainer>
+						<Suspense>
+							{items.map((item,index)=>(
+								<Card
+									key={index}
+									data={item}
+									collections
+								/>
+							))}
+						</Suspense>
+					</CardSectionContainer>
+				</Wrapper>
+			)}
+		</>
 	)
 }
 

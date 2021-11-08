@@ -28,8 +28,6 @@ const Card = ({ data }) => {
 					scale:0.99
 				}}
 				href={`${window.location.origin}/collectible/${data.id}`}
-				target="_blank"
-				rel="noreferrer"
 			>
 				<CardMedia media={data.media} />
 				<CardInfo data={data} />
