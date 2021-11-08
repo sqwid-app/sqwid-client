@@ -245,7 +245,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 						<Title>Choose an account</Title>
 						{accounts?.length ?
 						<>
-							{ accounts ? accounts.filter(item=>auth&&auth.address!==item.address).map ((account, index) => {
+							{ accounts ? accounts.filter(item=>auth?auth.address!==item.address:true).map ((account, index) => {
 								return <m.p
 								whileHover={{
 									y: -2.5,
