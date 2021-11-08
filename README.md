@@ -1,6 +1,6 @@
 <p align="center">
 	<img alt="Logo" src="public/android-chrome-512x512.png" width="128"/>
-	<h1 align="center">Sqwid - NFT Marketplace</h1>
+	<h1 align="center">Sqwid - An NFT Marketplace</h1>
 </p>
 <p align="center">
   <img alt="Version" src="https://shields.io/github/package-json/v/sqwid-app/sqwid-client" />
@@ -13,6 +13,15 @@
 <img style="border-radius:7.5px" alt="Logo" src="public/landing.png"/>
 <h2 align="center"> <a href="https://sqwid.app" target="_blank">Sqwid</a> - An ocean of possibilities</h2> 
 </p>
+
+## 👨‍💻 About Sqwid
+
+Sqwid is an NFT marketplace running on the Reef chain that features per-item customizable royalties.
+All Sqwid NFTs are ERC1155 compatible which means each one can have multiple copies; they also implement the EIP-2981 Royalty Standard, which allows creators to set a royalty percent that automatically gets transferred to their wallet whenever future sales of the NFTs happen. No extra work needed.
+Sqwid supports image, video, and audio NFTs and all metadata is stored on Filecoin and IPFS which means the content you're buying or selling will never be taken down or tampered with.
+
+## 📺 Presentation
+> https://www.youtube.com/watch?v=PHbwC92ylHU
 
 ## 🚀 Usage
 
