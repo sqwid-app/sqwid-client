@@ -9,6 +9,7 @@ import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import { BidsModal, PutOnSaleModal, BuyModal } from "./Modals";
 
 import { removeFromSale } from "@utils/marketplace";
+import Loading from "@elements/Default/Loading";
 
 const Container = styled.div`
 	display: flex;
@@ -125,18 +126,27 @@ const Bid = () => {
 }
 
 const StopSale = () => {
-	const { collectibleInfo } = useContext (CollectibleContext)
+	const { collectibleInfo, setCollectibleInfo } = useContext (CollectibleContext)
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState("Stop Sale");
 	const handleClick = () => {
 		// console.log("stop sale")
+		setIsLoading(true);
+		setButtonText(<Loading/>);
 		removeFromSale (collectibleInfo.itemId).then (res => {
 			// console.log (res);
+			setCollectibleInfo ({
+				...collectibleInfo,
+				isOnSale: false
+			})
+
 		}).catch (err => {
 			// console.log (err);
 		});
 	}
 	return (
-		<AnimBtn onClick = { handleClick }>
-			Stop Sale
+		<AnimBtn disabled = {isLoading} onClick = { handleClick }>
+			{buttonText}
 		</AnimBtn>
 	)
 }

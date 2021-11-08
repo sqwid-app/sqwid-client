@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { LazyMotion, domAnimation } from "framer-motion"
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import ReefIcon from "@static/svg/ReefIcon";
 import Loading from "@elements/Default/Loading";
+import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 
 import { addBid, buyNow, putOnSale } from "@utils/marketplace";
 
@@ -251,6 +252,7 @@ const PutOnSaleModal = (props) => {
 	const [price, setPrice] = useState("")
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState ("Submit");
+	const { collectibleInfo, setCollectibleInfo } = useContext (CollectibleContext);
 	const handleInput = (e) => {
 		setPrice(e.target.value)
 	}
@@ -260,7 +262,11 @@ const PutOnSaleModal = (props) => {
 		putOnSale (props.itemId, price).then (res => {
 			setIsLoading (false);
 			setButtonText ("Submit");
-			props.setIsActive (false)
+			setCollectibleInfo ({
+				...collectibleInfo,
+				isOnSale:true,
+			});
+			props.setIsActive (false);
 		}).catch (err => {
 			// console.log (err)
 		});
