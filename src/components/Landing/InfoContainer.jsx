@@ -84,7 +84,7 @@ const InfoContainer = () => {
 								x:0
 							}}
 							href="/explore"
-						>Explore</AnimBtn>
+						>Dive in</AnimBtn>
 					</LazyMotion>
 				</BtnContainer>
 			)}
