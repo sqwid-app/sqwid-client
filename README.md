@@ -50,11 +50,11 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 ## ✨ Show your support
 
-Give a ⭐️ if this project helped you!
+Give us a ⭐️ if you liked this project!
 
 ## 📝 License
 
-Copyright © 2021 [Andrei Cracanau & Boidushya Bhattacharyay](https://github.com/boidushya).<br />
+Copyright © 2021 [Andrei Cracanau](https://github.com/andithemudkip) & [Boidushya Bhattacharyay](https://github.com/boidushya).<br />
 This project is [GNU GPLv3](https://github.com/sqwid-app/sqwid-client/blob/master/LICENSE) licensed.
 
 ***
