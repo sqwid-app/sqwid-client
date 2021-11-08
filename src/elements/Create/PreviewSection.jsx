@@ -80,7 +80,7 @@ const Btn = styled(BtnBaseAnimated)`
 	padding: 0.75rem 1.25rem;
 	border-radius: 1000rem;
 	background: var(--app-theme-primary);
-	color: var(--app-background);
+	color: var(--app-text);
 	outline: none;
 	border: none;
 	cursor: pointer;

@@ -248,7 +248,7 @@ const BidsSection = () => {
 	},[])
 	return (
 		<Wrapper>
-			{collectibleInfo.bidsHistory.map((item,index)=>(
+			{collectibleInfo.bidsHistory?.map((item,index)=>(
 				<BidsCard key={index} {...item}/>
 			))}
 		</Wrapper>

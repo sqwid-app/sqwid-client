@@ -108,7 +108,7 @@ const HeroSection = () => {
 							}}/>
 							<stop offset="100%" style={{
 								stopColor:"var(--app-theme-primary-transparent)",
-								stopOpacity:"0.8"
+								stopOpacity:"1"
 							}}/>
 							</linearGradient>
 						</defs>
