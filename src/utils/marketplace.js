@@ -92,6 +92,7 @@ const addBid = async (itemId, price, amount) => {
     const marketplaceContractInstance = marketplaceContract (signer);
     let reefAmount = Number (price) * Number (amount);
     const val = ethers.utils.parseEther (reefAmount.toString ());
+	// console.log(Number(val));
     const tx = await marketplaceContractInstance.addBid (itemId, amount, {
         value: val,
     });

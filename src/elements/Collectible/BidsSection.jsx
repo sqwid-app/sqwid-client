@@ -119,6 +119,7 @@ const AcceptContainer = styled(m.a)`
 		cursor: pointer;
 		display: flex;
 		align-items:center;
+		justify-content:center;
 		padding: 0.5rem 0.75rem;
 		border-radius: 0.25rem;
 		gap: 0.25rem;
@@ -126,6 +127,7 @@ const AcceptContainer = styled(m.a)`
 		color: var(--app-container-check);
 		font-weight:900;
 		transition: all 0.2s ease;
+		min-width: 5.5rem;
 		&:hover{
 			color: var(--app-container-text);
 			background: var(--app-container-check);
