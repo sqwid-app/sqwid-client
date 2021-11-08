@@ -55,7 +55,7 @@ Give us a ⭐️ if you liked this project!
 ## 📝 License
 
 Copyright © 2021 [Andrei Cracanau](https://github.com/andithemudkip) & [Boidushya Bhattacharyay](https://github.com/boidushya).<br />
-This project is [GNU GPLv3](https://github.com/sqwid-app/sqwid-client/blob/master/LICENSE) licensed.
+This project is [MIT](https://github.com/sqwid-app/sqwid-client/blob/master/LICENSE) licensed.
 
 ***
 
