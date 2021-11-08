@@ -11,10 +11,8 @@
 
 <p align="center">
 <img style="border-radius:7.5px" alt="Logo" src="public/landing.png"/>
-<h2 align="center">Sqwid - An ocean of possibilities</h2> 
+<h2 align="center"> <a href="https://sqwid.app" target="_blank">Sqwid</a> - An ocean of possibilities</h2> 
 </p>
-
-### 🏠 [Homepage](https://sqwid.app)
 
 ## 🚀 Usage
 
