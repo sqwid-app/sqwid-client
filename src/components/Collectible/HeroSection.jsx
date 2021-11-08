@@ -5,6 +5,7 @@ import LoadingIcon from "@static/svg/LoadingIcon";
 import { respondTo } from "@styles/styledMediaQuery";
 //eslint-disable-next-line
 import { fetchMarketplaceItem, marketplaceItemExists } from "@utils/marketplace";
+import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
@@ -93,21 +94,30 @@ const HeroSection = () => {
 		// 	royalty: "12"
 		//
 		const getData = async () => {
-			const data = await fetchMarketplaceItem (Number (addr));
-			if (data) {
-				setCollectibleInfo ({
-					...data,
-					isValidCollectible: true
-				});
-				setIsLoading (false)
-			}
-			else{
-				setCollectibleInfo({
-					...collectibleInfo,
-					isValidCollectible:false,
-				})
-			}
-		}
+            const data = await fetchMarketplaceItem (Number (addr));
+            if (data) {
+                let priceInUSD = null;
+                try {
+                    let res = await axios ('https://api.coingecko.com/api/v3/simple/price?ids=reef-finance&vs_currencies=usd');
+                    let price = res.data['reef-finance'].usd;
+                    priceInUSD = Number (data.price) * Number (price);
+                } catch (e) {
+                    //haha
+                }
+                setCollectibleInfo ({
+                    ...data,
+                    priceInUSD,
+                    isValidCollectible: true
+                });
+                setIsLoading (false)
+            }
+            else{
+                setCollectibleInfo({
+                    ...collectibleInfo,
+                    isValidCollectible:false,
+                })
+            }
+        }
 
 		getData ();
 		//eslint-disable-next-line

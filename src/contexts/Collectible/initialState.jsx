@@ -18,4 +18,5 @@ export const initialState = {
 	price:"",
 	highestBid:"",
 	bidsHistory:[],
+	priceInUSD:"",
 }

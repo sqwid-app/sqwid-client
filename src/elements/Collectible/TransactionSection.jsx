@@ -52,10 +52,18 @@ const Price = styled.p`
 	display: flex;
 	align-items:flex-end;
 	label{
+		vertical-align:middle;
 		max-width: 20rem;
 		overflow: hidden;
 		text-overflow:ellipsis;
 		word-wrap: nowrap;
+	}
+	span{
+		vertical-align:middle;
+		font-weight: 500;
+		padding-left: 0.5rem;
+		font-size: 1rem;
+		color: var(--app-container-text-primary);
 	}
 `
 
@@ -63,8 +71,12 @@ const HighestBidSection = styled.p`
 	font-weight: 500;
 	font-size: 1.125rem;
 	display: flex;
+	align-items:center;
 	color: var(--app-container-text-primary-hover);
 	label {
+		display: flex;
+		align-items:center;
+		justify-content: center;
 		padding-left: 0.375rem;
 		font-weight: 900;
 		color: white;
@@ -88,7 +100,8 @@ const CurrentPrice = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
 	return (
 		<Price>
-			<ReefIcon/><label title={numberSeparator(collectibleInfo.price)}>{numberSeparator(collectibleInfo.price)}</label>
+			<ReefIcon/><p><label title={numberSeparator(collectibleInfo.price)}>{numberSeparator(collectibleInfo.price)}</label>
+			<span>(${collectibleInfo.priceInUSD.toFixed(2)})</span></p>
 		</Price>
 	)
 }
@@ -101,7 +114,7 @@ const HighestBid = () => {
 		<HighestBidSection>
 			{collectibleInfo.highestBid!=="0"&&(
 				<>
-					Highest Bid: <label title={numberSeparator(collectibleInfo.highestBid)}>{numberSeparator(collectibleInfo.highestBid)}</label>
+					Highest Bid: <label title={numberSeparator(collectibleInfo.highestBid)}><ReefIcon centered size={24}/> {numberSeparator(collectibleInfo.highestBid)}</label>
 				</>
 			)}
 		</HighestBidSection>
