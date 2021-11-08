@@ -16,13 +16,6 @@
 
 ### 🏠 [Homepage](https://sqwid.app)
 
-## ⚙ Install
-
-```sh
-git clone https://github.com/sqwid-app/sqwid-client.git
-yarn install
-```
-
 ## 🚀 Usage
 
 ```sh
