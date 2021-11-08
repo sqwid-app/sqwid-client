@@ -58,7 +58,6 @@ const CancelContainer = styled.div`
 
 const TopBanner = () => {
 	const initialState = JSON.parse(localStorage.getItem("isWarningVisible"))
-	console.log(initialState!==null?initialState:true)
 	const [isWarningVisible, setIsWarningVisible] = useState(initialState!==null?initialState:true)
 	const [elemIsVisible, setElemIsVisible] = useState(isWarningVisible)
 	useEffect(() => {
