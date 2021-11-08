@@ -1,16 +1,20 @@
 import ReefIcon from "@static/svg/ReefIcon";
 import { numberSeparator } from "@utils/numberSeparator";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import SimpleBarReact from "simplebar-react";
 import 'simplebar/dist/simplebar.min.css';
 import AuthContext from "@contexts/Auth/AuthContext";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { LazyMotion, domAnimation, m } from "framer-motion";
+import axios from 'axios';
+import { acceptBid, cancelBid } from "@utils/marketplace";
+import Loading from "@elements/Default/Loading";
 
 const Wrapper = styled(SimpleBarReact)`
 	overflow: auto;
 	max-height: 16rem;
+	margin-top: 1rem;
 `
 
 const toolTip = css`
@@ -131,13 +135,45 @@ const AcceptContainer = styled(m.a)`
 
 const BidsCard = (info) => {
 	const { auth } = useContext(AuthContext)
-	const { collectibleInfo } = useContext(CollectibleContext)
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext)
 	const isSeller = auth&&(auth.evmAddress === collectibleInfo.owners.current.id)
 	// const isSeller = true
 	const isBidder = auth&&(auth.evmAddress === info.bidder.id) && !isSeller
+
+	const [isLoading, setIsLoading] = useState (false);
+
+	const handleAccept = () => {
+		if (!isLoading) {
+			let history = collectibleInfo.bidsHistory;
+			let index = history.findIndex (bid => bid.id === info.id);
+			history.splice (index, 1);
+			setIsLoading (true);
+			acceptBid (collectibleInfo.itemId, info.id).then (() => {
+				setCollectibleInfo ({
+					...collectibleInfo,
+					bidsHistory: history
+				});
+			});
+		}
+	}
+
+	const handleCancel = () => {
+		if (isBidder && !isLoading) {
+			let history = collectibleInfo.bidsHistory;
+			let index = history.findIndex (bid => bid.id === info.id);
+			history.splice (index, 1);
+			setIsLoading (true);
+			cancelBid (collectibleInfo.itemId, info.id).then (() => {
+				setCollectibleInfo ({
+					...collectibleInfo,
+					bidsHistory: history
+				});
+			});
+		}
+	}
 	return (
-		<CardsContainer isBidder={isBidder} tooltip={isBidder&&`Cancel Bid`}>
-			<InfoContainer>
+		<CardsContainer isBidder={isBidder} tooltip={isBidder&&`Cancel Bid`} onClick = {handleCancel}>
+			{(!isLoading || isSeller) ? <InfoContainer>
 				<UserInfo>
 					<Icon url={info.bidder.thumb}/>
 					<Name>{info.bidder.name}</Name>
@@ -146,7 +182,7 @@ const BidsCard = (info) => {
 					<Price><ReefIcon centered size={24}/> <span>{numberSeparator(info.price)}</span></Price>
 					<Copies>{numberSeparator(info.copies)} Copies</Copies>
 				</PriceInfo>
-			</InfoContainer>
+			</InfoContainer> : <><Loading/>Cancelling...</>}
 			{(isSeller&&!isBidder)&&(
 				<LazyMotion features={domAnimation}>
 					<AcceptContainer
@@ -157,11 +193,12 @@ const BidsCard = (info) => {
 						whileTap={{
 							scale: 0.95
 						}}
+						onClick = {handleAccept}
 					>
 							<label
 								title="Accept Bid"
 							>
-								Accept
+								{!isLoading ? "Accept" : <Loading/>}
 							</label>
 					</AcceptContainer>
 				</LazyMotion>
@@ -171,86 +208,29 @@ const BidsCard = (info) => {
 }
 
 const BidsSection = () => {
-	const bidsHistory = [{
-		bidder: {
-			name:"Andi",
-			thumb:"https://avatars.dicebear.com/api/identicon/5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA.svg",
-			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA"
-		},
-		price:"1000",
-		copies:"5",
-	},{
-		bidder: {
-			name:"Boidushya",
-			thumb:"https://avatars.dicebear.com/api/identicon/0x2c15d99D65b2DB4592653827F1BCB9788a943f78.svg",
-			id:"0x2c15d99D65b2DB4592653827F1BCB9788a943f78"
-		},
-		price:"2000",
-		copies:"10",
-	},{
-		bidder: {
-			name:"Andi",
-			thumb:"https://avatars.dicebear.com/api/identicon/5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA.svg",
-			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA"
-		},
-		price:"1000",
-		copies:"5",
-	},{
-		bidder: {
-			name:"Boidushya",
-			thumb:"https://avatars.dicebear.com/api/identicon/0x2c15d99D65b2DB4592653827F1BCB9788a943f78.svg",
-			id:"0x2c15d99D65b2DB4592653827F1BCB9788a943f78"
-		},
-		price:"2000",
-		copies:"10",
-	},{
-		bidder: {
-			name:"Andi",
-			thumb:"https://avatars.dicebear.com/api/identicon/5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA.svg",
-			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA"
-		},
-		price:"1000",
-		copies:"5",
-	},{
-		bidder: {
-			name:"Boidushya",
-			thumb:"https://avatars.dicebear.com/api/identicon/0x2c15d99D65b2DB4592653827F1BCB9788a943f78.svg",
-			id:"0x2c15d99D65b2DB4592653827F1BCB9788a943f78"
-		},
-		price:"2000",
-		copies:"10",
-	},{
-		bidder: {
-			name:"Andi",
-			thumb:"https://avatars.dicebear.com/api/identicon/5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA.svg",
-			id:"5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA"
-		},
-		price:"1000",
-		copies:"5",
-	},{
-		bidder: {
-			name:"Boidushya",
-			thumb:"https://avatars.dicebear.com/api/identicon/0x2c15d99D65b2DB4592653827F1BCB9788a943f78.svg",
-			id:"0x2c15d99D65b2DB4592653827F1BCB9788a943f78"
-		},
-		price:"2000",
-		copies:"10",
-	}]
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
 	useEffect(()=>{
 		// axios black magic moment
 		// basically put this inside .then 👍
-		setCollectibleInfo({
-			...collectibleInfo,
-			bidsHistory: bidsHistory,
-		})
+		const fetchData = async () => {
+			const result = await axios (`${process.env.REACT_APP_API_URL}/get/r/marketplace/bids/${collectibleInfo.itemId}`);
+			let items = result.data;
+			const bidsHistory = items.sort ((itemA, itemB) => { return Number (itemB.id) - Number (itemA.id) });
+			// setIsLoading (false);
+			setCollectibleInfo({
+				...collectibleInfo,
+				bidsHistory: bidsHistory
+			});
+		}
+		fetchData ();
+		
 	//eslint-disable-next-line
 	},[])
 	return (
 		<Wrapper>
-			{collectibleInfo.bidsHistory.map((item,index)=>(
+			{collectibleInfo.bidsHistory?.length ? collectibleInfo.bidsHistory.map((item,index)=>(
 				<BidsCard key={index} {...item}/>
-			))}
+			)) : null}
 		</Wrapper>
 	)
 }

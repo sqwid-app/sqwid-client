@@ -115,7 +115,11 @@ const Bid = () => {
 		<AnimBtn onClick={()=>setShowModal(!showModal)}>
 			Bid
 		</AnimBtn>
-		<BidsModal itemId = { collectibleInfo.itemId } isActive={showModal} setIsActive={setShowModal}/>
+		<BidsModal itemInfo = {{
+				itemId: collectibleInfo.itemId,
+				price: collectibleInfo.price,
+				maxAmount: collectibleInfo.owners.current.quantity.owns
+			}} itemId = { collectibleInfo.itemId } isActive={showModal} setIsActive={setShowModal}/>
 		</>
 	)
 }

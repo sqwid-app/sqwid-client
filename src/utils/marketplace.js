@@ -83,18 +83,35 @@ const fetchBids = async (itemId) => {
 };
 
 // add a bid to an item
-const addBid = async (itemId, price) => {
-
+const addBid = async (itemId, price, amount) => {
+    // console.log (itemId, price, amount);
+    const { signer } = await Interact ();
+    const marketplaceContractInstance = marketplaceContract (signer);
+    let reefAmount = Number (price) * Number (amount);
+    const val = ethers.utils.parseEther (reefAmount.toString ());
+    const tx = await marketplaceContractInstance.addBid (itemId, amount, {
+        value: val,
+    });
+    const receipt = await tx.wait ();
+    return receipt;
 };
 
 // removes a bid (bidder only)
-const removeBid = async (itemId, bidId) => {
-
+const cancelBid = async (itemId, bidId) => {
+    const { signer } = await Interact ();
+    const marketplaceContractInstance = marketplaceContract (signer);
+    const tx = await marketplaceContractInstance.cancelBid (itemId, bidId);
+    const receipt = await tx.wait ();
+    return receipt;
 };
 
 // accepts a bid (seller only)
 const acceptBid = async (itemId, bidId) => {
-
+    const { signer } = await Interact ();
+    const marketplaceContractInstance = marketplaceContract (signer);
+    const tx = await marketplaceContractInstance.acceptBid (itemId, bidId);
+    const receipt = await tx.wait ();
+    return receipt;
 };
 
 // returns the highest bid for a certain item
@@ -121,7 +138,7 @@ export {
     buyNow,
     fetchBids,
     addBid,
-    removeBid,
+    cancelBid,
     acceptBid,
     fetchHighestBid,
     getTokenSupply,

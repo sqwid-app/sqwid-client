@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { LazyMotion, domAnimation } from "framer-motion"
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
+import ReefIcon from "@static/svg/ReefIcon";
+import Loading from "@elements/Default/Loading";
 
-import { buyNow, putOnSale } from "@utils/marketplace";
+import { addBid, buyNow, putOnSale } from "@utils/marketplace";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -123,7 +125,6 @@ const Btn = styled(BtnBaseAnimated)`
 	margin-top: 1.5rem;
 `
 
-
 const AnimBtn = ({ children, ...props }) => (
 	<Btn
 		whileTap={{
@@ -186,6 +187,40 @@ const BidsModal = (props) => {
 		price:"",
 		amount:""
 	})
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState ("Submit");
+
+	const handlePriceInput = (e) => {
+		if (Number (e.target.value) >= 0) {
+			setValue({
+				...value,
+				price:e.target.value,
+			});
+			setButtonText (<>Pay <ReefIcon centered size={24}/> {Number (e.target.value) * Number (value.amount)}</>);
+		}
+	}
+
+	const handleAmountInput = (e) => {
+		if (Number (e.target.value) <= Number (props.itemInfo.maxAmount)) {
+			setValue({
+				...value,
+				amount:e.target.value,
+			});
+			setButtonText (<>Pay <ReefIcon centered size={24}/> {Number (e.target.value) * Number (value.price)}</>);
+		}
+	}
+
+	const handleClick = () => {
+		setIsLoading (true);
+		setButtonText (<Loading/>);
+		addBid (props.itemInfo.itemId, value.price, value.amount).then (() => {
+			setIsLoading (false);
+			setButtonText ("Submit");
+			props.setIsActive (false)
+		}).catch (err => {
+			//
+		});
+	}
 	return (
 		<ModalContainer {...props}>
 			<Title>Bid</Title>
@@ -195,24 +230,18 @@ const BidsModal = (props) => {
 					<InputContainer
 						type="number"
 						value={value.price}
-						onChange = {(e)=>setValue({
-							...value,
-							price:e.target.value,
-						})}
+						onChange = {handlePriceInput}
 						placeholder={`Enter Price (in Reef)`}
 					/>
-					<InputTitle>Amount</InputTitle>
+					<InputTitle>Amount (max {props.itemInfo.maxAmount})</InputTitle>
 					<InputContainer
 						type="number"
 						value={value.amount}
-						onChange = {(e)=>setValue({
-							...value,
-							amount:e.target.value,
-						})}
-						placeholder={`Enter Amount (in Reef)`}
+						onChange = {handleAmountInput}
+						placeholder={`Enter Amount (# of copies)`}
 					/>
 				</InputWrapper>
-				<AnimBtn>Submit</AnimBtn>
+				<AnimBtn disabled = {isLoading} onClick = {handleClick} >{buttonText}</AnimBtn>
 			</Group>
 		</ModalContainer>
 	)
@@ -220,11 +249,17 @@ const BidsModal = (props) => {
 
 const PutOnSaleModal = (props) => {
 	const [price, setPrice] = useState("")
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState ("Submit");
 	const handleInput = (e) => {
 		setPrice(e.target.value)
 	}
 	const handleClick = () => {
+		setIsLoading (true);
+		setButtonText (<Loading/>);
 		putOnSale (props.itemId, price).then (res => {
+			setIsLoading (false);
+			setButtonText ("Submit");
 			props.setIsActive (false)
 		}).catch (err => {
 			// console.log (err)
@@ -241,38 +276,52 @@ const PutOnSaleModal = (props) => {
 					onChange = {handleInput}
 					placeholder={`Enter Price (in Reef)`}
 				/>
-				<AnimBtn onClick = {handleClick}>Submit</AnimBtn>
+				<AnimBtn disabled={isLoading} onClick = {handleClick}>{buttonText}</AnimBtn>
 			</Group>
 		</ModalContainer>
 	)
 }
 
 const BuyModal = (props) => {
-	const [amount, setAmount] = useState("")
+	const [amount, setAmount] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState ("Enter an amount");
 	const handleInput = (e) => {
 		if (Number (e.target.value) <= Number (props.itemInfo.maxAmount)) {
-			setAmount(e.target.value)
+			setAmount(e.target.value);
+			if (Number (e.target.value) > 0) {
+				setButtonText (<>Pay <ReefIcon centered size={24}/> {Number (e.target.value) * props.itemInfo.price}</>);
+			} else {
+				setButtonText ("Enter an amount");
+			}
 		}
 	}
 	const handleClick = () => {
-		buyNow (props.itemInfo.itemId, amount, props.itemInfo.price).then (res => {
-			props.setIsActive (false)
-		}).catch (err => {
-			// console.log (err)
-		});
+		if (!isLoading) {
+			setIsLoading (true)
+			setButtonText (<Loading/>);
+			buyNow (props.itemInfo.itemId, amount, props.itemInfo.price).then (res => {
+				setButtonText ("Enter an amount");
+				setIsLoading(false)
+				setAmount("");
+				props.setIsActive (false)
+			}).catch (err => {
+				// console.log (err)
+			});
+		}
 	}
 	return (
 		<ModalContainer {...props}>
 			<Title>Buy</Title>
 			<Group>
-				<InputTitle>Amount (max { props.maxAmount })</InputTitle>
+				<InputTitle>Amount (max { props.itemInfo.maxAmount })</InputTitle>
 				<InputContainer
 					type="number"
 					value={amount}
 					onChange = {handleInput}
 					placeholder={`Enter Amount (number of copies you wish to buy)`}
 				/>
-				<AnimBtn onClick = {handleClick}>Submit</AnimBtn>
+				<AnimBtn disabled={isLoading} onClick = {handleClick}>{buttonText}</AnimBtn>
 			</Group>
 		</ModalContainer>
 	)
