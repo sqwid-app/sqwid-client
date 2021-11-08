@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.4](https://github.com/boidushya/sqwid-client/compare/v0.2.3...v0.2.4) (2021-11-08)
+
+
+### Bug Fixes
+
+* added shield badges to README.md ([a6909d0](https://github.com/boidushya/sqwid-client/commit/a6909d0666cd218cd2bc222301c1ce9cc268bf34))
+* upload cover size limit ([8c9fc35](https://github.com/boidushya/sqwid-client/commit/8c9fc359b20da5ccc2bf032cf4fcd13a282293f4))
+
 ### [0.2.3](https://github.com/boidushya/sqwid-client/compare/v0.2.2...v0.2.3) (2021-11-08)
 
 
