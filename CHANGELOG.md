@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/boidushya/sqwid-client/compare/v0.1.20...v0.2.0) (2021-11-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* major styling overhaul, new pages
+
+### Features
+
+* added links to header icons ([503c2f2](https://github.com/boidushya/sqwid-client/commit/503c2f242f75d00af3a822e65fa13a14300fa623))
+* conntected bids to backend and blockchain ([7c01028](https://github.com/boidushya/sqwid-client/commit/7c010289b249d2c87420767f7ca9b02766fdbb44))
+
+
+### Bug Fixes
+
+* account select hide currently logged in profile ([3d9f247](https://github.com/boidushya/sqwid-client/commit/3d9f24797f9fb26991d370a0da006d4362023faa))
+* added more 'bounce' to waves ([22bfc65](https://github.com/boidushya/sqwid-client/commit/22bfc659e3616c5790758df51ad424f66499a4f3))
+* bids history section ([01c5750](https://github.com/boidushya/sqwid-client/commit/01c57504dd9b1332e4bcc834575d86978fd917ad))
+* bids sections for no items ([b91b9b2](https://github.com/boidushya/sqwid-client/commit/b91b9b224b9e68dd6a1dcaec09234898fad146f0))
+* change api url ([d86f8fe](https://github.com/boidushya/sqwid-client/commit/d86f8fe34174e5e8242112433e85f5b29feabb99))
+* changed text background clip layout ([eefcb2b](https://github.com/boidushya/sqwid-client/commit/eefcb2bdddb932b66a5739d59c66e06c0fac81b1))
+* polish modals ([fa1662d](https://github.com/boidushya/sqwid-client/commit/fa1662da69bd9bebb883bfb12d5bbb4d3149266d))
+* rect bounding bug ([b87806e](https://github.com/boidushya/sqwid-client/commit/b87806eeb7a2282fe736d57f53effccc27d983c6))
+* return true by default for account select filter ([ec909a8](https://github.com/boidushya/sqwid-client/commit/ec909a85dd6016f713cead6838ed9deb2fe64baf))
+* **styles:** changed opacity for waves gradient ([69f4f5a](https://github.com/boidushya/sqwid-client/commit/69f4f5a009a6a955cde34d59a1f124414973b1f4))
+* water animation overflow ([1a4d6d5](https://github.com/boidushya/sqwid-client/commit/1a4d6d55e6b6d0c2c321a8ac4499a8899f293640))
+
+
+* Merge pull request #2 from boidushya/master ([e413263](https://github.com/boidushya/sqwid-client/commit/e413263c99a9451e31b73814ceed1a7c8ff38996)), closes [#2](https://github.com/boidushya/sqwid-client/issues/2)
+
 ### [0.1.21](https://github.com/boidushya/sqwid-client/compare/v0.1.20...v0.1.21) (2021-11-08)
 
 
