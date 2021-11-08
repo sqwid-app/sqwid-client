@@ -6,28 +6,28 @@ const Wrapper = styled.div`
 	position: relative;
 	display: flex;
 	align-items:center;
-	& > div {
+	& > a {
 		position: absolute;
 		left: 0;
 	}
-	& > div:nth-child(1) {
+	& > a:nth-child(1) {
 		left: calc(-3rem);
 		z-index:3;
 	}
-	& > div:nth-child(2) {
+	& > a:nth-child(2) {
 		left: calc(-3rem*2/3);
 		z-index:2;
 	}
-	& > div:nth-child(3) {
+	& > a:nth-child(3) {
 		left: calc(-3rem/3);
 		z-index:1;
 	}
-	& > div:hover{
+	& > a:hover{
 		z-index:4;
 	}
 `
 
-const Icon = styled(m.div)`
+const Icon = styled(m.a)`
 	position:relative;
 	height: 1.5rem;
 	width: 1.5rem;
@@ -78,6 +78,8 @@ const AnimatedIcons = (props) => {
 			y: -5,
 			scale:1.05
 		}}
+		target="_blank"
+		rel="noreferrer"
 		{...props}
 	>
 		{props.children}
@@ -87,13 +89,13 @@ const AnimatedIcons = (props) => {
 const CardHeaderIcons = ({ data }) => {
 	const { owner,collection,creator } = data
 	return (
-		<Wrapper>
-			<LazyMotion features={domAnimation}>
-				<AnimatedIcons url={owner.thumb} tooltip={`Owner: ${owner.name}`}></AnimatedIcons>
-				<AnimatedIcons url={creator.thumb} tooltip={`Creator: ${creator.name}`}></AnimatedIcons>
-				<AnimatedIcons url={collection.thumb} tooltip={`Collection: ${collection.name}`}></AnimatedIcons>
-			</LazyMotion>
-		</Wrapper>
+		<LazyMotion features={domAnimation}>
+			<Wrapper>
+				<AnimatedIcons href={`${window.location.origin}/profile/${owner.id}`} url={owner.thumb} tooltip={`Owner: ${owner.name}`}/>
+				<AnimatedIcons href={`${window.location.origin}/profile/${creator.id}`} url={creator.thumb} tooltip={`Creator: ${creator.name}`}/>
+				<AnimatedIcons href={`${window.location.origin}/collections/${collection.id}`} url={collection.thumb} tooltip={`Collection: ${collection.name}`}/>
+			</Wrapper>
+		</LazyMotion>
 	)
 }
 

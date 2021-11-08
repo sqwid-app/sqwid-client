@@ -18,9 +18,12 @@ const Wrapper = styled.div`
 		font-weight: 900;
 		font-size: 6rem;
 		text-align:center;
-		background: -webkit-linear-gradient(0deg,var(--app-text) 0%, var(--app-theme-primary) 150%);
+		background: -webkit-linear-gradient(0deg,var(--app-text) 0%, var(--app-theme-primary) 100%);
+		background-size: 150%;
+		background-repeat: no-repeat;
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
+		cursor: pointer;
 	}
 	h2{
 		font-weight: 500;
