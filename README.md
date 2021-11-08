@@ -3,9 +3,9 @@
 	<h1 align="center">Sqwid - NFT Marketplace</h1>
 </p>
 <p align="center">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.2.2-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://shields.io/github/package-json/v/sqwid-app/sqwid-client" />
   <a href="https://github.com/sqwid-app/sqwid-client/blob/master/LICENSE" target="_blank">
-    <img alt="License: GNU GPLv3" src="https://img.shields.io/badge/License-GNU GPLv3-yellow.svg" />
+    <img alt="License: MIT" src="https://img.shields.io/github/license/sqwid-app/sqwid-client" />
   </a>
 </p>
 
