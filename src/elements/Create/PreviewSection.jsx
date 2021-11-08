@@ -6,6 +6,7 @@ import { createCollectible } from "@utils/createCollectible";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import Loading from "@elements/Default/Loading";
 import UploadCover from "./UploadCover";
+import { useHistory } from "react-router";
 
 const border = css`
 	border: 2px solid var(--app-container-text-primary);
@@ -120,6 +121,7 @@ const PreviewSection = () => {
 	const [fileType, setFileType] = useState("")
 	const [buttonText, setButtonText] = useState("Create Item")
 	const [isSubmitting, setIsSubmitting] = useState(false)
+	const history = useHistory ();
 
 	useEffect (() => {
 		if (fileData.file){
@@ -146,19 +148,19 @@ const PreviewSection = () => {
 		setButtonText(<Loading/>)
 		setIsSubmitting(true)
 		if(fileData.file&&files.name.length){
+			// let id = 0;
 			createCollectible ({...files,...fileData})
 			.then(res=>{
-				setButtonText ("Uploaded NFT!")
-				setIsSubmitting(false)
+				history.push (`/collectible/${res}`);
 			})
 			.catch(err=>{
 				// handle err
 			})
-			.finally(()=>{
-				setTimeout(() => {
-					setButtonText("Create Item")
-				}, 2000);
-			})
+			// .finally(()=>{
+			// 	setTimeout(() => {
+					
+			// 	}, 250);
+			// })
 		}
 		else{
 			setButtonText("Create Item")
