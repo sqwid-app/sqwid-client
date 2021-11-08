@@ -207,14 +207,14 @@ const Sale = () => {
 				<CurrentPrice/>
 				<HighestBid/>
 			</PriceInfoContainer>
-			{isOwner?(
+			{auth&&(isOwner?(
 				<StopSale/>
 			):(
 				<BtnContainer>
 					<BuyNow/>
 					<Bid/>
 				</BtnContainer>
-			)}
+			))}
 		</>
 	)
 }
@@ -226,11 +226,11 @@ const NoSale = () => {
 	return (
 		<>
 			<HighestBid/>
-			{isOwner?(
+			{auth&&(isOwner?(
 				<PutOnSale/>
 			):(
 				<Bid/>
-			)}
+			))}
 		</>
 	)
 }
@@ -247,7 +247,7 @@ const TransactionSection = () => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Container>
-					{collectibleInfo.isOnSale?(<Sale/>):(<NoSale/>)}
+				{collectibleInfo.isOnSale?(<Sale/>):(<NoSale/>)}
 			</Container>
 		</LazyMotion>
 	)

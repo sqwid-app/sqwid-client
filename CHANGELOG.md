@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.5](https://github.com/boidushya/sqwid-client/compare/v0.2.4...v0.2.5) (2021-11-08)
+
+
+### Features
+
+* added landing screenshot with rounded corners ([e9c670e](https://github.com/boidushya/sqwid-client/commit/e9c670e30f67d1dea9832f3a6c7cdce9ecd697ff))
+* Update README ([6a6a311](https://github.com/boidushya/sqwid-client/commit/6a6a311730fb37c983e67308a622a6f18cfcaa6d))
+* updated meta tags ([9da08eb](https://github.com/boidushya/sqwid-client/commit/9da08eb6550de3208fc75416842c37f1c1eb42f6))
+
+
+### Bug Fixes
+
+* added max-height for video ([dfba7d7](https://github.com/boidushya/sqwid-client/commit/dfba7d7af73eec8d44aaef8f88985076a5f3b207))
+* added price in usd for collectible ([2cc71cb](https://github.com/boidushya/sqwid-client/commit/2cc71cbf9410118d08dbf7024422e73685e5ba63))
+* buy and bid showing up when not logged in ([284fc0b](https://github.com/boidushya/sqwid-client/commit/284fc0b36d2c057cd5ba50dd069cfb95143e7c57))
+* fixed eslint warnings ([7482c25](https://github.com/boidushya/sqwid-client/commit/7482c257380e0525d93afff4f19919f45c018bb2))
+* video max height for fullscreen ([204b5c1](https://github.com/boidushya/sqwid-client/commit/204b5c178cfd5ee1041e067ec123bddec83a3b72))
+
 ### [0.2.4](https://github.com/boidushya/sqwid-client/compare/v0.2.3...v0.2.4) (2021-11-08)
 
 
