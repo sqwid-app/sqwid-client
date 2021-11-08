@@ -1,4 +1,5 @@
 export const initialState = {
+	isValidCollectible: true,
 	title: "",
 	description: "",
 	creator:{
@@ -16,5 +17,5 @@ export const initialState = {
 	quantity:{},
 	price:"",
 	highestBid:"",
-	bidsHistory:[]
+	bidsHistory:[],
 }

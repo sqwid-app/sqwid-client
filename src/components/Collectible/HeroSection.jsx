@@ -31,7 +31,7 @@ const LoadingContainer = styled.div`
 `
 
 const HeroSection = () => {
-	const { setCollectibleInfo } = useContext(CollectibleContext);
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
 	const [isLoading, setIsLoading] = useState(true)
 	const { addr } = useParams ();
 
@@ -95,8 +95,17 @@ const HeroSection = () => {
 		const getData = async () => {
 			const data = await fetchMarketplaceItem (Number (addr));
 			if (data) {
-				setCollectibleInfo (data);
+				setCollectibleInfo ({
+					...data,
+					isValidCollectible: true
+				});
 				setIsLoading (false)
+			}
+			else{
+				setCollectibleInfo({
+					...collectibleInfo,
+					isValidCollectible:false,
+				})
 			}
 		}
 
