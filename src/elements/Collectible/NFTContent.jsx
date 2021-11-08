@@ -47,6 +47,9 @@ const PlyrContainer = styled.div`
 	.plyr{
 		height: ${props=>props.audio?`auto`:`100%`};
 		border-radius: 0.25rem;
+		video{
+			max-height: 65vh;
+		}
 	}
 	${props=>props.audio&&center};
 `
