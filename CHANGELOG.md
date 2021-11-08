@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/boidushya/sqwid-client/compare/v0.2.2...v0.2.3) (2021-11-08)
+
+
+### Features
+
+* added cover image for audio on collectible ([7d5547d](https://github.com/boidushya/sqwid-client/commit/7d5547d8a3b6b1c9975d44d65c79b48e07845fce))
+* added readme, contributing and license ([057881c](https://github.com/boidushya/sqwid-client/commit/057881caaf195bb7e4872786da8d953e6ccb2ca2))
+* added sitewide testnet alert ([63876ba](https://github.com/boidushya/sqwid-client/commit/63876ba8bdb17e84719f9473c3c6c96a5b4d0f7c))
+* changed licenseto MIT ([7ce2259](https://github.com/boidushya/sqwid-client/commit/7ce2259f6ea0ee2a2d27ecaca769347064fda358))
+* redirect to collectible page after minting ([3c94f75](https://github.com/boidushya/sqwid-client/commit/3c94f75eb1046f526ad4c66ee2be9282731a5cb4))
+* update README.md ([882c235](https://github.com/boidushya/sqwid-client/commit/882c235fc910516015c06ca70f7a8424200fb259))
+
+
+### Bug Fixes
+
+* added landing page screenshot README ([c41f7ad](https://github.com/boidushya/sqwid-client/commit/c41f7ad081bca2754e88905775f5fcf22018bf41))
+* added link for README ([0da19e5](https://github.com/boidushya/sqwid-client/commit/0da19e5434e2450e40316c8d077b85b70ef7c594))
+* added responsiveness for top banner ([738e8aa](https://github.com/boidushya/sqwid-client/commit/738e8aace3655c61efdac7bffee3d07f5ea1b7cf))
+* button text change for mobile devices ([f75264c](https://github.com/boidushya/sqwid-client/commit/f75264c161162e5be757d8889d8d4fa4ee044f83))
+* button width for Bids and Transactions ([21567f3](https://github.com/boidushya/sqwid-client/commit/21567f36fd457583b643fa6216cf8c2a8b909ab9))
+* change marketplace contract ([f0aeaa0](https://github.com/boidushya/sqwid-client/commit/f0aeaa0ed777e1ed38d6752163de0e7cb2348c5e))
+* changed button text on landing ([abaf7d7](https://github.com/boidushya/sqwid-client/commit/abaf7d748aee67edc4763912e6581f77068c1e5b))
+* changed first child hover style for bids ([e7e5b82](https://github.com/boidushya/sqwid-client/commit/e7e5b82f4d01bb49729a7f986669b284a087c355))
+* commit README ([4ab5d17](https://github.com/boidushya/sqwid-client/commit/4ab5d17ba7d67a80b5c57efee25def1848ef1182))
+* improved README ([1fbea37](https://github.com/boidushya/sqwid-client/commit/1fbea37c3966d0bebc34d4efd789559a9e899472))
+* increased max width for collectible headers ([5686403](https://github.com/boidushya/sqwid-client/commit/56864032b2a555f9b679edd2a24fc8f712b50236))
+* memoized plyr component ([569be38](https://github.com/boidushya/sqwid-client/commit/569be382558b5641a1cecdc5f46e56e512d83d72))
+* remove collections on profile page exit ([f200ff3](https://github.com/boidushya/sqwid-client/commit/f200ff32fab27cd311274017780872c2148a539a))
+* removed install from README ([f821408](https://github.com/boidushya/sqwid-client/commit/f821408d6f1da3802dea3ee46cc3de364a613b67))
+* removed stray console.log ([fa6e487](https://github.com/boidushya/sqwid-client/commit/fa6e4874dfdd3cd6f9023dd58a5eca27f15094a9))
+* removed stray hr from README ([e02b598](https://github.com/boidushya/sqwid-client/commit/e02b598ae64291acc5df57a3c212d6b2e575dc80))
+
 ### [0.2.2](https://github.com/boidushya/sqwid-client/compare/v0.2.0...v0.2.2) (2021-11-08)
 
 

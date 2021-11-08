@@ -6,6 +6,7 @@ import {
 	Route
 } from "react-router-dom";
 import CollectibleProvider from "@contexts/Collectible/CollectibleProvider";
+import TopBanner from "@components/Default/TopBanner";
 const Explore = React.lazy(() => import("@pages/Explore"));
 const Collectible = React.lazy(() => import("@pages/Collectible")) ;
 const Collections = React.lazy(() => import("@pages/Collections")) ;
@@ -14,10 +15,12 @@ const Landing = React.lazy(() => import("@pages/Landing")) ;
 const Profile = React.lazy(() => import("@pages/Profile")) ;
 const NotFound = React.lazy(() => import("@pages/NotFound")) ;
 
+
 const Routes = () => {
 	return (
 		<Router>
 			<Suspense fallback={<FullPageLoading init component="routes"/>}>
+				<TopBanner/>
 				<Switch>
 					<Route
 						path="/"

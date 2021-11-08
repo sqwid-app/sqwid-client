@@ -58,16 +58,19 @@ const createCollectible = async (files) => {
 			);
 			try {
 				const nft = await contract.mint (to, copies, uri, to, royalty, process.env.REACT_APP_COLLECTIBLE_CONTRACT_ADDRESS);
-				await nft.wait ();
-				try {
-					const verification = await axios ({
-						method: 'get',
-						url: `${process.env.REACT_APP_API_URL}/create/collectible/sync`,
-					});
-					return verification.data;
-				} catch (e) {
-					return null;
-				}
+				// eslint-disable-next-line
+				const receipt = await nft.wait ();
+				const itemId = await contract.currentId ();
+				return Number (itemId);
+				// try {
+				// 	const verification = await axios ({
+				// 		method: 'get',
+				// 		url: `${process.env.REACT_APP_API_URL}/create/collectible/sync`,
+				// 	});
+				// 	return verification.data;
+				// } catch (e) {
+				// 	return null;
+				// }
 			} catch (err) {
 				return null;
 			}

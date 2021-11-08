@@ -124,6 +124,7 @@ const Btn = styled(BtnBaseAnimated)`
 	width: fit-content;
 	margin-left: auto;
 	margin-top: 1.5rem;
+	min-width: 6rem;
 `
 
 const AnimBtn = ({ children, ...props }) => (

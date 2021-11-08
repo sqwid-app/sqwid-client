@@ -64,7 +64,7 @@ const PlyrCover = styled.div`
 	`}
 `
 
-const VideoContainer = ({ data }) => {
+const VideoContainer = React.memo(({ data }) => {
 	let type = data.type.split("/")[0];
 	const settings = {
 		type: type,
@@ -94,7 +94,7 @@ const VideoContainer = ({ data }) => {
 			</Content>
 		</PlyrContainer>
 	)
-}
+})
 
 const NFTContent = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)

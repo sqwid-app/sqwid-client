@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const SVG = styled.svg`
 	background: transparent;
-	fill: red;
+	fill: currentColor;
 `
 
 const CancelIcon = () => {
