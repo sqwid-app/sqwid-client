@@ -191,7 +191,7 @@ const HotBids = ({ items }) => {
 
 	// let cards = [];
 	// console.log (items);
-	
+
 	return (
 		<Container>
 			<Header>Hot Bids 🔥</Header>

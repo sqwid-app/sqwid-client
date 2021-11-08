@@ -180,7 +180,7 @@ const UploadCover = () => {
 	const { fileData } = useContext(FileContext)
 	return (
 		<Wrapper>
-			{!fileData.coverFile ?<Dropzone maxSize={200000}/>:<ImageThumb/>}
+			{!fileData.coverFile ?<Dropzone maxSize={2000000}/>:<ImageThumb/>}
 		</Wrapper>
 	)
 }
