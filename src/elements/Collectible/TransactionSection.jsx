@@ -10,7 +10,6 @@ import { BidsModal, PutOnSaleModal, BuyModal } from "./Modals";
 
 import { removeFromSale } from "@utils/marketplace";
 import Loading from "@elements/Default/Loading";
-import axios from "axios";
 
 const Container = styled.div`
 	display: flex;
