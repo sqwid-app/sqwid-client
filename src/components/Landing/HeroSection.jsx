@@ -25,6 +25,7 @@ const Wrapper = styled.div`
 const WaveContainer = styled.div`
 	position: absolute;
     bottom: 0;
+	left: 0;
     width: 100vw;
 	& > div {
 		display: flex !important;
