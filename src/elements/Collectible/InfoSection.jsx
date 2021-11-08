@@ -73,7 +73,7 @@ const NotStyledLink = styled.a`
 	color: inherit;
 	font-weight: 900;
 	font-size: 1.125rem;
-	max-width: 10rem;
+	max-width: 20rem;
 	text-overflow:ellipsis;
 	overflow: hidden;
 	white-space:nowrap;

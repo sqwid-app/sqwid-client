@@ -4,6 +4,7 @@ import ProfileSection from '@components/Profile/ProfileSection';
 import Navbar from '@components/Default/Navbar'
 import AuthContext from '@contexts/Auth/AuthContext';
 import NotFound from "./NotFound"
+import { Prompt } from "react-router-dom";
 
 const Wrapper = ({ children }) => (
 	<>
@@ -20,6 +21,12 @@ const Profile = () => {
 			{(id||auth)?(
 				<Wrapper>
 					<ProfileSection/>
+					<Prompt
+						message={() => {
+							localStorage.removeItem("collections")
+							return true
+						}}
+					/>
 				</Wrapper>
 			):(
 				<NotFound/>
