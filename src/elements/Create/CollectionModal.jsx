@@ -295,13 +295,13 @@ const New = ({ isActive, setIsActive }) => {
 				<InputContainer
 					value={info.name}
 					onChange = {(e)=>setInfo({...info,name:e.target.value})}
-					placeholder={`e.g "Walter White collection"`}
+					placeholder={`e.g "Doggo collection"`}
 				/>
 				<Title>Description</Title>
 				<InputContainer
 					value={info.description}
 					onChange = {(e)=>setInfo({...info,description:e.target.value})}
-					placeholder={`e.g "So? I like Breaking Bad sue me"`}
+					placeholder={`e.g "Pics of my heckin doggo"`}
 				/>
 				<Title>Cover Image</Title>
 				{!fileURL.length?(
@@ -340,6 +340,9 @@ const Existing = ({ isActive, setIsActive }) => {
 		.catch(err=>{
 			// handle err
 		})
+		return () => {
+			setCollections([])
+		}
 	//eslint-disable-next-line
 	}, [])
 	return (

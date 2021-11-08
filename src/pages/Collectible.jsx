@@ -1,8 +1,9 @@
 import HeroSection from "@components/Collectible/HeroSection";
 import Navbar from "@components/Default/Navbar";
-import CollectibleProvider from "@contexts/Collectible/CollectibleProvider";
+import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { respondTo } from "@styles/styledMediaQuery";
-import React from "react";
+import React, { useContext } from "react";
+import { useParams } from "react-router";
 import styled from "styled-components";
 import NotFound from "./NotFound";
 
@@ -33,19 +34,17 @@ const Wrapper = ({ children }) => {
 }
 
 const Collectible = () => {
-	const isValidCollectible = true;
-	const text = `Collectible with id ${`123`} is not valid`
+	const { collectibleInfo } = useContext(CollectibleContext);
+	const { addr } = useParams ();
 	return (
 		<>
-		{isValidCollectible?(
-			<CollectibleProvider>
+			{collectibleInfo && collectibleInfo.isValidCollectible===true?(
 				<Wrapper>
 					<HeroSection/>
 				</Wrapper>
-			</CollectibleProvider>
-		):(
-			<NotFound stack={text} />
-		)}
+			):(
+				<NotFound stack={`Collectible with id ${addr} is not valid`} />
+			)}
 		</>
 	)
 }

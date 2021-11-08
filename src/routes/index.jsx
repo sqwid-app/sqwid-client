@@ -5,6 +5,7 @@ import {
 	Switch,
 	Route
 } from "react-router-dom";
+import CollectibleProvider from "@contexts/Collectible/CollectibleProvider";
 const Explore = React.lazy(() => import("@pages/Explore"));
 const Collectible = React.lazy(() => import("@pages/Collectible")) ;
 const Collections = React.lazy(() => import("@pages/Collections")) ;
@@ -46,8 +47,11 @@ const Routes = () => {
 					<Route
 						path="/collectible/:addr/:ownerID?"
 						exact
-						component={Collectible}
-					/>
+					>
+						<CollectibleProvider>
+							<Collectible/>
+						</CollectibleProvider>
+					</Route>
 					<Route
 						component={NotFound}
 					/>

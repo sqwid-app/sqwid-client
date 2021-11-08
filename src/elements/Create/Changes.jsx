@@ -47,18 +47,18 @@ const deepEqual = (x, y) => {
 }
 
 const Changes = () => {
-	const { files } = useContext(FileContext)
+	const { files, fileData } = useContext(FileContext)
 	const [isVisible, setIsVisible] = useState(false)
 	const [animateOut, setAnimateOut] = useState(false)
 	useEffect(() => {
 		const equalityCheck = (deepEqual({
-			file:initialState.files.file,
+			file:initialState.fileData.file,
 			name:initialState.files.name,
 			description:initialState.files.description,
 			royalty:initialState.files.royalty,
 			copies:initialState.files.copies,
 		},{
-			file:files.file,
+			file:fileData.file,
 			name:files.name,
 			description:files.description,
 			royalty:files.royalty,
@@ -74,7 +74,7 @@ const Changes = () => {
 				setIsVisible(false)
 			}, 200);
 		}
-	}, [files])
+	}, [files, fileData])
 	return (
 		<Container>
 			{isVisible&&(

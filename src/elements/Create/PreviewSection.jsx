@@ -114,7 +114,7 @@ const AnimBtn = ({ children, onClick,disabled }) => (
 )
 
 const PreviewSection = () => {
-	const { files } = useContext(FileContext)
+	const { files, fileData } = useContext(FileContext)
 	const [fileURL, setFileURL] = useState("")
 	const [title, setTitle] = useState("")
 	const [fileType, setFileType] = useState("")
@@ -122,8 +122,8 @@ const PreviewSection = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false)
 
 	useEffect (() => {
-		if (files.file){
-			const { file } = files;
+		if (fileData.file){
+			const { file } = fileData;
 			if (file.type.startsWith ("image")) {
 				setFileType ("image")
 			} else if (file.type.startsWith ("video")) {
@@ -132,10 +132,10 @@ const PreviewSection = () => {
 				setFileType ("audio")
 			}
 
-			setFileURL (window.URL.createObjectURL (files.file))
+			setFileURL (window.URL.createObjectURL (fileData.file))
 		}
 	//eslint-disable-next-line
-	}, [files.file])
+	}, [fileData.file])
 
 	useEffect(() => {
 		setTitle(files.name)
@@ -145,8 +145,8 @@ const PreviewSection = () => {
 		localStorage.removeItem("properties")
 		setButtonText(<Loading/>)
 		setIsSubmitting(true)
-		if(files.file&&files.name.length){
-			createCollectible (files)
+		if(fileData.file&&files.name.length){
+			createCollectible ({...files,...fileData})
 			.then(res=>{
 				setButtonText ("Uploaded NFT!")
 				setIsSubmitting(false)

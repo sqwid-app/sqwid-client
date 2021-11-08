@@ -50,18 +50,19 @@ const DropzoneButton = styled(m.a)`
 
 const Dropzone = (props) => {
 	const initialDragText = props.modal?"PNG, JPEG, GIF or WEBP. Max 30mb.":"PNG, GIF, WEBP, MP4, or MP3. Max 30mb."
-	const { files, setFiles } = useContext(FileContext)
+	const { fileData, setFileData } = useContext(FileContext)
 	const [dragText, setDragText] = useState(initialDragText)
 	const {getRootProps, getInputProps, open, acceptedFiles,isDragActive,fileRejections} = useDropzone({
 		noClick: true,
 		noKeyboard: true,
 		maxFiles:1,
-		accept: `image/jpeg, image/gif, image/png, image/webp, ${!props.modal&&`audio/mpeg, video/mp4`}`
+		accept: `image/jpeg, image/gif, image/png, image/webp, ${!props.modal&&`audio/mpeg, video/mp4`}`,
+		maxSize:props.maxSize
 	});
 	useEffect(() => {
 		if(acceptedFiles.length){
-			setFiles({
-				...files,
+			setFileData({
+				...fileData,
 				file: acceptedFiles[0]
 			});
 		}
@@ -73,7 +74,9 @@ const Dropzone = (props) => {
 	}, [isDragActive])
 	useEffect(() => {
 		if(fileRejections.length){
-			setDragText(fileRejections[0].errors[0].message)
+			(fileRejections[0].errors[0].code==="file-too-large")?
+				setDragText("File cannot be larger than 30mb"):
+				setDragText(fileRejections[0].errors[0].message)
 			setTimeout(() => {
 				setDragText(initialDragText);
 			}, 3000);
