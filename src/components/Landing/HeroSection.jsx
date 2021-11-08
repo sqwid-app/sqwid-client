@@ -74,7 +74,7 @@ const MobileContainer = () => {
 	return (
 		<MobileSection>
 			<LazyMotion features={domAnimation}>
-				<AnimBtn href="/explore">Explore</AnimBtn>
+				<AnimBtn href="/explore">Dive in</AnimBtn>
 			</LazyMotion>
 			<p>For the best user experience, switch to a desktop browser</p>
 		</MobileSection>
