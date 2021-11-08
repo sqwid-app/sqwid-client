@@ -32,13 +32,6 @@ const SignInBtn = () => {
 	const [currentAccounts, setCurrentAccounts] = useState (null);
 	const [username, setUsername] = useState("")
 	const { loading, auth } = useContext(AuthContext);
-	//eslint-disable-next-line
-	// useEffect (() => {
-	// 	(async () => {
-	// 		let accs = await Init ();
-	// 		setCurrentAccounts (accs);
-	// 	}) ();
-	// }, []);
 	const handleClick = () => {
 		(async () => {
 			let accs = await Init ();

@@ -2,7 +2,7 @@ import Divider from "@elements/Default/Divider";
 import LinkGroups from "@elements/Navbar/LinkGroups";
 import { MenuToggle } from "@elements/Navbar/MenuToggle";
 import Navigation from "@elements/Navbar/Navigation";
-import Search from "@elements/Navbar/Search";
+// import Search from "@elements/Navbar/Search";
 import SignInBtn from "@elements/Navbar/SignInBtn";
 import LogoIcon from "@static/svg/Logo";
 import { respondTo } from "@styles/styledMediaQuery";
@@ -81,7 +81,7 @@ const Navbar = () => {
 					<>
 						<LinkGroups/>
 						<Divider/>
-						<Search/>
+						{/* <Search/> */}
 						<SignInBtn/>
 					</>
 				):(

@@ -1,24 +1,37 @@
 import { respondTo } from "@styles/styledMediaQuery";
 import React from "react";
 import styled from "styled-components";
-import CardsContainer from "./CardsContainer";
 import InfoContainer from "./InfoContainer";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import { LazyMotion, domAnimation } from "framer-motion";
+import Wave from 'react-wavify'
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
 	// padding-right:0;
 	height: 65vh;
 	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
+	place-items:center;
+	text-align:center;
 	${respondTo.md`
 		height: 90vh;
 		grid-template-rows: none;
 		grid-template-columns: none;
 		padding: 0 2rem;
 	`}
+`
+
+const WaveContainer = styled.div`
+	position: absolute;
+    bottom: 0;
+    width: 100vw;
+	& > div {
+		display: flex !important;
+		& > svg{
+			align-self: flex-end;
+		}
+	}
 `
 
 const MobileSection = styled.div`
@@ -76,7 +89,31 @@ const HeroSection = () => {
 			{isTabletOrMobile?(
 				<MobileContainer/>
 			):(
-				<CardsContainer/>
+				<WaveContainer>
+					<Wave
+						fill="url(#gradient)"
+						paused={false}
+						options={{
+							height: 20,
+							amplitude: 50,
+							speed: 0.2,
+							points: 2
+						}}
+					>
+						<defs>
+							<linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+							<stop offset="0%" style={{
+								stopColor:"var(--app-theme-primary)",
+								stopOpacity:"1"
+							}}/>
+							<stop offset="100%" style={{
+								stopColor:"var(--app-theme-primary-transparent)",
+								stopOpacity:"0.8"
+							}}/>
+							</linearGradient>
+						</defs>
+					</Wave>
+				</WaveContainer>
 			)}
 		</Wrapper>
 		</>
