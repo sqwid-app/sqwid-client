@@ -9,12 +9,10 @@
   </a>
 </p>
 
-> An ocean of possibilities
+Sqwid - An ocean of possibilities
 
 
 ### 🏠 [Homepage](https://sqwid.app)
-
-***
 
 ## ⚙ Install
 
@@ -23,8 +21,6 @@ git clone https://github.com/sqwid-app/sqwid-client.git
 yarn install
 ```
 
-***
-
 ## 🚀 Usage
 
 ```sh
@@ -32,7 +28,6 @@ git clone https://github.com/sqwid-app/sqwid-client.git
 yarn && yarn start
 ```
 
-***
 
 ## 🧔 Authors
 
@@ -47,19 +42,13 @@ yarn && yarn start
 * Github: [@boidushya](https://github.com/boidushya)
 * LinkedIn: [@boidushya](https://linkedin.com/in/boidushya)
 
-***
-
 ## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/sqwid-app/sqwid-client/issues). You can also take a look at the [contributing guide](https://github.com/sqwid-app/sqwid-client/blob/master/CONTRIBUTING.md).
 
-***
-
 ## ✨ Show your support
 
 Give a ⭐️ if this project helped you!
-
-***
 
 ## 📝 License
 
