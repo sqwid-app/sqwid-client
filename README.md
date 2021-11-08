@@ -9,8 +9,10 @@
   </a>
 </p>
 
-Sqwid - An ocean of possibilities
-
+<p align="center">
+<img style="border-radius:7.5px" alt="Logo" src="public/landing.png"/>
+<h2 align="center">Sqwid - An ocean of possibilities</h2> 
+</p>
 
 ### 🏠 [Homepage](https://sqwid.app)
 
