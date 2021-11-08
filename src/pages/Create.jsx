@@ -1,6 +1,7 @@
 import HeroSection from "@components/Create/HeroSection";
 import Navbar from "@components/Default/Navbar";
 import React from "react";
+import { Prompt } from "react-router-dom";
 import styled from "styled-components";
 
 const MarginDiv = styled.div`
@@ -30,6 +31,12 @@ const Create = () => {
 	return (
 		<Wrapper>
 			<HeroSection/>
+			<Prompt
+				message={() => {
+					localStorage.removeItem("collections")
+					return true
+				}}
+			/>
 		</Wrapper>
 	)
 }

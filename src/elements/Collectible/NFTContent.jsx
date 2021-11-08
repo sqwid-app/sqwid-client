@@ -28,14 +28,40 @@ const ImageContainer = styled.div`
 const center = css`
 	display: grid;
 	place-items:center;
+	.plyr{
+		border-radius: 0 0 0.25rem 0.25rem;
+	}
+`
+
+const Content = styled.div`
+	display: block;
+	padding: 0 2rem;
+    width: 100%;
+	${respondTo.md`
+		padding: 0;
+	`}
 `
 
 const PlyrContainer = styled.div`
 	height: 100%;
 	.plyr{
 		height: ${props=>props.audio?`auto`:`100%`};
+		border-radius: 0.25rem;
 	}
 	${props=>props.audio&&center};
+`
+
+const PlyrCover = styled.div`
+	background-image: url('${props=>props.src&&props.src}');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	min-height: 24rem;
+	min-width: 100%;
+	border-radius: 0.25rem 0.25rem 0 0;
+	${respondTo.md`
+		min-height: 12rem;
+	`}
 `
 
 const VideoContainer = ({ data }) => {
@@ -59,10 +85,13 @@ const VideoContainer = ({ data }) => {
 	}
 	return (
 		<PlyrContainer audio={type==="audio"}>
-			<Plyr
-				source={settings}
-				options={options}
-			/>
+			<Content>
+				{type==="audio"&&<PlyrCover src={data.cover}/>}
+				<Plyr
+					source={settings}
+					options={options}
+				/>
+			</Content>
 		</PlyrContainer>
 	)
 }
@@ -78,7 +107,6 @@ const NFTContent = () => {
 			url:"https://samplelib.com/lib/preview/mp3/sample-9s.mp3"
 		}
 	}
-
 	const test={
 		media:{
 			type:"video/mp4",

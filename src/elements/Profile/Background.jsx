@@ -19,8 +19,8 @@ const BackgroundContainer = styled.div`
 	`}
 `
 
-const Background = ({ seed }) => {
-	return <BackgroundContainer seed={seed}/>
+const Background = () => {
+	return <BackgroundContainer/>
 }
 
 export default React.memo(Background)

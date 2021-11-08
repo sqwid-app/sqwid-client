@@ -54,7 +54,7 @@ const Wrapper = styled.div`
 		background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='16' ry='16' stroke='%23787987FF' stroke-width='4' stroke-dasharray='6%2c 10' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
 		border-radius: 16px;
 		outline:none;
-		@media (max-width: 1224px){}
+		width: 100%;
 	}
 `
 
@@ -85,8 +85,8 @@ const DropzoneButton = styled(m.a)`
 `
 
 const ImageThumb = () => {
-	const { files, setFiles } = useContext(FileContext)
-	let image = files.coverFile
+	const { fileData, setFileData } = useContext(FileContext)
+	let image = fileData.coverFile
 	return(
 		<ImageThumbWrapper>
 			<Title>Cover Image</Title>
@@ -102,8 +102,8 @@ const ImageThumb = () => {
 						whileTap={{
 							scale:0.99
 						}}
-						onClick={()=>setFiles({
-							...files,
+						onClick={()=>setFileData({
+							...fileData,
 							coverFile:null
 						})}
 					>Reset Image</DropzoneButton>
@@ -115,19 +115,20 @@ const ImageThumb = () => {
 };
 
 const Dropzone = (props) => {
-	const initialDragText = "PNG, JPEG, GIF or WEBP. Max 30mb."
-	const { files, setFiles } = useContext(FileContext)
+	const initialDragText = "PNG, JPEG, GIF or WEBP. Max 2mb."
+	const { fileData, setFileData } = useContext(FileContext)
 	const [dragText, setDragText] = useState(initialDragText)
 	const {getRootProps, getInputProps, open, acceptedFiles,isDragActive,fileRejections} = useDropzone({
 		noClick: true,
 		noKeyboard: true,
 		maxFiles:1,
-		accept: `image/jpeg, image/gif, image/png, image/webp`
+		accept: `image/jpeg, image/gif, image/png, image/webp`,
+		maxSize:props.maxSize
 	});
 	useEffect(() => {
 		if(acceptedFiles.length){
-			setFiles({
-				...files,
+			setFileData({
+				...fileData,
 				coverFile: acceptedFiles[0]
 			});
 		}
@@ -139,7 +140,9 @@ const Dropzone = (props) => {
 	}, [isDragActive])
 	useEffect(() => {
 		if(fileRejections.length){
-			setDragText(fileRejections[0].errors[0].message)
+			(fileRejections[0].errors[0].code==="file-too-large")?
+				setDragText("File cannot be larger than 2mb"):
+				setDragText(fileRejections[0].errors[0].message)
 			setTimeout(() => {
 				setDragText(initialDragText);
 			}, 3000);
@@ -174,10 +177,10 @@ const Dropzone = (props) => {
 }
 
 const UploadCover = () => {
-	const { files } = useContext(FileContext)
+	const { fileData } = useContext(FileContext)
 	return (
 		<Wrapper>
-			{!files.coverFile ?<Dropzone/>:<ImageThumb/>}
+			{!fileData.coverFile ?<Dropzone maxSize={200000}/>:<ImageThumb/>}
 		</Wrapper>
 	)
 }

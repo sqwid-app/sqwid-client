@@ -54,7 +54,7 @@ const Group = styled.div`
 
 const RightContainer = styled(LeftContainer)``
 
-const HeroSection = () => {
+const HeroSection = () =>{
 	return (
 		<FileProvider>
 			<Wrapper>
