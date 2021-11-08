@@ -2,16 +2,17 @@ import axios from 'axios';
 import { ethers } from 'ethers';
 import marketplaceContractABI from '../constants/contracts/SqwidMarketplace';
 import { Interact } from './connect';
-// const getNameByAddress = async (address) => {
-//     try {
-//         const res = await axios (`${process.env.REACT_APP_API_URL}/get/user/${address}`);
-//         return res.data.displayName;
-//     } catch (e) {
-//         return address;
-//     }
-// }
+
+import { isMarketplaceApproved, approveMarketplace } from './marketplaceApproval';
+
 const marketplaceContract = (signerOrProvider) => new ethers.Contract (process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS, marketplaceContractABI, signerOrProvider);
 
+const checkAndApproveMarketplace = async () => {
+    const approved = await isMarketplaceApproved ();
+    if (!approved) {
+        await approveMarketplace ();
+    }
+}
 
 // returns all marketplace items
 const fetchMarketplaceItems = async () => {
@@ -41,9 +42,9 @@ const marketplaceItemExists = async (itemId) => {
     return data;
 };
 
-
 // puts an item up for sale (owner only)
 const putOnSale = async (itemId, price) => {
+    await checkAndApproveMarketplace ();
     let realPrice = ethers.utils.parseEther (price);
 
     const { signer } = await Interact ();
@@ -66,6 +67,7 @@ const removeFromSale = async (itemId) => {
 
 // buy an item for asking price
 const buyNow = async (itemId, amount, itemPrice) => {
+    await checkAndApproveMarketplace ();
     const { signer } = await Interact ();
     const marketplaceContractInstance = marketplaceContract (signer);
     let reefAmount = Number (itemPrice) * Number (amount);
@@ -83,18 +85,36 @@ const fetchBids = async (itemId) => {
 };
 
 // add a bid to an item
-const addBid = async (itemId, price) => {
-
+const addBid = async (itemId, price, amount) => {
+    await checkAndApproveMarketplace ();
+    // console.log (itemId, price, amount);
+    const { signer } = await Interact ();
+    const marketplaceContractInstance = marketplaceContract (signer);
+    let reefAmount = Number (price) * Number (amount);
+    const val = ethers.utils.parseEther (reefAmount.toString ());
+    const tx = await marketplaceContractInstance.addBid (itemId, amount, {
+        value: val,
+    });
+    const receipt = await tx.wait ();
+    return receipt;
 };
 
 // removes a bid (bidder only)
-const removeBid = async (itemId, bidId) => {
-
+const cancelBid = async (itemId, bidId) => {
+    const { signer } = await Interact ();
+    const marketplaceContractInstance = marketplaceContract (signer);
+    const tx = await marketplaceContractInstance.cancelBid (itemId, bidId);
+    const receipt = await tx.wait ();
+    return receipt;
 };
 
 // accepts a bid (seller only)
 const acceptBid = async (itemId, bidId) => {
-
+    const { signer } = await Interact ();
+    const marketplaceContractInstance = marketplaceContract (signer);
+    const tx = await marketplaceContractInstance.acceptBid (itemId, bidId);
+    const receipt = await tx.wait ();
+    return receipt;
 };
 
 // returns the highest bid for a certain item
@@ -121,7 +141,7 @@ export {
     buyNow,
     fetchBids,
     addBid,
-    removeBid,
+    cancelBid,
     acceptBid,
     fetchHighestBid,
     getTokenSupply,

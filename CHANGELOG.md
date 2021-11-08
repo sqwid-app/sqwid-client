@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.21](https://github.com/boidushya/sqwid-client/compare/v0.1.20...v0.1.21) (2021-11-08)
+
+
+### Bug Fixes
+
+* bids history section ([01c5750](https://github.com/boidushya/sqwid-client/commit/01c57504dd9b1332e4bcc834575d86978fd917ad))
+* **styles:** changed opacity for waves gradient ([69f4f5a](https://github.com/boidushya/sqwid-client/commit/69f4f5a009a6a955cde34d59a1f124414973b1f4))
+
 ### [0.1.20](https://github.com/boidushya/sqwid-client/compare/v0.1.19...v0.1.20) (2021-11-07)
 
 
