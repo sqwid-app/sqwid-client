@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.6](https://github.com/boidushya/sqwid-client/compare/v0.2.5...v0.2.6) (2021-11-19)
+
+
+### Features
+
+* updated README ([d67b0ee](https://github.com/boidushya/sqwid-client/commit/d67b0ee61349dde94f051dc85267b6d9236c16cf))
+* updated README ([24ff260](https://github.com/boidushya/sqwid-client/commit/24ff260aff43004c210d46f6a38fc6089bc6972d))
+
 ### [0.2.5](https://github.com/boidushya/sqwid-client/compare/v0.2.4...v0.2.5) (2021-11-08)
 
 
