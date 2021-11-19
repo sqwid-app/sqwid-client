@@ -21,6 +21,7 @@ const Wrapper = styled.div`
 		background: -webkit-linear-gradient(0deg,var(--app-text) 0%, var(--app-theme-primary) 100%);
 		background-size: 150%;
 		background-repeat: no-repeat;
+		background-clip: text;
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		cursor: pointer;
@@ -65,6 +66,10 @@ const AnimBtn = ({ children, ...props }) => (
 		whileTap={{
 			scale:0.97
 		}}
+		whileHover={{
+			y: -10,
+			x: 0
+		}}
 		{...props}
 	>{children}</Btn>
 )
@@ -79,10 +84,6 @@ const InfoContainer = () => {
 				<BtnContainer>
 					<LazyMotion features={domAnimation}>
 						<AnimBtn
-							whileHover={{
-								y:-10,
-								x:0
-							}}
 							href="/explore"
 						>Dive in</AnimBtn>
 					</LazyMotion>

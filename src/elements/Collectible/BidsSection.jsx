@@ -10,6 +10,7 @@ import { LazyMotion, domAnimation, m } from "framer-motion";
 import axios from 'axios';
 import { acceptBid, cancelBid } from "@utils/marketplace";
 import Loading from "@elements/Default/Loading";
+import bread from "@utils/bread";
 
 const Wrapper = styled(SimpleBarReact)`
 	overflow: auto;
@@ -157,30 +158,40 @@ const BidsCard = (info) => {
 
 	const handleAccept = () => {
 		if (!isLoading) {
+			setIsLoading (true);
 			let history = collectibleInfo.bidsHistory;
 			let index = history.findIndex (bid => bid.id === info.id);
 			history.splice (index, 1);
-			setIsLoading (true);
-			acceptBid (collectibleInfo.itemId, info.id).then (() => {
+			acceptBid (collectibleInfo.itemId, info.id)
+			.then (() => {
+				setIsLoading (false);
 				setCollectibleInfo ({
 					...collectibleInfo,
 					bidsHistory: history
 				});
+			})
+			.catch((err)=>{
+				bread(err.response.data.error)
 			});
 		}
 	}
 
 	const handleCancel = () => {
 		if (isBidder && !isLoading) {
+			setIsLoading (true);
 			let history = collectibleInfo.bidsHistory;
 			let index = history.findIndex (bid => bid.id === info.id);
 			history.splice (index, 1);
-			setIsLoading (true);
-			cancelBid (collectibleInfo.itemId, info.id).then (() => {
+			cancelBid (collectibleInfo.itemId, info.id)
+			.then (() => {
+				setIsLoading (false);
 				setCollectibleInfo ({
 					...collectibleInfo,
 					bidsHistory: history
 				});
+			})
+			.catch((err)=>{
+				bread(err.response.data.error)
 			});
 		}
 	}

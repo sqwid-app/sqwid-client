@@ -16,6 +16,14 @@
 	background: var(--app-container-text-primary);
 }
 
+.swipeUpwards{
+	animation: swipeUpwards 0.2s var(--easing) forwards;
+}
+
+.swipeDownwards {
+	animation: swipeDownwards 0.2s var(--easing) forwards;
+}
+
 @keyframes animate-logo{
 	0% {
 		stroke-dashoffset: 0px;
@@ -34,5 +42,27 @@
 		stroke-dashoffset: 110px;
 		fill: currentColor;
 		stroke-width: 0;
+	}
+}
+
+@keyframes swipeDownwards {
+	0% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(50%);
+		opacity: 0;
+	}
+}
+
+@keyframes swipeUpwards {
+	0% {
+		transform: translateY(50%);
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(0);
+		opacity: 1;
 	}
 }

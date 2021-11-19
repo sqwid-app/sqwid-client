@@ -11,6 +11,7 @@ import AuthContext from "@contexts/Auth/AuthContext";
 import { getCloudflareURL } from "@utils/getIPFSURL";
 import FileContext from "@contexts/File/FileContext";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
+import bread from "@utils/bread";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -274,7 +275,7 @@ const New = ({ isActive, setIsActive }) => {
 				setIsSubmitting(false)
 			})
 			.catch(err=>{
-				// handle err
+				bread(err.response.data.error)
 			})
 			.finally(()=>{
 				setTimeout(() => {
@@ -338,7 +339,7 @@ const Existing = ({ isActive, setIsActive }) => {
 			setCollections(res.data.collections)
 		})
 		.catch(err=>{
-			// handle err
+			bread(err.response.data.error)
 		})
 		return () => {
 			setCollections([])

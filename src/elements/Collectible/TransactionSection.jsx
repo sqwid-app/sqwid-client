@@ -10,6 +10,7 @@ import { BidsModal, PutOnSaleModal, BuyModal } from "./Modals";
 
 import { removeFromSale } from "@utils/marketplace";
 import Loading from "@elements/Default/Loading";
+import bread from "@utils/bread";
 
 const Container = styled.div`
 	display: flex;
@@ -154,7 +155,7 @@ const StopSale = () => {
 			})
 
 		}).catch (err => {
-			// console.log (err);
+			bread(err.response.data.error)
 		});
 	}
 	return (

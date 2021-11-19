@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import CollectibleProvider from "@contexts/Collectible/CollectibleProvider";
 import TopBanner from "@components/Default/TopBanner";
+import BreadContainer from "@components/Default/BreadContainer";
+
 const Explore = React.lazy(() => import("@pages/Explore"));
 const Collectible = React.lazy(() => import("@pages/Collectible")) ;
 const Collections = React.lazy(() => import("@pages/Collections")) ;
@@ -59,6 +61,7 @@ const Routes = () => {
 						component={NotFound}
 					/>
 				</Switch>
+				<BreadContainer/>
 			</Suspense>
 		</Router>
 	)

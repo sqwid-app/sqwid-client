@@ -4,6 +4,7 @@ import { Connect } from "@utils/connect";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import { truncateAddress } from "@utils/textUtils";
 import AuthContext from "@contexts/Auth/AuthContext";
+import bread from "@utils/bread";
 
 const swipeRightToLeft = keyframes`
 	0% {
@@ -193,7 +194,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 			}
 		})
 		.catch(err=>{
-			// handle err
+			bread(err.response.data.error)
 		})
 		.finally(()=>{
 			setLoading(false);
