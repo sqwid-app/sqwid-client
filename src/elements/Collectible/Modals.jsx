@@ -267,6 +267,7 @@ const PutOnSaleModal = (props) => {
 			setCollectibleInfo ({
 				...collectibleInfo,
 				isOnSale:true,
+				price: price,
 			});
 			props.setIsActive (false);
 		}).catch (err => {

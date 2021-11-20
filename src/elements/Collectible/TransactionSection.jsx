@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import AuthContext from "@contexts/Auth/AuthContext";
@@ -99,10 +99,15 @@ const BtnContainer = styled.div`
 
 const CurrentPrice = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
+	const [usdPrice, setUsdPrice] = useState(collectibleInfo.priceInUSD.toFixed(2));
+	useEffect(() => {
+		setUsdPrice(collectibleInfo.priceInUSD.toFixed(2));
+	//eslint-disable-next-line
+	},[collectibleInfo.price])
 	return (
 		<Price>
 			<ReefIcon/><p><label title={numberSeparator(collectibleInfo.price)}>{numberSeparator(collectibleInfo.price)}</label>
-			<span>(${collectibleInfo.priceInUSD.toFixed(2)})</span></p>
+			<span>(${usdPrice})</span></p>
 		</Price>
 	)
 }
