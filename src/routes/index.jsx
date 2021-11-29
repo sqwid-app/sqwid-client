@@ -15,7 +15,8 @@ const Collections = React.lazy(() => import("@pages/Collections")) ;
 const Create = React.lazy(() => import("@pages/Create")) ;
 const Landing = React.lazy(() => import("@pages/Landing")) ;
 const Profile = React.lazy(() => import("@pages/Profile")) ;
-const NotFound = React.lazy(() => import("@pages/NotFound")) ;
+const Lagoon = React.lazy(() => import("@pages/Lagoon"));
+const NotFound = React.lazy(() => import("@pages/NotFound"));
 
 
 const Routes = () => {
@@ -48,6 +49,11 @@ const Routes = () => {
 						path="/create"
 						exact
 						component={Create}
+					/>
+					<Route
+						path="/lagoon"
+						exact
+						component={Lagoon}
 					/>
 					<Route
 						path="/collectible/:addr/:ownerID?"
