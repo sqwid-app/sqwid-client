@@ -1,10 +1,12 @@
 import { respondTo } from "@styles/styledMediaQuery";
 import React from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import DesignSection from "./DesignSection";
 import {LazyMotion,m,domAnimation} from "framer-motion";
 import SimpleBarReact from "simplebar-react";
 import 'simplebar/dist/simplebar.min.css';
+
+const imgDim = "13rem";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -40,19 +42,58 @@ const ContentSection = styled.div`
 	z-index:4;
 `
 
-const Card = styled(m.div)`
+const cardNonFeatured = css`
 	background: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(140, 140, 140, 0) 100%), url(${props => props.img});
+`
+
+const cardFeatured = css`
+	background: linear-gradient(0deg,rgba(132, 32, 28, 0.5), rgba(15, 71, 135, 0.5)), url(${props => props.img});
+`
+
+const slideUp = keyframes`
+	0%{
+		opacity:0;
+		transform: translateY(100%);
+	}
+	100%{
+		opacity:1;
+		transform: translateY(0);
+	}
+`
+
+const featuredHoverText = css`
+	&:after{
+		content: attr(data-key);
+		position: absolute;
+		bottom:0;
+		right:0;
+		padding: 0.25rem 0.75rem;
+		font-weight: 900;
+		background: linear-gradient(45deg, #fc466b, #3f5efb);
+		text-transform: uppercase;
+		font-size: 0.75rem;
+		box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+		border-radius: 1000rem;
+		margin: 0.5rem;
+		animation: ${slideUp} 0.175s ease;
+	}
+`
+
+const Card = styled(m.div)`
+	${props=>props.featured?cardFeatured:cardNonFeatured};
+	position:relative;
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	min-height: 13rem;
-	height: 13rem;
-	min-width: 13rem;
-	width: 13rem;
+	min-height: ${imgDim};
+	height: ${imgDim};
+	min-width: ${imgDim};
+	width: ${imgDim};
 	border-radius: 1rem;
 	padding:1rem;
 	cursor: pointer;
 	text-align:left;
+	overflow: hidden;
 	& *{
 		cursor:pointer;
 		white-space: nowrap;
@@ -63,22 +104,13 @@ const Card = styled(m.div)`
 		font-weight: 900;
 		font-size: 2rem;
 	}
-`
-
-const slideLeft = keyframes`
-	from{
-		transform: translateX(-1rem);
-		opacity:0;
-	}
-	to{
-		transform: translateX(0.5rem);
-		opacity:1;
+	&:hover{
+		${props=>props.featured&&featuredHoverText}
 	}
 `
 
 const FeaturedSectionContainer = styled.div`
 	display: flex;
-	/* flex-direction: column; */
 	border-radius: 1rem;
 	padding-top: 1rem;
 	div.featured-section-heading{
@@ -122,25 +154,27 @@ const SimpleBarContainer = styled(SimpleBarReact)`
 	`}
 `
 
-const FeaturedSectionBar = styled.div`
-	padding: 1rem;
-	padding-left: 0;
-    margin-right: 0.5rem;
-	cursor: pointer;
-	&:hover{
-		.featured-section-heading:after{
-			content: attr(data-text);
-			position: absolute;
-			z-index:5;
-			font-weight: 900;
-			background:linear-gradient(45deg, #0D68D8, #0BBAFB);
-			padding: 0.25rem 0.5rem;
-			border-radius: 1000rem;
-			box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
-			margin-left:0.5rem;
-			animation: ${slideLeft} 0.2s ease forwards;
-		}
+const FeaturedCardsContainer = styled(CardsContainer)`
+	position:relative;
+	padding-right: 1rem;
+	margin-right: 1rem;
+	&:after{
+		content: "";
+		position: absolute;
+		width: 0.1rem;
+		height: calc(${imgDim}/2);
+		top:50%;
+		transform: translateY(-50%);
+		background:var(--app-container-bg-primary);
+		right:0;
+		border-radius: 1000rem;
+
 	}
+	/* border-right: 0.1rem solid var(--app-container-bg-primary); */
+`
+
+const CardsWrapper = styled.div`
+	display: flex;
 `
 
 const RegularSection = () => {
@@ -148,76 +182,72 @@ const RegularSection = () => {
 		name: "Ink Sacs",
 		author: "SQWID",
 		link: "https://google.com",
-		img: "https://unsplash.it/300/300?image=10"
+		img: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+		featured: true,
+	},{
+		name: "Ink Sacs",
+		author: "SQWID",
+		link: "https://google.com",
+		img: "https://unsplash.it/300/300?image=10",
+		featured: false,
 	},{
 		name: "Bink Bacs",
 		author: "Boidushya",
 		link: "https://boidushya.com",
-		img: "https://unsplash.it/300/300?image=11"
+		img: "https://unsplash.it/300/300?image=11",
+		featured: false,
 	}, {
 		name: "Link Lacs",
 		author: "Andi",
 		link: "https://andithemudkip.now.sh",
-		img: "https://unsplash.it/300/300?image=12"
+		img: "https://unsplash.it/300/300?image=12",
+		featured: false,
 		}]
 	return (
 		<FeaturedSectionContainer>
 			<LazyMotion features={domAnimation}>
 				<SimpleBarContainer>
-					<CardsContainer>
-						{featured?.map((item, index) => (
-							<Card
-								key={index}
-								img={item.img}
-								whileHover={{
-									x: 0,
-									y: -10,
-									scale: 1.01,
-								}}
-								onClick={() => window.open(item.link)}
-							>
-								<label title={item.name}><h1>{item.name}</h1></label>
-								<label title={item.author}><p>by {item.author}</p></label>
-							</Card>
-						))}
-					</CardsContainer>
-				</SimpleBarContainer>
-			</LazyMotion>
-		</FeaturedSectionContainer>
-	)
-}
+					<CardsWrapper>
 
-const FeaturedSection = () => {
-	const featured = [{
-			name: "Ink Sacs",
-			author: "SQWID",
-			link:"https://google.com",
-			img: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
-		}]
-	return (
-		<FeaturedSectionContainer>
-			<LazyMotion features={domAnimation}>
-				<FeaturedSectionBar>
-					<div className="featured-section-heading" data-text="Featured"/>
-				</FeaturedSectionBar>
-				<SimpleBarContainer>
-					<CardsContainer>
-						{featured?.map((item, index) => (
-							<Card
-								key={index}
-								img={item.img}
-								whileHover={{
-									x:0,
-									y:-10,
-									scale: 1.01,
-								}}
-								onClick={() => window.open(item.link)}
-							>
-								<label title={item.name}><h1>{item.name}</h1></label>
-								<label title={item.author}><p>by {item.author}</p></label>
-							</Card>
-						))}
-					</CardsContainer>
+						<FeaturedCardsContainer>
+							{featured?.filter(item=>item.featured)?.map((item, index) => (
+								<Card
+									key={index}
+									img={item.img}
+									featured={item.featured}
+									whileHover={{
+										x: 0,
+										y: -10,
+										scale: 1.01,
+									}}
+									data-key={item.featured && `featured`}
+									onClick={() => window.open(item.link)}
+								>
+									<label title={item.name}><h1>{item.name}</h1></label>
+									<label title={item.author}><p>by {item.author}</p></label>
+								</Card>
+							))}
+						</FeaturedCardsContainer>
+						<CardsContainer>
+							{featured?.filter(item=>!item.featured)?.map((item, index) => (
+								<Card
+									key={index}
+									img={item.img}
+									featured={item.featured}
+									whileHover={{
+										x: 0,
+										y: -10,
+										scale: 1.01,
+									}}
+									data-key={item.featured&&`featured`}
+									onClick={() => window.open(item.link)}
+								>
+									<label title={item.name}><h1>{item.name}</h1></label>
+									<label title={item.author}><p>by {item.author}</p></label>
+								</Card>
+							))}
+						</CardsContainer>
+					</CardsWrapper>
 				</SimpleBarContainer>
 			</LazyMotion>
 		</FeaturedSectionContainer>
@@ -229,7 +259,6 @@ const HeroSection = () => {
 		<Wrapper>
 			<ContentSection>
 				<Heading className="heading">Lagoon<span>BETA</span></Heading>
-				<FeaturedSection />
 				<RegularSection />
 			</ContentSection>
 			<DesignSection/>
