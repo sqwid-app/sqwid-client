@@ -158,23 +158,17 @@ const FeaturedCardsContainer = styled(CardsContainer)`
 	position:relative;
 	padding-right: 1rem;
 	margin-right: 1rem;
-	&:after{
-		content: "";
-		position: absolute;
-		width: 0.1rem;
-		height: calc(${imgDim}/2);
-		top:50%;
-		transform: translateY(-50%);
-		background:var(--app-container-bg-primary);
-		right:0;
-		border-radius: 1000rem;
-
-	}
+	width: 100%;
 	/* border-right: 0.1rem solid var(--app-container-bg-primary); */
 `
 
-const CardsWrapper = styled.div`
-	display: flex;
+const CardsWrapper = styled.div``
+
+const RegularSectionHeading = styled.h2`
+	font-size: 1rem;
+	font-weight: 900;
+	margin-top: 0.5rem;
+	color: var(--app-container-text-primary);
 `
 
 const RegularSection = () => {
@@ -182,7 +176,7 @@ const RegularSection = () => {
 		name: "Ink Sacs",
 		author: "SQWID",
 		link: "https://google.com",
-		img: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+		img: "https://unsplash.it/300/300?image=13",
 		featured: true,
 	},{
 		name: "Ink Sacs",
@@ -228,6 +222,7 @@ const RegularSection = () => {
 								</Card>
 							))}
 						</FeaturedCardsContainer>
+						<RegularSectionHeading>Other Projects</RegularSectionHeading>
 						<CardsContainer>
 							{featured?.filter(item=>!item.featured)?.map((item, index) => (
 								<Card
