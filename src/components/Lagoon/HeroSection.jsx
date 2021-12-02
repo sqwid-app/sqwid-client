@@ -47,7 +47,7 @@ const cardNonFeatured = css`
 `
 
 const cardFeatured = css`
-	background: linear-gradient(0deg,rgba(132, 32, 28, 0.5), rgba(15, 71, 135, 0.5)), url(${props => props.img});
+	background: linear-gradient(0deg,rgba(132, 32, 28, 0.65), rgba(15, 71, 135, 0.65)), url(${props => props.img});
 `
 
 const slideUp = keyframes`
