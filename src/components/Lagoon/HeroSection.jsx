@@ -109,6 +109,10 @@ const Card = styled(m.div)`
 	&:hover{
 		${props=>props.featured&&featuredHoverText}
 	}
+	${respondTo.xs`
+		width: 100%;
+		aspect-ratio:1;
+	`}
 `
 
 const FeaturedSectionContainer = styled.div`
