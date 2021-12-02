@@ -29,6 +29,11 @@
 	--toastify-color-error: var(--app-theme-primary);
 }
 
+::selection {
+	background: var(--app-container-text-primary-hover);
+	color: var(--app-container-bg-primary);
+}
+
 html, body{
 	font-family: var(--font-family);
 	font-weight: 500;

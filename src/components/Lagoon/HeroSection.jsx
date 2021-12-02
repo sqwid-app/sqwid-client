@@ -100,6 +100,7 @@ const Card = styled(m.div)`
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
+		user-select: none;
 	}
 	h1{
 		font-weight: 900;
@@ -111,7 +112,6 @@ const Card = styled(m.div)`
 `
 
 const FeaturedSectionContainer = styled.div`
-	display: flex;
 	border-radius: 1rem;
 	padding-top: 1rem;
 	div.featured-section-heading{
@@ -131,6 +131,7 @@ const FeaturedSectionContainer = styled.div`
 		margin-left: 0;
 	}
 	${respondTo.md`
+		display: flex;
 		flex-direction: column;
 		padding: 0 2rem;
 		h1.featured-section-heading{
