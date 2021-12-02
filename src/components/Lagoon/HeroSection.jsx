@@ -152,7 +152,7 @@ const CardsContainer = styled.div`
 	padding: 1rem 0;
 	${respondTo.md`
 		flex-direction: column;
-		margin-left: 1rem;
+		margin: 0 1rem;
 	`}
 `
 
@@ -169,6 +169,9 @@ const FeaturedCardsContainer = styled(CardsContainer)`
 	padding-right: 1rem;
 	margin-right: 1rem;
 	width: 100%;
+	${respondTo.md`
+		padding-right: 2rem;
+	`}
 	/* border-right: 0.1rem solid var(--app-container-bg-primary); */
 `
 
