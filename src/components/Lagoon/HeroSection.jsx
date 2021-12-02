@@ -5,6 +5,7 @@ import DesignSection from "./DesignSection";
 import {LazyMotion,m,domAnimation} from "framer-motion";
 import SimpleBarReact from "simplebar-react";
 import 'simplebar/dist/simplebar.min.css';
+import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 
 const imgDim = "13rem";
 
@@ -144,6 +145,10 @@ const CardsContainer = styled.div`
 	display: flex;
 	gap: 1rem;
 	padding: 1rem 0;
+	${respondTo.md`
+		flex-direction: column;
+		margin-left: 1rem;
+	`}
 `
 
 const SimpleBarContainer = styled(SimpleBarReact)`
@@ -169,9 +174,14 @@ const RegularSectionHeading = styled.h2`
 	font-weight: 900;
 	margin-top: 0.5rem;
 	color: var(--app-container-text-primary);
+	${respondTo.md`
+		font-size: 1.5rem;
+		padding: 0.75rem 1rem 0.25rem;
+	`}
 `
 
 const RegularSection = () => {
+	const isTabletOrMobile = useIsTabletOrMobile();
 	const featured = [{
 		name: "Ink Sacs",
 		author: "SQWID",
@@ -200,9 +210,13 @@ const RegularSection = () => {
 	return (
 		<FeaturedSectionContainer>
 			<LazyMotion features={domAnimation}>
-				<SimpleBarContainer>
-					<CardsWrapper>
-
+				<CardsWrapper>
+					{isTabletOrMobile&&(
+						<RegularSectionHeading>
+							Featured
+						</RegularSectionHeading>
+					)}
+					<SimpleBarContainer>
 						<FeaturedCardsContainer>
 							{featured?.filter(item=>item.featured)?.map((item, index) => (
 								<Card
@@ -222,7 +236,9 @@ const RegularSection = () => {
 								</Card>
 							))}
 						</FeaturedCardsContainer>
-						<RegularSectionHeading>Other Projects</RegularSectionHeading>
+					</SimpleBarContainer>
+					<RegularSectionHeading>Other Projects</RegularSectionHeading>
+					<SimpleBarContainer>
 						<CardsContainer>
 							{featured?.filter(item=>!item.featured)?.map((item, index) => (
 								<Card
@@ -242,8 +258,8 @@ const RegularSection = () => {
 								</Card>
 							))}
 						</CardsContainer>
-					</CardsWrapper>
-				</SimpleBarContainer>
+					</SimpleBarContainer>
+				</CardsWrapper>
 			</LazyMotion>
 		</FeaturedSectionContainer>
 	)
