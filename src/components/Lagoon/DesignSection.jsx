@@ -10,6 +10,9 @@ const Container = styled.div`
 	left: 0;
     width: 100%;
 	opacity: 0.375;
+	${respondTo.md`
+		opacity: 0.25;
+	`}
 	& > div {
 		display: flex !important;
 		& > svg{
