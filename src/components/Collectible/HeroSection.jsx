@@ -5,7 +5,7 @@ import LoadingIcon from "@static/svg/LoadingIcon";
 import { respondTo } from "@styles/styledMediaQuery";
 import bread from "@utils/bread";
 //eslint-disable-next-line
-import { fetchMarketplaceItem, marketplaceItemExists } from "@utils/marketplaceV2";
+import { fetchMarketplaceItem, marketplaceItemExists } from "@utils/marketplace";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";

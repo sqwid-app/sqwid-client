@@ -5,7 +5,7 @@ import styled from "styled-components";
 import HotBids from "./HotBids";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import RecentlyListed from "./RecentlyListed";
-import { fetchMarketplaceItems } from "@utils/marketplaceV2";
+import { fetchMarketplaceItems } from "@utils/marketplace";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
