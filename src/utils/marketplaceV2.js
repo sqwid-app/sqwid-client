@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import marketplaceContractABI from '../constants/contracts/SqwidMarketplace';
 import utilityContractABI from '../constants/contracts/SqwidUtility';
 import { GetProvider, Interact } from './connect';
-import { getCloudflareURL, getDwebURL } from './getIPFSURL';
+import { getCloudflareURL, getDwebURL, getInfuraURL } from './getIPFSURL';
 
 import { isMarketplaceApproved, approveMarketplace } from './marketplaceApproval';
 

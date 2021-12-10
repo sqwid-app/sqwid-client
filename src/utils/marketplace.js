@@ -30,6 +30,8 @@ const fetchMarketplaceItem = async (itemId) => {
     if (data.error) {
         return null;
     }
+    data.media.cover = data.media.cover.replace (' ', '%20');
+    data.media.url = data.media.url.replace (' ', '%20');
     return data;
 };
 
