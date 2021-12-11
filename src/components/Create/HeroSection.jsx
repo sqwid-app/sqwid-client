@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FileProvider from "@contexts/File/FileProvider";
 import UploadSection from "@elements/Create/UploadSection";
@@ -54,29 +54,110 @@ const Group = styled.div`
 
 const RightContainer = styled(LeftContainer)``
 
+const MainPage = () =>{
+	return (
+		<>
+			<LeftContainer>
+				<Group>
+					<UploadContainer>
+						<UploadSection />
+					</UploadContainer>
+					<TitleSection />
+					<DescriptionSection />
+				</Group>
+				<Changes />
+			</LeftContainer>
+			<RightContainer>
+				<RoyaltySection />
+				<CopiesSection />
+				<CollectionSection />
+				<PropertiesSection />
+			</RightContainer>
+			<PreviewSection />
+		</>
+	)
+}
+
+const Navbar = styled.nav`
+	display:flex;
+	gap:0.5rem;
+	border-bottom: 0.1rem solid var(--app-container-bg-primary);
+	border-radius: 0.1rem;
+	margin-bottom: 0.5rem;
+	user-select:none;
+`
+
+const HeaderSection = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+`
+
+const NavContent = styled.p`
+	position:relative;
+	padding: 0.1rem 0.5rem;
+	font-weight: 900;
+	color: ${props => props.active ? `inherit` : `var(--app-container-text-primary)`};
+	cursor: pointer;
+	text-decoration:none;
+	transition: all 0.2s ease;
+	&:before{
+		content: "";
+		height: 100%;
+		width: 100%;
+		left:0;
+		top: 0;
+		position: absolute;
+		border-bottom: 0.1rem solid var(--app-text);
+		border-radius: 0.1rem;
+		opacity: 0;
+		opacity: ${props => props.active ? `1` : `0`};
+		transition: opacity 0.1s ease;
+	}
+`
+
 const HeroSection = () =>{
+	const [navRoutes, setNavRoutes] = useState([{
+		name: "Create",
+		isActive: true,
+		component: (
+			<>
+				<MainPage />
+			</>
+		)
+	}, {
+		name: "Wrap",
+		isActive: false,
+		component:  <>TBD👍</>
+	},{
+		name: "Unwrap",
+		isActive: false,
+		component: <>Also TBD idk lmao👍</>
+	}])
 	return (
 		<FileProvider>
 			<Wrapper>
-				<Title>Create a Collectible</Title>
+				<HeaderSection>
+					<Title>Create a Collectible</Title>
+					<Navbar>
+						{navRoutes.map((item, index) => (
+							<NavContent
+								key={index}
+								active={item.isActive}
+								disabled={item.isActive}
+								onClick={() => {
+									if (!item.isActive) {
+										let newVal = [...navRoutes.map(a => ({ ...a, isActive: false }))]
+										newVal[index].isActive = true
+										setNavRoutes(newVal)
+									}
+								}}
+							>{item.name}</NavContent>
+						))}
+					</Navbar>
+				</HeaderSection>
 				<MainSection>
-					<LeftContainer>
-						<Group>
-							<UploadContainer>
-								<UploadSection/>
-							</UploadContainer>
-							<TitleSection/>
-							<DescriptionSection/>
-						</Group>
-						<Changes/>
-					</LeftContainer>
-					<RightContainer>
-						<RoyaltySection/>
-						<CopiesSection/>
-						<CollectionSection/>
-						<PropertiesSection/>
-					</RightContainer>
-					<PreviewSection/>
+					{navRoutes.find(item => item.isActive).component}
 				</MainSection>
 			</Wrapper>
 		</FileProvider>
