@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.7](https://github.com/boidushya/sqwid-client/compare/v0.2.6...v0.2.7) (2021-12-11)
+
+
+### Features
+
+* added error handling with toasts ([9c6ce35](https://github.com/boidushya/sqwid-client/commit/9c6ce358b2494efc5971cf379e947a13cc3aa7ac))
+* added price change in context after putting on sale ([32ce062](https://github.com/boidushya/sqwid-client/commit/32ce0627532e167f5e98229da6feaa564ff9ecd2))
+
+
+### Bug Fixes
+
+* bumped opacity for featured card ([20c8a46](https://github.com/boidushya/sqwid-client/commit/20c8a46370d100e7b76e0a59d3acf081ec903488))
+* chagned featured card layout ([85d8c35](https://github.com/boidushya/sqwid-client/commit/85d8c354a43f86f4d383971fd094b000f7d9e034))
+* changed layout for lagoon page ([bdee363](https://github.com/boidushya/sqwid-client/commit/bdee363bb6de6c904bcb8a260d42cbcb348ee865))
+* chrome emoji issue ([14ecc36](https://github.com/boidushya/sqwid-client/commit/14ecc36a94062a418ef4931032071214b38d2e21))
+* chrome emoji issue ([8555887](https://github.com/boidushya/sqwid-client/commit/8555887965cc05f53afb9ccfc7c2ea38a91aa150))
+* inconsistent responsive margin ([cd7fe76](https://github.com/boidushya/sqwid-client/commit/cd7fe766c4f773931a1fc180e5ad19ddadca3342))
+* managed responsiveness for lagoon page ([0227cc2](https://github.com/boidushya/sqwid-client/commit/0227cc2f039d0ed232cf68a4eb2d934aba8b5dc2))
+* managed responsiveness for mobile devices ([16d6ccf](https://github.com/boidushya/sqwid-client/commit/16d6ccfd1e6f5023cad6554eee997a06a7bb7a8b))
+* minor UI inconsistencies ([4beddb5](https://github.com/boidushya/sqwid-client/commit/4beddb5569eee1d09c09a51f948bfbcffe27e1e3))
+* modified lagoon page layout ([5abf771](https://github.com/boidushya/sqwid-client/commit/5abf771c18916263fbaa84e587aa004c48caf02f))
+* optimize explore page by doing fetching on the client side ([75e180c](https://github.com/boidushya/sqwid-client/commit/75e180c9c6a504c09545a0000bd63708d3b1b1c2))
+* replace spaces with %20 in urls ([e138617](https://github.com/boidushya/sqwid-client/commit/e138617b6dd716c79d5a8d0fa8c1ba6898004943))
+* responsiveness messed up desktop view ([5e58dfd](https://github.com/boidushya/sqwid-client/commit/5e58dfde7bc43719e4b012f7dabe4dc02caa9437))
+* switch back to appengine ([5cc8538](https://github.com/boidushya/sqwid-client/commit/5cc85382662cd82b199b968c1194bc9d31791f73))
+
 ### [0.2.6](https://github.com/boidushya/sqwid-client/compare/v0.2.5...v0.2.6) (2021-11-19)
 
 
