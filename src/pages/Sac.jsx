@@ -1,10 +1,11 @@
 import Navbar from '@components/Default/Navbar'
+import SacProvider from '@contexts/Sac/SacProvider'
 import Container from '@elements/Default/Container'
 import FullPageLoading from '@elements/Default/FullPageLoading'
 import { respondTo } from '@styles/styledMediaQuery'
 import React, { Suspense } from 'react'
 import styled from 'styled-components'
-const HeroSection = React.lazy(() => import("@components/Lagoon/HeroSection"))
+const HeroSection = React.lazy(() => import("@components/Sac/HeroSection"))
 
 const MarginDiv = styled.div`
 	margin-top: 6rem;
@@ -18,7 +19,7 @@ const Wrapper = ({ children, landing }) => {
 		<>
 			<Navbar />
 			<Container landing={landing}>
-				<MarginDiv landing={landing}>
+				<MarginDiv>
 					{children}
 				</MarginDiv>
 			</Container>
@@ -26,14 +27,16 @@ const Wrapper = ({ children, landing }) => {
 	)
 }
 
-const Lagoon = () => {
+const Sac = () => {
 	return (
-		<Suspense fallback={<FullPageLoading init component="lagoon" />}>
-			<Wrapper>
-				<HeroSection />
-			</Wrapper>
+		<Suspense fallback={<FullPageLoading init component="sac" />}>
+			<SacProvider>
+				<Wrapper>
+					<HeroSection />
+				</Wrapper>
+			</SacProvider>
 		</Suspense>
 	)
 }
 
-export default Lagoon
+export default Sac

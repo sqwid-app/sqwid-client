@@ -190,10 +190,10 @@ const RegularSectionHeading = styled.h2`
 
 const RegularSection = () => {
 	const isTabletOrMobile = useIsTabletOrMobile();
-	const featured = [{
+	const lagoonList = [{
 		name: "Ink Sacs",
 		author: "SQWID",
-		link: "https://google.com",
+		link: "/sac/1",
 		img: "https://unsplash.it/300/300?image=13",
 		featured: true,
 	},{
@@ -226,7 +226,7 @@ const RegularSection = () => {
 					)}
 					<SimpleBarContainer>
 						<FeaturedCardsContainer>
-							{featured?.filter(item=>item.featured)?.map((item, index) => (
+							{lagoonList?.filter(item=>item.featured)?.map((item, index) => (
 								<Card
 									key={index}
 									img={item.img}
@@ -248,7 +248,7 @@ const RegularSection = () => {
 					<RegularSectionHeading>Other Projects</RegularSectionHeading>
 					<SimpleBarContainer>
 						<CardsContainer>
-							{featured?.filter(item=>!item.featured)?.map((item, index) => (
+							{lagoonList?.filter(item=>!item.featured)?.map((item, index) => (
 								<Card
 									key={index}
 									img={item.img}

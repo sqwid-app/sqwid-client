@@ -8,6 +8,7 @@ import {
 import CollectibleProvider from "@contexts/Collectible/CollectibleProvider";
 import TopBanner from "@components/Default/TopBanner";
 import BreadContainer from "@components/Default/BreadContainer";
+import Sac from "@pages/Sac";
 
 const Explore = React.lazy(() => import("@pages/Explore"));
 const Collectible = React.lazy(() => import("@pages/Collectible")) ;
@@ -54,6 +55,11 @@ const Routes = () => {
 						path="/lagoon"
 						exact
 						component={Lagoon}
+					/>
+					<Route
+						path="/sac/:id"
+						exact
+						component={Sac}
 					/>
 					<Route
 						path="/collectible/:addr/:ownerID?"
