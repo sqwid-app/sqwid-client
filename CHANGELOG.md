@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.8](https://github.com/boidushya/sqwid-client/compare/v0.2.7...v0.2.8) (2021-12-14)
+
+
+### Features
+
+* added create page sections ([74b8922](https://github.com/boidushya/sqwid-client/commit/74b89229aabafd0912bcf33629959555ea1131e0))
+* added grids to sac page ([625ff52](https://github.com/boidushya/sqwid-client/commit/625ff52aaa3cfd08b1632fcc83f306a784f0b0d9))
+
+
+### Bug Fixes
+
+* profile page bug ([abb369c](https://github.com/boidushya/sqwid-client/commit/abb369c9f96e4d00a9ba6a8a2f38ac8742092739))
+
 ### [0.2.7](https://github.com/boidushya/sqwid-client/compare/v0.2.6...v0.2.7) (2021-12-11)
 
 
