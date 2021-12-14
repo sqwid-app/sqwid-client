@@ -31,7 +31,7 @@ const Container = styled.div`
 			background: var(--progress-background);
 			height: 1rem;
 			border-radius: 1000rem;
-			box-shadow: inset 0 0.125rem 0.375rem var(--progress-shadow);
+			box-shadow: inset 0 0.1rem 0.25rem var(--progress-shadow);
 		}
 		&__bar{
 			position: absolute;
