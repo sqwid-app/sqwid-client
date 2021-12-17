@@ -93,7 +93,7 @@ const Modal = styled.div`
 	p{
 		font-size: 1.5rem;
 		user-select:none;
-		background: hsl(236deg 10% 23%);
+		background: var(--app-container-bg-secondary);
 		padding: 0.5rem 1.25rem;
 		cursor:pointer;
 		border-radius: 0.25rem;
@@ -123,7 +123,7 @@ const Button = styled(m.a)`
 	font-weight: 700;
 	padding: 0.675rem 1.25rem;
 	border-radius: 0.5rem;
-	background: hsl(236deg 10% 23%);
+	background: var(--app-container-bg-secondary);
 	outline: none;
 	border: none;
 	cursor: pointer;

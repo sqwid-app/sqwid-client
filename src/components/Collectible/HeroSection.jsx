@@ -13,7 +13,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
-	height: 75vh;
+	height: calc(100vh - 10rem);
 	display: flex;
 	/* grid-template-columns: repeat(2,minmax(0,1fr)); */
 	gap: 2rem;

@@ -10,10 +10,12 @@ import CopiesSection from "@elements/Create/CopiesSection";
 import CollectionSection from "@elements/Create/CollectionSection";
 import PropertiesSection from "@elements/Create/PropertiesSection";
 import Changes from "@elements/Create/Changes";
+import WrapSection from "./WrapSection";
+import UnwrapSection from "./UnwrapSection";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
-	height: 75vh;
+	height: calc(100vh - 10rem);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -26,7 +28,8 @@ const Title = styled.div`
 `
 
 const MainSection = styled.div`
-	margin: 3rem 2rem 0;
+	margin: 0 2rem;
+	padding: 3rem 0 1rem;
 	width: 75vw;
 	height: 100%;
 	display: grid;
@@ -56,7 +59,7 @@ const RightContainer = styled(LeftContainer)``
 
 const MainPage = () =>{
 	return (
-		<>
+		<MainSection>
 			<LeftContainer>
 				<Group>
 					<UploadContainer>
@@ -74,7 +77,7 @@ const MainPage = () =>{
 				<PropertiesSection />
 			</RightContainer>
 			<PreviewSection />
-		</>
+		</MainSection>
 	)
 }
 
@@ -128,11 +131,11 @@ const HeroSection = () =>{
 	}, {
 		name: "Wrap",
 		isActive: false,
-		component:  <>TBD👍</>
+		component:  <WrapSection/>
 	},{
 		name: "Unwrap",
 		isActive: false,
-		component: <>Also TBD idk lmao👍</>
+		component: <UnwrapSection/>
 	}])
 	return (
 		<FileProvider>
@@ -156,9 +159,9 @@ const HeroSection = () =>{
 						))}
 					</Navbar>
 				</HeaderSection>
-				<MainSection>
+				<>
 					{navRoutes.find(item => item.isActive).component}
-				</MainSection>
+				</>
 			</Wrapper>
 		</FileProvider>
 	)

@@ -5,7 +5,8 @@ import RedeemSection from "@elements/Sac/RedeemSection";
 import StatsSection from "@elements/Sac/StatsSection";
 import WaveSection from "@elements/Sac/WaveSection";
 import { respondTo } from "@styles/styledMediaQuery";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -61,43 +62,157 @@ const ContentContainer = styled.div`
 	}
 `
 
-const HeroSection = ({ id }) => {
-	const { setSacDetails } = useContext(SacContext)
-	useEffect(() => {
-		setSacDetails({
-			name:"Sqwid",
-			image:"https://images.unsplash.com/photo-1639480032529-36b4af636464?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=453&q=80",
-			price:"100",
-			wave:"6",
-			totalSellers:"76",
-			topSellers:[{
-				id: "0x2c15d99D65b2DB4592653827F1BCB9788a943f78",
-				name: "Boidushya",
-			},{
-				id: "5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
-				name: "Andi"
-			}],
-			accumulated: "520230",
-			date:"01/11/2021",
-			percent:"75"
-		})
-	}, [setSacDetails])
+const ErrorContainer = styled(Wrapper)`
+	display: grid;
+	align-items:center;
+	justify-content:center;
+`
+
+const Error = ({ stack }) => {
+	const { pathname } = window.location;
 	return (
-		<Wrapper>
-			<HeadingSection>
-				<Heading className="heading">Ink Sacs</Heading>
-				<SubHeading>
-					Sustainable Revenue Sharing
-					<Tooltip>Why is this awesome?</Tooltip>
-				</SubHeading>
-			</HeadingSection>
-			<ContentContainer>
-				<ClaimSection/>
-				<WaveSection/>
-				<RedeemSection/>
-				<StatsSection/>
-			</ContentContainer>
-		</Wrapper>
+		<ErrorContainer>
+			<div>
+				<h1>404 not found</h1>
+				<p>{pathname}</p>
+				{stack && (
+					<code>
+						{stack}
+					</code>
+				)}
+			</div>
+		</ErrorContainer>
+	)
+}
+
+const HeroSection = () => {
+	const { setSacDetails } = useContext(SacContext)
+	const { id } = useParams()
+	const [ hasError, setHasError ] = useState(false)
+
+	const redeemCard1 = {
+		id: 2,
+		name: "Golden Ink Sac",
+		wave: "1",
+		price: "100",
+		image: "https://images.unsplash.com/photo-1638130419943-1242ff0300bf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+		totalSellers:"76",
+		topSellers:[{
+			id: "0x2c15d99D65b2DB4592653827F1BCB9788a943f78",
+			name: "Boidushya",
+		},{
+			id: "5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
+			name: "Andi"
+		}],
+		accumulated: "520230",
+		date:"01/11/2021",
+		percent:"10",
+		redeemCards:[]
+	}
+	const redeemCard2 = {
+		id: 3,
+		name: "Ink Sac with a really long name wtf its so fricking long dude wth",
+		wave: "2",
+		price: "500",
+		image: "https://images.unsplash.com/photo-1639459841176-a520a8aff562?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+		totalSellers:"76",
+		topSellers:[{
+			id: "0x2c15d99D65b2DB4592653827F1BCB9788a943f78",
+			name: "Boidushya",
+		},{
+			id: "5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
+			name: "Andi"
+		}],
+		accumulated: "520230",
+		date:"01/11/2021",
+		percent:"33",
+		redeemCards: [
+			redeemCard1,
+		]
+	}
+	const redeemCard3 = {
+		id: 4,
+		name: "short",
+		wave: "5",
+		price: "500",
+		image: "https://images.unsplash.com/photo-1639745297141-347515fdb8aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+		totalSellers:"76",
+		topSellers:[{
+			id: "0x2c15d99D65b2DB4592653827F1BCB9788a943f78",
+			name: "Boidushya",
+		},{
+			id: "5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
+			name: "Andi"
+		}],
+		accumulated: "520230",
+		date:"01/11/2021",
+		percent:"90",
+		redeemCards: [
+			redeemCard1,
+			redeemCard2,
+		]
+	}
+
+	const card = {
+		id: 1,
+		name: "Sqwid",
+		image: "https://images.unsplash.com/photo-1639480032529-36b4af636464?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+		price: "100",
+		wave: "6",
+		totalSellers: "76",
+		topSellers: [{
+			id: "0x2c15d99D65b2DB4592653827F1BCB9788a943f78",
+			name: "Boidushya",
+		}, {
+			id: "5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
+			name: "Andi"
+		}],
+		accumulated: "520230",
+		date: "01/11/2021",
+		percent: "75",
+		redeemCards: [
+			redeemCard1,
+			redeemCard2,
+			redeemCard3
+		]
+	}
+
+	const cards = [
+		card,
+		redeemCard1,
+		redeemCard2,
+		redeemCard3
+	]
+
+	let activeSac = cards.find(card => card.id === Number(id))
+
+	useEffect(() => {
+		(activeSac) ? setSacDetails(activeSac) : setHasError(true)
+
+	//eslint-disable-next-line
+	}, [setSacDetails,id])
+	return (
+		<>
+		{!hasError ? (
+			<Wrapper>
+				<HeadingSection>
+					<Heading className="heading">Ink Sacs</Heading>
+					<SubHeading>
+						Sustainable Revenue Sharing
+						<Tooltip>Why is this awesome?</Tooltip>
+					</SubHeading>
+				</HeadingSection>
+				<ContentContainer>
+					<ClaimSection/>
+					<WaveSection/>
+					<RedeemSection/>
+					<StatsSection/>
+				</ContentContainer>
+			</Wrapper>
+		) : (
+			<Error stack={`Ink Sac with id ${id} is not valid`} />
+		)}
+		</>
 	)
 }
 

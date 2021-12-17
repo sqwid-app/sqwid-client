@@ -13,15 +13,27 @@ const Image = styled.div`
 	background-repeat: no-repeat;
 	height: 10rem;
 	border-radius: 0.5rem 0.5rem 0 0;
+`
 
+const FlexContainer = styled(Container)`
+	display: flex;
+	flex-direction: column;
 `
 
 const ImageContainer = styled(m.div)`
+	flex:1
 	display: flex;
 	flex-direction: column;
+	align-items:center;
 	width: 12.5rem;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 	cursor: pointer;
+`
+
+const ImageWrapper = styled.div`
+	height: 100%;
+	display:grid;
+	place-items:center;
 `
 
 const Btn = styled(BtnBase)`
@@ -39,20 +51,23 @@ const Btn = styled(BtnBase)`
 const ClaimSection = () => {
 	const { sacDetails } = useContext(SacContext);
 	return (
-		<Container >
+		<FlexContainer >
 			<Heading>Available to claim</Heading>
 			<LazyMotion features={domAnimation}>
-				<ImageContainer
-					whileHover = {{
-						y: -10,
-						x: 0,
-					}}
-				>
-					<Image url={sacDetails.image} alt={sacDetails.name}/>
-					<Btn>Claim</Btn>
-				</ImageContainer>
+				<ImageWrapper>
+					<ImageContainer
+						whileHover = {{
+							y: -10,
+							x: 0,
+						}}
+					>
+						<Image url={sacDetails.image} alt={sacDetails.name}/>
+						<Btn>Claim</Btn>
+					</ImageContainer>
+				</ImageWrapper>
+				
 			</LazyMotion>
-		</Container>
+		</FlexContainer>
 	)
 }
 

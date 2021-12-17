@@ -1,4 +1,5 @@
 export const initialState = {
+	id:"",
 	name:"",
 	image:"",
 	price:"",
@@ -7,5 +8,6 @@ export const initialState = {
 	topSellers:[],
 	accumulated: "",
 	date:"",
-	percent:""
+	percent:"",
+	redeemCards:[],
 }
