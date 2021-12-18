@@ -5,6 +5,7 @@ import styled, { css } from "styled-components";
 import SacContext from "@contexts/Sac/SacContext";
 import { m, LazyMotion, domAnimation} from "framer-motion";
 import ReefIcon from "@static/svg/ReefIcon";
+import { useHistory } from 'react-router';
 
 const centerFlex = css`
 	align-items:center;
@@ -83,8 +84,9 @@ const MetaContainer = styled.div`
 
 const Card = (props) => {
 	const { setSacDetails } = useContext(SacContext);
+	const history = useHistory();
 	const handleClick = () => {
-		window.history.replaceState(null, null, `${window.location.origin}/sac/${props.id}`);
+		history.push(`/sac/${props.id}`);
 		setSacDetails(props)
 	}
 	return (
