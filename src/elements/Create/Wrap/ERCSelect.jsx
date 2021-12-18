@@ -12,8 +12,8 @@ const Title = styled.h1`
 
 const ERCSelect = ({ wrapDetails, setWrapDetails }) => {
 	const options = [
-		{ label: "erc1155", value: "erc1155" },
 		{ label: "erc721", value: "erc721" },
+		{ label: "erc1155", value: "erc1155" },
 	]
 	const styles = {
 		control: (base, state) => ({
@@ -67,8 +67,9 @@ const ERCSelect = ({ wrapDetails, setWrapDetails }) => {
 				options={options}
 				styles={styles}
 				isSearchable
+				defaultValue={options[0]}
 				placeholder="Select ERC"
-				onChange={(value) => setWrapDetails({
+				onChange={value => setWrapDetails({
 					...wrapDetails,
 					erc: value.value
 				})}

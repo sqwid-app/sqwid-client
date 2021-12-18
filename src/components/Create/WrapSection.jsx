@@ -65,11 +65,11 @@ const WrapSection = () => {
 	const [wrapDetails, setWrapDetails] = useState({
 		address: "",
 		token: "",
-		erc:"",
+		erc:"erc721",
 	});
 	const [ disabled, setDisabled ] = useState(true);
 	useEffect(()=>{
-		if (wrapDetails.address.length !== 0 && wrapDetails.token.length !== 0 && wrapDetails.erc.length !== 0) {
+		if (wrapDetails.address.length !== 0 && wrapDetails.token.length !== 0) {
 			return setDisabled(false)
 		}
 		return setDisabled(true)
