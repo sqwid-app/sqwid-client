@@ -96,7 +96,7 @@ const HeroSection = () => {
 		wave: "1",
 		price: "100",
 		image: "https://images.unsplash.com/photo-1638130419943-1242ff0300bf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
-		totalSellers:"76",
+		totalSellers:"10",
 		topSellers:[{
 			id: "0x2c15d99D65b2DB4592653827F1BCB9788a943f78",
 			name: "Boidushya",
@@ -104,7 +104,7 @@ const HeroSection = () => {
 			id: "5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
 			name: "Andi"
 		}],
-		accumulated: "520230",
+		accumulated: "42069",
 		date:"01/11/2021",
 		percent:"10",
 		redeemCards:[]
@@ -115,7 +115,7 @@ const HeroSection = () => {
 		wave: "2",
 		price: "500",
 		image: "https://images.unsplash.com/photo-1639459841176-a520a8aff562?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
-		totalSellers:"76",
+		totalSellers:"14",
 		topSellers:[{
 			id: "0x2c15d99D65b2DB4592653827F1BCB9788a943f78",
 			name: "Boidushya",
@@ -123,7 +123,7 @@ const HeroSection = () => {
 			id: "5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
 			name: "Andi"
 		}],
-		accumulated: "520230",
+		accumulated: "111",
 		date:"01/11/2021",
 		percent:"33",
 		redeemCards: [
@@ -136,7 +136,7 @@ const HeroSection = () => {
 		wave: "5",
 		price: "500",
 		image: "https://images.unsplash.com/photo-1639745297141-347515fdb8aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
-		totalSellers:"76",
+		totalSellers:"90",
 		topSellers:[{
 			id: "0x2c15d99D65b2DB4592653827F1BCB9788a943f78",
 			name: "Boidushya",
@@ -144,7 +144,7 @@ const HeroSection = () => {
 			id: "5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
 			name: "Andi"
 		}],
-		accumulated: "520230",
+		accumulated: "123456",
 		date:"01/11/2021",
 		percent:"90",
 		redeemCards: [

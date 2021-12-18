@@ -1,11 +1,12 @@
 import { respondTo } from "@styles/styledMediaQuery";
 import React from "react";
-import styled, { css, keyframes } from "styled-components";
+import styled, { css } from "styled-components";
 import DesignSection from "./DesignSection";
 import {LazyMotion,m,domAnimation} from "framer-motion";
 import SimpleBarReact from "simplebar-react";
 import 'simplebar/dist/simplebar.min.css';
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
+import { useHistory } from "react-router-dom";
 
 const imgDim = "13rem";
 
@@ -186,6 +187,7 @@ const RegularSectionHeading = styled.h2`
 
 const RegularSection = () => {
 	const isTabletOrMobile = useIsTabletOrMobile();
+	const history = useHistory();
 	const lagoonList = [{
 		name: "Ink Sacs",
 		author: "SQWID",
@@ -195,19 +197,19 @@ const RegularSection = () => {
 	},{
 		name: "Ink Sacs",
 		author: "SQWID",
-		link: "https://google.com",
+		link: "/sac/2",
 		img: "https://unsplash.it/300/300?image=10",
 		featured: false,
 	},{
 		name: "Bink Bacs",
 		author: "Boidushya",
-		link: "https://boidushya.com",
+		link: "/sac/3",
 		img: "https://unsplash.it/300/300?image=11",
 		featured: false,
 	}, {
 		name: "Link Lacs",
 		author: "Andi",
-		link: "https://andithemudkip.now.sh",
+		link: "/sac/3",
 		img: "https://unsplash.it/300/300?image=12",
 		featured: false,
 		}]
@@ -233,7 +235,7 @@ const RegularSection = () => {
 										scale: 1.01,
 									}}
 									data-key={item.featured && `featured`}
-									onClick={() => window.open(item.link)}
+									onClick={() => history.push(item.link)}
 								>
 									<label title={item.name}><h1>{item.name}</h1></label>
 									<label title={item.author}><p>by {item.author}</p></label>
@@ -255,7 +257,7 @@ const RegularSection = () => {
 										scale: 1.01,
 									}}
 									data-key={item.featured&&`featured`}
-									onClick={() => window.open(item.link)}
+									onClick={() => history.push(item.link)}
 								>
 									<label title={item.name}><h1>{item.name}</h1></label>
 									<label title={item.author}><p>by {item.author}</p></label>
