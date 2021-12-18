@@ -51,19 +51,10 @@ const cardFeatured = css`
 	background: linear-gradient(0deg,rgba(132, 32, 28, 0.65), rgba(15, 71, 135, 0.65)), url(${props => props.img});
 `
 
-const slideUp = keyframes`
-	0%{
-		opacity:0;
-		transform: translateY(100%);
-	}
-	100%{
-		opacity:1;
-		transform: translateY(0);
-	}
-`
-
 const featuredHoverText = css`
 	&:after{
+		opacity:0;
+		transform: translateY(100%);
 		content: attr(data-key);
 		position: absolute;
 		bottom:0;
@@ -76,7 +67,13 @@ const featuredHoverText = css`
 		box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 		border-radius: 1000rem;
 		margin: 0.5rem;
-		animation: ${slideUp} 0.175s ease;
+		transition: all 0.175s ease;
+	}
+	&:hover{
+		&:after{
+			opacity:1;
+			transform: translateY(0);
+		}
 	}
 `
 
@@ -107,9 +104,7 @@ const Card = styled(m.div)`
 		font-weight: 900;
 		font-size: 2rem;
 	}
-	&:hover{
-		${props=>props.featured&&featuredHoverText}
-	}
+	${props=>props.featured&&featuredHoverText}
 	${respondTo.xs`
 		width: 100%;
 		aspect-ratio:1;
