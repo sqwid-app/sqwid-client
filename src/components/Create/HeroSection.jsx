@@ -123,25 +123,24 @@ const HeroSection = () =>{
 	const [navRoutes, setNavRoutes] = useState([{
 		name: "Create",
 		isActive: true,
-		component: (
-			<>
-				<MainPage />
-			</>
-		)
+		title:"Create a Collection",
+		component:<MainPage />
 	}, {
 		name: "Wrap",
 		isActive: false,
+		title:"Wrap",
 		component:  <WrapSection/>
 	},{
 		name: "Unwrap",
 		isActive: false,
+		title:"Unwrap",
 		component: <UnwrapSection/>
 	}])
 	return (
 		<FileProvider>
 			<Wrapper>
 				<HeaderSection>
-					<Title>Create a Collectible</Title>
+					<Title>{navRoutes.find(item=>item.isActive).title}</Title>
 					<Navbar>
 						{navRoutes.map((item, index) => (
 							<NavContent
