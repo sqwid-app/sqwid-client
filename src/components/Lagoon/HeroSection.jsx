@@ -67,7 +67,7 @@ const featuredHoverText = css`
 		box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 		border-radius: 1000rem;
 		margin: 0.5rem;
-		transition: all 0.175s ease;
+		transition: transform 0.175s ease 0.0875s, opacity 0.175s ease 0.0875s;
 	}
 	&:hover{
 		&:after{
