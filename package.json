@@ -24,6 +24,7 @@
 		"react-responsive": "^9.0.0-beta.4",
 		"react-router-dom": "^5.3.0",
 		"react-scripts": "4.0.3",
+		"react-select": "^5.2.1",
 		"react-toastify": "^8.1.0",
 		"react-wavify": "^1.5.4",
 		"rebound": "^0.1.0",

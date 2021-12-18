@@ -1,9 +1,10 @@
 import Address from "@elements/Create/Wrap/Address";
 import Token from "@elements/Create/Wrap/Token";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import { domAnimation, LazyMotion } from "framer-motion";
+import ERCSelect from "@elements/Create/Wrap/ERCSelect";
 
 const Wrapper = styled.div`
 	display: grid;
@@ -52,7 +53,7 @@ const AnimBtn = ({ children, onClick, disabled }) => (
 			scale: 0.97
 		}}
 		whileHover = {{
-			y:-10,
+			y:-5,
 			x:0
 		}}
 		onClick={onClick}
@@ -64,7 +65,15 @@ const WrapSection = () => {
 	const [wrapDetails, setWrapDetails] = useState({
 		address: "",
 		token: "",
+		erc:"",
 	});
+	const [ disabled, setDisabled ] = useState(true);
+	useEffect(()=>{
+		if (wrapDetails.address.length !== 0 && wrapDetails.token.length !== 0 && wrapDetails.erc.length !== 0) {
+			return setDisabled(false)
+		}
+		return setDisabled(true)
+	},[wrapDetails])
 	return (
 		<Wrapper>
 			<Container>
@@ -76,9 +85,13 @@ const WrapSection = () => {
 					wrapDetails={wrapDetails}
 					setWrapDetails={setWrapDetails}
 				/>
+				<ERCSelect
+					wrapDetails={wrapDetails}
+					setWrapDetails={setWrapDetails}
+				/>
 				<ButtonContainer>
 					<LazyMotion features={domAnimation}>
-						<AnimBtn>Submit</AnimBtn>
+						<AnimBtn disabled={disabled}>Wrap</AnimBtn>
 					</LazyMotion>
 				</ButtonContainer>
 
