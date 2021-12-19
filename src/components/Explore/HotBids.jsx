@@ -194,7 +194,7 @@ const HotBids = ({ items }) => {
 
 	return (
 		<Container>
-			<Header>Hot Bids 🔥</Header>
+			<Header>Hot Bids <span className="emoji">🔥</span></Header>
 			<CardSectionContainer>
 				<Suspense>
 					{items.map((item,index)=>(

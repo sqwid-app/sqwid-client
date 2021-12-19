@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FileProvider from "@contexts/File/FileProvider";
 import UploadSection from "@elements/Create/UploadSection";
@@ -10,10 +10,12 @@ import CopiesSection from "@elements/Create/CopiesSection";
 import CollectionSection from "@elements/Create/CollectionSection";
 import PropertiesSection from "@elements/Create/PropertiesSection";
 import Changes from "@elements/Create/Changes";
+import WrapSection from "./WrapSection";
+import UnwrapSection from "./UnwrapSection";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
-	height: 75vh;
+	height: calc(100vh - 10rem);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -26,7 +28,8 @@ const Title = styled.div`
 `
 
 const MainSection = styled.div`
-	margin: 3rem 2rem 0;
+	margin: 0 2rem;
+	padding: 3rem 0 1rem;
 	width: 75vw;
 	height: 100%;
 	display: grid;
@@ -54,30 +57,110 @@ const Group = styled.div`
 
 const RightContainer = styled(LeftContainer)``
 
+const MainPage = () =>{
+	return (
+		<MainSection>
+			<LeftContainer>
+				<Group>
+					<UploadContainer>
+						<UploadSection />
+					</UploadContainer>
+					<TitleSection />
+					<DescriptionSection />
+				</Group>
+				<Changes />
+			</LeftContainer>
+			<RightContainer>
+				<RoyaltySection />
+				<CopiesSection />
+				<CollectionSection />
+				<PropertiesSection />
+			</RightContainer>
+			<PreviewSection />
+		</MainSection>
+	)
+}
+
+const Navbar = styled.nav`
+	display:flex;
+	gap:0.5rem;
+	border-bottom: 0.1rem solid var(--app-container-bg-primary);
+	border-radius: 0.1rem;
+	margin-bottom: 0.5rem;
+	user-select:none;
+`
+
+const HeaderSection = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+`
+
+const NavContent = styled.p`
+	position:relative;
+	padding: 0.1rem 0.5rem;
+	font-weight: 900;
+	color: ${props => props.active ? `inherit` : `var(--app-container-text-primary)`};
+	cursor: pointer;
+	text-decoration:none;
+	transition: all 0.2s ease;
+	&:before{
+		content: "";
+		height: 100%;
+		width: 100%;
+		left:0;
+		top: 0;
+		position: absolute;
+		border-bottom: 0.1rem solid var(--app-text);
+		border-radius: 0.1rem;
+		opacity: 0;
+		opacity: ${props => props.active ? `1` : `0`};
+		transition: opacity 0.1s ease;
+	}
+`
+
 const HeroSection = () =>{
+	const [navRoutes, setNavRoutes] = useState([{
+		name: "Create",
+		isActive: true,
+		title:"Create a Collection",
+		component:<MainPage />
+	}, {
+		name: "Wrap",
+		isActive: false,
+		title:"Wrap",
+		component:  <WrapSection/>
+	},{
+		name: "Unwrap",
+		isActive: false,
+		title:"Unwrap",
+		component: <UnwrapSection/>
+	}])
 	return (
 		<FileProvider>
 			<Wrapper>
-				<Title>Create a Collectible</Title>
-				<MainSection>
-					<LeftContainer>
-						<Group>
-							<UploadContainer>
-								<UploadSection/>
-							</UploadContainer>
-							<TitleSection/>
-							<DescriptionSection/>
-						</Group>
-						<Changes/>
-					</LeftContainer>
-					<RightContainer>
-						<RoyaltySection/>
-						<CopiesSection/>
-						<CollectionSection/>
-						<PropertiesSection/>
-					</RightContainer>
-					<PreviewSection/>
-				</MainSection>
+				<HeaderSection>
+					<Title>{navRoutes.find(item=>item.isActive).title}</Title>
+					<Navbar>
+						{navRoutes.map((item, index) => (
+							<NavContent
+								key={index}
+								active={item.isActive}
+								disabled={item.isActive}
+								onClick={() => {
+									if (!item.isActive) {
+										let newVal = [...navRoutes.map(a => ({ ...a, isActive: false }))]
+										newVal[index].isActive = true
+										setNavRoutes(newVal)
+									}
+								}}
+							>{item.name}</NavContent>
+						))}
+					</Navbar>
+				</HeaderSection>
+				<>
+					{navRoutes.find(item => item.isActive).component}
+				</>
 			</Wrapper>
 		</FileProvider>
 	)

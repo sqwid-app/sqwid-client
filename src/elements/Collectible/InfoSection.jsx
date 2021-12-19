@@ -56,7 +56,7 @@ const Content = styled.div`
 		font-size: 1rem;
 		color: var(--app-container-text-primary);
 	}
-	h1{
+	h6{
 		color: inherit;
 		font-weight: 800;
 		font-size: 0.75rem;
@@ -73,10 +73,16 @@ const NotStyledLink = styled.a`
 	color: inherit;
 	font-weight: 900;
 	font-size: 1.125rem;
-	max-width: 20rem;
-	text-overflow:ellipsis;
-	overflow: hidden;
-	white-space:nowrap;
+	div{
+		max-width: 20rem;
+		text-overflow:ellipsis;
+		overflow: hidden;
+		white-space:nowrap;
+		font-style: normal;
+		${respondTo.md`
+			max-width: 5rem;
+		`}
+	}
 `
 
 const TextGroup = styled.div`
@@ -116,7 +122,7 @@ const InfoSection = () => {
 						<Logo
 							url={getAvatarFromId(collectibleInfo.creator.id)}
 						/>
-						<NotStyledLink href={`${window.location.origin}/profile/${collectibleInfo.creator.id}`}>{collectibleInfo.creator.name} <span> ({collectibleInfo.royalty}% royalty)</span></NotStyledLink>
+						<NotStyledLink href={`${window.location.origin}/profile/${collectibleInfo.creator.id}`}><div>{collectibleInfo.creator.name}</div> <span> ({collectibleInfo.royalty}% royalty)</span></NotStyledLink>
 					</Content>
 				</CreatorSection>
 				<CollectionSection>
@@ -135,11 +141,11 @@ const InfoSection = () => {
 							url={getAvatarFromId(collectibleInfo.owners.current.id)}
 						/>
 						<TextGroup>
-							<NotStyledLink href={`${window.location.origin}/profile/${collectibleInfo.owners.current.id}`}>{collectibleInfo.owners.current.name}</NotStyledLink>
+							<NotStyledLink href={`${window.location.origin}/profile/${collectibleInfo.owners.current.id}`}><div>{collectibleInfo.owners.current.name}</div></NotStyledLink>
 							{(collectibleInfo.owners.total>1)&&(
 								<p>and {collectibleInfo.owners.total-1} other{!(collectibleInfo.owners.total-1===1)&&`s`}...</p>
 							)}
-							<h1>Owns {collectibleInfo.owners.current.quantity?.owns} of {collectibleInfo.owners.current.quantity?.total}</h1>
+							<h6>Owns {collectibleInfo.owners.current.quantity?.owns} of {collectibleInfo.owners.current.quantity?.total}</h6>
 						</TextGroup>
 					</Content>
 				</OwnerSection>
