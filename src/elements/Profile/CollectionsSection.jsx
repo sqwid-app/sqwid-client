@@ -9,6 +9,7 @@ import { getCloudflareURL } from "@utils/getIPFSURL";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { respondTo } from "@styles/styledMediaQuery";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
+import bread from "@utils/bread";
 
 const Wrapper = styled.div`
 	position: relative;
@@ -74,7 +75,7 @@ const CollectionsSection = () => {
 			}))
 		})
 		.catch(err=>{
-			// handle err
+			bread(err.response.data.error)
 		})
 		.finally(()=>{
 			setIsLoading(false)

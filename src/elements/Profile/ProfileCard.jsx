@@ -12,6 +12,7 @@ import Changes from "@elements/Profile/Changes";
 import EditDetailsContext from "@contexts/EditDetails/EditDetailsContext";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { respondTo } from "@styles/styledMediaQuery";
+import bread from "@utils/bread";
 
 const Card = styled.div`
 	display: flex;
@@ -359,6 +360,9 @@ const ProfileCard = () => {
 					description:data.bio
 				})
 			}
+		})
+		.catch((err)=>{
+			bread(err.response.data.error)
 		})
 		.finally(()=>{
 			setIsLoading(false);

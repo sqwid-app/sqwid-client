@@ -7,6 +7,7 @@ import Loading from "@elements/Default/Loading";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 
 import { addBid, buyNow, putOnSale } from "@utils/marketplace";
+import bread from "@utils/bread";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -220,7 +221,7 @@ const BidsModal = (props) => {
 			setButtonText ("Submit");
 			props.setIsActive (false)
 		}).catch (err => {
-			//
+			bread(err.response.data.error)
 		});
 	}
 	return (
@@ -266,10 +267,11 @@ const PutOnSaleModal = (props) => {
 			setCollectibleInfo ({
 				...collectibleInfo,
 				isOnSale:true,
+				price: price,
 			});
 			props.setIsActive (false);
 		}).catch (err => {
-			// console.log (err)
+			bread(err.response.data.error)
 		});
 	}
 	return (
@@ -313,7 +315,7 @@ const BuyModal = (props) => {
 				setAmount("");
 				props.setIsActive (false)
 			}).catch (err => {
-				// console.log (err)
+				bread(err.response.data.error)
 			});
 		}
 	}

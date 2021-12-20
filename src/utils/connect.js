@@ -98,5 +98,13 @@ const Interact = async (address = null) => {
     }
 }
 
+const GetProvider = async () => {
+    if (!provider) provider = new Provider ({
+        provider: new WsProvider (process.env.REACT_APP_RPC_URL)
+    });
+    await provider.api.isReady;
+    return provider;
+}
 
-export { Connect, Init, Interact };
+
+export { Connect, Init, Interact, GetProvider };

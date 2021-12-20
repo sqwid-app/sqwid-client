@@ -3,6 +3,7 @@ import InfoContent from "@elements/Collectible/InfoContent";
 import NFTContent from "@elements/Collectible/NFTContent";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { respondTo } from "@styles/styledMediaQuery";
+import bread from "@utils/bread";
 //eslint-disable-next-line
 import { fetchMarketplaceItem, marketplaceItemExists } from "@utils/marketplace";
 import axios from "axios";
@@ -12,7 +13,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
-	height: 75vh;
+	height: calc(100vh - 10rem);
 	display: flex;
 	/* grid-template-columns: repeat(2,minmax(0,1fr)); */
 	gap: 2rem;
@@ -101,8 +102,8 @@ const HeroSection = () => {
                     let res = await axios ('https://api.coingecko.com/api/v3/simple/price?ids=reef-finance&vs_currencies=usd');
                     let price = res.data['reef-finance'].usd;
                     priceInUSD = Number (data.price) * Number (price);
-                } catch (e) {
-                    //haha
+                } catch (err) {
+					bread(err.response.data.error)
                 }
                 setCollectibleInfo ({
                     ...data,

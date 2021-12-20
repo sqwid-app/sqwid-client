@@ -10,6 +10,8 @@ import { LazyMotion, domAnimation, m } from "framer-motion";
 import axios from 'axios';
 import { acceptBid, cancelBid } from "@utils/marketplace";
 import Loading from "@elements/Default/Loading";
+import bread from "@utils/bread";
+import { respondTo } from "@styles/styledMediaQuery";
 
 const Wrapper = styled(SimpleBarReact)`
 	overflow: auto;
@@ -120,9 +122,19 @@ const Copies = styled.div`
 	color: var(--app-container-text-primary);
 `
 
-const Name = styled.h1`
+const Name = styled.a`
+	color: inherit;
 	font-weight: 900;
 	font-size: 1.25rem;
+	max-width: 20rem;
+	text-overflow:ellipsis;
+	overflow: hidden;
+	white-space:nowrap;
+	cursor: pointer;
+	text-decoration: none;
+	${respondTo.md`
+		max-width: 5rem;
+	`}
 `
 
 const AcceptContainer = styled(m.a)`
@@ -157,30 +169,40 @@ const BidsCard = (info) => {
 
 	const handleAccept = () => {
 		if (!isLoading) {
+			setIsLoading (true);
 			let history = collectibleInfo.bidsHistory;
 			let index = history.findIndex (bid => bid.id === info.id);
 			history.splice (index, 1);
-			setIsLoading (true);
-			acceptBid (collectibleInfo.itemId, info.id).then (() => {
+			acceptBid (collectibleInfo.itemId, info.id)
+			.then (() => {
+				setIsLoading (false);
 				setCollectibleInfo ({
 					...collectibleInfo,
 					bidsHistory: history
 				});
+			})
+			.catch((err)=>{
+				bread(err.response.data.error)
 			});
 		}
 	}
 
 	const handleCancel = () => {
 		if (isBidder && !isLoading) {
+			setIsLoading (true);
 			let history = collectibleInfo.bidsHistory;
 			let index = history.findIndex (bid => bid.id === info.id);
 			history.splice (index, 1);
-			setIsLoading (true);
-			cancelBid (collectibleInfo.itemId, info.id).then (() => {
+			cancelBid (collectibleInfo.itemId, info.id)
+			.then (() => {
+				setIsLoading (false);
 				setCollectibleInfo ({
 					...collectibleInfo,
 					bidsHistory: history
 				});
+			})
+			.catch((err)=>{
+				bread(err.response.data.error)
 			});
 		}
 	}
@@ -189,7 +211,7 @@ const BidsCard = (info) => {
 			{(!isLoading || isSeller) ? <InfoContainer>
 				<UserInfo>
 					<Icon url={info.bidder.thumb}/>
-					<Name>{info.bidder.name}</Name>
+					<Name href={`${window.location.origin}/profile/${info.bidder.id}`}>{info.bidder.name}</Name>
 				</UserInfo>
 				<PriceInfo>
 					<Price><ReefIcon centered size={24}/> <span>{numberSeparator(info.price)}</span></Price>

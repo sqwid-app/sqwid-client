@@ -8,19 +8,45 @@
 	--app-text: hsl(0, 0%, 100%);
 	--app-theme-primary: rgb(13, 104, 216);
 	--app-theme-primary-transparent: rgba(13, 104, 216, 0.5);
-	--app-theme-primary-disabled: #135cb5;
+	--app-theme-primary-disabled: rgb(11, 77, 159);
 	--app-container-bg-primary: hsl(240, 10%, 16%);
 	--app-container-text-primary: rgb(120, 121, 135);
 	--app-container-text-primary-hover: hsl(240, 6%, 75%);
+	--app-container-bg-secondary: hsl(236deg 10% 23%);
 	--app-container-check: #0dbe00;
 	--app-modal-btn-primary:hsl(225, 14%, 9%);
 	--font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	--easing:cubic-bezier(0.83, 0, 0.17, 1);
 	/*
 		plyr config
 	*/
 	--plyr-audio-controls-background: var(--app-container-bg-primary);
 	--plyr-audio-control-color: var(--app-text);
 	--plyr-color-main: var(--app-theme-primary);
+	/*
+		toastify config
+	*/
+	--toastify-color-dark: var(--app-container-bg-primary);
+	--toastify-color-error: var(--app-theme-primary);
+	/*
+		tooltip config
+	*/
+	--tooltip-background: var(--app-container-bg-primary);
+	--tooltip-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+	rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+	/*
+		progress bar config
+	*/
+	--progress-easing: cubic-bezier(0.87, 0, 0.13, 1);
+	--progress-background: hsl(230, 25%, 35%);
+	--progress-shadow: hsl(230, 25%, 23.5%);
+	--bar-primary: rgb(13, 104, 216);
+	--bar-secondary: rgb(97, 158, 255);
+}
+
+::selection {
+	background: var(--app-container-text-primary-hover);
+	color: var(--app-container-bg-primary);
 }
 
 html, body{

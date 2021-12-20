@@ -4,6 +4,7 @@ import { Connect } from "@utils/connect";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import { truncateAddress } from "@utils/textUtils";
 import AuthContext from "@contexts/Auth/AuthContext";
+import bread from "@utils/bread";
 
 const swipeRightToLeft = keyframes`
 	0% {
@@ -92,7 +93,7 @@ const Modal = styled.div`
 	p{
 		font-size: 1.5rem;
 		user-select:none;
-		background: hsl(236deg 10% 23%);
+		background: var(--app-container-bg-secondary);
 		padding: 0.5rem 1.25rem;
 		cursor:pointer;
 		border-radius: 0.25rem;
@@ -122,7 +123,7 @@ const Button = styled(m.a)`
 	font-weight: 700;
 	padding: 0.675rem 1.25rem;
 	border-radius: 0.5rem;
-	background: hsl(236deg 10% 23%);
+	background: var(--app-container-bg-secondary);
 	outline: none;
 	border: none;
 	cursor: pointer;
@@ -193,7 +194,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 			}
 		})
 		.catch(err=>{
-			// handle err
+			bread(err.response.data.error)
 		})
 		.finally(()=>{
 			setLoading(false);

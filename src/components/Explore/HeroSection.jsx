@@ -1,10 +1,11 @@
 import { respondTo } from "@styles/styledMediaQuery";
-import axios from "axios";
+// import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import HotBids from "./HotBids";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import RecentlyListed from "./RecentlyListed";
+import { fetchMarketplaceItems } from "@utils/marketplace";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -33,12 +34,12 @@ const HeroSection = () => {
 	const [isLoading, setIsLoading] = useState(true)
 	useEffect (() => {
 		const fetchData = async () => {
-			const result = await axios (`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItems`);
-			let items = result.data;
+			const items = await fetchMarketplaceItems ();
 			setHotBids (items.sort ((a, b) => Number (b.highestBid) - Number (a.highestBid)).slice (0, 3));
 			setRecentlyListed (items.sort ((itemA, itemB) => {
 				return Number (itemB.id) - Number (itemA.id);
 			}));
+
 			setIsLoading (false);
 		}
 		fetchData ();

@@ -37,6 +37,9 @@ const LinkGroups = () => {
 					<NavLink to="/profile" exact className="nav-links" activeClassName="nav-selected">
 						Profile
 					</NavLink>
+					<NavLink to="/lagoon" exact className="nav-links" activeClassName="nav-selected">
+						Lagoon
+					</NavLink>
 					<NavLink to="/create" exact className="nav-links" activeClassName="nav-selected">
 						Create
 					</NavLink>

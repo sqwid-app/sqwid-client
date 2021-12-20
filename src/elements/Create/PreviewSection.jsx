@@ -7,6 +7,7 @@ import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import Loading from "@elements/Default/Loading";
 import UploadCover from "./UploadCover";
 import { useHistory } from "react-router";
+import bread from "@utils/bread";
 
 const border = css`
 	border: 2px solid var(--app-container-text-primary);
@@ -154,11 +155,10 @@ const PreviewSection = () => {
 				history.push (`/collectible/${res}`);
 			})
 			.catch(err=>{
-				// handle err
+				bread(err.response.data.error)
 			})
 			// .finally(()=>{
 			// 	setTimeout(() => {
-					
 			// 	}, 250);
 			// })
 		}

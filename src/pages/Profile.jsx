@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useParams } from "react-router";
+import { useParams, useLocation } from "react-router-dom";
 import ProfileSection from '@components/Profile/ProfileSection';
 import Navbar from '@components/Default/Navbar'
 import AuthContext from '@contexts/Auth/AuthContext';
@@ -16,10 +16,11 @@ const Wrapper = ({ children }) => (
 const Profile = () => {
 	const { auth } = useContext(AuthContext)
 	const { id } = useParams()
+	const { pathname } = useLocation()
 	return (
 		<>
 			{(id||auth)?(
-				<Wrapper>
+				<Wrapper key={pathname}>
 					<ProfileSection/>
 					<Prompt
 						message={() => {

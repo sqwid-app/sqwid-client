@@ -4,7 +4,22 @@ import constants from "@utils/constants";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import { domAnimation, LazyMotion } from "framer-motion";
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const bgGradientAnimation = keyframes`
+	0%{
+		background-size: 300%;
+		background-position: 0%;
+	}
+	50%{
+		background-size: 150%;
+		background-position: 100%;
+	}
+	100%{
+		background-size: 300%;
+		background-position: 0%;
+	}
+`
 
 const Wrapper = styled.div`
 	display: flex;
@@ -18,12 +33,16 @@ const Wrapper = styled.div`
 		font-weight: 900;
 		font-size: 6rem;
 		text-align:center;
-		background: -webkit-linear-gradient(0deg,var(--app-text) 0%, var(--app-theme-primary) 100%);
-		background-size: 150%;
+		background: -webkit-linear-gradient(0deg,var(--app-text) 0%, #619feb 50%, var(--app-text) 100%);
+		background-size: 300%;
 		background-repeat: no-repeat;
+		background-clip: text;
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		cursor: pointer;
+		&:hover{
+			animation: ${bgGradientAnimation} 4s ease infinite;
+		}
 	}
 	h2{
 		font-weight: 500;
@@ -65,6 +84,10 @@ const AnimBtn = ({ children, ...props }) => (
 		whileTap={{
 			scale:0.97
 		}}
+		whileHover={{
+			y: -10,
+			x: 0
+		}}
 		{...props}
 	>{children}</Btn>
 )
@@ -79,10 +102,6 @@ const InfoContainer = () => {
 				<BtnContainer>
 					<LazyMotion features={domAnimation}>
 						<AnimBtn
-							whileHover={{
-								y:-10,
-								x:0
-							}}
 							href="/explore"
 						>Dive in</AnimBtn>
 					</LazyMotion>

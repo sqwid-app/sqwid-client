@@ -1,3 +1,4 @@
+import MusicIcon from "@static/svg/MusicIcon";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -75,6 +76,15 @@ const VideoContainer = styled.div`
 	}
 `;
 
+const AudioIcon = styled.div`
+	position: absolute;
+	top: -1.5rem;
+	left: -1.5rem;
+	height: 2rem;
+	width: 2rem;
+	background: red;
+`
+
 const VideoCard = ({ url }) => {
 	const videoRef = useRef();
 	//eslint-disable-next-line
@@ -117,16 +127,27 @@ const ImageCard = ({ url }) => {
 	)
 }
 
+const AudioCard = ({ url }) => {
+	return (
+		<ImageContainer url={url}>
+			<AudioIcon><MusicIcon/></AudioIcon>
+			<Image src={url} />
+		</ImageContainer>
+	)
+}
+
 const CardMedia = ({ media }) => {
 	//eslint-disable-next-line
 	const { url, type } = media
 	return (
 		<>
-			{type.startsWith("image")?(
-				<ImageCard url={url}/>
-			):(
-				<VideoCard url={url}/>
-			)}
+			{
+				{
+					"image": <ImageCard url={url}/>,
+					"video": <VideoCard url={url}/>,
+					"audio": <AudioCard url={url}/>
+				}[type.split("/")[0]]
+			}
 		</>
 	)
 }
