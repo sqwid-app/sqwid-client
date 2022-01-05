@@ -6,6 +6,7 @@ import HotBids from "./HotBids";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import RecentlyListed from "./RecentlyListed";
 import { fetchMarketplaceItems } from "@utils/marketplace";
+import RecentlyListedPaginated from "./RecentlyListedPaginated";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -54,7 +55,7 @@ const HeroSection = () => {
 			):(
 				<Wrapper>
 				<HotBids items = { hotBids } />
-				<RecentlyListed items = { recentlyListed }/>
+				<RecentlyListedPaginated items = { recentlyListed }/>
 			</Wrapper>
 			)}
 		</>
