@@ -1,6 +1,7 @@
 import MusicIcon from "@static/svg/MusicIcon";
 import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import LoadingIcon from "@static/svg/LoadingIcon";
 
 const ImageContainer = styled.div`
 	position: relative;
@@ -85,6 +86,36 @@ const AudioIcon = styled.div`
 	background: red;
 `
 
+const skeletonAnim = keyframes`
+	0%{
+		background-position: -150% 0;
+	}
+	100%{
+		background-position: 350% 0;
+	}
+`
+
+const LoaderContainer = styled.div`
+	position: relative;
+	height: 16rem;
+	width: 100%;
+	display: flex;
+	justify-content:center;
+	border-radius: 0.25rem 0.25rem 0 0;
+	overflow:hidden;
+	background-size: 200% 100%;
+	background-position: -150% 0;
+	background-repeat: no-repeat;
+	color: var(--app-container-text-primary);
+	background-image: linear-gradient(
+		90deg,
+		rgba(255,255,255 , 0) 0,
+		rgba(17, 19, 34, 0.5) 50%,
+		rgba(255,255,255 , 0) 100%
+	);
+	animation: ${skeletonAnim} 1.2s infinite 0.6s;
+`;
+
 const VideoCard = ({ url }) => {
 	const videoRef = useRef();
 	//eslint-disable-next-line
@@ -120,10 +151,23 @@ const VideoCard = ({ url }) => {
 }
 
 const ImageCard = ({ url }) => {
+	const [loading, setLoading] = useState(false);
+	const imageRef = useRef();
+	const imageLoaded = () => {
+		setLoading(false);
+	};
+	useEffect(() => {
+		url ? !imageRef.current.complete && setLoading(true) : setLoading(false);
+	}, [url])
 	return (
-		<ImageContainer url={url}>
-			<Image src={url}/>
-		</ImageContainer>
+		<>
+			<LoaderContainer style={{ display: !loading && "none" }}>
+				<LoadingIcon size="48" />
+			</LoaderContainer>
+			<ImageContainer style={{ display: loading && "none" }} url={url}>
+				<Image ref={imageRef} src={url} onLoad={imageLoaded} loading="lazy"/>
+			</ImageContainer>
+		</>
 	)
 }
 
@@ -131,7 +175,7 @@ const AudioCard = ({ url }) => {
 	return (
 		<ImageContainer url={url}>
 			<AudioIcon><MusicIcon/></AudioIcon>
-			<Image src={url} />
+			<Image src={url} loading="lazy" />
 		</ImageContainer>
 	)
 }

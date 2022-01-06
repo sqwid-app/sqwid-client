@@ -34,8 +34,7 @@ const StyledReactPaginate = styled(ReactPaginate).attrs({
 
 	}
 	li.previous a,
-	li.next a,
-	li.break a {
+	li.next a {
 		border-color: transparent;
 		color: var(--app-theme-primary);
 	}
@@ -62,19 +61,6 @@ const SVG = styled.svg`
 	}
 `
 
-const Items = ({ currentItems }) => {
-	return (
-		<>
-			{currentItems?.map((item, index) => (
-				<Card
-					key={index}
-					data={item}
-				/>
-			))}
-		</>
-	);
-}
-
 const NextIcon = () => {
 	return (
 		<SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -89,6 +75,19 @@ const PreviousIcon = () => {
 			<path d="M13.939 4.939 6.879 12l7.06 7.061 2.122-2.122L11.121 12l4.94-4.939z"></path>
 		</SVG>
 	)
+}
+
+const Items = ({ currentItems }) => {
+	return (
+		<>
+			{currentItems?.map((item, index) => (
+				<Card
+					key={index}
+					data={item}
+				/>
+			))}
+		</>
+	);
 }
 
 const BreakIcon = () => {
