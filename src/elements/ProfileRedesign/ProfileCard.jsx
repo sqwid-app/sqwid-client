@@ -24,7 +24,7 @@ const Card = styled.div`
 	margin: 0 3rem;
 	z-index:10;
 	${respondTo.md`
-		margin-left:0;
+		margin: 0;
 		height: 100%;
 		padding-bottom: 2rem;
 		z-index:5;
@@ -52,6 +52,9 @@ const AddressContainer = styled.div`
 	align-items:center;
 	margin-top: 1rem;
 	gap: 0.5rem;
+	${respondTo.md`
+		justify-content: center;
+	`}
 `
 
 const Tooltip = styled.div`
@@ -72,6 +75,10 @@ const Description = styled.p`
 	width: 75%;
 	color: var(--app-container-text-primary-hover);
 	max-height: 16rem;
+	${respondTo.md`
+		width: 100%;
+		text-align:center;
+	`}
 `
 
 const swipeDownwards = keyframes`
@@ -125,6 +132,11 @@ const Container = styled.div`
 	width: 100%;
 	padding: 0 3rem;
 	${containerEntryAnim}
+	${respondTo.md`
+		flex-direction: column;
+		position: relative;
+		top: -6rem;
+	`}
 `
 
 const EditContainer = styled.div`
@@ -140,6 +152,12 @@ const EditContainer = styled.div`
 	padding: 0 2.5rem;
 	gap: 2rem;
 	${containerEntryAnim}
+	${respondTo.md`
+		margin: 1rem 0;
+		h1{
+			text-align:left;
+		}
+	`}
 `
 
 const Title = styled.h1`
@@ -187,6 +205,9 @@ const InputWrapper = styled.div`
 const ContentContainer = styled.div`
 	padding: 0 5rem;
 	flex:1;
+	${respondTo.md`
+		padding: 0;
+	`}
 `
 
 const AdditionalDetailsContainer = styled.div`
@@ -196,6 +217,9 @@ const AdditionalDetailsContainer = styled.div`
 	height: 100%;
 	gap: 1rem;
 	padding-top: 1.5rem;
+	${respondTo.md`
+		gap: 1.5rem;
+	`}
 `
 
 const HeaderSection = styled.div`
@@ -233,6 +257,22 @@ const EditDetailsContainer = styled.label`
 	align-items: center;
 	justify-content: center;
 	gap: 0.5rem;
+`
+
+const HeaderContainer = styled.div`
+	display: flex;
+	padding-top: 2rem;
+	border-radius: 1.5rem;
+	margin: 0 3rem;
+	width: 100%;
+	z-index:10;
+	${respondTo.md`
+		flex-direction: column;
+		margin: 0;
+		height: 100%;
+		padding-bottom: 2rem;
+		z-index:5;
+	`}
 `
 
 const NameEditSection = ({ name, setSync }) => {
@@ -462,7 +502,7 @@ const ProfileCard = () => {
 					<Header>Loading...</Header>
 				)
 			) : (
-				<>
+				<HeaderContainer>
 					<HeaderSection>
 						<Header>Edit Details</Header>
 						{isOwnAccount && (<EditDetailsContainer title={`${!editIsActive ? `Enter` : `Exit`} Edit Mode`}><span>Exit Edit Mode</span><EditIcon onClick={() => setEditIsActive(false)} /></EditDetailsContainer>)}
@@ -470,7 +510,7 @@ const ProfileCard = () => {
 					<EditContainer>
 						<EditSection userData={userData} setUserData={setUserData} />
 					</EditContainer>
-				</>
+				</HeaderContainer>
 			)}
 		</Card>
 	)

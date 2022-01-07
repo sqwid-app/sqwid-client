@@ -17,9 +17,7 @@ const Section = styled.section`
 	align-items: center;
 	${respondTo.md`
 		padding: 0 2rem;
-		h1{
-			padding-left: 3rem;
-		}
+		text-align: center;
 	`}
 `
 
