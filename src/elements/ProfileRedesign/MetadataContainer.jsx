@@ -57,15 +57,15 @@ const NftsIcon = () => {
 const MetadataContainer = ({ followers, collections, nfts }) => {
 	return (
 		<Container>
-			<Followers title="Followers">
+			<Followers title={`Followers: ${followers}`}>
 				<span>{getAbbreviatedNumber(followers) }</span>
 				<FollowersIcon />
 			</Followers>
-			<Collections title="Collections">
+			<Collections title={`Collections: ${collections}`}>
 				<span>{getAbbreviatedNumber(collections) }</span>
 				<CollectionsIcon />
 			</Collections>
-			<Nfts title="NFTs">
+			<Nfts title={`NFTs: ${nfts}`}>
 				<span>{getAbbreviatedNumber(nfts) }</span>
 				<NftsIcon />
 			</Nfts>
