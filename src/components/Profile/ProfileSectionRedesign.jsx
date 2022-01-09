@@ -8,6 +8,7 @@ import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import Select from "react-select";
 import { styles } from "@styles/reactSelectStyles";
 import Info from "./Info";
+import Collected from "./Collected";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -84,7 +85,7 @@ const ProfileSection = () => {
 		name: "Collected",
 		isActive: false,
 		title: "Collected",
-		component: <>hi3</>
+		component: <Collected/>
 	}, {
 		name: "Bids",
 		isActive: false,
