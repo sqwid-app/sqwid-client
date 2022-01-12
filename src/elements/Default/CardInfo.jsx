@@ -63,6 +63,10 @@ const Price = styled.label`
 	font-weight: 900;
 	font-size: 1.25rem;
 	cursor: pointer;
+	max-width: 8rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow:ellipsis;
 	svg{
 		display: inline-block;
 		vertical-align: sub;

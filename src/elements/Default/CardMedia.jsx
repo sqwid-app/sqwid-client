@@ -144,35 +144,52 @@ const LoaderContainer = styled.div`
 
 const VideoCard = ({ url }) => {
 	const videoRef = useRef();
-	//eslint-disable-next-line
 	const [videoLoading, setVideoLoading] = useState(true);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const togglePlay = () => setIsPlaying(!isPlaying);
+	const previousUrl = useRef(url);
+
+	useEffect(() => {
+		url ? !videoRef.current.readyState >= 3 && setVideoLoading(true) : setVideoLoading(false);
+		if (previousUrl.current === url) {
+			return;
+		}
+
+		(videoRef.current) && videoRef.current.load();
+
+		previousUrl.current = url;
+	}, [url])
 	useEffect(() => {
 		isPlaying ? videoRef.current.play() : videoRef.current.pause();
 	}, [isPlaying]);
 	return (
-		<VideoContainer
-			playing={isPlaying}
-			onMouseEnter={togglePlay}
-			onMouseLeave={togglePlay}
-			onTouchStart={togglePlay}
-			onTouchEnd={togglePlay}
-		>
-			<video
-			ref={videoRef}
-			loop
-			muted
-			preload="auto"
-			onLoadedData={() => setVideoLoading(false)}
+		<>
+			<LoaderContainer style={{ display: !videoLoading && "none" }}>
+				<LoadingIcon size="48" />
+			</LoaderContainer>
+			<VideoContainer
+				style={{ display: videoLoading && "none" }}
+				playing={isPlaying}
+				onMouseEnter={togglePlay}
+				onMouseLeave={togglePlay}
+				onTouchStart={togglePlay}
+				onTouchEnd={togglePlay}
 			>
-			<source
-				src={url}
-				type="video/mp4"
-			/>
-			Your browser does not support the video tag.
-			</video>
-		</VideoContainer>
+				<video
+				ref={videoRef}
+				loop
+				muted
+				preload="auto"
+				onLoadedData={() => setVideoLoading(false)}
+				>
+				<source
+					src={url}
+					type="video/mp4"
+				/>
+				Your browser does not support the video tag.
+				</video>
+			</VideoContainer>
+		</>
 	)
 }
 
