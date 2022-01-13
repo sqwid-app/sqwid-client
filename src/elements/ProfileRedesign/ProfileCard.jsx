@@ -44,6 +44,9 @@ const Name = styled.h1`
 	text-overflow:ellipsis;
 	overflow:hidden;
 	white-space: nowrap;
+	${respondTo.md`
+		max-width: 20rem;
+	`}
 `
 
 const AddressContainer = styled.div`
