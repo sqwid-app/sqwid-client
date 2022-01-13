@@ -123,7 +123,7 @@ const HeroSection = () =>{
 	const [navRoutes, setNavRoutes] = useState([{
 		name: "Create",
 		isActive: true,
-		title:"Create a Collection",
+		title:"Create a Collectible",
 		component:<MainPage />
 	}, {
 		name: "Wrap",

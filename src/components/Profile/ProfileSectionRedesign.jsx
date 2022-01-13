@@ -77,7 +77,7 @@ const ProfileSection = () => {
 		title: "Profile",
 		component: <Info/>
 	}, {
-		name: "Collection",
+		name: "Collections",
 		isActive: false,
 		title: "Collections",
 		component: <Collections/>

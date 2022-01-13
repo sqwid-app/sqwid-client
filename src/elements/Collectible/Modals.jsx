@@ -291,6 +291,67 @@ const PutOnSaleModal = (props) => {
 	)
 }
 
+const TransferModal = (props) => {
+	const [value, setValue] = useState({
+		address: "",
+		amount: ""
+	})
+	const [isLoading, setIsLoading] = useState(false);
+
+	const handleAddressInput = (e) => {
+		if (Number(e.target.value) >= 0) {
+			setValue({
+				...value,
+				address: e.target.value,
+			});
+		}
+	}
+
+	const handleAmountInput = (e) => {
+		if (Number(e.target.value) <= Number(props.itemInfo.maxAmount)) {
+			setValue({
+				...value,
+				amount: e.target.value,
+			});
+		}
+	}
+
+	const handleClick = () => {
+		setIsLoading(true);
+		// addBid(props.itemInfo.itemId, value.price, value.amount).then(() => {
+		// 	setIsLoading(false);
+		// 	props.setIsActive(false)
+		// }).catch(err => {
+		// 	bread(err.response.data.error)
+		// });
+		alert(`Address: ${value.address} \n Amount: ${value.amount}`)
+	}
+	return (
+		<ModalContainer {...props}>
+			<Title>Transfer Ownership</Title>
+			<Group>
+				<InputWrapper>
+					<InputTitle>Address</InputTitle>
+					<InputContainer
+						type="number"
+						value={value.price}
+						onChange={handleAddressInput}
+						placeholder={`Enter Address (0x...)`}
+					/>
+					<InputTitle>Amount (max {props.itemInfo.maxAmount})</InputTitle>
+					<InputContainer
+						type="number"
+						value={value.amount}
+						onChange={handleAmountInput}
+						placeholder={`Enter Amount (# of copies)`}
+					/>
+				</InputWrapper>
+				<AnimBtn disabled={isLoading} onClick={handleClick} >Transfer</AnimBtn>
+			</Group>
+		</ModalContainer>
+	)
+}
+
 const BuyModal = (props) => {
 	const [amount, setAmount] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
@@ -336,4 +397,4 @@ const BuyModal = (props) => {
 	)
 }
 
-export { BidsModal, PutOnSaleModal, BuyModal }
+export { BidsModal, PutOnSaleModal, BuyModal, TransferModal }
