@@ -1,9 +1,9 @@
 import { getContract } from "./network";
-import { ethers } from 'ethers';
-import wrapperABI from '../constants/contracts/SqwidWrapper';
-import ERC721ABI from '../constants/contracts/SqwidERC721';
-import ERC1155ABI from '../constants/contracts/SqwidERC1155';
 import { Interact } from "./connect";
+import { ethers } from 'ethers';
+import wrapperABI from 'constants/contracts/SqwidWrapper';
+import ERC721ABI from 'constants/contracts/SqwidERC721';
+import ERC1155ABI from 'constants/contracts/SqwidERC1155';
 
 // export const isWrapperApproved = async (contractAddress) => {
 //     let { signer } = await Interact ();
@@ -59,17 +59,20 @@ export const wrap = async (contractAddress, eip, wrappedId) => {
     try {
         await doApproval (contract, signer, contractAddress);
     } catch (err) {
-        console.log (err);
+        // console.log (err);
     }
 
-    console.log (contractAddress, wrappedId);
+	// console log the receipt
+    // console.log (contractAddress, wrappedId);
 
     if (eip === 'erc721') {
+		//eslint-disable-next-line
         const receipt = await contract.wrapERC721 (contractAddress, Number (wrappedId));
-        console.log (receipt);
+        // console.log (receipt);
     } else if (eip === 'erc1155') {
+		//eslint-disable-next-line
         const receipt = await contract.wrapERC1155 (contractAddress, Number (wrappedId));
-        console.log (receipt);
+        // console.log (receipt);
     }
 }
 
@@ -82,10 +85,12 @@ export const unwrap = async (eip, wrappedId) => {
     );
 
     if (eip === 'erc721') {
+		//eslint-disable-next-line
         const receipt = await contract.unwrapERC721 (wrappedId);
-        console.log (receipt);
+        // console.log (receipt);
     } else if (eip === 'erc1155') {
+		//eslint-disable-next-line
         const receipt = await contract.unwrapERC1155 (wrappedId);
-        console.log (receipt);
+        // console.log (receipt);
     }
 }

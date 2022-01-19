@@ -78,7 +78,7 @@ const WrapSection = () => {
 
 	const handleClick = () => {
 		wrap (wrapDetails.address, wrapDetails.erc, wrapDetails.token).then (() => {
-			console.log ('done');
+			// console.log ('done');
 		});
 	}
 	return (

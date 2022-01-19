@@ -1,4 +1,4 @@
-import networks from '../constants/networks';
+import networks from 'constants/networks';
 
 export const getNetwork = (network = 'reef_testnet') => {
     return networks[network];
