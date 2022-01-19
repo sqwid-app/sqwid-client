@@ -5,6 +5,7 @@ import contractABI from '../constants/contracts/SqwidMarketplace';
 //eslint-disable-next-line
 import { fetchMarketplaceItem, fetchMarketplaceItems } from "./marketplace";
 import { isMarketplaceApproved, approveMarketplace } from "./marketplaceApproval";
+import { getContract } from "./network";
 // import getMetaById from "./getMetaById";
 
 const createCollectible = async (files) => {
@@ -40,7 +41,6 @@ const createCollectible = async (files) => {
 	//eslint-disable-next-line
 	// const item = await fetchMarketplaceItem (1);
 
-	// jwt = null;
 	if (jwt) {
 		try {
 			const metadata = await axios.post(`${process.env.REACT_APP_API_URL}/create/collectible`, data, {
@@ -52,12 +52,12 @@ const createCollectible = async (files) => {
 			let { signer } = await Interact (address);
 			const to = await signer.getAddress ();
 			let contract = new ethers.Contract (
-				process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS,
+				getContract ('reef_testnet', 'marketplace'),
 				contractABI,
 				signer
 			);
 			try {
-				const nft = await contract.mint (to, copies, uri, to, royalty, process.env.REACT_APP_COLLECTIBLE_CONTRACT_ADDRESS);
+				const nft = await contract.mint (to, copies, uri, to, royalty, getContract ('reef_testnet', 'erc1155'));
 				// eslint-disable-next-line
 				const receipt = await nft.wait ();
 				const itemId = await contract.currentId ();

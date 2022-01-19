@@ -4,9 +4,10 @@ import collectibleContractABI from '../constants/contracts/SqwidERC1155';
 import marketplaceContractABI from '../constants/contracts/SqwidMarketplace';
 import { getDwebURL } from './getIPFSURL';
 import axios from 'axios';
+import { getContract } from './network';
 
-const collectibleContract = (signerOrProvider, address = null) => new ethers.Contract (address || process.env.REACT_APP_COLLECTIBLE_CONTRACT_ADDRESS, collectibleContractABI, signerOrProvider);
-const marketplaceContract = (signerOrProvider) => new ethers.Contract (process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS, marketplaceContractABI, signerOrProvider);
+const collectibleContract = (signerOrProvider, address = null) => new ethers.Contract (address || getContract ('reef_testnet', 'erc1155'), collectibleContractABI, signerOrProvider);
+const marketplaceContract = (signerOrProvider) => new ethers.Contract (getContract ('reef_testnet', 'marketplace'), marketplaceContractABI, signerOrProvider);
 
 const getNameByAddress = async (address) => {
     try {

@@ -4,8 +4,9 @@ import marketplaceContractABI from '../constants/contracts/SqwidMarketplace';
 import { Interact } from './connect';
 
 import { isMarketplaceApproved, approveMarketplace } from './marketplaceApproval';
+import { getContract } from './network';
 
-const marketplaceContract = (signerOrProvider) => new ethers.Contract (process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS, marketplaceContractABI, signerOrProvider);
+const marketplaceContract = (signerOrProvider) => new ethers.Contract (getContract ('reef_testnet', 'marketplace'), marketplaceContractABI, signerOrProvider);
 
 const checkAndApproveMarketplace = async () => {
     const approved = await isMarketplaceApproved ();

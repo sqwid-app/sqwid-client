@@ -3,6 +3,7 @@ import { WsProvider } from "@polkadot/api";
 import { web3Accounts, web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import { stringToHex } from '@polkadot/util';
 import axios from "axios";
+import { getRPC } from "./network";
 // const WS_URL = 'wss://rpc-testnet.reefscan.com/ws';
 
 let provider;
@@ -86,7 +87,7 @@ const Interact = async (address = null) => {
     const allInjected = await web3Enable ('Sqwid');
     const injected = allInjected[0].signer;
     if (!provider) provider = new Provider ({
-        provider: new WsProvider (process.env.REACT_APP_RPC_URL)
+        provider: new WsProvider (getRPC ())
     });
     await provider.api.isReady;
 
@@ -100,7 +101,7 @@ const Interact = async (address = null) => {
 
 const GetProvider = async () => {
     if (!provider) provider = new Provider ({
-        provider: new WsProvider (process.env.REACT_APP_RPC_URL)
+        provider: new WsProvider (getRPC ())
     });
     await provider.api.isReady;
     return provider;
