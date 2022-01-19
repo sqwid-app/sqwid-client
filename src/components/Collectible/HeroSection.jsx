@@ -4,10 +4,12 @@ import NFTContent from "@elements/Collectible/NFTContent";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { respondTo } from "@styles/styledMediaQuery";
 import bread from "@utils/bread";
+import constants from "@utils/constants";
 //eslint-disable-next-line
 import { fetchMarketplaceItem, marketplaceItemExists } from "@utils/marketplace";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useParams } from "react-router";
 import styled from "styled-components";
 
@@ -31,6 +33,34 @@ const LoadingContainer = styled.div`
 	display: grid;
 	place-items:center;
 `
+
+
+const MetaTags = () => {
+	const { collectibleInfo } = useContext(CollectibleContext);
+	// console.log(collectibleInfo)
+	const title = `${collectibleInfo.title} | ${constants.APP_NAME}`
+	const description = collectibleInfo.description
+	const image = collectibleInfo.media.url
+	return (
+		<Helmet>
+			<meta name="title" content={title} />
+			<meta name="description" content={description} />
+
+			<meta property="og:type" content="website" />
+			<meta property="og:url" content={constants.APP_WEBSITE} />
+			<meta property="og:title" content={title} />
+			<meta property="og:description" content={description} />
+			<meta property="og:image" content={image} />
+
+			<meta property="twitter:card" content="summary_large_image" />
+			<meta property="twitter:url" content={constants.APP_WEBSITE} />
+			<meta property="twitter:title" content={title} />
+			<meta property="twitter:description" content={description} />
+			<meta property="twitter:image" content={image} />
+		</Helmet>
+	)
+}
+
 
 const HeroSection = () => {
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
@@ -131,6 +161,7 @@ const HeroSection = () => {
 				</LoadingContainer>
 			):(
 			<Wrapper>
+				<MetaTags/>
 				<InfoContent/>
 				<NFTContent/>
 			</Wrapper>

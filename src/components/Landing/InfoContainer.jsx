@@ -40,9 +40,7 @@ const Wrapper = styled.div`
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		cursor: pointer;
-		&:hover{
-			animation: ${bgGradientAnimation} 4s ease infinite;
-		}
+		animation: ${bgGradientAnimation} 10s ease infinite;
 	}
 	h2{
 		font-weight: 500;
