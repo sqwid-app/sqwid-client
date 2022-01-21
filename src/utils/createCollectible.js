@@ -28,7 +28,6 @@ const createCollectible = async (files) => {
 	data.append("properties", JSON.stringify(props));
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 	let jwt = address ? JSON.parse(localStorage.getItem("tokens")).find(token => token.address === address) : null;
-
 	const approved = await isMarketplaceApproved ();
 	if (!approved) {
 		await approveMarketplace ();

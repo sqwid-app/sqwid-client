@@ -150,6 +150,7 @@ const PreviewSection = () => {
 		setIsSubmitting(true)
 		if(fileData.file&&files.name.length){
 			// let id = 0;
+
 			createCollectible ({...files,...fileData})
 			.then(res=>{
 				history.push (`/collectible/${res}`);
@@ -157,6 +158,7 @@ const PreviewSection = () => {
 			.catch(err=>{
 				bread(err.response.data.error)
 			})
+
 			// .finally(()=>{
 			// 	setTimeout(() => {
 			// 	}, 250);

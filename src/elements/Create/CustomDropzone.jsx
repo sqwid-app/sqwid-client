@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import FileContext from "@contexts/File/FileContext";
+import { sanitize } from "@utils/textUtils";
 
 const Wrapper = styled.div`
 	.dropzone{
@@ -61,9 +62,10 @@ const Dropzone = (props) => {
 	});
 	useEffect(() => {
 		if(acceptedFiles.length){
+			let file = acceptedFiles[0]
 			setFileData({
 				...fileData,
-				file: acceptedFiles[0]
+				file: new File([file], sanitize(file.name), { type: file.type })
 			});
 		}
 	//eslint-disable-next-line
