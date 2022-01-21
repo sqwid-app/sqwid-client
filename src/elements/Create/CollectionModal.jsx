@@ -12,6 +12,7 @@ import { getCloudflareURL } from "@utils/getIPFSURL";
 import FileContext from "@contexts/File/FileContext";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import bread from "@utils/bread";
+import LoadingIcon from "@static/svg/LoadingIcon";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -238,6 +239,13 @@ const CollectionContainer = styled(m.div)`
 	}
 `
 
+const LoadingContainer = styled.div`
+	display: flex;
+	align-items:center;
+	justify-content: center;
+	height: 6rem;
+`
+
 const elemContains =  (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
 }
@@ -330,6 +338,7 @@ const New = ({ isActive, setIsActive }) => {
 
 const Existing = ({ isActive, setIsActive }) => {
 	const [ collections, setCollections ] = useState(JSON.parse(localStorage.getItem("collections"))||[])
+	const [ isLoading, setIsLoading ] = useState(true)
 	const { auth } = useContext(AuthContext);
 	const { files, setFiles } = useContext(FileContext);
 	useEffect(() => {
@@ -341,6 +350,9 @@ const Existing = ({ isActive, setIsActive }) => {
 		.catch(err=>{
 			bread(err.response.data.error)
 		})
+		.finally(()=>{
+			setIsLoading(false)
+		})
 		return () => {
 			setCollections([])
 		}
@@ -350,25 +362,33 @@ const Existing = ({ isActive, setIsActive }) => {
 		<LazyMotion features={domAnimation}>
 			<Header>Choose Collection</Header>
 			<ExistingContainer>
-				{collections.map(item=>(
-					<CollectionContainer
-						key={item.id}
-						whileTap={{
-							scale:0.99
-						}}
-						onClick={()=>{
-							setFiles({
-								...files,
-								collection:item.id,
-								collectionName:item.data.name
-							})
-							setIsActive({...isActive,status: false});
-						}}
-					>
-						<img src={getCloudflareURL(item.data.image)} alt={item.data.description}/>
-						<p>{item.data.name}</p>
-					</CollectionContainer>
-				))}
+				{isLoading?(
+					<LoadingContainer>
+						<LoadingIcon size="40" />
+					</LoadingContainer>
+				):(
+					<>
+						{collections.map(item=>(
+							<CollectionContainer
+								key={item.id}
+								whileTap={{
+									scale:0.99
+								}}
+								onClick={()=>{
+									setFiles({
+										...files,
+										collection:item.id,
+										collectionName:item.data.name
+									})
+									setIsActive({...isActive,status: false});
+								}}
+							>
+								<img src={getCloudflareURL(item.data.image)} alt={item.data.description}/>
+								<p>{item.data.name}</p>
+							</CollectionContainer>
+						))}
+					</>
+				)}
 			</ExistingContainer>
 		</LazyMotion>
 	)
