@@ -1,6 +1,7 @@
 import AuthContext from "@contexts/Auth/AuthContext";
+import Dropdown from "@elements/Default/Dropdown";
 import { respondTo } from "@styles/styledMediaQuery";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
@@ -14,7 +15,7 @@ const LinkContainer = styled.div`
 	.nav-links{
 		text-decoration: none;
 		color: var(--app-container-text-primary);
-		transition: color 0.25s ease;
+		transition: color 0.2s ease;
 		&:hover{
 			color: var(--app-container-text-primary-hover);
 		}
@@ -25,14 +26,39 @@ const LinkContainer = styled.div`
 `
 
 const LinkGroups = () => {
+	const [exploreIsVisible, setExploreIsVisible] = useState(false);
 	const { auth } = useContext(AuthContext)
 	const isLoggedIn = auth !== null
 	return (
 		<LinkContainer>
-			<NavLink to="/explore" exact className="nav-links" activeClassName="nav-selected">
+			<NavLink
+				onMouseOver={() => setExploreIsVisible(true)}
+				onMouseOut={() => setExploreIsVisible(false)}
+				to="/explore"
+				exact
+				className="nav-links"
+				activeClassName="nav-selected"
+			>
 				Explore
+				<Dropdown
+					isVisible={exploreIsVisible}
+					setIsVisible={setExploreIsVisible}
+					options={[{
+						name: "On Sale",
+						link: "/explore/sale"
+					}, {
+						name: "Actions",
+						link: "/explore/sale"
+					}, {
+						name: "Raffles",
+						link: "/explore/raffles"
+					}, {
+						name: "Loans",
+						link: "/explore/loans"
+					}]}
+				/>
 			</NavLink>
-			{isLoggedIn&&(
+			{isLoggedIn && (
 				<>
 					<NavLink to="/profile" exact className="nav-links" activeClassName="nav-selected">
 						Profile
