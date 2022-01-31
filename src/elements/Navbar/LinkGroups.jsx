@@ -1,6 +1,7 @@
 import AuthContext from "@contexts/Auth/AuthContext";
 import Dropdown from "@elements/Default/Dropdown";
 import { respondTo } from "@styles/styledMediaQuery";
+import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
@@ -27,6 +28,7 @@ const LinkContainer = styled.div`
 
 const LinkGroups = () => {
 	const [exploreIsVisible, setExploreIsVisible] = useState(false);
+	const isTabletOrMobile = useIsTabletOrMobile();
 	const { auth } = useContext(AuthContext)
 	const isLoggedIn = auth !== null
 	return (
@@ -40,23 +42,25 @@ const LinkGroups = () => {
 				activeClassName="nav-selected"
 			>
 				Explore
-				<Dropdown
-					isVisible={exploreIsVisible}
-					setIsVisible={setExploreIsVisible}
-					options={[{
-						name: "On Sale",
-						link: "/explore/sale"
-					}, {
-						name: "Actions",
-						link: "/explore/sale"
-					}, {
-						name: "Raffles",
-						link: "/explore/raffles"
-					}, {
-						name: "Loans",
-						link: "/explore/loans"
-					}]}
-				/>
+				{!isTabletOrMobile &&
+					<Dropdown
+						isVisible={exploreIsVisible}
+						setIsVisible={setExploreIsVisible}
+						options={[{
+							name: "On Sale",
+							link: "/explore/sale"
+						}, {
+							name: "Actions",
+							link: "/explore/sale"
+						}, {
+							name: "Raffles",
+							link: "/explore/raffles"
+						}, {
+							name: "Loans",
+							link: "/explore/loans"
+						}]}
+					/>
+				}
 			</NavLink>
 			{isLoggedIn && (
 				<>
