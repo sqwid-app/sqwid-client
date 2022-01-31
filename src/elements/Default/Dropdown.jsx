@@ -22,6 +22,7 @@ const DropdownContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.25rem;
+	padding: 0.75rem 0.5rem;
 	cursor: default;
 	overflow: hidden;
 	min-width: 10rem;
@@ -29,6 +30,7 @@ const DropdownContainer = styled.div`
 
 const Option = styled(NavLink)`
 	padding: 0.675rem 1.75rem;
+	border-radius: 0.25rem;
 	text-decoration: none;
 	color: var(--app-text);
 	&:hover{
