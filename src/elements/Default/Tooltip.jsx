@@ -1,8 +1,10 @@
+import { respondTo } from "@styles/styledMediaQuery";
 import React from "react";
 import styled from "styled-components";
 
 const TooltipContainer = styled.div`
-	display: flex;
+	display: inline-flex;
+	vertical-align:middle;
 	font-weight: 900;
 	font-size: 1.25rem;
 	gap: 0.5rem;
@@ -48,6 +50,51 @@ const TooltipContainer = styled.div`
 	}
 `
 
+const TooltipContainerCustom = styled.div`
+	display: inline-flex;
+	vertical-align:middle;
+	font-size: 1.25rem;
+	gap: 0.5rem;
+	align-items:center;
+	& .base{
+		display: grid;
+		place-items:center;
+		position: relative;
+		z-index: 2;
+		cursor: pointer;
+		&:hover{
+			.content{
+				transform: scale(1);
+				opacity: 1;
+			}
+		}
+		.content{
+			display: grid;
+			gap: 0.75rem;
+			/* font-weight: 900; */
+			font-size: 1rem;
+			background: var(--tooltip-background);
+			padding: 0.75rem 1.25rem;
+			border-radius: 0.5rem;
+			position:absolute;
+			bottom: calc(100% + 0.375rem);
+			width: max-content;
+			max-width:20rem;
+    		white-space: break-spaces;
+			transform: scale(0);
+			opacity: 0;
+			transform-origin: bottom center;
+			${respondTo.md`
+				left: 0;
+			`}
+			transition: all 0.25s cubic-bezier(0.86,-0.34, 0.04, 0.98);
+			p{
+				margin: 0;
+			}
+		}
+	}
+`
+
 const Tooltip = ({ children }) => {
 	return (
 		<TooltipContainer>
@@ -57,6 +104,19 @@ const Tooltip = ({ children }) => {
 				</div>
 			</div>
 		</TooltipContainer>
+	)
+}
+
+export const TooltipCustom = ({ children, base }) => {
+	return (
+		<TooltipContainerCustom>
+			<div className="base">
+				{base}
+				<div className="content">
+					{children}
+				</div>
+			</div>
+		</TooltipContainerCustom>
 	)
 }
 

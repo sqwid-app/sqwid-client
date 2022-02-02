@@ -15,7 +15,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
-	height: calc(100vh - 10rem);
+	height: calc(100vh - 12rem);
 	display: flex;
 	/* grid-template-columns: repeat(2,minmax(0,1fr)); */
 	gap: 2rem;
@@ -65,9 +65,9 @@ const MetaTags = () => {
 const HeroSection = () => {
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
 	const [isLoading, setIsLoading] = useState(true)
-	const { addr } = useParams ();
+	const { addr } = useParams();
 
-	useEffect (() => {
+	useEffect(() => {
 		// Axios request goes here ebin...
 		// let infoStuff = {
 		// 	address: addr,
@@ -125,46 +125,46 @@ const HeroSection = () => {
 		// 	royalty: "12"
 		//
 		const getData = async () => {
-            const data = await fetchMarketplaceItem (Number (addr));
-            if (data) {
-                let priceInUSD = null;
-                try {
-                    let res = await axios ('https://api.coingecko.com/api/v3/simple/price?ids=reef-finance&vs_currencies=usd');
-                    let price = res.data['reef-finance'].usd;
-                    priceInUSD = Number (data.price) * Number (price);
-                } catch (err) {
+			const data = await fetchMarketplaceItem(Number(addr));
+			if (data) {
+				let priceInUSD = null;
+				try {
+					let res = await axios('https://api.coingecko.com/api/v3/simple/price?ids=reef-finance&vs_currencies=usd');
+					let price = res.data['reef-finance'].usd;
+					priceInUSD = Number(data.price) * Number(price);
+				} catch (err) {
 					bread(err.response.data.error)
-                }
-                setCollectibleInfo ({
-                    ...data,
-                    priceInUSD,
-                    isValidCollectible: true
-                });
-                setIsLoading (false)
-            }
-            else{
-                setCollectibleInfo({
-                    ...collectibleInfo,
-                    isValidCollectible:false,
-                })
-            }
-        }
+				}
+				setCollectibleInfo({
+					...data,
+					priceInUSD,
+					isValidCollectible: true
+				});
+				setIsLoading(false)
+			}
+			else {
+				setCollectibleInfo({
+					...collectibleInfo,
+					isValidCollectible: false,
+				})
+			}
+		}
 
-		getData ();
+		getData();
 		//eslint-disable-next-line
 	}, [])
 	return (
 		<>
-			{isLoading?(
+			{isLoading ? (
 				<LoadingContainer>
-					<LoadingIcon size={64}/>
+					<LoadingIcon size={64} />
 				</LoadingContainer>
-			):(
-			<Wrapper>
-				<MetaTags/>
-				<InfoContent/>
-				<NFTContent/>
-			</Wrapper>
+			) : (
+				<Wrapper>
+					<MetaTags />
+					<InfoContent />
+					<NFTContent />
+				</Wrapper>
 			)}
 		</>
 	)

@@ -2,21 +2,22 @@ export const initialState = {
 	isValidCollectible: true,
 	title: "",
 	description: "",
-	creator:{
-		name:"",
-		id:""
+	creator: {
+		name: "",
+		id: ""
 	},
-	owners:{},
+	owners: {},
 	collection: {
-		name:"",
-		cover:""
+		name: "",
+		cover: ""
 	},
 	properties: [],
 	contentURL: "",
-	isOnSale:false,
-	quantity:{},
-	price:"",
-	highestBid:"",
-	bidsHistory:[],
-	priceInUSD:"",
+	isOnSale: false,
+	quantity: {},
+	price: "",
+	highestBid: "",
+	bidsHistory: [],
+	priceInUSD: "",
+	market: {}
 }

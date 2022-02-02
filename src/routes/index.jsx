@@ -35,6 +35,7 @@ const Routes = () => {
 					/>
 					{explorePaths.map(path => (
 						<Route
+							key={path}
 							path={`/explore${path}`}
 							exact
 							component={Explore}
