@@ -16,7 +16,7 @@
 	background: var(--app-container-text-primary);
 }
 
-.swipeUpwards{
+.swipeUpwards {
 	animation: swipeUpwards 0.2s var(--easing) forwards;
 }
 
@@ -24,11 +24,35 @@
 	animation: swipeDownwards 0.2s var(--easing) forwards;
 }
 
-span.emoji{
+span.emoji {
 	font-weight: 100;
 }
 
-@keyframes animate-logo{
+.dropdown-enter {
+	opacity: 0;
+	display: flex !important;
+	transition: opacity 0.2s ease;
+}
+
+.dropdown-enter-active {
+	opacity: 1;
+}
+
+.dropdown-exit {
+	opacity: 1;
+}
+
+.dropdown-exit-active {
+	opacity: 0;
+	transition: opacity 0.2s ease;
+}
+
+.dropdown-exit-done {
+	opacity: 0;
+	display: none !important;
+}
+
+@keyframes animate-logo {
 	0% {
 		stroke-dashoffset: 0px;
 		fill: currentColor;
@@ -39,10 +63,10 @@ span.emoji{
 	50% {
 		fill: transparent;
 	}
-	75%{
+	75% {
 		stroke-width: 2.5px;
 	}
-	100%{
+	100% {
 		stroke-dashoffset: 110px;
 		fill: currentColor;
 		stroke-width: 0;

@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import MetaContainer from "./MetaContainer";
 import InfoContainer from "./InfoContainer";
-import TransactionSection from "./TransactionSection";
+// import TransactionSection from "./TransactionSection";
+import MarketSection from "./MarketSection";
 
 const Container = styled.div`
 	flex:1;
@@ -15,9 +16,10 @@ const Container = styled.div`
 const InfoContent = () => {
 	return (
 		<Container>
-			<MetaContainer/>
-			<InfoContainer/>
-			<TransactionSection/>
+			<MetaContainer />
+			<InfoContainer />
+			{/* <TransactionSection/> */}
+			<MarketSection />
 		</Container>
 	)
 }

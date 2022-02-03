@@ -2,11 +2,11 @@ import { respondTo } from "@styles/styledMediaQuery";
 // import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import HotBids from "./HotBids";
+import HotBids from "@components/ExploreRedesign/HotBids";
 import LoadingIcon from "@static/svg/LoadingIcon";
 // import RecentlyListed from "./RecentlyListed";
 import { fetchMarketplaceItems } from "@utils/marketplace";
-import RecentlyListedPaginated from "./RecentlyListedPaginated";
+import RecentlyListedPaginated from "@components/ExploreRedesign/RecentlyListedPaginated";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -29,7 +29,7 @@ const LoadingContainer = styled.div`
 	place-items:center;
 `
 
-const HeroSection = () => {
+const SalePage = () => {
 	const [hotBids, setHotBids] = useState([]);
 	const [recentlyListed, setRecentlyListed] = useState([]);
 	const [isLoading, setIsLoading] = useState(true)
@@ -62,4 +62,4 @@ const HeroSection = () => {
 	)
 }
 
-export default HeroSection
+export default SalePage

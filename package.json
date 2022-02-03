@@ -12,6 +12,7 @@
 		"@testing-library/user-event": "^12.1.10",
 		"axios": "^0.23.0",
 		"craco": "^0.0.3",
+		"date-fns": "^2.28.0",
 		"ethers": "^5.5.1",
 		"framer-motion": "^4.1.17",
 		"jwt-decode": "^3.1.2",

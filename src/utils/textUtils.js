@@ -17,8 +17,10 @@ const slugify = (string) => {
 		.replace(/-+$/, '') // Trim - from end of text
 }
 
-export const truncateAddress = (addr,size=4) => `${addr.slice(0, size)}...${addr.slice(-size)}`
+export const truncateAddress = (addr, size = 4) => `${addr.slice(0, size)}...${addr.slice(-size)}`
 
-export const clamp = (text,length=128) => text.length>length?(text.slice(0, length) + "..."):text;
+export const clamp = (text, length = 128) => text.length > length ? (text.slice(0, length) + "...") : text;
 
 export const sanitize = (filename) => slugify(filename);
+export const capitalize = ([first, ...rest], locale = navigator.language) =>
+	first.toLocaleUpperCase(locale) + rest.join('')
