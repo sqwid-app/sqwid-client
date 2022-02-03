@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import BidsSection from "./BidsSection";
 import InfoSection from "./InfoSection";
+import MarketSection from "./MarketSection";
 
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+	height: 100%;
 	/* flex:1 1 0;
 	height: 100%; */
 `
@@ -53,6 +55,7 @@ const InfoContainer = () => {
 			<>
 				<InfoSection />
 				<PropertiesSection />
+				<MarketSection />
 			</>
 		)
 	}, {

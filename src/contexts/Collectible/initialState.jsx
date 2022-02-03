@@ -19,5 +19,6 @@ export const initialState = {
 	highestBid: "",
 	bidsHistory: [],
 	priceInUSD: "",
-	market: {}
+	market: {},
+	type: ""
 }

@@ -5,10 +5,13 @@ import styled, { css } from 'styled-components';
 import { domAnimation, LazyMotion } from "framer-motion";
 import ReefIcon from '@static/svg/ReefIcon';
 import { numberSeparator } from '@utils/numberSeparator';
-import { format, formatDistance, formatRelative } from "date-fns";
+import { format, formatDistance, formatRelative, minutesToMilliseconds } from "date-fns";
 import { TooltipCustom } from '@elements/Default/Tooltip';
 import { capitalize } from '@utils/textUtils';
 import { respondTo } from "@styles/styledMediaQuery";
+import intervalToFormattedDuration from '@utils/intervalToFormattedDuration';
+import { convertREEFtoUSD } from '@utils/convertREEFtoUSD';
+import { getAvatarFromId } from "@utils/getAvatarFromId";
 
 /*
 	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/diagram-numbered_suzlf0.png
@@ -75,6 +78,27 @@ const Price = styled.p`
 	}
 `
 
+const Payback = styled.p`
+	font-weight: 900;
+	font-size: 1.25rem;
+	display: flex;
+	align-items:flex-end;
+	label{
+		vertical-align:middle;
+		max-width: 20rem;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		word-wrap: nowrap;
+	}
+	span{
+		vertical-align:middle;
+		font-weight: 500;
+		padding-left: 0.5rem;
+		font-size: 1rem;
+		color: var(--app-container-text-primary);
+	}
+`
+
 const BottomWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -86,13 +110,70 @@ const TimeText = styled.span`
 	font-size: 1.125rem;
 `
 
-const BidsInfoSection = styled.div`
+const TopSection = styled.div`
 	display: flex;
-	margin-top: 1.25rem;
 	align-items:center;
 	justify-content:space-between;
 `
 
+const Content = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	p{
+		font-weight: 700;
+		font-size: 1rem;
+		color: var(--app-container-text-primary);
+	}
+	h6{
+		color: inherit;
+		font-weight: 800;
+		font-size: 0.75rem;
+	}
+	span{
+		font-weight: 700;
+		font-size: 1rem;
+		color: var(--app-container-text-primary);
+	}
+`
+
+const NotStyledLink = styled.a`
+	text-decoration: none;
+	color: inherit;
+	font-weight: 900;
+	font-size: 1.125rem;
+	div{
+		max-width: 20rem;
+		text-overflow:ellipsis;
+		overflow: hidden;
+		white-space:nowrap;
+		font-style: normal;
+		${respondTo.md`
+			max-width: 5rem;
+		`}
+	}
+`
+
+const Logo = styled.div`
+	height: 2rem;
+	width: 2rem;
+	border-radius: 1000rem;
+	border: 0.1rem solid var(--app-text);
+	background-image: url("${props => props.url && props.url}");
+	background-size:cover;
+	background-repeat:no-repeat;
+	background-position: center;
+`
+
+const FunderSection = styled.div`
+	margin-top: 1rem;
+`
+
+const Title = styled.h2`
+	font-size: 1.75rem;
+	font-weight: 900;
+	margin-bottom: 0.25rem;
+`
 
 const AnimBtn = ({ children, ...props }) => (
 	<Btn
@@ -118,8 +199,11 @@ const CurrentPrice = () => {
 	}, [collectibleInfo.price])
 	return (
 		<Price>
-			<ReefIcon /><p><label title={numberSeparator(collectibleInfo.price)}>{numberSeparator(collectibleInfo.price)}</label>
-				<span>(${usdPrice})</span></p>
+			<ReefIcon />
+			<p>
+				<label title={numberSeparator(collectibleInfo.price)}>{numberSeparator(collectibleInfo.price)}</label>
+				<span>(${usdPrice})</span>
+			</p>
 		</Price>
 	)
 }
@@ -127,7 +211,7 @@ const CurrentPrice = () => {
 const Deadline = () => {
 	const deadline = 1643836298054
 	return (
-		<>
+		<div>
 			<Heading>Deadline</Heading>
 			<p>
 				<TooltipCustom base={<TimeText>{formatDistance(new Date(deadline), new Date(), { addSuffix: true })}</TimeText>}>
@@ -135,7 +219,7 @@ const Deadline = () => {
 					({format(new Date(deadline), "EEEE, LLLL d, uuuu h:mm a")})
 				</TooltipCustom>
 			</p>
-		</>
+		</div>
 	)
 }
 
@@ -163,12 +247,85 @@ const HighestBid = () => {
 	)
 }
 
+const TimePeriod = () => {
+	const interval = 150;
+	return (
+		<div>
+			<Heading>Time Period</Heading>
+			<p>
+				{capitalize(intervalToFormattedDuration(minutesToMilliseconds(interval)))}
+			</p>
+		</div>
+	)
+}
+
+const PaybackFee = () => {
+	const [usdValue, setUsdValue] = useState(null);
+	const minBid = "100"
+	useEffect(() => {
+		const getData = async () => {
+			const value = await convertREEFtoUSD(minBid);
+			value && setUsdValue(value)
+		}
+		getData()
+		//eslint-disable-next-line
+	}, [])
+	return (
+		<div>
+			<Heading>Payback Fee</Heading>
+			<Payback>
+				<ReefIcon size={28} />
+				<p>
+					<label title={numberSeparator(minBid)}>{numberSeparator(minBid)}</label>
+					{usdValue && (<span>(${usdValue.toFixed(2)})</span>)}
+				</p>
+			</Payback>
+		</div>
+	)
+}
+
+const Funder = () => {
+	const funder = {
+		id: "0x0",
+		name: "Andi",
+	}
+	return (
+		<FunderSection>
+			<Heading>Funder</Heading>
+			<Content>
+				<Logo
+					url={getAvatarFromId(funder.id)}
+				/>
+				<NotStyledLink href={`${window.location.origin}/profile/${funder.id}`}><div>{funder.name}</div></NotStyledLink>
+			</Content>
+		</FunderSection>
+	)
+}
+
+const ConfigWrapper = ({ children, state }) => {
+	const isEmpty = Boolean(children.type() === null)
+	return (
+		<>
+			{!isEmpty ? (
+				<>
+					<Title>{[
+						"Available",
+						"Regular Sale",
+						"Auction",
+						"Raffle",
+						"Loan",
+					][state]}</Title>
+					{children}
+				</>
+			) : (null)}
+		</>
+	)
+}
+
 const Config1 = () => {
 	// state-0 / not owned
 
-	return (
-		<></>
-	)
+	return (null)
 }
 
 const Config2 = () => {
@@ -227,10 +384,10 @@ const Config5 = () => {
 	return (
 		<BottomWrapper>
 			<Deadline />
-			<BidsInfoSection>
+			<TopSection>
 				<MinimumBid />
 				<HighestBid />
-			</BidsInfoSection>
+			</TopSection>
 			<BottomContainer parent={false}>
 				<AnimBtn>
 					Bid
@@ -246,10 +403,10 @@ const Config6 = () => {
 	return (
 		<BottomWrapper>
 			<Deadline />
-			<BidsInfoSection>
+			<TopSection>
 				<MinimumBid />
 				<HighestBid />
-			</BidsInfoSection>
+			</TopSection>
 			<BottomContainer parent={false}>
 				<AnimBtn>
 					Increase Bid
@@ -265,10 +422,10 @@ const Config7 = () => {
 	return (
 		<BottomWrapper>
 			<Deadline />
-			<BidsInfoSection>
+			<TopSection>
 				<MinimumBid />
 				<HighestBid />
-			</BidsInfoSection>
+			</TopSection>
 			<BottomContainer parent={false}>
 				<AnimBtn>
 					Finalize Auction
@@ -284,10 +441,10 @@ const Config8 = () => {
 	return (
 		<BottomWrapper>
 			<Deadline />
-			<BidsInfoSection>
+			<TopSection>
 				<MinimumBid />
 				<HighestBid />
-			</BidsInfoSection>
+			</TopSection>
 		</BottomWrapper>
 	)
 }
@@ -296,18 +453,7 @@ const Config9 = () => {
 	// state-2 / owned / deadline over
 
 	return (
-		<BottomWrapper>
-			<Deadline />
-			<BidsInfoSection>
-				<MinimumBid />
-				<HighestBid />
-			</BidsInfoSection>
-			<BottomContainer parent={false}>
-				<AnimBtn>
-					Finalize Auction
-				</AnimBtn>
-			</BottomContainer>
-		</BottomWrapper>
+		<Config7 />
 	)
 }
 
@@ -354,14 +500,7 @@ const Config13 = () => {
 	// state-3 / owned / deadline over
 
 	return (
-		<BottomWrapper>
-			<Deadline />
-			<BottomContainer parent={false}>
-				<AnimBtn>
-					Finalize Raffle
-				</AnimBtn>
-			</BottomContainer>
-		</BottomWrapper>
+		<Config11 />
 	)
 }
 
@@ -370,8 +509,14 @@ const Config14 = () => {
 
 	return (
 		<BottomWrapper>
-			<Deadline />
+			<TopSection>
+				<TimePeriod />
+				<PaybackFee />
+			</TopSection>
 			<BottomContainer parent={false}>
+				<RightContainer>
+					<CurrentPrice />
+				</RightContainer>
 				<AnimBtn>
 					Fund Loan
 				</AnimBtn>
@@ -384,42 +529,94 @@ const Config15 = () => {
 	// state-4 / not funder / not owned / funded
 
 	return (
-		<></>
+		null
 	)
 }
 
 const Config16 = () => {
+	//state-4 / funder / funded
 
 	return (
-		<div>state-4 / funder / funded</div>
+		<BottomWrapper>
+			<TopSection>
+				<Deadline />
+				<PaybackFee />
+			</TopSection>
+			<BottomContainer parent={false}>
+				<CurrentPrice />
+			</BottomContainer>
+		</BottomWrapper>
 	)
 }
 
 const Config17 = () => {
+	// state-4 / funder / funded / deadline over
 
 	return (
-		<div>state-4 / funder / funded / deadline over</div>
+		<BottomWrapper>
+			<TopSection>
+				<Deadline />
+				<PaybackFee />
+			</TopSection>
+			<BottomContainer parent={false}>
+				<RightContainer>
+					<CurrentPrice />
+				</RightContainer>
+				<AnimBtn>
+					Liquidate Loan
+				</AnimBtn>
+			</BottomContainer>
+		</BottomWrapper>
 	)
 }
 
 const Config18 = () => {
+	// state-4 / owned / not funded
 
 	return (
-		<div>state-4 / owned / not funded</div>
+		<BottomWrapper>
+			<TopSection>
+				<TimePeriod />
+				<PaybackFee />
+			</TopSection>
+			<BottomContainer parent={false}>
+				<RightContainer>
+					<CurrentPrice />
+				</RightContainer>
+				<AnimBtn>
+					Unlist
+				</AnimBtn>
+			</BottomContainer>
+		</BottomWrapper>
 	)
 }
 
 const Config19 = () => {
+	// state-4 / owned / funded
 
 	return (
-		<div>state-4 / owned / funded</div>
+		<BottomWrapper>
+			<TopSection>
+				<Deadline />
+				<PaybackFee />
+			</TopSection>
+			<Funder />
+			<BottomContainer parent={false}>
+				<RightContainer>
+					<CurrentPrice />
+				</RightContainer>
+				<AnimBtn>
+					Repay
+				</AnimBtn>
+			</BottomContainer>
+		</BottomWrapper>
 	)
 }
 
 const Config20 = () => {
 
 	return (
-		<div>state-4 / owned / funded / deadline over</div>
+		<Config19 />
 	)
 }
 
@@ -447,7 +644,7 @@ const getComponent = (market) => {
 			<Config19 />,
 			<Config20 />,
 		]
-		return configMap[id - 1]
+		return <ConfigWrapper state={market.state}>{configMap[id - 1]}</ConfigWrapper>
 	}
 	if (market) {
 		switch (market.state) {
@@ -520,12 +717,12 @@ const MarketSection = () => {
 		let updatedInfo = {
 			...collectibleInfo,
 			market: {
-				state: 4,
+				state: 0,
 				owned: false,
-				active: true, // only for auctions, raffles, loans (dictated by deadline)
+				active: false, // only for auctions, raffles, loans (dictated by deadline)
 				highestBidder: true, // only for auctions
-				funded: false, // only for loans
-				funder: false, // only for loans
+				funded: true, // only for loans
+				funder: true, // only for loans
 			}
 		}
 		setCollectibleInfo(updatedInfo)

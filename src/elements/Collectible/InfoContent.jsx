@@ -3,7 +3,7 @@ import styled from "styled-components";
 import MetaContainer from "./MetaContainer";
 import InfoContainer from "./InfoContainer";
 // import TransactionSection from "./TransactionSection";
-import MarketSection from "./MarketSection";
+// import MarketSection from "./MarketSection";
 
 const Container = styled.div`
 	flex:1;
@@ -19,7 +19,7 @@ const InfoContent = () => {
 			<MetaContainer />
 			<InfoContainer />
 			{/* <TransactionSection/> */}
-			<MarketSection />
+			{/* <MarketSection /> */}
 		</Container>
 	)
 }

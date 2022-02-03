@@ -8,6 +8,16 @@ const Container = styled.div``
 const Title = styled.h1`
 	font-weight: 900;
 	font-size: 2.5rem;
+	width: 100%;
+	label{
+		word-break: break-all;
+	}
+	span{
+		display: inline-block;
+		vertical-align: baseline;
+		font-size: 2rem;
+		color: var(--app-container-text-primary);
+	}
 `
 
 const Description = styled.h3`
@@ -19,11 +29,12 @@ const Description = styled.h3`
 
 const MetaContainer = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
+
 	return (
 		<Container>
 			<Title>{collectibleInfo.title}</Title>
-			<label title={(collectibleInfo.description.length>196)?collectibleInfo.description:""}>
-				<Description>{clamp(collectibleInfo.description,196)}</Description>
+			<label title={(collectibleInfo.description.length > 196) ? collectibleInfo.description : ""}>
+				<Description>{clamp(collectibleInfo.description, 196)}</Description>
 			</label>
 		</Container>
 	)
