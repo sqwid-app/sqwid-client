@@ -366,9 +366,17 @@ const Config13 = () => {
 }
 
 const Config14 = () => {
+	// state-4 / not owned / not funded
 
 	return (
-		<div>state-4 / not owned / not funded</div>
+		<BottomWrapper>
+			<Deadline />
+			<BottomContainer parent={false}>
+				<AnimBtn>
+					Fund Loan
+				</AnimBtn>
+			</BottomContainer>
+		</BottomWrapper>
 	)
 }
 
@@ -512,12 +520,12 @@ const MarketSection = () => {
 		let updatedInfo = {
 			...collectibleInfo,
 			market: {
-				state: 2,
+				state: 4,
 				owned: false,
 				active: true, // only for auctions, raffles, loans (dictated by deadline)
 				highestBidder: true, // only for auctions
-				funded: true, // only for loans
-				funder: true, // only for loans
+				funded: false, // only for loans
+				funder: false, // only for loans
 			}
 		}
 		setCollectibleInfo(updatedInfo)

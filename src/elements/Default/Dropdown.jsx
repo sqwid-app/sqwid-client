@@ -5,7 +5,13 @@ import { CSSTransition } from 'react-transition-group';
 import { css } from "styled-components";
 
 const opacityToggle = css`
-	${props => props.isVisible ? `opacity: 1;` : `opacity: 0;`}
+	${props => props.isVisible ? `
+		opacity: 1;
+		display: block;
+	` : `
+		opacity: 0;
+		display: none;
+	`}
 `
 
 const Wrapper = styled.div`
