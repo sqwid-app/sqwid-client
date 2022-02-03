@@ -11,3 +11,7 @@ export const getRPC = (network = 'reef_testnet') => {
 export const getContract = (network = 'reef_testnet', contract) => {
     return getNetwork (network).contracts[contract];
 }
+
+export const getBackend = (network = 'reef_testnet') => {
+    return getNetwork (network).backend;
+}

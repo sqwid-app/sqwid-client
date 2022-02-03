@@ -5,7 +5,7 @@ import contractABI from '../constants/contracts/SqwidMarketplace';
 //eslint-disable-next-line
 import { fetchMarketplaceItem, fetchMarketplaceItems } from "./marketplace";
 import { isMarketplaceApproved, approveMarketplace } from "./marketplaceApproval";
-import { getContract } from "./network";
+import { getBackend, getContract } from "./network";
 // import getMetaById from "./getMetaById";
 
 const createCollectible = async (files) => {
@@ -42,7 +42,7 @@ const createCollectible = async (files) => {
 
 	if (jwt) {
 		try {
-			const metadata = await axios.post(`${process.env.REACT_APP_API_URL}/create/collectible`, data, {
+			const metadata = await axios.post(`${getBackend ()}/create/collectible`, data, {
 				headers: {
 					'Authorization': `Bearer ${jwt.token}`
 				}
@@ -56,11 +56,13 @@ const createCollectible = async (files) => {
 				signer
 			);
 			try {
-				const nft = await contract.mint (to, copies, uri, to, royalty, getContract ('reef_testnet', 'erc1155'));
+				// const nft = await contract.mint (to, copies, uri, to, royalty, getContract ('reef_testnet', 'erc1155'));
+				const nft = await contract.mint (copies, uri, to, royalty, false);
 				// eslint-disable-next-line
 				const receipt = await nft.wait ();
-				const itemId = await contract.currentId ();
-				return Number (itemId);
+				const itemId = receipt.events [1].args ['itemId'].toNumber ();
+				// const itemId = await contract.currentId ();
+				return itemId;
 				// try {
 				// 	const verification = await axios ({
 				// 		method: 'get',
@@ -71,7 +73,8 @@ const createCollectible = async (files) => {
 				// 	return null;
 				// }
 			} catch (err) {
-				return null;
+				console.log (err);
+				// return null;
 			}
 		} catch (err) {
 			return null;
