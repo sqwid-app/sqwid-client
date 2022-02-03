@@ -6,9 +6,21 @@ import contractABI from '../constants/contracts/SqwidMarketplace';
 import { fetchMarketplaceItem, fetchMarketplaceItems } from "./marketplace";
 import { isMarketplaceApproved, approveMarketplace } from "./marketplaceApproval";
 import { getBackend, getContract } from "./network";
+import { create as ipfsHttpClient } from "ipfs-http-client";
 // import getMetaById from "./getMetaById";
 
-const createCollectible = async (files) => {
+const uploadFile = async (file) => {
+	try {
+		const ipfs = ipfsHttpClient ({ host: 'ipfs.infura.io', port: 5001, protocol: 'https',apiPath: '/api/v0' });
+		const buffer = file.arrayBuffer ? await file.arrayBuffer () : file;
+		const addedFile = await ipfs.add (buffer);
+		return addedFile.path;
+	} catch (err) {
+		console.log (err);
+	}
+}
+//eslint-disable-next-line
+const createCollectibleOld = async (files) => {
 	const { file, coverFile, name, description, properties, collection } = files;
 	const copies = Number (files.copies) || 1;
 	const royalty = (Number (files.royalty) || 0) * 100;
@@ -33,13 +45,6 @@ const createCollectible = async (files) => {
 		await approveMarketplace ();
 	}
 
-	// console.log ('wot');
-	// const items = await fetchMarketplaceItems ();
-	// console.log (items);
-
-	//eslint-disable-next-line
-	// const item = await fetchMarketplaceItem (1);
-
 	if (jwt) {
 		try {
 			const metadata = await axios.post(`${getBackend ()}/create/collectible`, data, {
@@ -56,22 +61,23 @@ const createCollectible = async (files) => {
 				signer
 			);
 			try {
-				// const nft = await contract.mint (to, copies, uri, to, royalty, getContract ('reef_testnet', 'erc1155'));
 				const nft = await contract.mint (copies, uri, to, royalty, false);
 				// eslint-disable-next-line
 				const receipt = await nft.wait ();
+				// eslint-disable-next-line
 				const itemId = receipt.events [1].args ['itemId'].toNumber ();
-				// const itemId = await contract.currentId ();
-				return itemId;
-				// try {
-				// 	const verification = await axios ({
-				// 		method: 'get',
-				// 		url: `${process.env.REACT_APP_API_URL}/create/collectible/sync`,
-				// 	});
-				// 	return verification.data;
-				// } catch (e) {
-				// 	return null;
-				// }
+				console.log (receipt.events);
+
+				const verif = await axios.post (`${getBackend ()}/create/collectible/verify`, {
+					id: itemId,
+					collection: collection
+				}, {
+					headers: {
+						'Authorization': `Bearer ${jwt.token}`,
+						'Content-Type': 'application/json'
+					}
+				});
+				console.log (verif.status, verif.data);
 			} catch (err) {
 				console.log (err);
 				// return null;
@@ -80,6 +86,71 @@ const createCollectible = async (files) => {
 			return null;
 		}
 	} else return null;
+}
+
+const createCollectible = async (files) => {
+	//eslint-disable-next-line
+	const { file, coverFile, name, description, properties, collection } = files;
+	const copies = Number (files.copies) || 1;
+	const royalty = (Number (files.royalty) || 0) * 100;
+
+	let attribs = [];
+	if (properties && properties.length > 0) {
+		for (let p of properties) {
+			p.key.length && (attribs.push ({ trait_type: p.key, value: p.value }));
+		}
+	}
+	let filesToUpload = [file];
+	if (coverFile) filesToUpload.push (coverFile);
+
+	const uploaded = await Promise.all (filesToUpload.map (file => uploadFile (file)));
+
+	let data = {
+		name,
+		description,// eslint-disable-next-line
+		image: coverFile ? uploaded [1] : uploaded [0], // eslint-disable-next-line
+		media: uploaded [0],
+		attributes: attribs,
+		mimetype: file.type
+	}
+
+	let meta = await uploadFile (JSON.stringify (data));
+
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	//eslint-disable-next-line
+	let jwt = address ? JSON.parse(localStorage.getItem("tokens")).find(token => token.address === address) : null;
+
+	let { signer } = await Interact (address);
+	const to = await signer.getAddress ();
+	let contract = new ethers.Contract (
+		getContract ('reef_testnet', 'marketplace'),
+		contractABI,
+		signer
+	);
+
+	try {
+		const nft = await contract.mint (copies, meta, to, royalty, false);
+		// eslint-disable-next-line
+		const receipt = await nft.wait ();
+		// eslint-disable-next-line
+		const itemId = receipt.events [1].args ['itemId'].toNumber ();
+		// eslint-disable-next-line
+		const positionId = receipt.events [1].args ['positionId'].toNumber ();
+
+		await axios.post (`${getBackend ()}/create/collectible/verify`, {
+			id: itemId,
+			collection: collection
+		}, {
+			headers: {
+				'Authorization': `Bearer ${jwt.token}`,
+				'Content-Type': 'application/json'
+			}
+		});
+		return positionId;
+	} catch (err) {
+		// console.log (err);
+		return null;
+	}
 }
 
 export { createCollectible };
