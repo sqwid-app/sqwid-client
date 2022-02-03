@@ -717,7 +717,7 @@ const MarketSection = () => {
 		let updatedInfo = {
 			...collectibleInfo,
 			market: {
-				state: 0,
+				state: 4,
 				owned: false,
 				active: false, // only for auctions, raffles, loans (dictated by deadline)
 				highestBidder: true, // only for auctions
