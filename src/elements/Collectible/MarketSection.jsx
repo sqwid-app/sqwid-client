@@ -12,9 +12,10 @@ import { respondTo } from "@styles/styledMediaQuery";
 import intervalToFormattedDuration from '@utils/intervalToFormattedDuration';
 import { convertREEFtoUSD } from '@utils/convertREEFtoUSD';
 import { getAvatarFromId } from "@utils/getAvatarFromId";
+import { BidsModal, BuyModal, CreateAuctionModal, EnterRaffleModal, LendModal, PutOnSaleModal, RaffleModal } from './Modals';
 
 /*
-	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/diagram-numbered_suzlf0.png
+	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/sections.png
 */
 
 const Btn = styled(BtnBaseAnimated)`
@@ -40,9 +41,10 @@ const BottomContainer = styled.div`
 	display: flex;
 	justify-content: flex-end;
 	align-items: flex-end;
+	flex-wrap: wrap;
 	gap: 1rem;
 	${respondTo.md`
-		padding-top: 1rem;
+		padding-top: 2rem;
 	`}
 `
 
@@ -114,6 +116,7 @@ const TopSection = styled.div`
 	display: flex;
 	align-items:center;
 	justify-content:space-between;
+	margin-top: 0.5rem;
 `
 
 const Content = styled.div`
@@ -308,13 +311,15 @@ const ConfigWrapper = ({ children, state }) => {
 		<>
 			{!isEmpty ? (
 				<>
-					<Title>{[
-						"Available",
-						"Regular Sale",
-						"Auction",
-						"Raffle",
-						"Loan",
-					][state]}</Title>
+					<Title>
+						{[
+							"Available",
+							"Regular Sale",
+							"Auction",
+							"Raffle",
+							"Loan",
+						][state]}
+					</Title>
 					{children}
 				</>
 			) : (null)}
@@ -330,35 +335,45 @@ const Config1 = () => {
 
 const Config2 = () => {
 	// state-0 / owned
+	const [showAuctionModal, setShowAuctionModal] = useState(false)
+	const [showPutOnSaleModal, setShowPutOnSaleModal] = useState(false)
+	const [showLendModal, setShowLendModal] = useState(false)
+	const [showRaffleModal, setShowRaffleModal] = useState(false)
 
 	return (
 		<BottomContainer>
-			<AnimBtn>
+			<AnimBtn onClick={() => setShowPutOnSaleModal(!showPutOnSaleModal)}>
 				Put On Sale
 			</AnimBtn>
-			<AnimBtn>
+			<AnimBtn onClick={() => setShowLendModal(!showLendModal)}>
 				Lend
 			</AnimBtn>
-			<AnimBtn>
+			<AnimBtn onClick={() => setShowAuctionModal(!showAuctionModal)}>
 				Create Auction
 			</AnimBtn>
-			<AnimBtn>
+			<AnimBtn onClick={() => setShowRaffleModal(!showRaffleModal)}>
 				Create Raffle
 			</AnimBtn>
+			<CreateAuctionModal fee={50} isActive={showAuctionModal} setIsActive={setShowAuctionModal} />
+			<PutOnSaleModal fee={25} isActive={showPutOnSaleModal} setIsActive={setShowPutOnSaleModal} />
+			<LendModal fee={69} isActive={showLendModal} setIsActive={setShowLendModal} />
+			<RaffleModal fee={0} isActive={showRaffleModal} setIsActive={setShowRaffleModal} />
 		</BottomContainer>
 	)
 }
 
 const Config3 = () => {
 	// state-0 / not owned
+	const [showBuyModal, setShowBuyModal] = useState(false)
 	return (
 		<BottomContainer>
 			<RightContainer>
 				<CurrentPrice />
 			</RightContainer>
-			<AnimBtn>
-				Create Raffle
+			<AnimBtn onClick={() => setShowBuyModal(!showBuyModal)}>
+				Buy
 			</AnimBtn>
+			<BuyModal isActive={showBuyModal} setIsActive={setShowBuyModal} />
 		</BottomContainer>
 	)
 }
@@ -381,6 +396,8 @@ const Config4 = () => {
 const Config5 = () => {
 	// state-2 / not owned / active / not highest bidder
 
+	const [showBidsModal, setShowBidsModal] = useState(false)
+
 	return (
 		<BottomWrapper>
 			<Deadline />
@@ -389,10 +406,11 @@ const Config5 = () => {
 				<HighestBid />
 			</TopSection>
 			<BottomContainer parent={false}>
-				<AnimBtn>
+				<AnimBtn onClick={() => setShowBidsModal(!showBidsModal)}>
 					Bid
 				</AnimBtn>
 			</BottomContainer>
+			<BidsModal isActive={showBidsModal} setIsActive={setShowBidsModal} />
 		</BottomWrapper>
 	)
 }
@@ -459,15 +477,18 @@ const Config9 = () => {
 
 const Config10 = () => {
 	// state-3 / not owned / active
+	const [showEnterRaffleModal, setShowEnterRaffleModal] = useState(false)
+
 
 	return (
 		<BottomWrapper>
 			<Deadline />
 			<BottomContainer parent={false}>
-				<AnimBtn>
+				<AnimBtn onClick={() => setShowEnterRaffleModal(!showEnterRaffleModal)}>
 					Enter Raffle
 				</AnimBtn>
 			</BottomContainer>
+			<EnterRaffleModal isActive={showEnterRaffleModal} setIsActive={setShowEnterRaffleModal} />
 		</BottomWrapper>
 	)
 }
@@ -623,20 +644,25 @@ const Config20 = () => {
 const getComponent = (market) => {
 	const showConfig = (id) => {
 		let configMap = [
+			// state-0 || Available
 			<Config1 />,
 			<Config2 />,
+			// state-1 || Regular Sale
 			<Config3 />,
 			<Config4 />,
+			// state-2 || Auction
 			<Config5 />,
 			<Config6 />,
 			<Config7 />,
 			<Config8 />,
 			<Config9 />,
+			// state-3 || Raffle
 			<Config10 />,
 			<Config11 />,
 			<Config12 />,
 			<Config13 />,
 			<Config14 />,
+			// state-4 || Loan
 			<Config15 />,
 			<Config16 />,
 			<Config17 />,
@@ -717,10 +743,10 @@ const MarketSection = () => {
 		let updatedInfo = {
 			...collectibleInfo,
 			market: {
-				state: 4,
+				state: 1,
 				owned: false,
-				active: false, // only for auctions, raffles, loans (dictated by deadline)
-				highestBidder: true, // only for auctions
+				active: true, // only for auctions, raffles, loans (dictated by deadline)
+				highestBidder: false, // only for auctions
 				funded: true, // only for loans
 				funder: true, // only for loans
 			}

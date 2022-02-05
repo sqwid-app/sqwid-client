@@ -2,12 +2,16 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { LazyMotion, domAnimation } from "framer-motion"
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
+//eslint-disable-next-line
 import ReefIcon from "@static/svg/ReefIcon";
 import Loading from "@elements/Default/Loading";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
-
+//eslint-disable-next-line
 import { addBid, buyNow, putOnSale } from "@utils/marketplace";
+//eslint-disable-next-line
 import bread from "@utils/bread";
+import { Link } from "react-router-dom";
+import AlertIcon from "@static/svg/AlertIcon";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -62,7 +66,7 @@ const Modal = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
-	${props=>!props.remove?modalEntryAnim:modalExitAnim}
+	${props => !props.remove ? modalEntryAnim : modalExitAnim}
 `
 
 const Title = styled.h1`
@@ -128,23 +132,69 @@ const Btn = styled(BtnBaseAnimated)`
 	min-width: 6rem;
 `
 
+const InfoWrapper = styled.div`
+	display: flex;
+	align-items:center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	margin: 1.5rem 0;
+`
+
+const InfoElements = styled.p`
+	font-size: 1.125rem;
+	font-weight: 800;
+	color: var(--app-text);
+	span{
+		font-weight: 500;
+	}
+`
+
+const StyledLink = styled(Link)`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
+	text-decoration: none;
+	font-size: 1rem;
+	color: var(--app-container-text-primary);
+	transition: color 0.2s ease;
+	svg{
+		height: 1rem;
+		width: 1rem;
+	}
+	&:hover{
+		color: var(--app-container-text-primary-hover);
+	}
+`
+
+const InfoSection = ({ fee, link }) => {
+	return (
+		<InfoWrapper>
+			<InfoElements>
+				Service Fees: <span>{fee}%</span>
+			</InfoElements>
+			<InfoElements>
+				<StyledLink to={link} target="_blank" rel="noopener noreferrer"> Need more info?<AlertIcon /></StyledLink>
+			</InfoElements>
+		</InfoWrapper>
+	)
+}
+
 const AnimBtn = ({ children, ...props }) => (
 	<Btn
 		whileTap={{
-			scale:0.97
+			scale: 0.97
 		}}
 		whileHover={{
 			y: -5,
 			x: 0,
-			scale:1.02
+			scale: 1.02
 		}}
 		{...props}
 	>{children}</Btn>
 )
 
-
-
-const elemContains =  (rect, x, y) => {
+const elemContains = (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
 }
 
@@ -153,26 +203,34 @@ const ModalContainer = ({ isActive, setIsActive, ...props }) => {
 	const modalRef = useRef()
 	//eslint-disable-next-line
 	useEffect(() => {
-		if(isActive===false){
+		if (isActive === false) {
 			setTimeout(() => {
 				setElemIsVisible(isActive);
 			}, 200);
 		}
-		else{
+		else {
 			setElemIsVisible(isActive);
 		}
 	}, [isActive])
 
 	const handleClickOutside = (e) => {
 		let rect = modalRef.current.getBoundingClientRect();
-		if(!elemContains(rect,e.clientX,e.clientY)){
+		if (!elemContains(rect, e.clientX, e.clientY)) {
 			setIsActive(false)
 		}
 	}
 	return (
 		<LazyMotion features={domAnimation}>
-			{elemIsVisible&&(
-				<BackDrop remove={!isActive} onClick={handleClickOutside}>
+			{elemIsVisible && (
+				/*
+					Look into using onPointerUp instead of using both onMouseDown and onTouchStart
+					https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onpointerup
+					https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events
+					Also check the necessary polyfills since its support might not be really good
+					https://caniuse.com/mdn-api_globaleventhandlers_onpointerup
+					Also look into using react-modal instead of this since it has better support and mine is bloated
+				*/
+				<BackDrop remove={!isActive} onMouseDown={handleClickOutside} onTouchStart={handleClickOutside}>
 					<Modal
 						remove={!isActive}
 						ref={modalRef}
@@ -185,113 +243,7 @@ const ModalContainer = ({ isActive, setIsActive, ...props }) => {
 	)
 }
 
-const BidsModal = (props) => {
-	const [value, setValue] = useState({
-		price:"",
-		amount:""
-	})
-	const [isLoading, setIsLoading] = useState(false);
-	const [buttonText, setButtonText] = useState ("Submit");
-
-	const handlePriceInput = (e) => {
-		if (Number (e.target.value) >= 0) {
-			setValue({
-				...value,
-				price:e.target.value,
-			});
-			setButtonText (<>Pay <ReefIcon centered size={24}/> {Number (e.target.value) * Number (value.amount)}</>);
-		}
-	}
-
-	const handleAmountInput = (e) => {
-		if (Number (e.target.value) <= Number (props.itemInfo.maxAmount)) {
-			setValue({
-				...value,
-				amount:e.target.value,
-			});
-			setButtonText (<>Pay <ReefIcon centered size={24}/> {Number (e.target.value) * Number (value.price)}</>);
-		}
-	}
-
-	const handleClick = () => {
-		setIsLoading (true);
-		setButtonText (<Loading/>);
-		addBid (props.itemInfo.itemId, value.price, value.amount).then (() => {
-			setIsLoading (false);
-			setButtonText ("Submit");
-			props.setIsActive (false)
-		}).catch (err => {
-			bread(err.response.data.error)
-		});
-	}
-	return (
-		<ModalContainer {...props}>
-			<Title>Bid</Title>
-			<Group>
-				<InputWrapper>
-					<InputTitle>Price</InputTitle>
-					<InputContainer
-						type="number"
-						value={value.price}
-						onChange = {handlePriceInput}
-						placeholder={`Enter Price (in Reef)`}
-					/>
-					<InputTitle>Amount (max {props.itemInfo.maxAmount})</InputTitle>
-					<InputContainer
-						type="number"
-						value={value.amount}
-						onChange = {handleAmountInput}
-						placeholder={`Enter Amount (# of copies)`}
-					/>
-				</InputWrapper>
-				<AnimBtn disabled = {isLoading} onClick = {handleClick} >{buttonText}</AnimBtn>
-			</Group>
-		</ModalContainer>
-	)
-}
-
-const PutOnSaleModal = (props) => {
-	const [price, setPrice] = useState("")
-	const [isLoading, setIsLoading] = useState(false);
-	const [buttonText, setButtonText] = useState ("Submit");
-	const { collectibleInfo, setCollectibleInfo } = useContext (CollectibleContext);
-	const handleInput = (e) => {
-		setPrice(e.target.value)
-	}
-	const handleClick = () => {
-		setIsLoading (true);
-		setButtonText (<Loading/>);
-		putOnSale (props.itemId, price).then (res => {
-			setIsLoading (false);
-			setButtonText ("Submit");
-			setCollectibleInfo ({
-				...collectibleInfo,
-				isOnSale:true,
-				price: price,
-			});
-			props.setIsActive (false);
-		}).catch (err => {
-			bread(err.response.data.error)
-		});
-	}
-	return (
-		<ModalContainer {...props}>
-			<Title>Put on sale</Title>
-			<Group>
-				<InputTitle>Price</InputTitle>
-				<InputContainer
-					type="number"
-					value={price}
-					onChange = {handleInput}
-					placeholder={`Enter Price (in Reef)`}
-				/>
-				<AnimBtn disabled={isLoading} onClick = {handleClick}>{buttonText}</AnimBtn>
-			</Group>
-		</ModalContainer>
-	)
-}
-
-const TransferModal = (props) => {
+export const TransferModal = (props) => {
 	const [value, setValue] = useState({
 		address: "",
 		amount: ""
@@ -352,49 +304,374 @@ const TransferModal = (props) => {
 	)
 }
 
-const BuyModal = (props) => {
-	const [amount, setAmount] = useState("");
+
+/*
+	Need to add more modals based on https://res.cloudinary.com/etjfo/image/upload/v1643994671/sqwid/modals.jpg
+*/
+
+export const CreateAuctionModal = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [buttonText, setButtonText] = useState ("Enter an amount");
-	const handleInput = (e) => {
-		if (Number (e.target.value) <= Number (props.itemInfo.maxAmount)) {
-			setAmount(e.target.value);
-			if (Number (e.target.value) > 0) {
-				setButtonText (<>Pay <ReefIcon centered size={24}/> {Number (e.target.value) * props.itemInfo.price}</>);
-			} else {
-				setButtonText ("Enter an amount");
-			}
-		}
-	}
+	const initialButtonText = "Create Auction";
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	const [minBid, setMinBid] = useState("");
+	const [numberOfCopies, setNumberOfCopies] = useState("");
+	const [numberOfDays, setNumberOfDays] = useState("");
 	const handleClick = () => {
 		if (!isLoading) {
-			setIsLoading (true)
-			setButtonText (<Loading/>);
-			buyNow (props.itemInfo.itemId, amount, props.itemInfo.price).then (res => {
-				setButtonText ("Enter an amount");
+			setIsLoading(true)
+			setButtonText(<Loading />);
+			setTimeout(() => {
 				setIsLoading(false)
-				setAmount("");
-				props.setIsActive (false)
-			}).catch (err => {
-				bread(err.response.data.error)
-			});
+				setButtonText(initialButtonText);
+			}, 10000)
 		}
 	}
 	return (
 		<ModalContainer {...props}>
-			<Title>Buy</Title>
+			<Title>Create Auction</Title>
 			<Group>
-				<InputTitle>Amount (max { props.itemInfo.maxAmount })</InputTitle>
-				<InputContainer
-					type="number"
-					value={amount}
-					onChange = {handleInput}
-					placeholder={`Enter Amount (number of copies you wish to buy)`}
-				/>
-				<AnimBtn disabled={isLoading} onClick = {handleClick}>{buttonText}</AnimBtn>
+				<InputWrapper>
+					<InputTitle>Minimum Bid</InputTitle>
+					<InputContainer
+						type="number"
+						value={minBid}
+						onChange={(e) => { setMinBid(e.target.value) }}
+						placeholder={`Minimum bid for the lot in REEF`}
+					/>
+					<InputTitle>Number of Copies</InputTitle>
+					<InputContainer
+						type="number"
+						value={numberOfCopies}
+						onChange={(e) => { setNumberOfCopies(e.target.value) }}
+						placeholder={`Number of copies for the lot`}
+					/>
+					<InputTitle>Number of Days</InputTitle>
+					<InputContainer
+						type="number"
+						value={numberOfDays}
+						onChange={(e) => { setNumberOfDays(e.target.value) }}
+						placeholder={`Duration of the auction in days`}
+					/>
+				</InputWrapper>
+				<InfoSection link="/blog/auctions" fee={props.fee} />
+				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
 			</Group>
 		</ModalContainer>
 	)
 }
 
-export { BidsModal, PutOnSaleModal, BuyModal, TransferModal }
+export const PutOnSaleModal = (props) => {
+	const [price, setPrice] = useState("")
+	const [copies, setCopies] = useState("")
+	const initialButtonText = "Submit";
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	//eslint-disable-next-line
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+	const handleInput = (e) => {
+		setPrice(e.target.value)
+	}
+	const handleClick = () => {
+		setIsLoading(true);
+		setButtonText(<Loading />);
+		// putOnSale(props.itemId, price).then(res => {
+		// 	setIsLoading(false);
+		// 	setButtonText("Submit");
+		// 	setCollectibleInfo({
+		// 		...collectibleInfo,
+		// 		isOnSale: true,
+		// 		price: price,
+		// 	});
+		// 	props.setIsActive(false);
+		// }).catch(err => {
+		// 	bread(err.response.data.error)
+		// });
+		setTimeout(() => {
+			setIsLoading(false)
+			setButtonText(initialButtonText);
+		}, 10000);
+	}
+	return (
+		<ModalContainer {...props}>
+			<Title>Put on sale</Title>
+			<Group>
+				<InputWrapper>
+					<InputTitle>Price</InputTitle>
+					<InputContainer
+						type="number"
+						value={price}
+						onChange={handleInput}
+						placeholder={`Enter Price (in Reef)`}
+					/>
+					<InputTitle>Number of Copies</InputTitle>
+					<InputContainer
+						type="number"
+						value={copies}
+						onChange={(e) => setCopies(e.target.value)}
+						placeholder={`Number of copies for sale`}
+					/>
+				</InputWrapper>
+				<InfoSection link="/blog/sale" fee={props.fee} />
+				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
+			</Group>
+		</ModalContainer>
+	)
+}
+
+export const LendModal = (props) => {
+	const [amount, setAmount] = useState("")
+	const [paybackFee, setPaybackFee] = useState("")
+	const [copies, setCopies] = useState("")
+	const [duration, setDuration] = useState("")
+	const initialButtonText = "Submit";
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	//eslint-disable-next-line
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+	const handleClick = () => {
+		setIsLoading(true);
+		setButtonText(<Loading />);
+		// putOnSale(props.itemId, price).then(res => {
+		// 	setIsLoading(false);
+		// 	setButtonText("Submit");
+		// 	setCollectibleInfo({
+		// 		...collectibleInfo,
+		// 		isOnSale: true,
+		// 		price: price,
+		// 	});
+		// 	props.setIsActive(false);
+		// }).catch(err => {
+		// 	bread(err.response.data.error)
+		// });
+		setTimeout(() => {
+			setIsLoading(false)
+			setButtonText(initialButtonText);
+		}, 10000);
+	}
+	return (
+		<ModalContainer {...props}>
+			<Title>Create Loan Proposal</Title>
+			<Group>
+				<InputWrapper>
+					<InputTitle>Loan Amount</InputTitle>
+					<InputContainer
+						type="number"
+						value={amount}
+						onChange={(e) => setAmount(e.target.value)}
+						placeholder={`Amount to borrow (in Reef)`}
+					/>
+					<InputTitle>Payback Fee</InputTitle>
+					<InputContainer
+						type="number"
+						value={paybackFee}
+						onChange={(e) => setPaybackFee(e.target.value)}
+						placeholder={`Amount to pay the lender as interest (in Reef)`}
+					/>
+					<InputTitle>Number of Copies</InputTitle>
+					<InputContainer
+						type="number"
+						value={copies}
+						onChange={(e) => setCopies(e.target.value)}
+						placeholder={`Number of copies for the lot`}
+					/>
+					<InputTitle>Duration</InputTitle>
+					<InputContainer
+						type="number"
+						value={duration}
+						onChange={(e) => setDuration(e.target.value)}
+						placeholder={`Duration of the loan in days`}
+					/>
+				</InputWrapper>
+				<InfoSection link="/blog/loan" fee={props.fee} />
+				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
+			</Group>
+		</ModalContainer>
+	)
+}
+
+export const RaffleModal = (props) => {
+	const [copies, setCopies] = useState("")
+	const [duration, setDuration] = useState("")
+	const initialButtonText = "Submit";
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	//eslint-disable-next-line
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+	const handleClick = () => {
+		setIsLoading(true);
+		setButtonText(<Loading />);
+		// putOnSale(props.itemId, price).then(res => {
+		// 	setIsLoading(false);
+		// 	setButtonText("Submit");
+		// 	setCollectibleInfo({
+		// 		...collectibleInfo,
+		// 		isOnSale: true,
+		// 		price: price,
+		// 	});
+		// 	props.setIsActive(false);
+		// }).catch(err => {
+		// 	bread(err.response.data.error)
+		// });
+		setTimeout(() => {
+			setIsLoading(false)
+			setButtonText(initialButtonText);
+		}, 10000);
+	}
+	return (
+		<ModalContainer {...props}>
+			<Title>Create Raffle</Title>
+			<Group>
+				<InputWrapper>
+					<InputTitle>Number of Copies</InputTitle>
+					<InputContainer
+						type="number"
+						value={copies}
+						onChange={(e) => setCopies(e.target.value)}
+						placeholder={`Number of copies for the lot`}
+					/>
+					<InputTitle>Duration</InputTitle>
+					<InputContainer
+						type="number"
+						value={duration}
+						onChange={(e) => setDuration(e.target.value)}
+						placeholder={`Duration of the loan in days`}
+					/>
+				</InputWrapper>
+				<InfoSection link="/blog/raffle" fee={props.fee} />
+				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
+			</Group>
+		</ModalContainer>
+	)
+}
+
+export const EnterRaffleModal = (props) => {
+	const [amount, setAmount] = useState("")
+	const initialButtonText = "Submit";
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	//eslint-disable-next-line
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+	const handleClick = () => {
+		setIsLoading(true);
+		setButtonText(<Loading />);
+		// putOnSale(props.itemId, price).then(res => {
+		// 	setIsLoading(false);
+		// 	setButtonText("Submit");
+		// 	setCollectibleInfo({
+		// 		...collectibleInfo,
+		// 		isOnSale: true,
+		// 		price: price,
+		// 	});
+		// 	props.setIsActive(false);
+		// }).catch(err => {
+		// 	bread(err.response.data.error)
+		// });
+		setTimeout(() => {
+			setIsLoading(false)
+			setButtonText(initialButtonText);
+		}, 10000);
+	}
+	return (
+		<ModalContainer {...props}>
+			<Title>Create Raffle</Title>
+			<Group>
+				<InputTitle>Amount</InputTitle>
+				<InputContainer
+					type="number"
+					value={amount}
+					onChange={(e) => setAmount(e.target.value)}
+					placeholder={`Amount to be sent (in Reef)`}
+				/>
+				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
+			</Group>
+		</ModalContainer>
+	)
+}
+
+export const BidsModal = (props) => {
+	const [amount, setAmount] = useState("")
+	const initialButtonText = "Submit";
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	//eslint-disable-next-line
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+	const handleClick = () => {
+		setIsLoading(true);
+		setButtonText(<Loading />);
+		// putOnSale(props.itemId, price).then(res => {
+		// 	setIsLoading(false);
+		// 	setButtonText("Submit");
+		// 	setCollectibleInfo({
+		// 		...collectibleInfo,
+		// 		isOnSale: true,
+		// 		price: price,
+		// 	});
+		// 	props.setIsActive(false);
+		// }).catch(err => {
+		// 	bread(err.response.data.error)
+		// });
+		setTimeout(() => {
+			setIsLoading(false)
+			setButtonText(initialButtonText);
+		}, 10000);
+	}
+	return (
+		<ModalContainer {...props}>
+			<Title>Bid</Title>
+			<Group>
+				<InputTitle>Amount</InputTitle>
+				<InputContainer
+					type="number"
+					value={amount}
+					onChange={(e) => setAmount(e.target.value)}
+					placeholder={`Amount to bid (in Reef)`}
+				/>
+				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
+			</Group>
+		</ModalContainer>
+	)
+}
+
+export const BuyModal = (props) => {
+	const [copies, setCopies] = useState("")
+	const initialButtonText = "Submit";
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	//eslint-disable-next-line
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+	const handleClick = () => {
+		setIsLoading(true);
+		setButtonText(<Loading />);
+		// putOnSale(props.itemId, price).then(res => {
+		// 	setIsLoading(false);
+		// 	setButtonText("Submit");
+		// 	setCollectibleInfo({
+		// 		...collectibleInfo,
+		// 		isOnSale: true,
+		// 		price: price,
+		// 	});
+		// 	props.setIsActive(false);
+		// }).catch(err => {
+		// 	bread(err.response.data.error)
+		// });
+		setTimeout(() => {
+			setIsLoading(false)
+			setButtonText(initialButtonText);
+		}, 10000);
+	}
+	return (
+		<ModalContainer {...props}>
+			<Title>Buy</Title>
+			<Group>
+				<InputTitle>Number of copies</InputTitle>
+				<InputContainer
+					type="number"
+					value={copies}
+					onChange={(e) => setCopies(e.target.value)}
+					placeholder={`Number of copies to buy`}
+				/>
+				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
+			</Group>
+		</ModalContainer>
+	)
+}

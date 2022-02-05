@@ -9,6 +9,10 @@ const BtnBase = styled.a`
     border: none;
 	user-select: none;
 	cursor: pointer;
+	&[disabled] {
+		background: var(--app-theme-primary-disabled);
+		pointer-events: none;
+	}
 `
 
 const BtnBaseAnimated = styled(m.a)`
@@ -19,6 +23,10 @@ const BtnBaseAnimated = styled(m.a)`
     border: none;
 	user-select: none;
 	cursor: pointer;
+	&[disabled] {
+		background: var(--app-theme-primary-disabled);
+		pointer-events: none;
+	}
 `
 
 export { BtnBase, BtnBaseAnimated }
