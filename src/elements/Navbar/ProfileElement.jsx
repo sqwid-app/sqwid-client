@@ -76,7 +76,7 @@ const Balance = () => {
 }
 
 const ProfileElement = () => {
-	const [username, setUsername] = useState("")
+	const [username, setUsername] = useState("");
 	const { auth } = useContext(AuthContext);
 	useEffect(() => {
 		auth && setUsername(auth.meta.name)
