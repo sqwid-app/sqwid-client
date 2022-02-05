@@ -5,7 +5,6 @@ import { LazyMotion, domAnimation, m } from "framer-motion"
 import { truncateAddress } from "@utils/textUtils";
 import AuthContext from "@contexts/Auth/AuthContext";
 import bread from "@utils/bread";
-import { DividerHorizontal } from "@elements/Default/Divider";
 import ProfileElement from "./ProfileElement";
 
 const swipeRightToLeft = keyframes`
