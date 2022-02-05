@@ -1,8 +1,5 @@
 {
 	"name": "sqwid-client",
-	"engines": {
-		"node": ">=15.0.0"
-	},
 	"version": "0.2.8",
 	"private": true,
 	"dependencies": {
