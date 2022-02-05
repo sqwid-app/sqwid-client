@@ -5,6 +5,8 @@ import { LazyMotion, domAnimation, m } from "framer-motion"
 import { truncateAddress } from "@utils/textUtils";
 import AuthContext from "@contexts/Auth/AuthContext";
 import bread from "@utils/bread";
+import { DividerHorizontal } from "@elements/Default/Divider";
+import ProfileElement from "./ProfileElement";
 
 const swipeRightToLeft = keyframes`
 	0% {
@@ -106,7 +108,7 @@ const Modal = styled.div`
 		color: var(--app-container-text-primary-hover);
 		cursor: pointer;
 	}
-	${props=>!props.remove?modalEntryAnim:modalExitAnim}
+	${props => !props.remove ? modalEntryAnim : modalExitAnim}
 `
 
 const Title = styled.h1`
@@ -147,7 +149,7 @@ const Alert = styled.div`
 	z-index: 3;
 	display: flex;
 	flex-direction: column;
-	${props=>!props.remove?alertEntryAnim:alertExitAnim}
+	${props => !props.remove ? alertEntryAnim : alertExitAnim}
 `
 
 const Content = styled.p`
@@ -157,67 +159,67 @@ const Content = styled.p`
 	color:var(--app-container-text-primary-hover);
 `
 
-const elemContains =  (rect, x, y) => {
-	return rect?(rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height):false;
+const elemContains = (rect, x, y) => {
+	return rect ? (rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height) : false;
 }
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
 	const [signer, setSigner] = useState("")
 	const { auth, login, logout, setLoading } = useContext(AuthContext);
-	const [ alert, setAlert ] = useState({
+	const [alert, setAlert] = useState({
 		isActive: false,
 	})
 	const [alertIsVisible, setAlertIsVisible] = useState(alert.isActive)
 	const modalRef = useRef()
 	const alertRef = useRef()
 	//eslint-disable-next-line
-	const [selectedAccount, setSelectedAccount] = useState (null);
+	const [selectedAccount, setSelectedAccount] = useState(null);
 	const _onAccountChange = async (val) => {
 		setLoading(true);
-		let account = accounts.find (acc => acc.meta.name === val)
-		setSelectedAccount (account);
-		Connect (account)
-		.then (async response => {
-			if (response.evmClaimed === false) {
-				setAlert({
-					...alert,
-					isActive: true,
-				})
-				setSigner(response.signer)
-				// alert (`EVM account not claimed. Please claim it and try logging in again.\nYou will get the address ${ await response.signer.getAddress () }\nYou will need some Reef in order to pay for the transaction.`);
-			} else {
-				const acc = await response.signer.getAddress ();
-				// console.log ('evm account is claimed');
-				login({auth: { ...account, evmAddress: acc }});
-				setIsActive(false);
-			}
-		})
-		.catch(err=>{
-			bread(err.response.data.error)
-		})
-		.finally(()=>{
-			setLoading(false);
-		})
+		let account = accounts.find(acc => acc.meta.name === val)
+		setSelectedAccount(account);
+		Connect(account)
+			.then(async response => {
+				if (response.evmClaimed === false) {
+					setAlert({
+						...alert,
+						isActive: true,
+					})
+					setSigner(response.signer)
+					// alert (`EVM account not claimed. Please claim it and try logging in again.\nYou will get the address ${ await response.signer.getAddress () }\nYou will need some Reef in order to pay for the transaction.`);
+				} else {
+					const acc = await response.signer.getAddress();
+					// console.log ('evm account is claimed');
+					login({ auth: { ...account, evmAddress: acc } });
+					setIsActive(false);
+				}
+			})
+			.catch(err => {
+				bread(err.response.data.error)
+			})
+			.finally(() => {
+				setLoading(false);
+			})
 	}
 	useEffect(() => {
-		if(isActive===false){
+		if (isActive === false) {
 			setTimeout(() => {
 				setElemIsVisible(isActive);
 			}, 200);
 		}
-		else{
+		else {
 			setElemIsVisible(isActive);
 		}
 	}, [isActive])
 
 	useEffect(() => {
-		if(alert.isActive===false){
+		if (alert.isActive === false) {
 			setTimeout(() => {
 				setAlertIsVisible(alert.isActive);
 			}, 200);
 		}
-		else{
+		else {
 			setAlertIsVisible(alert.isActive);
 		}
 	}, [alert.isActive])
@@ -225,7 +227,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const handleClickOutside = (e) => {
 		let rect = modalRef?.current?.getBoundingClientRect();
 		let rect2 = alertRef?.current?.getBoundingClientRect();
-		if(!elemContains(rect,e.clientX,e.clientY)&&!elemContains(rect2,e.clientX,e.clientY)){
+		if (!elemContains(rect, e.clientX, e.clientY) && !elemContains(rect2, e.clientX, e.clientY)) {
 			setAlert({
 				...alert,
 				isActive: false,
@@ -237,75 +239,78 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 
 	return (
 		<LazyMotion features={domAnimation}>
-			{elemIsVisible&&(
-				<BackDrop remove={!isActive} onClick={handleClickOutside}>
+			{elemIsVisible && (
+				<BackDrop remove={!isActive} onMouseDown={handleClickOutside} onTouchStart={handleClickOutside}>
 					<Modal
 						remove={!isActive}
 						ref={modalRef}
 					>
+						{auth && (
+							<ProfileElement />
+						)}
 						<Title>Choose an account</Title>
 						{accounts?.length ?
-						<>
-							{ accounts ? accounts.filter(item=>auth?auth.address!==item.address:true).map ((account, index) => {
-								return <m.p
-								whileHover={{
-									y: -2.5,
-									x: 0
-								}}
-								whileTap={{
-									scale:0.99
-								}}
-								onClick={()=>_onAccountChange(account.meta.name)}
-								key = { index }
-							> { account.meta.name }<label title={account.address}>{truncateAddress(account.address)}</label> </m.p>
-							}) : null }
-						</>
-						: 'Please connect your wallet'}
-						{auth&&(
+							<>
+								{accounts ? accounts.filter(item => auth ? auth.address !== item.address : true).map((account, index) => {
+									return <m.p
+										whileHover={{
+											y: -2.5,
+											x: 0
+										}}
+										whileTap={{
+											scale: 0.99
+										}}
+										onClick={() => _onAccountChange(account.meta.name)}
+										key={index}
+									> {account.meta.name}<label title={account.address}>{truncateAddress(account.address)}</label> </m.p>
+								}) : null}
+							</>
+							: 'Please connect your wallet'}
+						{auth && (
 							<Button
 								whileHover={{
 									y: -5,
 									x: 0,
-									scale:1.02
+									scale: 1.02
 								}}
 								whileTap={{
-									scale:0.99
+									scale: 0.99
 								}}
-								onClick={()=>{
+								onClick={() => {
 									logout()
 									window.location.reload()
 								}}
 							>Logout</Button>
 						)}
 					</Modal>
-					{alertIsVisible&&(<Alert
+					{alertIsVisible && (<Alert
 						remove={!alert.isActive}
 						ref={alertRef}
 					>
 						<Title>Claim EVM Account</Title>
 						<Content>
-							EVM account not claimed.<br/>
-							Please claim it and try logging in again.<br/>
+							EVM account not claimed.<br />
+							Please claim it and try logging in again.<br />
 							You will need some Reef in order to pay for the transaction.
 						</Content>
 						<Button
 							whileHover={{
 								y: -5,
 								x: 0,
-								scale:1.02
+								scale: 1.02
 							}}
 							whileTap={{
-								scale:0.99
+								scale: 0.99
 							}}
-							onClick={()=>{
+							onClick={() => {
 								setAlert({
 									...alert,
 									isActive: false,
 								})
 								signer.claimDefaultAccount()
-								.finally(()=>{
-									setIsActive(false)
-								})
+									.finally(() => {
+										setIsActive(false)
+									})
 
 							}}
 						>I Accept</Button>
