@@ -43,6 +43,11 @@ const TooltipContainer = styled.div`
 			opacity: 0;
 			transform-origin: center left;
 			transition: all 0.25s cubic-bezier(0.86,-0.34, 0.04, 0.98);
+			${respondTo.md`
+				left: auto;
+				right:1.75rem;
+				transform-origin: center right;
+			`}
 			p{
 				margin: 0;
 			}

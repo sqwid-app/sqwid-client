@@ -6,6 +6,7 @@ import { truncateAddress } from "@utils/textUtils";
 import AuthContext from "@contexts/Auth/AuthContext";
 import bread from "@utils/bread";
 import ProfileElement from "./ProfileElement";
+import { DividerHorizontal } from "@elements/Default/Divider";
 
 const swipeRightToLeft = keyframes`
 	0% {
@@ -247,7 +248,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 						{auth && (
 							<ProfileElement />
 						)}
-						<Title>Choose an account</Title>
+						<Title>Choose another account</Title>
 						{accounts?.length ?
 							<>
 								{accounts ? accounts.filter(item => auth ? auth.address !== item.address : true).map((account, index) => {
@@ -266,20 +267,23 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 							</>
 							: 'Please connect your wallet'}
 						{auth && (
-							<Button
-								whileHover={{
-									y: -5,
-									x: 0,
-									scale: 1.02
-								}}
-								whileTap={{
-									scale: 0.99
-								}}
-								onClick={() => {
-									logout()
-									window.location.reload()
-								}}
-							>Logout</Button>
+							<>
+								<DividerHorizontal />
+								<Button
+									whileHover={{
+										y: -5,
+										x: 0,
+										scale: 1.02
+									}}
+									whileTap={{
+										scale: 0.99
+									}}
+									onClick={() => {
+										logout()
+										window.location.reload()
+									}}
+								>Logout</Button>
+							</>
 						)}
 					</Modal>
 					{alertIsVisible && (<Alert

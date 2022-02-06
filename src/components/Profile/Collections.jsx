@@ -49,7 +49,7 @@ const CollectionsSection = () => {
 					return {
 						src: getCloudflareURL(item.data.image),
 						title: item.data.name,
-						link: `${window.location.origin}/collections/${item.id}`
+						link: `/collections/${item.id}`
 					}
 				}))
 			})

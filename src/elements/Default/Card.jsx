@@ -3,8 +3,9 @@ import styled from "styled-components";
 import CardMedia from "./CardMedia";
 import CardInfo from "./CardInfo";
 import { LazyMotion, domAnimation, m } from "framer-motion";
+import { Link } from "react-router-dom";
 
-const Wrapper = styled(m.a)`
+const Wrapper = styled(m(Link))`
 	display: grid;
 	grid-template-rows: 2fr 1fr;
 	border: 2px solid var(--app-container-bg-primary);
@@ -22,12 +23,12 @@ const Card = ({ data }) => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper
-				whileTap = {{
-					x:0,
-					y:0,
-					scale:0.99
+				whileTap={{
+					x: 0,
+					y: 0,
+					scale: 0.99
 				}}
-				href={`${window.location.origin}/collectible/${data.id}`}
+				to={`/collectible/${data.id}`}
 			>
 				<CardMedia media={data.media} />
 				<CardInfo data={data} />

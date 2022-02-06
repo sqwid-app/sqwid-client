@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const Wrapper = styled.div`
 	position: relative;
@@ -27,20 +28,20 @@ const Wrapper = styled.div`
 	}
 `
 
-const Icon = styled(m.a)`
+const Icon = styled(m(Link))`
 	position:relative;
 	height: 1.5rem;
 	width: 1.5rem;
 	border-radius: 1000rem;
 	outline: 2.5px solid var(--app-background);
 	background-color: var(--app-background);
-	background-image: url('${props=>props.url&&props.url}');
+	background-image: url('${props => props.url && props.url}');
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
 	cursor: pointer;
 	&:before{
-		content:"${props=>props.tooltip?props.tooltip:``}";
+		content:"${props => props.tooltip ? props.tooltip : ``}";
 		position:absolute;
 		top: -150%;
 		left: 50%;
@@ -69,31 +70,31 @@ const Icon = styled(m.a)`
 
 const AnimatedIcons = (props) => {
 	return (
-	<Icon
-		whileTap={{
-			scale:0.95
-		}}
-		whileHover={{
-			x:0,
-			y: -5,
-			scale:1.05
-		}}
-		target="_blank"
-		rel="noreferrer"
-		{...props}
-	>
-		{props.children}
-	</Icon>)
+		<Icon
+			whileTap={{
+				scale: 0.95
+			}}
+			whileHover={{
+				x: 0,
+				y: -5,
+				scale: 1.05
+			}}
+			target="_blank"
+			rel="noreferrer"
+			{...props}
+		>
+			{props.children}
+		</Icon>)
 }
 
 const CardHeaderIcons = ({ data }) => {
-	const { owner,collection,creator } = data
+	const { owner, collection, creator } = data
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
-				<AnimatedIcons href={`${window.location.origin}/profile/${owner.id}`} url={owner.thumb} tooltip={`Owner: ${owner.name}`}/>
-				<AnimatedIcons href={`${window.location.origin}/profile/${creator.id}`} url={creator.thumb} tooltip={`Creator: ${creator.name}`}/>
-				<AnimatedIcons href={`${window.location.origin}/collections/${collection.id}`} url={collection.thumb} tooltip={`Collection: ${collection.name}`}/>
+				<AnimatedIcons to={`/profile/${owner.id}`} url={owner.thumb} tooltip={`Owner: ${owner.name}`} />
+				<AnimatedIcons to={`/profile/${creator.id}`} url={creator.thumb} tooltip={`Creator: ${creator.name}`} />
+				<AnimatedIcons to={`/collections/${collection.id}`} url={collection.thumb} tooltip={`Collection: ${collection.name}`} />
 			</Wrapper>
 		</LazyMotion>
 	)

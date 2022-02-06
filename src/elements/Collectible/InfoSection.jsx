@@ -4,6 +4,7 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { respondTo } from "@styles/styledMediaQuery";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -23,7 +24,7 @@ const Logo = styled.div`
 	width: 2rem;
 	border-radius: 1000rem;
 	border: 0.1rem solid var(--app-text);
-	background-image: url("${props=>props.url&&props.url}");
+	background-image: url("${props => props.url && props.url}");
 	background-size:cover;
 	background-repeat:no-repeat;
 	background-position: center;
@@ -68,7 +69,7 @@ const Content = styled.div`
 	}
 `
 
-const NotStyledLink = styled.a`
+const NotStyledLink = styled(Link)`
 	text-decoration: none;
 	color: inherit;
 	font-weight: 900;
@@ -122,14 +123,14 @@ const InfoSection = () => {
 						<Logo
 							url={getAvatarFromId(collectibleInfo.creator.id)}
 						/>
-						<NotStyledLink href={`${window.location.origin}/profile/${collectibleInfo.creator.id}`}><div>{collectibleInfo.creator.name}</div> <span> ({collectibleInfo.royalty}% royalty)</span></NotStyledLink>
+						<NotStyledLink to={`/profile/${collectibleInfo.creator.id}`}><div>{collectibleInfo.creator.name}</div> <span> ({collectibleInfo.royalty}% royalty)</span></NotStyledLink>
 					</Content>
 				</CreatorSection>
 				<CollectionSection>
 					<Heading>Collection</Heading>
 					<Content>
-						<Logo url={collectibleInfo.collection.cover}/>
-						<NotStyledLink href={`${window.location.origin}/collections/${collectibleInfo.collection.id}`}>{collectibleInfo.collection.name}</NotStyledLink>
+						<Logo url={collectibleInfo.collection.cover} />
+						<NotStyledLink to={`/collections/${collectibleInfo.collection.id}`}>{collectibleInfo.collection.name}</NotStyledLink>
 					</Content>
 				</CollectionSection>
 			</Group>
@@ -141,9 +142,9 @@ const InfoSection = () => {
 							url={getAvatarFromId(collectibleInfo.owners.current.id)}
 						/>
 						<TextGroup>
-							<NotStyledLink href={`${window.location.origin}/profile/${collectibleInfo.owners.current.id}`}><div>{collectibleInfo.owners.current.name}</div></NotStyledLink>
-							{(collectibleInfo.owners.total>1)&&(
-								<p>and {collectibleInfo.owners.total-1} other{!(collectibleInfo.owners.total-1===1)&&`s`}...</p>
+							<NotStyledLink to={`/profile/${collectibleInfo.owners.current.id}`}><div>{collectibleInfo.owners.current.name}</div></NotStyledLink>
+							{(collectibleInfo.owners.total > 1) && (
+								<p>and {collectibleInfo.owners.total - 1} other{!(collectibleInfo.owners.total - 1 === 1) && `s`}...</p>
 							)}
 							<h6>Owns {collectibleInfo.owners.current.quantity?.owns} of {collectibleInfo.owners.current.quantity?.total}</h6>
 						</TextGroup>

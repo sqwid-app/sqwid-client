@@ -13,6 +13,7 @@ import intervalToFormattedDuration from '@utils/intervalToFormattedDuration';
 import { convertREEFtoUSD } from '@utils/convertREEFtoUSD';
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { BidsModal, BuyModal, CreateAuctionModal, EnterRaffleModal, LendModal, PutOnSaleModal, RaffleModal } from './Modals';
+import { Link } from 'react-router-dom';
 
 /*
 	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/sections.png
@@ -140,7 +141,7 @@ const Content = styled.div`
 	}
 `
 
-const NotStyledLink = styled.a`
+const NotStyledLink = styled(Link)`
 	text-decoration: none;
 	color: inherit;
 	font-weight: 900;
@@ -299,7 +300,7 @@ const Funder = () => {
 				<Logo
 					url={getAvatarFromId(funder.id)}
 				/>
-				<NotStyledLink href={`${window.location.origin}/profile/${funder.id}`}><div>{funder.name}</div></NotStyledLink>
+				<NotStyledLink to={`/profile/${funder.id}`}><div>{funder.name}</div></NotStyledLink>
 			</Content>
 		</FunderSection>
 	)
