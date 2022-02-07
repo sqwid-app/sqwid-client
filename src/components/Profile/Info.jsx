@@ -6,8 +6,8 @@ import ProfileCard from "@elements/ProfileRedesign/ProfileCard";
 const Info = () => {
 	return (
 		<Wrapper>
-			<Background/>
-			<ProfileCard/>
+			<Background />
+			<ProfileCard />
 		</Wrapper>
 	)
 }

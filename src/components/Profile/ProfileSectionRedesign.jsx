@@ -75,22 +75,22 @@ const ProfileSection = () => {
 		name: "Info",
 		isActive: true,
 		title: "Profile",
-		component: <Info/>
+		component: <Info />
 	}, {
 		name: "Collections",
 		isActive: false,
 		title: "Collections",
-		component: <Collections/>
+		component: <Collections />
 	}, {
 		name: "Collected",
 		isActive: false,
 		title: "Collected",
-		component: <Collected/>
+		component: <Collected />
 	}, {
 		name: "Bids",
 		isActive: false,
 		title: "Bids",
-		component: <>hi3</>
+		component: <>Work in progress ⚒🚧</>
 	}])
 	const options = navRoutes.map(route => ({
 		label: route.name,
@@ -103,14 +103,14 @@ const ProfileSection = () => {
 				<Section>
 					<HeaderSection>
 						<Title>{navRoutes.find(item => item.isActive).title}</Title>
-						{isTabletOrMobile?(
+						{isTabletOrMobile ? (
 							<StyledSelect
 								options={options}
 								styles={styles}
 								isSearchable
 								defaultValue={options[0]}
 								placeholder="Select Route"
-								onChange={({value: item}) => {
+								onChange={({ value: item }) => {
 									if (!item.isActive) {
 										let newVal = [...navRoutes.map(a => ({ ...a, isActive: false }))]
 										newVal.find(e => e.name === item.name).isActive = true
@@ -118,7 +118,7 @@ const ProfileSection = () => {
 									}
 								}}
 							/>
-						):(
+						) : (
 							<Navbar>
 								{navRoutes.map((item, index) => (
 									<NavContent
