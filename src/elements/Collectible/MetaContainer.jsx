@@ -32,9 +32,9 @@ const MetaContainer = () => {
 
 	return (
 		<Container>
-			<Title>{collectibleInfo.title}</Title>
-			<label title={(collectibleInfo.description.length > 196) ? collectibleInfo.description : ""}>
-				<Description>{clamp(collectibleInfo.description, 196)}</Description>
+			<Title>{collectibleInfo.meta.name}</Title>
+			<label title={(collectibleInfo.meta.description.length > 196) ? collectibleInfo.meta.description : ""}>
+				<Description>{clamp(collectibleInfo.meta.description, 196)}</Description>
 			</label>
 		</Container>
 	)

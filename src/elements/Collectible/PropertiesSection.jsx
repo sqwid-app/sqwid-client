@@ -1,4 +1,4 @@
-import React,{ useContext } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { LazyMotion, domAnimation, m } from "framer-motion";
@@ -57,26 +57,26 @@ const PropertiesSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
 	return (
 		<>
-			{Object.keys(collectibleInfo.properties).length !== 0&&(
+			{Object.keys(collectibleInfo.meta.attributes).length !== 0 && (
 				<Wrapper>
 					<Heading>Properties</Heading>
 					<SimpleBarReact>
 						<Container>
-						<LazyMotion features={domAnimation}>
-							{collectibleInfo.properties.map(( item,index ) => (
+							<LazyMotion features={domAnimation}>
+								{collectibleInfo.meta.attributes.map((item, index) => (
 									<Property
 										whileHover={{
 											y: -5,
 											x: 0,
-											scale:1.02
+											scale: 1.02
 										}}
 										key={index}
 									>
-										<label title={item.key}><h3>{item.key}</h3></label>
+										<label title={item.key}><h3>{item.trait_type}</h3></label>
 										<label title={item.value}><p>{item.value}</p></label>
 									</Property>
-							))}
-						</LazyMotion>
+								))}
+							</LazyMotion>
 						</Container>
 					</SimpleBarReact>
 				</Wrapper>

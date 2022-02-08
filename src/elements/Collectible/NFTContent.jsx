@@ -4,6 +4,7 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { respondTo } from "@styles/styledMediaQuery";
 import Plyr from "plyr-react";
 import "@styles/plyr.css";
+import { getCloudflareURL } from "@utils/getIPFSURL";
 
 const Container = styled.div`
 	flex:1;
@@ -14,7 +15,7 @@ const Container = styled.div`
 
 const ImageContainer = styled.div`
 	height: 100%;
-	background-image: url(${props=>props.url&&props.url});
+	background-image: url(${props => props.url && props.url});
 	background-size:contain;
 	background-repeat:no-repeat;
 	background-position: center;
@@ -45,7 +46,7 @@ const Content = styled.div`
 const PlyrContainer = styled.div`
 	height: 100%;
 	.plyr{
-		height: ${props=>props.audio?`auto`:`100%`};
+		height: ${props => props.audio ? `auto` : `100%`};
 		border-radius: 0.25rem;
 		video{
 			max-height: 65vh;
@@ -56,11 +57,11 @@ const PlyrContainer = styled.div`
 			max-height: 100%;
 		}
 	}
-	${props=>props.audio&&center};
+	${props => props.audio && center};
 `
 
 const PlyrCover = styled.div`
-	background-image: url('${props=>props.src&&props.src}');
+	background-image: url('${props => props.src && props.src}');
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -92,9 +93,9 @@ const VideoContainer = React.memo(({ data }) => {
 		],
 	}
 	return (
-		<PlyrContainer audio={type==="audio"}>
+		<PlyrContainer audio={type === "audio"}>
 			<Content>
-				{type==="audio"&&<PlyrCover src={data.cover}/>}
+				{type === "audio" && <PlyrCover src={data.cover} />}
 				<Plyr
 					source={settings}
 					options={options}
@@ -124,13 +125,13 @@ const NFTContent = () => {
 	*/
 	return (
 		<Container>
-			{collectibleInfo.media?.type.startsWith("image")?(
-				<label title={collectibleInfo.title}>
-					<ImageContainer url={collectibleInfo.media.url}/>
+			{collectibleInfo.meta?.mimetype.startsWith("image") ? (
+				<label title={collectibleInfo.meta.name}>
+					<ImageContainer url={getCloudflareURL(collectibleInfo.meta.media)} />
 				</label>
-			):(
+			) : (
 				<>
-					<VideoContainer data={collectibleInfo.media}/>
+					<VideoContainer data={collectibleInfo.meta.media} />
 				</>
 			)}
 		</Container>

@@ -3,6 +3,7 @@ import AuthContext from "@contexts/Auth/AuthContext";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { respondTo } from "@styles/styledMediaQuery";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
+import { getCloudflareURL } from "@utils/getIPFSURL";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -121,15 +122,17 @@ const InfoSection = () => {
 					<Heading>Creator</Heading>
 					<Content>
 						<Logo
-							url={getAvatarFromId(collectibleInfo.creator.id)}
+							url={getAvatarFromId(collectibleInfo.creator.address)}
 						/>
-						<NotStyledLink to={`/profile/${collectibleInfo.creator.id}`}><div>{collectibleInfo.creator.name}</div> <span> ({collectibleInfo.royalty}% royalty)</span></NotStyledLink>
+						<NotStyledLink to={`/profile/${collectibleInfo.creator.address}`}><div>{collectibleInfo.creator.name}</div>
+							{/* <span> ({collectibleInfo.royalty}% royalty)</span> */}
+						</NotStyledLink>
 					</Content>
 				</CreatorSection>
 				<CollectionSection>
 					<Heading>Collection</Heading>
 					<Content>
-						<Logo url={collectibleInfo.collection.cover} />
+						<Logo url={getCloudflareURL(collectibleInfo.collection.image)} />
 						<NotStyledLink to={`/collections/${collectibleInfo.collection.id}`}>{collectibleInfo.collection.name}</NotStyledLink>
 					</Content>
 				</CollectionSection>
@@ -139,14 +142,17 @@ const InfoSection = () => {
 					<Heading>Owner</Heading>
 					<Content>
 						<Logo
-							url={getAvatarFromId(collectibleInfo.owners.current.id)}
+							url={getAvatarFromId(collectibleInfo.owner.address)}
 						/>
 						<TextGroup>
-							<NotStyledLink to={`/profile/${collectibleInfo.owners.current.id}`}><div>{collectibleInfo.owners.current.name}</div></NotStyledLink>
-							{(collectibleInfo.owners.total > 1) && (
+							<NotStyledLink to={`/profile/${collectibleInfo.owner.address}`}><div>{collectibleInfo.owner.name}</div></NotStyledLink>
+							{/*
+								add this back when we have a way to get the owner's quantity
+							*/}
+							{/* {(collectibleInfo.owners.total > 1) && (
 								<p>and {collectibleInfo.owners.total - 1} other{!(collectibleInfo.owners.total - 1 === 1) && `s`}...</p>
 							)}
-							<h6>Owns {collectibleInfo.owners.current.quantity?.owns} of {collectibleInfo.owners.current.quantity?.total}</h6>
+							<h6>Owns {collectibleInfo.owner.quantity?.owns} of {collectibleInfo.owner.quantity?.total}</h6> */}
 						</TextGroup>
 					</Content>
 				</OwnerSection>

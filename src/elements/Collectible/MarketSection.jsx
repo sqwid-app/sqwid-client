@@ -14,6 +14,7 @@ import { convertREEFtoUSD } from '@utils/convertREEFtoUSD';
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { BidsModal, BuyModal, CreateAuctionModal, EnterRaffleModal, LendModal, PutOnSaleModal, RaffleModal } from './Modals';
 import { Link } from 'react-router-dom';
+import AuthContext from '@contexts/Auth/AuthContext';
 
 /*
 	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/sections.png
@@ -117,7 +118,7 @@ const TopSection = styled.div`
 	display: flex;
 	align-items:center;
 	justify-content:space-between;
-	margin-top: 0.5rem;
+	margin-top: 1rem;
 `
 
 const Content = styled.div`
@@ -176,6 +177,7 @@ const FunderSection = styled.div`
 const Title = styled.h2`
 	font-size: 1.75rem;
 	font-weight: 900;
+	margin-top: 0.75rem;
 	margin-bottom: 0.25rem;
 `
 
@@ -196,16 +198,17 @@ const AnimBtn = ({ children, ...props }) => (
 
 const CurrentPrice = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
-	const [usdPrice, setUsdPrice] = useState(collectibleInfo.priceInUSD.toFixed(2));
+	const price = collectibleInfo.sale.price / (10 ** 18)
+	const [usdPrice, setUsdPrice] = useState((price * collectibleInfo.conversionRate).toFixed(2));
 	useEffect(() => {
-		setUsdPrice(collectibleInfo.priceInUSD.toFixed(2));
+		setUsdPrice((price * collectibleInfo.conversionRate).toFixed(2));
 		//eslint-disable-next-line
-	}, [collectibleInfo.price])
+	}, [collectibleInfo.conversionRate])
 	return (
 		<Price>
 			<ReefIcon />
 			<p>
-				<label title={numberSeparator(collectibleInfo.price)}>{numberSeparator(collectibleInfo.price)}</label>
+				<label title={numberSeparator(price.toString())}>{numberSeparator(price.toString())}</label>
 				<span>(${usdPrice})</span>
 			</p>
 		</Price>
@@ -733,19 +736,22 @@ const getComponent = (market) => {
 
 const MarketSection = () => {
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext)
+	const { auth } = useContext(AuthContext)
 	const { market } = collectibleInfo
 	useEffect(() => {
 		/*
 			for debugging purpose
 			should come from backend in the future
 			REMEMBER TO PASS ACTIVE USER AS A UHHH DEPENDENCY FOR THE USEEFFECT OTHERWISE IT WILL NOT
-			REFRESH THE CONFIG ONCE THE USE LOGS OUT
+			REFRESH THE CONFIG ONCE THE USER LOGS OUT
+
+			Thank you past semolini, very cool!
 		*/
 		let updatedInfo = {
 			...collectibleInfo,
 			market: {
-				state: 2,
-				owned: false,
+				state: collectibleInfo.state,
+				owned: auth?.evmAddress === collectibleInfo.owner.address,
 				active: true, // only for auctions, raffles, loans (dictated by deadline)
 				highestBidder: true, // only for auctions
 				funded: true, // only for loans
@@ -754,7 +760,7 @@ const MarketSection = () => {
 		}
 		setCollectibleInfo(updatedInfo)
 		//eslint-disable-next-line
-	}, []);
+	}, [auth]);
 	return (
 		<LazyMotion features={domAnimation}>
 			{getComponent(market)}

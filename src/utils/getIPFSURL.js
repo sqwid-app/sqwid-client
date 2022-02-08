@@ -1,4 +1,4 @@
-export const getCloudflareURL = (url) => `https://cloudflare-ipfs.com/ipfs/${url.slice(7)}`;
+export const getCloudflareURL = (url) => `https://cloudflare-ipfs.com/ipfs/${url.replace("ipfs://", "")}`;
 
 export const getDwebURL = (url) => {
 	let [randomAssString, filename] = url.slice(7).split("/")
