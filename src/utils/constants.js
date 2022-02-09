@@ -4,7 +4,7 @@ const constants = {
 	APP_WEBSITE: "https://sqwid.app",
 	STATE_TYPES: [
 		"Available",
-		"Regular Sale",
+		"Sale",
 		"Auction",
 		"Raffle",
 		"Loan",

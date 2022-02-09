@@ -3,21 +3,36 @@ import { clamp } from "@utils/textUtils";
 import React, { useContext } from "react";
 import styled from "styled-components";
 
-const Container = styled.div``
-
-const Title = styled.h1`
-	font-weight: 900;
-	font-size: 2.5rem;
+const Container = styled.div`
 	width: 100%;
+`
+
+const TitleContainer = styled.div`
+	display: flex;
+	align-items:center;
+	gap: 1rem;
 	label{
 		word-break: break-all;
 	}
 	span{
 		display: inline-block;
-		vertical-align: baseline;
-		font-size: 2rem;
+		font-weight: 900;
+		font-size: 1.5rem;
 		color: var(--app-container-text-primary);
+		&.cross{
+			padding: 0 1rem;
+		}
 	}
+`
+
+const Title = styled.h1`
+	font-weight: 900;
+	font-size: 2.5rem;
+	max-width: 45rem;
+	word-break: break-word;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 `
 
 const Description = styled.h3`
@@ -32,7 +47,7 @@ const MetaContainer = () => {
 
 	return (
 		<Container>
-			<Title>{collectibleInfo.meta.name}</Title>
+			<TitleContainer><Title title={collectibleInfo.meta.name}>{collectibleInfo.meta.name}</Title><span>×</span><span>{collectibleInfo.amount}</span></TitleContainer>
 			<label title={(collectibleInfo.meta.description.length > 196) ? collectibleInfo.meta.description : ""}>
 				<Description>{clamp(collectibleInfo.meta.description, 196)}</Description>
 			</label>
