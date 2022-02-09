@@ -782,7 +782,7 @@ const MarketSection = () => {
 			market: {
 				state: collectibleInfo.state,
 				owned: auth?.evmAddress === collectibleInfo.owner.address,
-				active: (stateInfo && stateInfo.deadline) ? Date.now() < stateInfo.deadline : false, // only for auctions, raffles, loans (dictated by deadline)
+				active: (stateInfo && stateInfo.deadline) ? Date.now() < stateInfo.deadline * 1000 : false, // only for auctions, raffles, loans (dictated by deadline)
 				highestBidder: stateInfo ? auth?.evmAddress === stateInfo.highestBidder?.address : false, // only for auctions
 				funded: stateInfo ? Number(stateInfo.lender?.address) !== 0 : false, // only for loans
 				funder: stateInfo ? auth?.evmAddress === stateInfo.lender?.address : false // only for loans
