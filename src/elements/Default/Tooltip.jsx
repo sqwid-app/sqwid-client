@@ -84,7 +84,7 @@ const TooltipContainerCustom = styled.div`
 			position:absolute;
 			bottom: calc(100% + 0.375rem);
 			width: max-content;
-			max-width:20rem;
+			max-width:15rem;
     		white-space: break-spaces;
 			transform: scale(0);
 			opacity: 0;

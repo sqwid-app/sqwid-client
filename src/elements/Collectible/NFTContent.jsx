@@ -4,7 +4,7 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { respondTo } from "@styles/styledMediaQuery";
 import Plyr from "plyr-react";
 import "@styles/plyr.css";
-import { getCloudflareURL } from "@utils/getIPFSURL";
+import { getCloudflareURL, getDwebURL } from "@utils/getIPFSURL";
 
 const Container = styled.div`
 	flex:1;
@@ -45,6 +45,8 @@ const Content = styled.div`
 
 const PlyrContainer = styled.div`
 	height: 100%;
+	display: grid;
+    place-items: center;
 	.plyr{
 		height: ${props => props.audio ? `auto` : `100%`};
 		border-radius: 0.25rem;
@@ -74,11 +76,11 @@ const PlyrCover = styled.div`
 `
 
 const VideoContainer = React.memo(({ data }) => {
-	let type = data.type.split("/")[0];
+	let type = data.mimetype.split("/")[0];
 	const settings = {
 		type: type,
 		sources: [{
-			src: data.url
+			src: getDwebURL(data.media)
 		}]
 	}
 	const options = {
@@ -95,7 +97,7 @@ const VideoContainer = React.memo(({ data }) => {
 	return (
 		<PlyrContainer audio={type === "audio"}>
 			<Content>
-				{type === "audio" && <PlyrCover src={data.cover} />}
+				{type === "audio" && <PlyrCover src={getCloudflareURL(data.image)} />}
 				<Plyr
 					source={settings}
 					options={options}
@@ -131,7 +133,7 @@ const NFTContent = () => {
 				</label>
 			) : (
 				<>
-					<VideoContainer data={collectibleInfo.meta.media} />
+					<VideoContainer data={collectibleInfo.meta} />
 				</>
 			)}
 		</Container>

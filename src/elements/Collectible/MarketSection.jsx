@@ -10,11 +10,12 @@ import { TooltipCustom } from '@elements/Default/Tooltip';
 import { capitalize } from '@utils/textUtils';
 import { respondTo } from "@styles/styledMediaQuery";
 import intervalToFormattedDuration from '@utils/intervalToFormattedDuration';
-import { convertREEFtoUSD } from '@utils/convertREEFtoUSD';
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { BidsModal, BuyModal, CreateAuctionModal, EnterRaffleModal, LendModal, PutOnSaleModal, RaffleModal } from './Modals';
 import { Link } from 'react-router-dom';
 import AuthContext from '@contexts/Auth/AuthContext';
+import constants from "@utils/constants";
+import { formatReefPrice } from '@utils/formatReefPrice';
 
 /*
 	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/sections.png
@@ -59,6 +60,9 @@ const Heading = styled.h3`
     color: var(--app-container-text-primary-hover);
     font-size: 1rem;
 	margin-bottom: 0.375rem;
+	${props => props.align === "right" && css`
+		text-align: right;
+	`}
 `
 
 const Price = styled.p`
@@ -82,11 +86,14 @@ const Price = styled.p`
 	}
 `
 
-const Payback = styled.p`
+const PriceContainer = styled.p`
 	font-weight: 900;
 	font-size: 1.25rem;
 	display: flex;
 	align-items:flex-end;
+	${props => props.align === "right" && css`
+		justify-content: flex-end;
+	`}
 	label{
 		vertical-align:middle;
 		max-width: 20rem;
@@ -107,6 +114,11 @@ const BottomWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	.unavailable{
+		color: var(--app-container-text-primary);
+		font-weight: 900;
+		font-size: 1rem;
+	}
 `
 
 const TimeText = styled.span`
@@ -198,7 +210,8 @@ const AnimBtn = ({ children, ...props }) => (
 
 const CurrentPrice = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
-	const price = collectibleInfo.sale.price / (10 ** 18)
+	const stateInfo = useStateInfo()
+	const price = formatReefPrice(stateInfo.price || stateInfo.loanAmount)
 	const [usdPrice, setUsdPrice] = useState((price * collectibleInfo.conversionRate).toFixed(2));
 	useEffect(() => {
 		setUsdPrice((price * collectibleInfo.conversionRate).toFixed(2));
@@ -215,39 +228,65 @@ const CurrentPrice = () => {
 	)
 }
 
+
+// Hook to fetch all info about the current state from CollectibleContext
+const useStateInfo = () => {
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const getCurrentState = () => constants.STATE_TYPES_KEYS.filter(el =>
+		collectibleInfo[el] !== null
+	)
+	const [currentState, setCurrentState] = useState(getCurrentState())
+	useEffect(() => {
+		setCurrentState(getCurrentState())
+		//eslint-disable-next-line
+	}, [collectibleInfo])
+	return (currentState.length === 1) ? collectibleInfo[currentState[0]] : null
+}
+
 const Deadline = () => {
-	const deadline = 1643836298054
+	const stateInfo = useStateInfo()
+	const deadline = stateInfo.deadline * 1000 //converting deadline from s to ms
+	// const deadline = 1643836298054
 	return (
 		<div>
 			<Heading>Deadline</Heading>
-			<p>
-				<TooltipCustom base={<TimeText>{formatDistance(new Date(deadline), new Date(), { addSuffix: true })}</TimeText>}>
-					{capitalize(formatRelative(new Date(deadline), new Date()))}<br />
-					({format(new Date(deadline), "EEEE, LLLL d, uuuu h:mm a")})
-				</TooltipCustom>
-			</p>
+			{stateInfo.deadline === 0 ? <p className="unavailable">Not set</p> : (
+				<p>
+					<TooltipCustom base={<TimeText>{formatDistance(new Date(deadline), new Date(), { addSuffix: true })}</TimeText>}>
+						{capitalize(formatRelative(new Date(deadline), new Date()))}<br />
+						({format(new Date(deadline), "EEEE, LLLL d, uuuu h:mm a")})
+					</TooltipCustom>
+				</p>
+			)}
 		</div>
 	)
 }
 
 const MinimumBid = () => {
-	const minBid = 100
+	const stateInfo = useStateInfo()
 	return (
 		<div>
 			<Heading>Minimum Bid</Heading>
-			<p>{minBid}</p>
+			<PriceContainer>
+				<ReefIcon size={28} />
+				<p>{formatReefPrice(stateInfo.minBid)}</p>
+			</PriceContainer>
 		</div>
 	)
 }
 
 const HighestBid = () => {
-	const highestBid = 1643836298054
+	const stateInfo = useStateInfo()
+	const highestBid = stateInfo.highestBid
 	return (
 		<>
-			{highestBid !== 0 && (
+			{highestBid === 0 && (
 				<div>
-					<Heading>Highest Bid</Heading>
-					<p>{highestBid}</p>
+					<Heading align="right">Highest Bid</Heading>
+					<PriceContainer align="right">
+						<ReefIcon size={28} />
+						<p>{formatReefPrice(highestBid)}</p>
+					</PriceContainer>
 				</div>
 			)}
 		</>
@@ -255,7 +294,8 @@ const HighestBid = () => {
 }
 
 const TimePeriod = () => {
-	const interval = 150;
+	const stateInfo = useStateInfo()
+	const interval = stateInfo.numMinutes
 	return (
 		<div>
 			<Heading>Time Period</Heading>
@@ -267,43 +307,38 @@ const TimePeriod = () => {
 }
 
 const PaybackFee = () => {
-	const [usdValue, setUsdValue] = useState(null);
-	const minBid = "100"
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const stateInfo = useStateInfo()
+	const paybackFee = formatReefPrice(stateInfo.feeAmount)
+	const [usdPrice, setUsdPrice] = useState((paybackFee * collectibleInfo.conversionRate).toFixed(2));
 	useEffect(() => {
-		const getData = async () => {
-			const value = await convertREEFtoUSD(minBid);
-			value && setUsdValue(value)
-		}
-		getData()
+		setUsdPrice((paybackFee * collectibleInfo.conversionRate).toFixed(2));
 		//eslint-disable-next-line
-	}, [])
+	}, [collectibleInfo.conversionRate])
 	return (
 		<div>
 			<Heading>Payback Fee</Heading>
-			<Payback>
+			<PriceContainer>
 				<ReefIcon size={28} />
 				<p>
-					<label title={numberSeparator(minBid)}>{numberSeparator(minBid)}</label>
-					{usdValue && (<span>(${usdValue.toFixed(2)})</span>)}
+					<label title={numberSeparator(paybackFee.toString())}>{numberSeparator(paybackFee.toString())}</label>
+					{usdPrice && (<span>(${usdPrice})</span>)}
 				</p>
-			</Payback>
+			</PriceContainer>
 		</div>
 	)
 }
 
 const Funder = () => {
-	const funder = {
-		id: "0x0",
-		name: "Andi",
-	}
+	const stateInfo = useStateInfo()
 	return (
 		<FunderSection>
 			<Heading>Funder</Heading>
 			<Content>
 				<Logo
-					url={getAvatarFromId(funder.id)}
+					url={getAvatarFromId(stateInfo.lender.address)}
 				/>
-				<NotStyledLink to={`/profile/${funder.id}`}><div>{funder.name}</div></NotStyledLink>
+				<NotStyledLink to={`/profile/${stateInfo.lender.address}`}><div>{stateInfo.lender.name}</div></NotStyledLink>
 			</Content>
 		</FunderSection>
 	)
@@ -316,13 +351,7 @@ const ConfigWrapper = ({ children, state }) => {
 			{!isEmpty ? (
 				<>
 					<Title>
-						{[
-							"Available",
-							"Regular Sale",
-							"Auction",
-							"Raffle",
-							"Loan",
-						][state]}
+						{constants.STATE_TYPES[state]}
 					</Title>
 					{children}
 				</>
@@ -738,6 +767,7 @@ const MarketSection = () => {
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext)
 	const { auth } = useContext(AuthContext)
 	const { market } = collectibleInfo
+	const stateInfo = useStateInfo()
 	useEffect(() => {
 		/*
 			for debugging purpose
@@ -752,10 +782,10 @@ const MarketSection = () => {
 			market: {
 				state: collectibleInfo.state,
 				owned: auth?.evmAddress === collectibleInfo.owner.address,
-				active: true, // only for auctions, raffles, loans (dictated by deadline)
-				highestBidder: true, // only for auctions
-				funded: true, // only for loans
-				funder: true, // only for loans
+				active: (stateInfo && stateInfo.deadline) ? Date.now() < stateInfo.deadline : false, // only for auctions, raffles, loans (dictated by deadline)
+				highestBidder: stateInfo ? auth?.evmAddress === stateInfo.highestBidder?.address : false, // only for auctions
+				funded: stateInfo ? Number(stateInfo.lender?.address) !== 0 : false, // only for loans
+				funder: stateInfo ? auth?.evmAddress === stateInfo.lender?.address : false // only for loans
 			}
 		}
 		setCollectibleInfo(updatedInfo)

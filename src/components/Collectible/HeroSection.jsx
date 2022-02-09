@@ -72,7 +72,7 @@ const HeroSection = () => {
 		// Axios request goes here ebin...
 		const getData = async () => {
 			const { data } = await axios.get(`${getBackend()}/get/marketplace/position/${addr}`)
-			if (data) {
+			if (data && !data.error) {
 				let conversionRate = null;
 				try {
 					let res = await axios('https://api.coingecko.com/api/v3/simple/price?ids=reef-finance&vs_currencies=usd');

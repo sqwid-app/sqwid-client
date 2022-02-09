@@ -8,6 +8,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { css } from "styled-components";
 
 const Group = styled.div`
 	display: flex;
@@ -47,6 +48,9 @@ const Heading = styled.h3`
 	color: var(--app-container-text-primary-hover);
 	font-size: 1rem;
 	margin-bottom: 0.375rem;
+	${props => props.align === "right" && css`
+		text-align: right;
+	`}
 `
 
 const Content = styled.div`
@@ -130,7 +134,7 @@ const InfoSection = () => {
 					</Content>
 				</CreatorSection>
 				<CollectionSection>
-					<Heading>Collection</Heading>
+					<Heading align="right">Collection</Heading>
 					<Content>
 						<Logo url={getCloudflareURL(collectibleInfo.collection.image)} />
 						<NotStyledLink to={`/collections/${collectibleInfo.collection.id}`}>{collectibleInfo.collection.name}</NotStyledLink>
