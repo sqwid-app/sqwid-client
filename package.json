@@ -1,6 +1,6 @@
 {
 	"name": "sqwid-client",
-	"version": "0.2.8",
+	"version": "0.2.9",
 	"private": true,
 	"dependencies": {
 		"@polkadot/extension-dapp": "^0.40.3",
