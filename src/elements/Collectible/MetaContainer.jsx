@@ -8,9 +8,6 @@ const Container = styled.div`
 `
 
 const TitleContainer = styled.div`
-	display: flex;
-	align-items:center;
-	gap: 1rem;
 	label{
 		word-break: break-all;
 	}
@@ -18,6 +15,7 @@ const TitleContainer = styled.div`
 		display: inline-block;
 		font-weight: 900;
 		font-size: 1.5rem;
+		margin-left: 1rem;
 		color: var(--app-container-text-primary);
 		&.cross{
 			padding: 0 1rem;
@@ -47,7 +45,7 @@ const MetaContainer = () => {
 
 	return (
 		<Container>
-			<TitleContainer><Title title={collectibleInfo.meta.name}>{collectibleInfo.meta.name}</Title><span>×</span><span>{collectibleInfo.amount}</span></TitleContainer>
+			<TitleContainer><Title title={collectibleInfo.meta.name}>{collectibleInfo.meta.name}<span>×{collectibleInfo.amount}</span></Title></TitleContainer>
 			<label title={(collectibleInfo.meta.description.length > 196) ? collectibleInfo.meta.description : ""}>
 				<Description>{clamp(collectibleInfo.meta.description, 196)}</Description>
 			</label>
