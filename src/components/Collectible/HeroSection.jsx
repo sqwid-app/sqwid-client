@@ -39,11 +39,12 @@ const LoadingContainer = styled.div`
 const MetaTags = () => {
 	const { collectibleInfo } = useContext(CollectibleContext);
 	// console.log(collectibleInfo)
-	const title = `${collectibleInfo.title} | ${constants.APP_NAME}`
-	const description = collectibleInfo.description
-	const image = collectibleInfo.meta.url
+	const title = `${collectibleInfo.meta.name} | ${constants.APP_NAME}`
+	const description = collectibleInfo.meta.description
+	const image = collectibleInfo.meta.image
 	return (
 		<Helmet>
+			<title>{title}</title>
 			<meta name="title" content={title} />
 			<meta name="description" content={description} />
 
