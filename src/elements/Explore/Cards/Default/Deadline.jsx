@@ -4,7 +4,7 @@ import Countdown, { zeroPad } from "react-countdown";
 
 const TimeCard = styled.div`
 	color: var(--app-text);
-	background: var(--app-background);
+	background: var(--app-background-transparent);
 	font-size: 1rem;
 	font-weight: 900;
 	text-align: center;

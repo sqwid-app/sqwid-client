@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CardSectionContainer from "@elements/Default/CardSectionContainer";
 import ChevronRight from "@static/svg/ChevronRight";
 import { NavLink } from "react-router-dom";
-const Card = React.lazy(() => import("@elements/Default/Card"));
+const RaffleCard = React.lazy(() => import("@elements/Explore/Cards/Raffle/RaffleCard"));
 
 const Container = styled.div`
 	width: 100%;
@@ -45,7 +45,7 @@ const RaffleSection = ({ items }) => {
 			<CardSectionContainer>
 				<Suspense>
 					{items.map((item, index) => (
-						<Card
+						<RaffleCard
 							key={index}
 							data={item}
 						/>

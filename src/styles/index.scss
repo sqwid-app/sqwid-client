@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap");
 
-:root{
+:root {
 	/*
 		app config
 	*/
 	--app-background: hsl(230, 36%, 4%);
+	--app-background-transparent: hsla(230, 36%, 4%, 85%);
 	--app-text: hsl(0, 0%, 100%);
 	--app-theme-primary: rgb(13, 104, 216);
 	--app-theme-primary-transparent: rgba(13, 104, 216, 0.5);
@@ -14,9 +15,10 @@
 	--app-container-text-primary-hover: hsl(240, 6%, 75%);
 	--app-container-bg-secondary: hsl(236deg 10% 23%);
 	--app-container-check: #0dbe00;
-	--app-modal-btn-primary:hsl(225, 14%, 9%);
-	--font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-	--easing:cubic-bezier(0.83, 0, 0.17, 1);
+	--app-modal-btn-primary: hsl(225, 14%, 9%);
+	--font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana,
+		sans-serif;
+	--easing: cubic-bezier(0.83, 0, 0.17, 1);
 	/*
 		plyr config
 	*/
@@ -33,7 +35,7 @@
 	*/
 	--tooltip-background: var(--app-container-bg-primary);
 	--tooltip-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-	rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+		rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 	/*
 		progress bar config
 	*/
@@ -49,7 +51,8 @@
 	color: var(--app-container-bg-primary);
 }
 
-html, body{
+html,
+body {
 	font-family: var(--font-family);
 	font-weight: 500;
 	background: var(--app-background);
@@ -58,7 +61,7 @@ html, body{
 	text-rendering: optimizeLegibility;
 }
 
-*{
+* {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;

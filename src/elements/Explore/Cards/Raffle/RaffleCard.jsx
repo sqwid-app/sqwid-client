@@ -4,8 +4,11 @@ import CardInfo from "./CardInfo";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import { Link } from "react-router-dom";
 import CardMedia from "@elements/Explore/Cards/Default/CardMedia";
+import Deadline from "@elements/Explore/Cards/Default/Deadline";
+import { format } from "date-fns";
 
 const Wrapper = styled(m(Link))`
+	position: relative;
 	display: grid;
 	grid-template-rows: 2fr 1fr;
 	border: 2px solid var(--app-container-bg-primary);
@@ -19,7 +22,17 @@ const Wrapper = styled(m(Link))`
 	color: var(--app-text);
 `
 
-const SalesCard = ({ data }) => {
+const DeadlineContainer = styled.div`
+	position:absolute;
+	z-index: 1;
+	top:0;
+	left:50%;
+	margin-top: 0.5rem;
+	transform:translateX(-50%);
+`
+
+const RaffleCard = ({ data }) => {
+	const formattedDeadline = data.raffle && format(new Date(data.raffle?.deadline), "EEEE, LLLL d, uuuu h:mm a")
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper
@@ -30,11 +43,12 @@ const SalesCard = ({ data }) => {
 				}}
 				to={`/collectible/${data.positionId}`}
 			>
-				<CardMedia meta={data.meta} />
+				<DeadlineContainer title={`Deadline: ${formattedDeadline}`}><Deadline time={data.raffle?.deadline} /></DeadlineContainer>
+				<CardMedia meta={data.meta} deadline={data.raffle?.deadline} />
 				<CardInfo data={data} />
 			</Wrapper>
 		</LazyMotion>
 	)
 }
 
-export default SalesCard
+export default RaffleCard

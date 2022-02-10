@@ -7,7 +7,6 @@ import LoadingIcon from "@static/svg/LoadingIcon";
 import { fetchMarketplaceItems } from "@utils/marketplace";
 import OnSaleSection from "@elements/Explore/Sections/OnSaleSection";
 import AuctionSection from "@elements/Explore/Sections/AuctionSection";
-//eslint-disable-next-line
 import RaffleSection from "@elements/Explore/Sections/RaffleSection";
 //eslint-disable-next-line
 import LoansSection from "@elements/Explore/Sections/LoansSection";
@@ -39,7 +38,6 @@ const MainPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [onSale, setOnSale] = useState([]);
 	const [auctions, setAuctions] = useState([]);
-	//eslint-disable-next-line
 	const [raffles, setRaffles] = useState([]);
 	//eslint-disable-next-line
 	const [loans, setLoans] = useState([]);
@@ -65,8 +63,8 @@ const MainPage = () => {
 				<Wrapper>
 					<OnSaleSection items={onSale} />
 					<AuctionSection items={auctions} />
-					{/* <RaffleSection items={raffles} />
-					<LoansSection items={loans} /> */}
+					<RaffleSection items={raffles} />
+					{/* <LoansSection items={loans} /> */}
 				</Wrapper>
 			)}
 		</>

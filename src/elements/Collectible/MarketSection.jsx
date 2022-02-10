@@ -269,7 +269,7 @@ const MinimumBid = () => {
 			<Heading>Minimum Bid</Heading>
 			<PriceContainer>
 				<ReefIcon size={28} />
-				<p>{formatReefPrice(stateInfo.minBid)}</p>
+				<p>{numberSeparator(formatReefPrice(stateInfo.minBid))}</p>
 			</PriceContainer>
 		</div>
 	)
@@ -280,12 +280,12 @@ const HighestBid = () => {
 	const highestBid = stateInfo.highestBid
 	return (
 		<>
-			{highestBid === 0 && (
+			{highestBid !== 0 && (
 				<div>
 					<Heading align="right">Highest Bid</Heading>
 					<PriceContainer align="right">
 						<ReefIcon size={28} />
-						<p>{formatReefPrice(highestBid)}</p>
+						<p>{numberSeparator(formatReefPrice(highestBid))}</p>
 					</PriceContainer>
 				</div>
 			)}

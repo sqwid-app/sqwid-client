@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CardInfo from "./CardInfo";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import { Link } from "react-router-dom";
-import CardMedia from "@elements/Explore/Cards/Sales/CardMedia";
+import CardMedia from "@elements/Explore/Cards/Default/CardMedia";
 import Deadline from "@elements/Explore/Cards/Default/Deadline";
 import { format } from "date-fns";
 
