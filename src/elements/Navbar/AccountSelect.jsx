@@ -87,7 +87,7 @@ const Modal = styled.div`
 	padding-top: 1.5rem;
 	background:var(--app-container-bg-primary);
 	border-radius: 0.5rem;
-	z-index:3;
+	z-index:100;
 	min-width: 14rem;
 	display: flex;
 	flex-direction: column;

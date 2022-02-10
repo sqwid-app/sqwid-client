@@ -21,10 +21,10 @@ const Nav = styled.nav`
 	font-weight: 700;
 	font-size: 1.25rem;
 	padding: 2.5rem 3.75rem;
-	backdrop-filter: ${props=>props.blur?`blur(5px) brightness(0.25)`:`none`};
-	z-index: 10;
+	backdrop-filter: ${props => props.blur ? `blur(5px) brightness(0.25)` : `none`};
+	z-index: 100;
 	top:0;
-	border-bottom: ${props=>props.blur?`1px`:`0`} solid var(--app-container-bg-primary);
+	border-bottom: ${props => props.blur ? `1px` : `0`} solid var(--app-container-bg-primary);
 	transition: backdrop-filter 0.2s linear, border-bottom 0.2s linear;
 	${respondTo.md`
 		padding: 1.25rem 1.5rem;
@@ -73,21 +73,21 @@ const Navbar = () => {
 	return (
 		<Nav blur={!isAtTop}>
 			<LogoContainer href="/" ref={logoRef} className="animate-icon">
-				<LogoIcon/>
+				<LogoIcon />
 				<span>{constants.APP_NAME}</span>
 			</LogoContainer>
 			<ContentContainer>
-				{!isTabletOrMobile?(
+				{!isTabletOrMobile ? (
 					<>
-						<LinkGroups/>
-						<Divider/>
+						<LinkGroups />
+						<Divider />
 						{/* <Search/> */}
-						<SignInBtn/>
+						<SignInBtn />
 					</>
-				):(
+				) : (
 					<>
-					<MenuToggle isOpen={isOpen} toggleOpen={toggleOpen}/>
-					<Navigation isOpen={isOpen}/>
+						<MenuToggle isOpen={isOpen} toggleOpen={toggleOpen} />
+						<Navigation isOpen={isOpen} />
 					</>
 				)}
 			</ContentContainer>
