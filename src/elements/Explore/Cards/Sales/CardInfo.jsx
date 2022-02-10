@@ -2,7 +2,7 @@ import ReefIcon from "@static/svg/ReefIcon";
 import { numberSeparator } from "@utils/numberSeparator";
 import React from "react";
 import styled from "styled-components";
-import CardHeaderIcons from "@elements/Explore/Cards/Sales/CardHeaderIcons";
+import CardHeaderIcons from "@elements/Explore/Cards/Default/CardHeaderIcons";
 import { formatReefPrice } from "@utils/formatReefPrice";
 
 const Wrapper = styled.div`

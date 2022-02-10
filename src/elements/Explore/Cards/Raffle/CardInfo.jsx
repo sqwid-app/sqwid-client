@@ -2,7 +2,7 @@ import ReefIcon from "@static/svg/ReefIcon";
 import { numberSeparator } from "@utils/numberSeparator";
 import React from "react";
 import styled from "styled-components";
-import CardHeaderIcons from "@elements/Explore/Cards/Sales/CardHeaderIcons";
+import CardHeaderIcons from "@elements/Explore/Cards/Default/CardHeaderIcons";
 import { formatReefPrice } from "@utils/formatReefPrice";
 import GroupIcon from "@static/svg/GroupIcon";
 import { TooltipHeader } from "@elements/Default/Tooltip";
@@ -38,7 +38,7 @@ const Title = styled.h2`
 const TotalAddresses = styled.div`
 	position: relative;
 	font-weight: 900;
-	font-size: 1.25rem;
+	font-size: 1.125rem;
 	color: var(--app-container-text-primary-hover);
 	cursor: pointer;
 	max-width: 8rem;

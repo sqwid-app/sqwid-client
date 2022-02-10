@@ -63,11 +63,11 @@ const Navbar = () => {
 	const isTabletOrMobile = useIsTabletOrMobile();
 	const [isOpen, toggleOpen] = useCycle(false, true);
 	const logoRef = useRef();
-	const limit = 20;
+	const offsetLimit = 20;
 	useEffect(() => {
 		window.onscroll = () => {
 			isAtTop === true && setIsAtTop(false);
-			(window.pageYOffset <= limit) && setIsAtTop(true);
+			(window.pageYOffset <= offsetLimit) && setIsAtTop(true);
 		}
 		return () => (window.onscroll = null);
 	});

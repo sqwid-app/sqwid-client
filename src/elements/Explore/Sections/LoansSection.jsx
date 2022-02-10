@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CardSectionContainer from "@elements/Default/CardSectionContainer";
 import { NavLink } from "react-router-dom";
 import ChevronRight from "@static/svg/ChevronRight";
-const Card = React.lazy(() => import("@elements/Default/Card"));
+const LoanCard = React.lazy(() => import("@elements/Explore/Cards/Loan/LoanCard"));
 
 const Container = styled.div`
 	width: 100%;
@@ -45,7 +45,7 @@ const LoansSection = ({ items }) => {
 			<CardSectionContainer>
 				<Suspense>
 					{items.map((item, index) => (
-						<Card
+						<LoanCard
 							key={index}
 							data={item}
 						/>

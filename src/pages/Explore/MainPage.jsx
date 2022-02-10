@@ -8,7 +8,6 @@ import { fetchMarketplaceItems } from "@utils/marketplace";
 import OnSaleSection from "@elements/Explore/Sections/OnSaleSection";
 import AuctionSection from "@elements/Explore/Sections/AuctionSection";
 import RaffleSection from "@elements/Explore/Sections/RaffleSection";
-//eslint-disable-next-line
 import LoansSection from "@elements/Explore/Sections/LoansSection";
 
 const Wrapper = styled.div`
@@ -39,7 +38,6 @@ const MainPage = () => {
 	const [onSale, setOnSale] = useState([]);
 	const [auctions, setAuctions] = useState([]);
 	const [raffles, setRaffles] = useState([]);
-	//eslint-disable-next-line
 	const [loans, setLoans] = useState([]);
 	useEffect(() => {
 		const fetchData = async () => {
@@ -64,7 +62,7 @@ const MainPage = () => {
 					<OnSaleSection items={onSale} />
 					<AuctionSection items={auctions} />
 					<RaffleSection items={raffles} />
-					{/* <LoansSection items={loans} /> */}
+					<LoansSection items={loans} />
 				</Wrapper>
 			)}
 		</>

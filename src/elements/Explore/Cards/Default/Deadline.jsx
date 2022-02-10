@@ -49,10 +49,18 @@ const renderer = ({ days, hours, minutes, seconds, props, completed }) => {
 	);
 };
 
-const Deadline = ({ time }) => {
+const Deadline = ({ time, loan }) => {
 	return (
 		<Countdown date={time * 1000} renderer={renderer}>
-			<TimeCard>Times up! <span role="img" aria-labelledby="emoji">⏰</span></TimeCard>
+			<TimeCard>{!loan ? (
+				<>
+					Times up! <span role="img" aria-labelledby="emoji">⏰</span>
+				</>
+			) : (
+				<>
+					Expired! <span role="img" aria-labelledby="emoji">❌</span>
+				</>
+			)}</TimeCard>
 		</Countdown>
 	);
 };
