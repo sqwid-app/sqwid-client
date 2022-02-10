@@ -7,6 +7,7 @@ import { DividerHorizontal } from '@elements/Default/Divider';
 import { Link } from 'react-router-dom';
 import { getBalance } from '@utils/getBalance';
 import { numberSeparator } from '@utils/numberSeparator';
+import FadeLoaderIcon from '@static/svg/FadeLoader';
 
 const BasicDetailsContainer = styled(Link)`
 	display: flex;
@@ -55,7 +56,7 @@ const ProfileName = styled.h3`
 const BalanceContainer = styled.div`
 	display: flex;
 	align-items: center;
-	svg{
+	svg:not(.loader){
 		width: 24px;
 		height: 24px;
 	}
@@ -69,14 +70,15 @@ const BalanceWrapper = styled.div`
 `
 
 const Balance = () => {
-	const [balance, setBalance] = useState("0.00");
-	useEffect (() => {
+	const [balance, setBalance] = useState(localStorage.getItem("sqwid__balance") || <FadeLoaderIcon />);
+	useEffect(() => {
 		const fetchBalance = async () => {
-			const bal = await getBalance ();
-			const balNum = Number (bal) / 10 ** 18;
-			setBalance (numberSeparator (balNum.toFixed (2).toString ()));
+			const bal = await getBalance();
+			const balNum = Number(bal) / 10 ** 18;
+			setBalance(numberSeparator(balNum.toFixed(2).toString()));
+			localStorage.setItem("sqwid__balance", numberSeparator(balNum.toFixed(2).toString()))
 		}
-		fetchBalance ();
+		fetchBalance();
 	}, []);
 	return (
 		<BalanceWrapper>

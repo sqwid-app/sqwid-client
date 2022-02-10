@@ -248,7 +248,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 						{auth && (
 							<ProfileElement />
 						)}
-						<Title>Choose another account</Title>
+						<Title>Choose an{auth && "other"} account</Title>
 						{accounts?.length ?
 							<>
 								{accounts ? accounts.filter(item => auth ? auth.address !== item.address : true).map((account, index) => {
