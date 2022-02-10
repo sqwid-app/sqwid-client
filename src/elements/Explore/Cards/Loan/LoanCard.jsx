@@ -32,7 +32,6 @@ const DeadlineContainer = styled.div`
 `
 
 const LoanCard = ({ data }) => {
-	console.log("🦊 | file: LoanCard.jsx | line 35 | LoanCard | data", data.loan);
 	const lenderExists = Number(data.loan?.lender?.address) !== 0
 	const formattedDeadline = data.loan && format(new Date(data.loan?.deadline), "EEEE, LLLL d, uuuu h:mm a")
 	return (
