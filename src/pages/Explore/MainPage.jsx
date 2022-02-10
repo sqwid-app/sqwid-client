@@ -5,10 +5,12 @@ import styled from "styled-components";
 import LoadingIcon from "@static/svg/LoadingIcon";
 // import RecentlyListed from "./RecentlyListed";
 import { fetchMarketplaceItems } from "@utils/marketplace";
-import OnSaleSection from "@components/ExploreRedesign/Sections/OnSaleSection";
-import AuctionSection from "@components/ExploreRedesign/Sections/AuctionSection";
-import RaffleSection from "@components/ExploreRedesign/Sections/RaffleSection";
-import LoansSection from "@components/ExploreRedesign/Sections/LoansSection";
+import OnSaleSection from "@elements/Explore/Sections/OnSaleSection";
+import AuctionSection from "@elements/Explore/Sections/AuctionSection";
+//eslint-disable-next-line
+import RaffleSection from "@elements/Explore/Sections/RaffleSection";
+//eslint-disable-next-line
+import LoansSection from "@elements/Explore/Sections/LoansSection";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -37,19 +39,17 @@ const MainPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [onSale, setOnSale] = useState([]);
 	const [auctions, setAuctions] = useState([]);
+	//eslint-disable-next-line
 	const [raffles, setRaffles] = useState([]);
+	//eslint-disable-next-line
 	const [loans, setLoans] = useState([]);
 	useEffect(() => {
 		const fetchData = async () => {
 			const items = await fetchMarketplaceItems();
-			setOnSale(items.sort((a, b) => Number(b.highestBid) - Number(a.highestBid)).slice(0, 4));
-			setAuctions(items.sort((itemA, itemB) => {
-				return Number(itemB.id) - Number(itemA.id);
-			}).slice(0, 4));
-			setRaffles(items.sort((a, b) => Number(b.highestBid) - Number(a.highestBid)).reverse().slice(0, 4));
-			setLoans(items.sort((itemA, itemB) => {
-				return Number(itemB.id) - Number(itemA.id);
-			}).reverse().slice(0, 4));
+			setOnSale(items.sale);
+			setAuctions(items.auction);
+			setRaffles(items.raffle);
+			setLoans(items.loan);
 
 			setIsLoading(false);
 		}
@@ -65,8 +65,8 @@ const MainPage = () => {
 				<Wrapper>
 					<OnSaleSection items={onSale} />
 					<AuctionSection items={auctions} />
-					<RaffleSection items={raffles} />
-					<LoansSection items={loans} />
+					{/* <RaffleSection items={raffles} />
+					<LoansSection items={loans} /> */}
 				</Wrapper>
 			)}
 		</>

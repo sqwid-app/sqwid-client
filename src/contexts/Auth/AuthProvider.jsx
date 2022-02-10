@@ -1,3 +1,4 @@
+import constants from "@utils/constants";
 import React, { useReducer, useState } from "react";
 import AuthContext from "./AuthContext";
 import { initialState } from "./initialState";
@@ -18,7 +19,7 @@ const AuthProvider = (props) => {
 	const logout = () => {
 		localStorage.removeItem("tokens");
 		localStorage.removeItem("auth");
-		localStorage.removeItem("sqwid__balance");
+		localStorage.removeItem(`${constants.APP_NAME.toLowerCase()}__balance`);
 		dispatch({
 			type: "LOGOUT",
 		});
