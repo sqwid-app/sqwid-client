@@ -5,6 +5,8 @@ import { getAvatarFromId } from "@utils/getAvatarFromId"
 import ReefIcon from '@static/svg/ReefIcon';
 import { DividerHorizontal } from '@elements/Default/Divider';
 import { Link } from 'react-router-dom';
+import { getBalance } from '@utils/getBalance';
+import { numberSeparator } from '@utils/numberSeparator';
 
 const BasicDetailsContainer = styled(Link)`
 	display: flex;
@@ -67,10 +69,19 @@ const BalanceWrapper = styled.div`
 `
 
 const Balance = () => {
+	const [balance, setBalance] = useState("0.00");
+	useEffect (() => {
+		const fetchBalance = async () => {
+			const bal = await getBalance ();
+			const balNum = Number (bal) / 10 ** 18;
+			setBalance (numberSeparator (balNum.toFixed (2).toString ()));
+		}
+		fetchBalance ();
+	}, []);
 	return (
 		<BalanceWrapper>
 			<h4>Balance</h4>
-			<BalanceContainer><ReefIcon /> <span>0.00</span></BalanceContainer>
+			<BalanceContainer><ReefIcon /> <span>{balance}</span></BalanceContainer>
 		</BalanceWrapper>
 	)
 }

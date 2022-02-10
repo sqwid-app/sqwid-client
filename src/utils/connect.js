@@ -3,7 +3,7 @@ import { WsProvider } from "@polkadot/api";
 import { web3Accounts, web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import { stringToHex } from '@polkadot/util';
 import axios from "axios";
-import { getRPC } from "./network";
+import { getBackend, getRPC } from "./network";
 // const WS_URL = 'wss://rpc-testnet.reefscan.com/ws';
 
 let provider;
@@ -27,7 +27,7 @@ const Connect = async (account) => {
                 signer
             }
         }
-        let res = await axios.get(`${process.env.REACT_APP_API_URL}/nonce?address=${account.address}`);
+        let res = await axios.get(`${getBackend ()}/nonce?address=${account.address}`);
         let { nonce } = res.data;
 
         const sres = await signRaw ({
@@ -38,7 +38,7 @@ const Connect = async (account) => {
 
         const { signature } = sres;
 		try{
-			res = await axios (`${process.env.REACT_APP_API_URL}/auth`, {
+			res = await axios (`${getBackend ()}/auth`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

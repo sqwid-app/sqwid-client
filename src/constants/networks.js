@@ -1,4 +1,4 @@
-const networks = {
+export const networks = {
 	reef_testnet: {
 		rpc: 'wss://rpc-testnet.reefscan.com/ws',
 		contracts: {
@@ -12,5 +12,4 @@ const networks = {
 	reef_mainnet: {}
 }
 
-
-export default networks;
+export const defaultNetwork = 'reef_testnet';
