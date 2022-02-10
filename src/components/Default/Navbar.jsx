@@ -25,7 +25,7 @@ const Nav = styled.nav`
 	z-index: 100;
 	top:0;
 	border-bottom: ${props => props.blur ? `1px` : `0`} solid var(--app-container-bg-primary);
-	transition: backdrop-filter 0.2s linear, border-bottom 0.2s linear;
+	transition: backdrop-filter 0.2s ease, border-bottom 0.05s ease;
 	${respondTo.md`
 		padding: 1.25rem 1.5rem;
 	`}
@@ -63,10 +63,11 @@ const Navbar = () => {
 	const isTabletOrMobile = useIsTabletOrMobile();
 	const [isOpen, toggleOpen] = useCycle(false, true);
 	const logoRef = useRef();
+	const limit = 20;
 	useEffect(() => {
 		window.onscroll = () => {
 			isAtTop === true && setIsAtTop(false);
-			(window.pageYOffset === 0) && setIsAtTop(true);
+			(window.pageYOffset <= limit) && setIsAtTop(true);
 		}
 		return () => (window.onscroll = null);
 	});
