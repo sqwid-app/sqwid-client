@@ -54,7 +54,7 @@ const CollectionsLogo = styled.div`
 const CreatorLogo = styled(CollectionsLogo)`
 	height: 1.5rem;
 	width: 1.5rem;
-	border: 2px solid var(--app-text);
+	border: 0.125rem solid var(--app-text);
 `
 
 const Creator = styled(Link)`

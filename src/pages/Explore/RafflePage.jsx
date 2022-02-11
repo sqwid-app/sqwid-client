@@ -5,7 +5,7 @@ import styled from "styled-components";
 // import RecentlyListed from "./RecentlyListed";
 // import RecentlyListedPaginated from "@components/ExploreRedesign/RecentlyListedPaginated";
 import PaginatedCards from "@elements/Explore/Cards/Default/PaginatedCards";
-const SalesCard = React.lazy(() => import("@elements/Explore/Cards/Sales/SalesCard"));
+const RaffleCard = React.lazy(() => import("@elements/Explore/Cards/Raffle/RaffleCard"));
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -31,17 +31,17 @@ const Header = styled.h1`
 	font-weight: 900;
 `
 
-const SalePage = () => {
+const RafflePage = () => {
 	return (
 		<>
 			<Wrapper>
 				<Container>
-					<Header>Sales <span className="emoji">📃</span></Header>
-					<PaginatedCards Card={SalesCard} state={1} />
+					<Header>Raffles <span className="emoji">🎲</span></Header>
+					<PaginatedCards Card={RaffleCard} state={3} />
 				</Container>
 			</Wrapper>
 		</>
 	)
 }
 
-export default SalePage
+export default RafflePage

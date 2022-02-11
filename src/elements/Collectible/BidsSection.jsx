@@ -93,7 +93,7 @@ const Icon = styled.div`
 	height: 1.75rem;
 	width: 1.75rem;
 	border-radius: 1000rem;
-	outline: 2px solid white;
+	outline: 0.125rem solid white;
 	background-color: var(--app-background);
 	background-image: url('${props => props.url && props.url}');
 	background-repeat: no-repeat;

@@ -1,11 +1,8 @@
 import { respondTo } from "@styles/styledMediaQuery";
-// import axios from "axios";
 import React from "react";
 import styled from "styled-components";
-// import RecentlyListed from "./RecentlyListed";
-// import RecentlyListedPaginated from "@components/ExploreRedesign/RecentlyListedPaginated";
 import PaginatedCards from "@elements/Explore/Cards/Default/PaginatedCards";
-const SalesCard = React.lazy(() => import("@elements/Explore/Cards/Sales/SalesCard"));
+const LoanCard = React.lazy(() => import("@elements/Explore/Cards/Loan/LoanCard"));
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -31,17 +28,17 @@ const Header = styled.h1`
 	font-weight: 900;
 `
 
-const SalePage = () => {
+const LoanPage = () => {
 	return (
 		<>
 			<Wrapper>
 				<Container>
-					<Header>Sales <span className="emoji">📃</span></Header>
-					<PaginatedCards Card={SalesCard} state={1} />
+					<Header>Auctions <span className="emoji">⌛</span></Header>
+					<PaginatedCards Card={LoanCard} state={4} />
 				</Container>
 			</Wrapper>
 		</>
 	)
 }
 
-export default SalePage
+export default LoanPage

@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 import CardMedia from "@elements/Explore/Cards/Default/CardMedia";
 import Deadline from "@elements/Explore/Cards/Default/Deadline";
 import { format } from "date-fns";
+import Loader from "../Default/Loader";
 
 const Wrapper = styled(m(Link))`
 	position: relative;
 	display: grid;
 	grid-template-rows: 2fr 1fr;
-	border: 2px solid var(--app-container-bg-primary);
+	border: 0.125rem solid var(--app-container-bg-primary);
 	border-radius: 0.375rem;
 	/* overflow:hidden; */
 	min-width: 16rem;
@@ -31,7 +32,7 @@ const DeadlineContainer = styled.div`
 	transform:translateX(-50%);
 `
 
-const RaffleCard = ({ data }) => {
+const RaffleCard = ({ data, isLoading }) => {
 	const formattedDeadline = data.raffle && format(new Date(data.raffle?.deadline), "EEEE, LLLL d, uuuu h:mm a")
 	return (
 		<LazyMotion features={domAnimation}>
@@ -45,7 +46,7 @@ const RaffleCard = ({ data }) => {
 			>
 				<DeadlineContainer title={`Deadline: ${formattedDeadline}`}><Deadline time={data.raffle?.deadline} /></DeadlineContainer>
 				<CardMedia meta={data.meta} deadline={data.raffle?.deadline} />
-				<CardInfo data={data} />
+				{isLoading ? <Loader /> : (<CardInfo data={data} isLoading={isLoading} />)}
 			</Wrapper>
 		</LazyMotion>
 	)

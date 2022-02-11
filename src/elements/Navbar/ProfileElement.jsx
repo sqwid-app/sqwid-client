@@ -27,7 +27,7 @@ const ProfilePicture = styled.div`
 	height: 3rem;
 	width: 3rem;
 	border-radius: 1000rem;
-	outline: 2px solid white;
+	outline: 0.125rem solid white;
 	background-color: var(--app-background);
 	background-image: url('${props => props.url && props.url}');
 	background-repeat: no-repeat;

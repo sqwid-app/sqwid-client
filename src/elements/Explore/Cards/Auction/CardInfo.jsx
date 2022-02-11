@@ -10,7 +10,6 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 	padding: 0.75rem 1.25rem;
-
 `
 
 const TopContainer = styled.div`

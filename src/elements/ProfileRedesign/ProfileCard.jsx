@@ -185,12 +185,12 @@ const InputContainer = styled.input`
 	border: none;
 	color: var(--app-text);
 	padding: 0.5rem 0;
-	border-bottom: 2px solid var(--app-container-text-primary);
+	border-bottom: 0.125rem solid var(--app-container-text-primary);
 	width: 100%;
 	padding-right: 2rem;
 	transition: border-bottom 0.2s ease;
 	&:focus{
-		border-bottom: 2px solid var(--app-container-text-primary-hover);
+		border-bottom: 0.125rem solid var(--app-container-text-primary-hover);
 	}
 `
 
@@ -497,7 +497,7 @@ const ProfileCard = () => {
 							<LazyMotion features={domAnimation}>
 								<Btn>Follow</Btn>
 							</LazyMotion>
-							<MetadataContainer followers={1100} collections={10} nfts={1234}/>
+							<MetadataContainer followers={1100} collections={10} nfts={1234} />
 							{isOwnAccount && (<EditDetailsContainer title={`${!editIsActive ? `Enter` : `Exit`} Edit Mode`}><span>Edit Profile Details</span><EditIcon onClick={() => setEditIsActive(true)} /></EditDetailsContainer>)}
 						</AdditionalDetailsContainer>
 					</Container>

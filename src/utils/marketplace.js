@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ethers } from 'ethers';
 import marketplaceContractABI from '../constants/contracts/SqwidMarketplace';
 import { Interact } from './connect';
+import constants from './constants';
 
 import { isMarketplaceApproved, approveMarketplace } from './marketplaceApproval';
 import { getBackend, getContract } from './network';
@@ -34,9 +35,18 @@ const fetchMarketplaceItems = async () => {
 	return data;
 };
 
+const fetchStateItems = async (state, pageNumber = 1) => {
+	const res = await axios(`${getBackend()}/get/marketplace/all/${state}?perPage=${constants.EXPLORE_PAGINATION_LIMIT}&page=${pageNumber}`);
+	const { data } = res;
+	if (data.error) {
+		return [];
+	}
+	return data;
+};
+
 // returns a certain marketplace item
 const fetchMarketplaceItem = async (itemId) => {
-	const res = await axios(`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItem/${itemId}`);
+	const res = await axios(`${process.env.REACT_APP_API_URL}/get/r/marketplace/position/${itemId}`);
 	const { data } = res;
 	if (data.error) {
 		return null;
@@ -149,6 +159,7 @@ const getTokenSupplyByItemId = async (itemId) => {
 export {
 	marketplaceItemExists,
 	fetchMarketplaceItems,
+	fetchStateItems,
 	fetchMarketplaceItem,
 	putOnSale,
 	removeFromSale,
@@ -159,5 +170,5 @@ export {
 	acceptBid,
 	fetchHighestBid,
 	getTokenSupply,
-	getTokenSupplyByItemId
+	getTokenSupplyByItemId,
 }

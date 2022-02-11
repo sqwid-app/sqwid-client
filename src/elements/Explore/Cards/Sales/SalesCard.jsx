@@ -4,11 +4,12 @@ import CardInfo from "./CardInfo";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import { Link } from "react-router-dom";
 import CardMedia from "@elements/Explore/Cards/Default/CardMedia";
+import Loader from "../Default/Loader";
 
 const Wrapper = styled(m(Link))`
 	display: grid;
 	grid-template-rows: 2fr 1fr;
-	border: 2px solid var(--app-container-bg-primary);
+	border: 0.125rem solid var(--app-container-bg-primary);
 	border-radius: 0.375rem;
 	/* overflow:hidden; */
 	min-width: 16rem;
@@ -19,7 +20,7 @@ const Wrapper = styled(m(Link))`
 	color: var(--app-text);
 `
 
-const SalesCard = ({ data }) => {
+const SalesCard = ({ data, isLoading }) => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper
@@ -31,7 +32,7 @@ const SalesCard = ({ data }) => {
 				to={`/collectible/${data.positionId}`}
 			>
 				<CardMedia meta={data.meta} />
-				<CardInfo data={data} />
+				{isLoading ? <Loader /> : (<CardInfo data={data} isLoading={isLoading} />)}
 			</Wrapper>
 		</LazyMotion>
 	)

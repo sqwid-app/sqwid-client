@@ -143,15 +143,17 @@ const LoaderContainer = styled.div`
 	animation: ${skeletonAnim} 1.2s infinite 0.6s;
 `;
 
-const VideoCard = ({ url }) => {
+const VideoCard = ({ url, isLoading }) => {
 	const videoRef = useRef();
 	const [videoLoading, setVideoLoading] = useState(true);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const togglePlay = () => setIsPlaying(!isPlaying);
 	const previousUrl = useRef(url);
-
 	useEffect(() => {
-		url ? !videoRef.current.readyState >= 3 && setVideoLoading(true) : setVideoLoading(false);
+		isLoading ? setVideoLoading(true) : setVideoLoading(false);
+	}, [isLoading])
+	useEffect(() => {
+		(url || isLoading) ? !videoRef.current.readyState >= 3 && setVideoLoading(true) : setVideoLoading(false);
 		if (previousUrl.current === url) {
 			return;
 		}
@@ -159,7 +161,7 @@ const VideoCard = ({ url }) => {
 		(videoRef.current) && videoRef.current.load();
 
 		previousUrl.current = url;
-	}, [url])
+	}, [url, isLoading])
 	useEffect(() => {
 		isPlaying ? videoRef.current.play() : videoRef.current.pause();
 	}, [isPlaying]);
@@ -194,15 +196,18 @@ const VideoCard = ({ url }) => {
 	)
 }
 
-const ImageCard = ({ url }) => {
+const ImageCard = ({ url, isLoading }) => {
 	const [loading, setLoading] = useState(false);
 	const imageRef = useRef();
 	const imageLoaded = () => {
 		setLoading(false);
 	};
 	useEffect(() => {
-		url ? !imageRef.current.complete && setLoading(true) : setLoading(false);
+		(url) ? !imageRef.current.complete && setLoading(true) : setLoading(false);
 	}, [url])
+	useEffect(() => {
+		isLoading ? setLoading(true) : setLoading(false);
+	}, [isLoading])
 	return (
 		<>
 			<LoaderContainer style={{ display: !loading && "none" }}>
@@ -215,7 +220,7 @@ const ImageCard = ({ url }) => {
 	)
 }
 
-const AudioCard = ({ image }) => {
+const AudioCard = ({ image, isLoading }) => {
 	return (
 		<ImageContainer url={image} audio>
 			<AudioIcon><MusicIcon /></AudioIcon>
@@ -224,16 +229,16 @@ const AudioCard = ({ image }) => {
 	)
 }
 
-const CardMedia = ({ meta }) => {
+const CardMedia = ({ meta, isLoading }) => {
 	//eslint-disable-next-line
 	const { image, media, mimetype } = meta
 	return (
 		<>
 			{
 				{
-					"image": <ImageCard url={getCloudflareURL(media)} />,
-					"video": <VideoCard url={getDwebURL(media)} />,
-					"audio": <AudioCard image={getDwebURL(image)} />
+					"image": <ImageCard isLoading={isLoading} url={getCloudflareURL(media)} />,
+					"video": <VideoCard isLoading={isLoading} url={getDwebURL(media)} />,
+					"audio": <AudioCard isLoading={isLoading} image={getDwebURL(image)} />
 				}[mimetype.split("/")[0]]
 			}
 		</>

@@ -14,7 +14,8 @@ const constants = {
 		"auction",
 		"raffle",
 		"loan"
-	]
+	],
+	EXPLORE_PAGINATION_LIMIT: 12,
 }
 
 export default constants

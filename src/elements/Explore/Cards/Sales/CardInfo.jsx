@@ -1,6 +1,6 @@
 import ReefIcon from "@static/svg/ReefIcon";
 import { numberSeparator } from "@utils/numberSeparator";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CardHeaderIcons from "@elements/Explore/Cards/Default/CardHeaderIcons";
 import { formatReefPrice } from "@utils/formatReefPrice";
@@ -16,6 +16,10 @@ const Wrapper = styled.div`
 const TopContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
+	svg{
+		height: 1.5rem;
+		width: 1.5rem;
+	}
 `
 
 const BottomContainer = styled.div`
@@ -31,6 +35,10 @@ const Title = styled.h2`
 	overflow:hidden;
 	white-space:nowrap;
 	text-overflow: ellipsis;
+	svg{
+		height: 1.25rem;
+		width: 1.25rem;
+	}
 `
 
 const Price = styled.label`
@@ -56,10 +64,17 @@ const Price = styled.label`
 const Amount = styled.p`
 	font-weight: 900;
 	color: var(--app-container-text-primary);
+	margin-left: auto;
 `
 
+
+
 const CardInfo = ({ data }) => {
-	const price = (data.sale && data.sale.price !== '0') && numberSeparator(formatReefPrice(data.sale.price).toString())
+	const [price, setPrice] = useState("")
+	useEffect(() => {
+		(data.sale && data.sale.price !== '0') && setPrice(numberSeparator(formatReefPrice(data.sale.price).toString()))
+	}, [data])
+
 	return (
 		<Wrapper>
 			<TopContainer>

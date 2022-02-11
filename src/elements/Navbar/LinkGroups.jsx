@@ -51,7 +51,7 @@ const LinkGroups = () => {
 							link: "/explore/sale"
 						}, {
 							name: "Auctions",
-							link: "/explore/sale"
+							link: "/explore/auctions"
 						}, {
 							name: "Raffles",
 							link: "/explore/raffles"

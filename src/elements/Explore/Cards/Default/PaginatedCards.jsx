@@ -4,15 +4,6 @@ import CardSectionContainer from "@elements/Default/CardSectionContainer";
 import ReactPaginate from 'react-paginate';
 import { fetchStateItems } from "@utils/marketplace";
 import LoadingIcon from "@static/svg/LoadingIcon";
-const SalesCard = React.lazy(() => import("@elements/Explore/Cards/Sales/SalesCard"));
-
-const Container = styled.div`
-	width: 100%;
-`
-
-const Header = styled.h1`
-	font-weight: 900;
-`
 
 const StyledReactPaginate = styled(ReactPaginate).attrs({
 	activeClassName: 'active',
@@ -79,11 +70,11 @@ const PreviousIcon = () => {
 	)
 }
 
-const Items = ({ currentItems, isLoading }) => {
+const Items = ({ currentItems, isLoading, Card }) => {
 	return (
 		<>
 			{currentItems?.map((item, index) => (
-				<SalesCard
+				<Card
 					key={index}
 					data={item}
 					isLoading={isLoading}
@@ -108,18 +99,19 @@ const LoadingContainer = styled.div`
 	place-items:center;
 `
 
-const RecentlyListedPaginated = () => {
+const PaginatedCards = ({ Card, state }) => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [isCardLoading, setIsCardLoading] = useState(true)
 	const [salesItems, setSalesItems] = useState([]);
 	useEffect(() => {
 		const fetchData = async () => {
-			const items = await fetchStateItems(1);
+			const items = await fetchStateItems(state);
 			setSalesItems(items);
 			setIsLoading(false);
 			setIsCardLoading(false)
 		}
 		fetchData();
+		//eslint-disable-next-line
 	}, []);
 	const [pageCount, setPageCount] = useState(0);
 
@@ -129,9 +121,9 @@ const RecentlyListedPaginated = () => {
 	}, [salesItems.pagination]);
 
 	const handlePageClick = (event) => {
-		setIsCardLoading(true)
 		const fetchData = async () => {
-			const items = await fetchStateItems(1, event.selected + 1);
+			setIsCardLoading(true)
+			const items = await fetchStateItems(state, event.selected + 1);
 			setSalesItems(items);
 			setIsCardLoading(false)
 		}
@@ -144,11 +136,10 @@ const RecentlyListedPaginated = () => {
 					<LoadingIcon size={64} />
 				</LoadingContainer>
 			) : (
-				<Container>
-					<Header>Sales <span className="emoji">📃</span></Header>
+				<>
 					<CardSectionContainer>
 						<Suspense>
-							<Items currentItems={salesItems.items} isLoading={isCardLoading} />
+							<Items currentItems={salesItems.items} isLoading={isCardLoading} Card={Card} />
 						</Suspense>
 					</CardSectionContainer>
 					<StyledReactPaginate
@@ -160,10 +151,10 @@ const RecentlyListedPaginated = () => {
 						previousLabel={<PreviousIcon />}
 						renderOnZeroPageCount={null}
 					/>
-				</Container>
+				</>
 			)}
 		</>
 	)
 }
 
-export default RecentlyListedPaginated
+export default PaginatedCards

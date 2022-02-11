@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const Wrapper = styled(m(Link))`
 	display: grid;
 	grid-template-rows: 2fr 1fr;
-	border: 2px solid var(--app-container-bg-primary);
+	border: 0.125rem solid var(--app-container-bg-primary);
 	border-radius: 0.375rem;
 	/* overflow:hidden; */
 	min-width: 16rem;

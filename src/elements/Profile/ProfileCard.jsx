@@ -67,7 +67,7 @@ const Tooltip = styled.div`
 	background: var(--app-container-bg-primary);
 	user-select:none;
 	z-index: 15;
-	${props=>!props.remove?entryAnim:exitAnim};
+	${props => !props.remove ? entryAnim : exitAnim};
 `
 
 const Description = styled.p`
@@ -170,12 +170,12 @@ const InputContainer = styled.input`
 	border: none;
 	color: var(--app-text);
 	padding: 0.5rem 0;
-	border-bottom: 2px solid var(--app-container-text-primary);
+	border-bottom: 0.125rem solid var(--app-container-text-primary);
 	width: 100%;
 	padding-right: 2rem;
 	transition: border-bottom 0.2s ease;
 	&:focus{
-		border-bottom: 2px solid var(--app-container-text-primary-hover);
+		border-bottom: 0.125rem solid var(--app-container-text-primary-hover);
 	}
 `
 
@@ -191,36 +191,36 @@ const InputWrapper = styled.div`
 `
 
 const NameEditSection = ({ name, setSync }) => {
-	const {info, setInfo} = useContext(EditDetailsContext)
+	const { info, setInfo } = useContext(EditDetailsContext)
 	const [isLoading, setIsLoading] = useState(false)
-	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
-	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address === address) : null;
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	let jwt = address ? JSON.parse(localStorage.getItem("tokens")).find(token => token.address === address) : null;
 
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
-			if(info.name.length){
-				axios.post(`${process.env.REACT_APP_API_URL}/edit/user/displayName`,{
-					displayName:info.name
-				},{
+			if (info.name.length) {
+				axios.post(`${process.env.REACT_APP_API_URL}/edit/user/displayName`, {
+					displayName: info.name
+				}, {
 					headers: {
 						'Authorization': `Bearer ${jwt.token}`,
 					}
 				})
-				.then(()=>{
-					setSync(false)
-				})
-				.finally(()=>{
-					setIsLoading(false)
-				})
+					.then(() => {
+						setSync(false)
+					})
+					.finally(() => {
+						setIsLoading(false)
+					})
 			}
-			else{
+			else {
 				setSync(false)
 				setIsLoading(false)
 			}
 		}, 500)
 
 		return () => clearTimeout(delayDebounceFn)
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [info.name])
 
 	const handleInput = (event) => {
@@ -238,12 +238,12 @@ const NameEditSection = ({ name, setSync }) => {
 			<InputWrapper>
 				<InputContainer
 					value={info.name}
-					onChange = {handleInput}
+					onChange={handleInput}
 					placeholder={name}
 				/>
-				{isLoading&&(
+				{isLoading && (
 					<LoadingContainer>
-						<Loading/>
+						<Loading />
 					</LoadingContainer>
 				)}
 			</InputWrapper>
@@ -252,36 +252,36 @@ const NameEditSection = ({ name, setSync }) => {
 }
 
 const DescriptionEditSection = ({ description, setSync }) => {
-	const {info, setInfo} = useContext(EditDetailsContext)
+	const { info, setInfo } = useContext(EditDetailsContext)
 	const [isLoading, setIsLoading] = useState(false)
-	const address = JSON.parse (localStorage.getItem ("auth"))?.auth.address;
-	let jwt = address ? JSON.parse (localStorage.getItem ("tokens")).find (token => token.address === address) : null;
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	let jwt = address ? JSON.parse(localStorage.getItem("tokens")).find(token => token.address === address) : null;
 
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
-			if(info.description.length){
-				axios.post(`${process.env.REACT_APP_API_URL}/edit/user/bio`,{
-					bio:info.description
-				},{
+			if (info.description.length) {
+				axios.post(`${process.env.REACT_APP_API_URL}/edit/user/bio`, {
+					bio: info.description
+				}, {
 					headers: {
 						'Authorization': `Bearer ${jwt.token}`,
 					}
 				})
-				.then(()=>{
-					setSync(false)
-				})
-				.finally(()=>{
-					setIsLoading(false)
-				})
+					.then(() => {
+						setSync(false)
+					})
+					.finally(() => {
+						setIsLoading(false)
+					})
 			}
-			else{
+			else {
 				setSync(false)
 				setIsLoading(false)
 			}
 		}, 500)
 
 		return () => clearTimeout(delayDebounceFn)
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [info.description])
 
 	const handleInput = (event) => {
@@ -299,12 +299,12 @@ const DescriptionEditSection = ({ description, setSync }) => {
 			<InputWrapper>
 				<InputContainer
 					value={info.description}
-					onChange = {handleInput}
-					placeholder={description.length?clamp(description,16):`Enter your bio here`}
+					onChange={handleInput}
+					placeholder={description.length ? clamp(description, 16) : `Enter your bio here`}
 				/>
-				{isLoading&&(
+				{isLoading && (
 					<LoadingContainer>
-						<Loading bg="#1b1c23"/>
+						<Loading bg="#1b1c23" />
 					</LoadingContainer>
 				)}
 			</InputWrapper>
@@ -316,9 +316,9 @@ const EditSection = ({ userData }) => {
 	const [sync, setSync] = useState(true)
 	return (
 		<>
-			<NameEditSection name={userData.name} setSync={setSync}/>
-			<DescriptionEditSection description={userData.description} setSync={setSync}/>
-			<Changes sync={sync}/>
+			<NameEditSection name={userData.name} setSync={setSync} />
+			<DescriptionEditSection description={userData.description} setSync={setSync} />
+			<Changes sync={sync} />
 		</>
 	)
 }
@@ -332,89 +332,89 @@ const ProfileCard = () => {
 	const { id } = useParams()
 	const { auth } = useContext(AuthContext)
 	let initialState = {
-		avatar:"",
+		avatar: "",
 		address: "",
 		description: "",
-		name:""
+		name: ""
 	}
 	const [userData, setUserData] = useState(initialState)
-	useEffect(()=>{
-		let address = id?id:auth.address
+	useEffect(() => {
+		let address = id ? id : auth.address
 		axios.get(`${process.env.REACT_APP_API_URL}/get/user/${address}`)
-		.then(({data})=>{
-			if(id){
-				setUserData({
-					...userData,
-					name:data.displayName,
-					description:data.bio,
-					address:id,
-					avatar: getAvatarFromId(id),
-				})
-			}
-			else if(auth){
-				setUserData({
-					...userData,
-					address:auth.evmAddress,
-					name: data.displayName,
-					avatar: getAvatarFromId(auth.address),
-					description:data.bio
-				})
-			}
-		})
-		.catch((err)=>{
-			bread(err.response.data.error)
-		})
-		.finally(()=>{
-			setIsLoading(false);
-		})
-		id?((id === auth?.address ||id === auth?.evmAddress )&&setIsOwnAccount(true)):setIsOwnAccount(true)
-	//eslint-disable-next-line
-	},[info])
+			.then(({ data }) => {
+				if (id) {
+					setUserData({
+						...userData,
+						name: data.displayName,
+						description: data.bio,
+						address: id,
+						avatar: getAvatarFromId(id),
+					})
+				}
+				else if (auth) {
+					setUserData({
+						...userData,
+						address: auth.evmAddress,
+						name: data.displayName,
+						avatar: getAvatarFromId(auth.address),
+						description: data.bio
+					})
+				}
+			})
+			.catch((err) => {
+				bread(err.response.data.error)
+			})
+			.finally(() => {
+				setIsLoading(false);
+			})
+		id ? ((id === auth?.address || id === auth?.evmAddress) && setIsOwnAccount(true)) : setIsOwnAccount(true)
+		//eslint-disable-next-line
+	}, [info])
 	const copyAddress = () => {
 		navigator.clipboard.writeText(userData.address)
-		.then(()=>{
-			setTooltipVisible(true);
-			setTimeout(() => {
-				setTooltipVisible(false)
-			}, 1000);
-		})
+			.then(() => {
+				setTooltipVisible(true);
+				setTimeout(() => {
+					setTooltipVisible(false)
+				}, 1000);
+			})
 	}
 	useEffect(() => {
-		if(tooltipVisible) tooltipRef.current.style.display="block";
-		else{
+		if (tooltipVisible) tooltipRef.current.style.display = "block";
+		else {
 			setTimeout(() => {
-				if(tooltipRef.current) tooltipRef.current.style.display="none";
+				if (tooltipRef.current) tooltipRef.current.style.display = "none";
 			}, 400)
 		}
 	}, [tooltipVisible])
 	const tooltipRef = useRef();
 	return (
 		<Card>
-			{!editIsActive?(
-				!isLoading?(
+			{!editIsActive ? (
+				!isLoading ? (
 					<Container>
-						<ProfilePicture src={userData.avatar}/>
-						<Name>{info.name.length?info.name:userData.name}</Name>
+						<ProfilePicture src={userData.avatar} />
+						<Name>{info.name.length ? info.name : userData.name}</Name>
 						<AddressContainer>
-							<label title={userData.address}><Address>{truncateAddress(userData.address,6)}</Address></label>
-							{window.isSecureContext&&(<CopyIcon onClick={copyAddress}/>)}
-							<Tooltip style={{display:"none"}} ref={tooltipRef} remove={!tooltipVisible}>Copied to clipboard!</Tooltip>
+							<label title={userData.address}><Address>{truncateAddress(userData.address, 6)}</Address></label>
+							{window.isSecureContext && (<CopyIcon onClick={copyAddress} />)}
+							<Tooltip style={{ display: "none" }} ref={tooltipRef} remove={!tooltipVisible}>Copied to clipboard!</Tooltip>
 						</AddressContainer>
 						<Description>
-							{clamp(info.description.length?info.description:userData.description)}
+							{clamp(info.description.length ? info.description : userData.description)}
 						</Description>
-						{isOwnAccount&&(<label title={`${!editIsActive?`Enter`:`Exit`} Edit Mode`}><EditIcon onClick={()=>setEditIsActive(true)}/></label>)}
+						{isOwnAccount && (<label title={`${!editIsActive ? `Enter` : `Exit`} Edit Mode`}><EditIcon onClick={() => setEditIsActive(true)} /></label>)}
 					</Container>
-				):(
+				) : (
 					<Header>Loading...</Header>
 				)
-			):(
+			) : (
 				<>
-				<Header>Edit Details</Header>
-				<EditContainer>
-					<EditSection userData={userData} setUserData={setUserData}/>
-					{isOwnAccount&&(<label title={`${!editIsActive?`Enter`:`Exit`} Edit Mode`}><EditIcon onClick={()=>setEditIsActive(false)}/></label>)}
-				</EditContainer>
+					<Header>Edit Details</Header>
+					<EditContainer>
+						<EditSection userData={userData} setUserData={setUserData} />
+						{isOwnAccount && (<label title={`${!editIsActive ? `Enter` : `Exit`} Edit Mode`}><EditIcon onClick={() => setEditIsActive(false)} /></label>)}
+					</EditContainer>
 				</>
 			)}
 		</Card>

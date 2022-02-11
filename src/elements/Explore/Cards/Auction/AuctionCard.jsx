@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 import CardMedia from "@elements/Explore/Cards/Default/CardMedia";
 import Deadline from "@elements/Explore/Cards/Default/Deadline";
 import { format } from "date-fns";
+import Loader from "../Default/Loader";
 
 const Wrapper = styled(m(Link))`
 	position: relative;
 	display: grid;
 	grid-template-rows: 2fr 1fr;
-	border: 2px solid var(--app-container-bg-primary);
+	border: 0.125rem solid var(--app-container-bg-primary);
 	border-radius: 0.375rem;
 	/* overflow:hidden; */
 	min-width: 16rem;
@@ -31,7 +32,7 @@ const DeadlineContainer = styled.div`
 	transform:translateX(-50%);
 `
 
-const AuctionCard = ({ data }) => {
+const AuctionCard = ({ data, isLoading }) => {
 	const formattedDeadline = data.auction && format(new Date(data.auction?.deadline), "EEEE, LLLL d, uuuu h:mm a")
 	return (
 		<LazyMotion features={domAnimation}>
@@ -44,8 +45,8 @@ const AuctionCard = ({ data }) => {
 				to={`/collectible/${data.positionId}`}
 			>
 				<DeadlineContainer title={`Deadline: ${formattedDeadline}`}><Deadline time={data.auction?.deadline} /></DeadlineContainer>
-				<CardMedia meta={data.meta} deadline={data.auction?.deadline} />
-				<CardInfo data={data} />
+				<CardMedia isLoading={isLoading} meta={data.meta} deadline={data.auction?.deadline} />
+				{isLoading ? <Loader /> : (<CardInfo data={data} isLoading={isLoading} />)}
 			</Wrapper>
 		</LazyMotion>
 	)

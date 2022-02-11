@@ -10,7 +10,7 @@ import { useHistory } from "react-router";
 import bread from "@utils/bread";
 
 const border = css`
-	border: 2px solid var(--app-container-text-primary);
+	border: 0.125rem solid var(--app-container-text-primary);
 	border-radius: 0.5rem;
 `;
 
@@ -33,13 +33,13 @@ const noPreview = css`
 `
 
 const FilePreview = styled.div`
-	${props => !props.fileType&& border};
+	${props => !props.fileType && border};
 	${noPreview}
 	overflow: hidden;
 	padding: 0;
 
 	max-width: 100%;
-	min-height: ${props=>!props.fileType?`100%`:`auto`};
+	min-height: ${props => !props.fileType ? `100%` : `auto`};
 	overflow: hidden;
 
 	img{
@@ -105,10 +105,10 @@ const Wrapper = styled.div`
 	gap:1rem;
 `
 
-const AnimBtn = ({ children, onClick,disabled }) => (
+const AnimBtn = ({ children, onClick, disabled }) => (
 	<Btn
 		whileTap={{
-			scale:0.97
+			scale: 0.97
 		}}
 		onClick={onClick}
 		disabled={disabled}
@@ -122,22 +122,22 @@ const PreviewSection = () => {
 	const [fileType, setFileType] = useState("")
 	const [buttonText, setButtonText] = useState("Create Item")
 	const [isSubmitting, setIsSubmitting] = useState(false)
-	const history = useHistory ();
+	const history = useHistory();
 
-	useEffect (() => {
-		if (fileData.file){
+	useEffect(() => {
+		if (fileData.file) {
 			const { file } = fileData;
-			if (file.type.startsWith ("image")) {
-				setFileType ("image")
-			} else if (file.type.startsWith ("video")) {
-				setFileType ("video")
-			} else if (file.type.startsWith ("audio")) {
-				setFileType ("audio")
+			if (file.type.startsWith("image")) {
+				setFileType("image")
+			} else if (file.type.startsWith("video")) {
+				setFileType("video")
+			} else if (file.type.startsWith("audio")) {
+				setFileType("audio")
 			}
 
-			setFileURL (window.URL.createObjectURL (fileData.file))
+			setFileURL(window.URL.createObjectURL(fileData.file))
 		}
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [fileData.file])
 
 	useEffect(() => {
@@ -146,25 +146,25 @@ const PreviewSection = () => {
 
 	const handleClick = () => {
 		localStorage.removeItem("properties")
-		setButtonText(<Loading/>)
+		setButtonText(<Loading />)
 		setIsSubmitting(true)
-		if(fileData.file&&files.name.length){
+		if (fileData.file && files.name.length) {
 			// let id = 0;
 
-			createCollectible ({...files,...fileData})
-			.then(res=>{
-				history.push (`/collectible/${res}`);
-			})
-			.catch(err=>{
-				bread(err.response.data.error)
-			})
+			createCollectible({ ...files, ...fileData })
+				.then(res => {
+					history.push(`/collectible/${res}`);
+				})
+				.catch(err => {
+					bread(err.response.data.error)
+				})
 
 			// .finally(()=>{
 			// 	setTimeout(() => {
 			// 	}, 250);
 			// })
 		}
-		else{
+		else {
 			setButtonText("Create Item")
 		}
 	}
@@ -174,30 +174,30 @@ const PreviewSection = () => {
 			<Group>
 				<Title>Preview</Title>
 				<PreviewContainer>
-					{!fileURL.length?(
+					{!fileURL.length ? (
 						<FilePreview>
 							<p>
 								Your preview will appear here once you upload a file
 							</p>
 						</FilePreview>
-					):(
-						<FilePreview fileType = { fileType } gradient={["video","image"].includes(fileType)}>
-							{ fileType === "image" ? (
-								<img src = { fileURL } alt = { title } />
+					) : (
+						<FilePreview fileType={fileType} gradient={["video", "image"].includes(fileType)}>
+							{fileType === "image" ? (
+								<img src={fileURL} alt={title} />
 							) : fileType === "video" ? (
-								<video controls src = { fileURL } alt = { title } />
+								<video controls src={fileURL} alt={title} />
 							) : fileType === "audio" ? (
-								<audio controls src = { fileURL } alt = { title } />
+								<audio controls src={fileURL} alt={title} />
 							) : null}
 						</FilePreview>
 					)}
 				</PreviewContainer>
-				{["video","audio"].includes(fileType)&&(
-					<UploadCover/>
+				{["video", "audio"].includes(fileType) && (
+					<UploadCover />
 				)}
 			</Group>
 			<LazyMotion features={domAnimation}>
-				<AnimBtn disabled={(isSubmitting)?true:false} onClick={handleClick}>{buttonText}</AnimBtn>
+				<AnimBtn disabled={(isSubmitting) ? true : false} onClick={handleClick}>{buttonText}</AnimBtn>
 			</LazyMotion>
 		</Wrapper>
 	)

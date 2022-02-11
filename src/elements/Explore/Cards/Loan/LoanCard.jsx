@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 import CardMedia from "@elements/Explore/Cards/Default/CardMedia";
 import Deadline from "@elements/Explore/Cards/Default/Deadline";
 import { format } from "date-fns";
+import Loader from "../Default/Loader";
 
 const Wrapper = styled(m(Link))`
 	position: relative;
 	display: grid;
 	grid-template-rows: 2fr 1fr;
-	border: 2px solid var(--app-container-bg-primary);
+	border: 0.125rem solid var(--app-container-bg-primary);
 	border-radius: 0.375rem;
 	/* overflow:hidden; */
 	min-width: 16rem;
@@ -31,7 +32,7 @@ const DeadlineContainer = styled.div`
 	transform:translateX(-50%);
 `
 
-const LoanCard = ({ data }) => {
+const LoanCard = ({ data, isLoading }) => {
 	const lenderExists = Number(data.loan?.lender?.address) !== 0
 	const formattedDeadline = data.loan && format(new Date(data.loan?.deadline), "EEEE, LLLL d, uuuu h:mm a")
 	return (
@@ -46,7 +47,7 @@ const LoanCard = ({ data }) => {
 			>
 				{lenderExists && <DeadlineContainer title={`Deadline: ${formattedDeadline}`}><Deadline loan time={data.loan?.deadline} /></DeadlineContainer>}
 				<CardMedia meta={data.meta} deadline={data.loan?.deadline} />
-				<CardInfo data={data} lenderExists={lenderExists} />
+				{isLoading ? <Loader /> : (<CardInfo data={data} lenderExists={lenderExists} />)}
 			</Wrapper>
 		</LazyMotion>
 	)
