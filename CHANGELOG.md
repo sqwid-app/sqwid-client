@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.10](https://github.com/boidushya/sqwid-client/compare/v0.2.9...v0.2.10) (2022-02-11)
+
+
+### Features
+
+* added loan cards for explore page ([9847336](https://github.com/boidushya/sqwid-client/commit/98473361909497b7ea0a0437703e8811e2501b7e))
+* added persistence to account balance ([c709d28](https://github.com/boidushya/sqwid-client/commit/c709d28f98cd90df0ad31fb3bdabedb390a5fac0))
+* added raffle cards for explore page ([ead9eec](https://github.com/boidushya/sqwid-client/commit/ead9eec6623fe86e2225aedbc08098466230e9c0))
+* added sale and auction cards for explore page ([9566fe0](https://github.com/boidushya/sqwid-client/commit/9566fe05f35deb7edf1f3a378290ad257d7009a6))
+* added Sale, Raffle, Auction, Loan sections for explore page ([c941135](https://github.com/boidushya/sqwid-client/commit/c9411353d659f563e78090587c61c3eb1be958d8))
+* show balance in profile element ([6977b28](https://github.com/boidushya/sqwid-client/commit/6977b2848dc69aec361d535bc58ced117f994cb6))
+
+
+### Bug Fixes
+
+* added offfet limit for navbar ([8c4a6f4](https://github.com/boidushya/sqwid-client/commit/8c4a6f47463ed9e00d0aaf4bd0d124597e376111))
+* fixed amount styles ([36e7555](https://github.com/boidushya/sqwid-client/commit/36e7555e90446ee9c0c91d252860fe3762e60e87))
+* removed console.log for ESLINT ([73d9dea](https://github.com/boidushya/sqwid-client/commit/73d9deacfeef8fc127a91a7fb24614faf0cadb66))
+* z-index issue for navbar on profile page ([4c38faa](https://github.com/boidushya/sqwid-client/commit/4c38faa7a40293bd3ddf96cd61d1ebf6ca7e86c3))
+
 ### [0.2.9](https://github.com/boidushya/sqwid-client/compare/v0.2.8...v0.2.9) (2022-02-09)
 
 
