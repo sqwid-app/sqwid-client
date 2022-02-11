@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import AuthContext from '@contexts/Auth/AuthContext';
 import constants from "@utils/constants";
 import { formatReefPrice } from '@utils/formatReefPrice';
+import useStateInfo from '@utils/useStateInfo';
 
 /*
 	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/sections.png
@@ -39,8 +40,8 @@ const parentMargin = css`
 
 const BottomContainer = styled.div`
 	height: ${props => !props.parent ? `auto` : `100%`};
-	${parentMargin};
-	margin-top:auto;
+	/* ${parentMargin}; */
+	margin-top: 1.5rem;
 	display: flex;
 	justify-content: flex-end;
 	align-items: flex-end;
@@ -113,7 +114,7 @@ const PriceContainer = styled.p`
 const BottomWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	height: 100%;
+	gap: 0.75rem;
 	.unavailable{
 		color: var(--app-container-text-primary);
 		font-weight: 900;
@@ -130,7 +131,6 @@ const TopSection = styled.div`
 	display: flex;
 	align-items:center;
 	justify-content:space-between;
-	margin-top: 1rem;
 `
 
 const Content = styled.div`
@@ -187,10 +187,35 @@ const FunderSection = styled.div`
 `
 
 const Title = styled.h2`
-	font-size: 1.75rem;
+	position: relative;
+	font-size: 1.5rem;
 	font-weight: 900;
-	margin-top: 0.75rem;
-	margin-bottom: 0.25rem;
+	padding: 0.125rem 0.25rem;
+	width: fit-content;
+	&:after{
+		content: "";
+		bottom: 0;
+		left: 0;
+		position: absolute;
+		height: 0.1rem;
+		width:100%;
+		background: var(--app-text);
+		border-radius: 1000rem;
+	}
+`
+
+const TitleContainer = styled.div`
+	width: 100%;
+	margin: 0.75rem 0;
+	margin-bottom: 1rem;
+	border-bottom: 0.1rem solid var(--app-container-bg-primary);
+`
+
+const SectionContainer = styled.div`
+	display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 `
 
 const AnimBtn = ({ children, ...props }) => (
@@ -207,6 +232,12 @@ const AnimBtn = ({ children, ...props }) => (
 	>{children}</Btn>
 )
 
+const ConfigContainer = styled.div`
+	flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+`
 
 const CurrentPrice = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
@@ -228,27 +259,12 @@ const CurrentPrice = () => {
 	)
 }
 
-
-// Hook to fetch all info about the current state from CollectibleContext
-const useStateInfo = () => {
-	const { collectibleInfo } = useContext(CollectibleContext)
-	const getCurrentState = () => constants.STATE_TYPES_KEYS.filter(el =>
-		collectibleInfo[el] !== null
-	)
-	const [currentState, setCurrentState] = useState(getCurrentState())
-	useEffect(() => {
-		setCurrentState(getCurrentState())
-		//eslint-disable-next-line
-	}, [collectibleInfo])
-	return (currentState.length === 1) ? collectibleInfo[currentState[0]] : null
-}
-
 const Deadline = () => {
 	const stateInfo = useStateInfo()
 	const deadline = stateInfo.deadline * 1000 //converting deadline from s to ms
 	// const deadline = 1643836298054
 	return (
-		<div>
+		<SectionContainer>
 			<Heading>Deadline</Heading>
 			{stateInfo.deadline === 0 ? <p className="unavailable">Not set</p> : (
 				<p>
@@ -258,20 +274,20 @@ const Deadline = () => {
 					</TooltipCustom>
 				</p>
 			)}
-		</div>
+		</SectionContainer>
 	)
 }
 
 const MinimumBid = () => {
 	const stateInfo = useStateInfo()
 	return (
-		<div>
+		<SectionContainer>
 			<Heading>Minimum Bid</Heading>
 			<PriceContainer>
 				<ReefIcon size={28} />
 				<p>{numberSeparator(formatReefPrice(stateInfo.minBid))}</p>
 			</PriceContainer>
-		</div>
+		</SectionContainer>
 	)
 }
 
@@ -281,13 +297,13 @@ const HighestBid = () => {
 	return (
 		<>
 			{highestBid !== 0 && (
-				<div>
+				<SectionContainer>
 					<Heading align="right">Highest Bid</Heading>
 					<PriceContainer align="right">
 						<ReefIcon size={28} />
 						<p>{numberSeparator(formatReefPrice(highestBid))}</p>
 					</PriceContainer>
-				</div>
+				</SectionContainer>
 			)}
 		</>
 	)
@@ -297,12 +313,12 @@ const TimePeriod = () => {
 	const stateInfo = useStateInfo()
 	const interval = stateInfo.numMinutes
 	return (
-		<div>
+		<SectionContainer>
 			<Heading>Time Period</Heading>
-			<p>
+			<TimeText>
 				{capitalize(intervalToFormattedDuration(minutesToMilliseconds(interval)))}
-			</p>
-		</div>
+			</TimeText>
+		</SectionContainer>
 	)
 }
 
@@ -316,7 +332,7 @@ const PaybackFee = () => {
 		//eslint-disable-next-line
 	}, [collectibleInfo.conversionRate])
 	return (
-		<div>
+		<SectionContainer>
 			<Heading>Payback Fee</Heading>
 			<PriceContainer>
 				<ReefIcon size={28} />
@@ -325,7 +341,7 @@ const PaybackFee = () => {
 					{usdPrice && (<span>(${usdPrice})</span>)}
 				</p>
 			</PriceContainer>
-		</div>
+		</SectionContainer>
 	)
 }
 
@@ -347,16 +363,16 @@ const Funder = () => {
 const ConfigWrapper = ({ children, state }) => {
 	const isEmpty = Boolean(children.type() === null)
 	return (
-		<>
+		<ConfigContainer>
 			{!isEmpty ? (
 				<>
-					<Title>
-						{constants.STATE_TYPES[state]}
-					</Title>
+					<TitleContainer>
+						<Title>{constants.STATE_TYPES[state]}</Title>
+					</TitleContainer>
 					{children}
 				</>
 			) : (null)}
-		</>
+		</ConfigContainer>
 	)
 }
 

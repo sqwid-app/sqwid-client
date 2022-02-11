@@ -142,15 +142,17 @@ const PaginatedCards = ({ Card, state }) => {
 							<Items currentItems={salesItems.items} isLoading={isCardLoading} Card={Card} />
 						</Suspense>
 					</CardSectionContainer>
-					<StyledReactPaginate
-						breakLabel={<BreakIcon />}
-						nextLabel={<NextIcon />}
-						onPageChange={handlePageClick}
-						pageRangeDisplayed={5}
-						pageCount={pageCount}
-						previousLabel={<PreviousIcon />}
-						renderOnZeroPageCount={null}
-					/>
+					{pageCount > 1 && (
+						<StyledReactPaginate
+							breakLabel={<BreakIcon />}
+							nextLabel={<NextIcon />}
+							onPageChange={handlePageClick}
+							pageRangeDisplayed={5}
+							pageCount={pageCount}
+							previousLabel={<PreviousIcon />}
+							renderOnZeroPageCount={null}
+						/>
+					)}
 				</>
 			)}
 		</>

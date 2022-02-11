@@ -13,6 +13,7 @@ import { Helmet } from "react-helmet";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import { getBackend } from "@utils/network";
+import useStateInfo from "@utils/useStateInfo";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -39,7 +40,9 @@ const LoadingContainer = styled.div`
 const MetaTags = () => {
 	const { collectibleInfo } = useContext(CollectibleContext);
 	// console.log(collectibleInfo)
-	const title = `${collectibleInfo.meta.name} | ${constants.APP_NAME}`
+	const stateInfo = useStateInfo()
+	const emoji = stateInfo ? constants.STATE_EMOJI_MAP[stateInfo?.type] : null
+	const title = `${emoji ? `${emoji} | ` : ""}${collectibleInfo.meta.name} | ${constants.APP_NAME}`
 	const description = collectibleInfo.meta.description
 	const image = collectibleInfo.meta.image
 	return (

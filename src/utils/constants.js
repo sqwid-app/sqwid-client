@@ -15,6 +15,12 @@ const constants = {
 		"raffle",
 		"loan"
 	],
+	STATE_EMOJI_MAP: {
+		"sale": "💰",
+		"auction": "⌛",
+		"raffle": "🎲",
+		"loan": "🏦"
+	},
 	EXPLORE_PAGINATION_LIMIT: 12,
 }
 
