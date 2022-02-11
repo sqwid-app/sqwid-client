@@ -153,7 +153,7 @@ const VideoCard = ({ url, isLoading }) => {
 		isLoading ? setVideoLoading(true) : setVideoLoading(false);
 	}, [isLoading])
 	useEffect(() => {
-		(url || isLoading) ? !videoRef.current.readyState >= 3 && setVideoLoading(true) : setVideoLoading(false);
+		url ? !(videoRef.current.readyState >= 3) && setVideoLoading(true) : setVideoLoading(false);
 		if (previousUrl.current === url) {
 			return;
 		}
@@ -161,10 +161,7 @@ const VideoCard = ({ url, isLoading }) => {
 		(videoRef.current) && videoRef.current.load();
 
 		previousUrl.current = url;
-	}, [url, isLoading])
-	useEffect(() => {
-		isPlaying ? videoRef.current.play() : videoRef.current.pause();
-	}, [isPlaying]);
+	}, [url])
 	return (
 		<>
 			<LoaderContainer style={{ display: !videoLoading && "none" }}>
@@ -199,22 +196,17 @@ const VideoCard = ({ url, isLoading }) => {
 const ImageCard = ({ url, isLoading }) => {
 	const [loading, setLoading] = useState(false);
 	const imageRef = useRef();
-	const imageLoaded = () => {
-		setLoading(false);
-	};
-	useEffect(() => {
-		(url) ? !imageRef.current.complete && setLoading(true) : setLoading(false);
-	}, [url])
 	useEffect(() => {
 		isLoading ? setLoading(true) : setLoading(false);
 	}, [isLoading])
+
 	return (
 		<>
-			<LoaderContainer style={{ display: !loading && "none" }}>
+			<LoaderContainer style={{ display: !loading ? "none" : "flex" }}>
 				<LoadingIcon size="48" />
 			</LoaderContainer>
-			<ImageContainer style={{ display: loading && "none" }} url={url}>
-				<Image ref={imageRef} src={url} onLoad={imageLoaded} loading="lazy" />
+			<ImageContainer style={{ display: loading ? "none" : "flex" }} url={url}>
+				<Image ref={imageRef} src={url} loading="lazy" />
 			</ImageContainer>
 		</>
 	)
