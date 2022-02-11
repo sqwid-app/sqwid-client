@@ -8,7 +8,6 @@ import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import Select from "react-select";
 import { styles } from "@styles/reactSelectStyles";
 import Info from "./Info";
-import Collected from "./Collected";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -82,14 +81,29 @@ const ProfileSection = () => {
 		title: "Collections",
 		component: <Collections />
 	}, {
-		name: "Collected",
+		name: "Available",
 		isActive: false,
-		title: "Collected",
-		component: <Collected />
+		title: "Available",
+		component: <>Work in progress ⚒🚧</>
 	}, {
-		name: "Bids",
+		name: "On Sale",
 		isActive: false,
-		title: "Bids",
+		title: "On Sale",
+		component: <>Work in progress ⚒🚧</>
+	}, {
+		name: "Auctions",
+		isActive: false,
+		title: "Auctions",
+		component: <>Work in progress ⚒🚧</>
+	}, {
+		name: "Raffles",
+		isActive: false,
+		title: "Raffles",
+		component: <>Work in progress ⚒🚧</>
+	}, {
+		name: "Loans",
+		isActive: false,
+		title: "Loans",
 		component: <>Work in progress ⚒🚧</>
 	}])
 	const options = navRoutes.map(route => ({

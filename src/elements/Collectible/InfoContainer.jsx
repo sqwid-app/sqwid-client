@@ -1,6 +1,7 @@
 import PropertiesSection from "@elements/Collectible/PropertiesSection";
 import React, { useState } from "react";
 import styled from "styled-components";
+//eslint-disable-next-line
 import BidsSection from "./BidsSection";
 import InfoSection from "./InfoSection";
 import MarketSection from "./MarketSection";
@@ -59,9 +60,10 @@ const InfoContainer = () => {
 			</>
 		)
 	}, {
-		name: "Bids",
+		name: "History",
 		isActive: false,
-		component: <BidsSection />
+		// component: <BidsSection />
+		component: <>Work in progress ⚒🚧</>
 	}])
 	return (
 		<Container>

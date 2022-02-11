@@ -10,7 +10,9 @@ import CopiesSection from "@elements/Create/CopiesSection";
 import CollectionSection from "@elements/Create/CollectionSection";
 import PropertiesSection from "@elements/Create/PropertiesSection";
 import Changes from "@elements/Create/Changes";
+//eslint-disable-next-line
 import WrapSection from "./WrapSection";
+//eslint-disable-next-line
 import UnwrapSection from "./UnwrapSection";
 
 const Wrapper = styled.div`
@@ -57,7 +59,7 @@ const Group = styled.div`
 
 const RightContainer = styled(LeftContainer)``
 
-const MainPage = () =>{
+const MainPage = () => {
 	return (
 		<MainSection>
 			<LeftContainer>
@@ -119,28 +121,30 @@ const NavContent = styled.p`
 	}
 `
 
-const HeroSection = () =>{
+const HeroSection = () => {
 	const [navRoutes, setNavRoutes] = useState([{
 		name: "Create",
 		isActive: true,
-		title:"Create a Collectible",
-		component:<MainPage />
+		title: "Create a Collectible",
+		component: <MainPage />
 	}, {
 		name: "Wrap",
 		isActive: false,
-		title:"Wrap",
-		component:  <WrapSection/>
-	},{
+		title: "Wrap",
+		// component:  <WrapSection/>
+		component: <>Work in progress ⚒🚧</>
+	}, {
 		name: "Unwrap",
 		isActive: false,
-		title:"Unwrap",
-		component: <UnwrapSection/>
+		title: "Unwrap",
+		// component: <UnwrapSection/>
+		component: <>Work in progress ⚒🚧</>
 	}])
 	return (
 		<FileProvider>
 			<Wrapper>
 				<HeaderSection>
-					<Title>{navRoutes.find(item=>item.isActive).title}</Title>
+					<Title>{navRoutes.find(item => item.isActive).title}</Title>
 					<Navbar>
 						{navRoutes.map((item, index) => (
 							<NavContent

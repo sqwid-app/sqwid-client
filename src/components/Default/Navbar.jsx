@@ -21,11 +21,11 @@ const Nav = styled.nav`
 	font-weight: 700;
 	font-size: 1.25rem;
 	padding: 2.5rem 3.75rem;
-	backdrop-filter: ${props => props.blur ? `blur(5px) brightness(0.25)` : `none`};
+	backdrop-filter: ${props => props.blur ? `blur(5px) brightness(0.75)` : `none`};
 	z-index: 100;
 	top:0;
 	border-bottom: ${props => props.blur ? `1px` : `0`} solid var(--app-container-bg-primary);
-	transition: backdrop-filter 0.2s ease, border-bottom 0.05s ease;
+	transition: backdrop-filter 0.2s ease, border-bottom 0.1s ease;
 	${respondTo.md`
 		padding: 1.25rem 1.5rem;
 	`}

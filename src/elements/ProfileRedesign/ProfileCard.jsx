@@ -495,7 +495,7 @@ const ProfileCard = () => {
 						</ContentContainer>
 						<AdditionalDetailsContainer>
 							<LazyMotion features={domAnimation}>
-								<Btn>Follow</Btn>
+								<Btn onClick={() => { bread(<p style={{ fontWeight: "900", color: "var(--app-container-text-primary-hover)" }}>Work in progress ⚒🚧</p>) }}>Follow</Btn>
 							</LazyMotion>
 							<MetadataContainer followers={1100} collections={10} nfts={1234} />
 							{isOwnAccount && (<EditDetailsContainer title={`${!editIsActive ? `Enter` : `Exit`} Edit Mode`}><span>Edit Profile Details</span><EditIcon onClick={() => setEditIsActive(true)} /></EditDetailsContainer>)}

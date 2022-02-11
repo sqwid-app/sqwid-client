@@ -8,9 +8,6 @@ const Container = styled.div`
 `
 
 const TitleContainer = styled.div`
-	label{
-		word-break: break-all;
-	}
 	span{
 		display: inline-block;
 		font-weight: 900;
@@ -37,6 +34,8 @@ const Description = styled.h3`
 	margin-top:0.5rem;
 	font-weight: 800;
 	font-size: 1rem;
+	max-width: 45rem;
+	word-break: break-all;
 	color: var(--app-container-text-primary-hover);
 `
 

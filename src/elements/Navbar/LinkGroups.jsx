@@ -64,9 +64,9 @@ const LinkGroups = () => {
 			</NavLink>
 			{isLoggedIn && (
 				<>
-					<NavLink to="/lagoon" exact className="nav-links" activeClassName="nav-selected">
+					{/* <NavLink to="/lagoon" exact className="nav-links" activeClassName="nav-selected">
 						Lagoon
-					</NavLink>
+					</NavLink> */}
 					<NavLink to="/create" exact className="nav-links" activeClassName="nav-selected">
 						Create
 					</NavLink>

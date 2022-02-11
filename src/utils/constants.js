@@ -21,6 +21,10 @@ const constants = {
 		"raffle": "🎲",
 		"loan": "🏦"
 	},
+	CREATE_ACCEPTED_MIMETYPES: [
+		"image/jpeg",
+		"image/png",
+	],
 	EXPLORE_PAGINATION_LIMIT: 12,
 }
 
