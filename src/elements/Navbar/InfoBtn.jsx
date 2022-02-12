@@ -8,6 +8,7 @@ const BtnContainer = styled.div`
 	display: grid;
 	place-items:center;
 	cursor: pointer;
+	z-index: 0;
 	&:hover{
 		svg{
 			color: var(--app-container-text-primary-hover);
