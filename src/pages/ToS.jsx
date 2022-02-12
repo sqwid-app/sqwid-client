@@ -80,10 +80,6 @@ const ToS = () => {
 				<h2>8. Your Privacy</h2>
 
 				<p>Please read our <a href="/privacy-policy">Privacy Policy.</a></p>
-
-				<h2>9. Governing Law</h2>
-
-				<p>Any claim related to Sqwid's Website shall be governed by the laws of ve without regards to its conflict of law provisions.</p>
 			</Container>
 		</Wrapper>
 	)
