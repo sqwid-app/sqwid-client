@@ -2,8 +2,9 @@ import React, { Suspense, useEffect, useState } from "react";
 import styled from "styled-components";
 import CardSectionContainer from "@elements/Default/CardSectionContainer";
 import ReactPaginate from 'react-paginate';
-import { fetchStateItems } from "@utils/marketplace";
+import { fetchStateItems, fetchUserItems } from "@utils/marketplace";
 import LoadingIcon from "@static/svg/LoadingIcon";
+import constants from "@utils/constants";
 
 const StyledReactPaginate = styled(ReactPaginate).attrs({
 	activeClassName: 'active',
@@ -99,14 +100,39 @@ const LoadingContainer = styled.div`
 	place-items:center;
 `
 
-const PaginatedCards = ({ Card, state }) => {
+const EmptySectionContainer = styled.div`
+	width: 100%;
+	height: 100%;
+	display: grid;
+	place-items:center;
+`
+
+const EmptySectionText = styled.h1`
+	font-weight: 900;
+	color: var(--app-container-text-primary);
+	text-align:center;
+`
+
+const EmptySection = ({ state }) => {
+	return (
+		<EmptySectionContainer>
+			{state >= 0 && (
+				<EmptySectionText>
+					{constants.STATE_EMPTY_MESSAGE_MAP[state]}
+				</EmptySectionText>
+			)}
+		</EmptySectionContainer>
+	)
+}
+
+const PaginatedCards = ({ Card, state, profile }) => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [isCardLoading, setIsCardLoading] = useState(true)
-	const [salesItems, setSalesItems] = useState([]);
+	const [stateItems, setStateItems] = useState([]);
 	useEffect(() => {
 		const fetchData = async () => {
-			const items = await fetchStateItems(state);
-			setSalesItems(items);
+			const items = profile ? await fetchUserItems(profile, state) : await fetchStateItems(state);
+			setStateItems(items);
 			setIsLoading(false);
 			setIsCardLoading(false)
 		}
@@ -116,15 +142,15 @@ const PaginatedCards = ({ Card, state }) => {
 	const [pageCount, setPageCount] = useState(0);
 
 	useEffect(() => {
-		(salesItems.pagination) && setPageCount(Math.ceil(salesItems.pagination.totalItems / salesItems.pagination.perPage))
+		(stateItems.pagination) && setPageCount(Math.ceil(stateItems.pagination.totalItems / stateItems.pagination.perPage))
 		//eslint-disable-next-line
-	}, [salesItems.pagination]);
+	}, [stateItems.pagination]);
 
 	const handlePageClick = (event) => {
 		const fetchData = async () => {
 			setIsCardLoading(true)
-			const items = await fetchStateItems(state, event.selected + 1);
-			setSalesItems(items);
+			const items = profile ? await fetchUserItems(profile, state, event.selected + 1) : await fetchStateItems(state, event.selected + 1);
+			setStateItems(items);
 			setIsCardLoading(false)
 		}
 		fetchData()
@@ -137,21 +163,25 @@ const PaginatedCards = ({ Card, state }) => {
 				</LoadingContainer>
 			) : (
 				<>
-					<CardSectionContainer>
-						<Suspense>
-							<Items currentItems={salesItems.items} isLoading={isCardLoading} Card={Card} />
-						</Suspense>
-					</CardSectionContainer>
-					{pageCount > 1 && (
-						<StyledReactPaginate
-							breakLabel={<BreakIcon />}
-							nextLabel={<NextIcon />}
-							onPageChange={handlePageClick}
-							pageRangeDisplayed={5}
-							pageCount={pageCount}
-							previousLabel={<PreviousIcon />}
-							renderOnZeroPageCount={null}
-						/>
+					{stateItems.items.length === 0 ? (<EmptySection state={state} />) : (
+						<>
+							<CardSectionContainer>
+								<Suspense>
+									<Items currentItems={stateItems.items} isLoading={isCardLoading} Card={Card} />
+								</Suspense>
+							</CardSectionContainer>
+							{pageCount > 1 && (
+								<StyledReactPaginate
+									breakLabel={<BreakIcon />}
+									nextLabel={<NextIcon />}
+									onPageChange={handlePageClick}
+									pageRangeDisplayed={5}
+									pageCount={pageCount}
+									previousLabel={<PreviousIcon />}
+									renderOnZeroPageCount={null}
+								/>
+							)}
+						</>
 					)}
 				</>
 			)}

@@ -46,6 +46,8 @@ const Name = styled.h1`
 	white-space: nowrap;
 	${respondTo.md`
 		max-width: 20rem;
+		margin: 0 auto;
+		margin-top: 1.5rem;
 	`}
 `
 
@@ -260,6 +262,11 @@ const EditDetailsContainer = styled.label`
 	align-items: center;
 	justify-content: center;
 	gap: 0.5rem;
+	cursor: pointer;
+	transition: color 0.15s ease;
+	&:hover{
+		color: var(--app-container-text-primary-hover);
+	}
 `
 
 const HeaderContainer = styled.div`
@@ -495,10 +502,10 @@ const ProfileCard = () => {
 						</ContentContainer>
 						<AdditionalDetailsContainer>
 							<LazyMotion features={domAnimation}>
-								<Btn onClick={() => { bread(<p style={{ fontWeight: "900", color: "var(--app-container-text-primary-hover)" }}>Work in progress ⚒🚧</p>) }}>Follow</Btn>
+								<Btn onClick={() => { bread(<p style={{ lineHeight: "1", fontWeight: "900", color: "var(--app-container-text-primary-hover)" }}>Work in progress ⚒🚧</p>) }}>Follow</Btn>
 							</LazyMotion>
 							<MetadataContainer followers={1100} collections={10} nfts={1234} />
-							{isOwnAccount && (<EditDetailsContainer title={`${!editIsActive ? `Enter` : `Exit`} Edit Mode`}><span>Edit Profile Details</span><EditIcon onClick={() => setEditIsActive(true)} /></EditDetailsContainer>)}
+							{isOwnAccount && (<EditDetailsContainer onClick={() => setEditIsActive(true)} title={`${!editIsActive ? `Enter` : `Exit`} Edit Mode`}><span>Edit Profile Details</span><EditIcon /></EditDetailsContainer>)}
 						</AdditionalDetailsContainer>
 					</Container>
 				) : (
@@ -508,7 +515,7 @@ const ProfileCard = () => {
 				<HeaderContainer>
 					<HeaderSection>
 						<Header>Edit Details</Header>
-						{isOwnAccount && (<EditDetailsContainer title={`${!editIsActive ? `Enter` : `Exit`} Edit Mode`}><span>Exit Edit Mode</span><EditIcon onClick={() => setEditIsActive(false)} /></EditDetailsContainer>)}
+						{isOwnAccount && (<EditDetailsContainer onClick={() => setEditIsActive(false)} title={`${!editIsActive ? `Enter` : `Exit`} Edit Mode`}><span>Exit Edit Mode</span><EditIcon /></EditDetailsContainer>)}
 					</HeaderSection>
 					<EditContainer>
 						<EditSection userData={userData} setUserData={setUserData} />

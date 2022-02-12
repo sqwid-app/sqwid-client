@@ -8,6 +8,11 @@ import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import Select from "react-select";
 import { styles } from "@styles/reactSelectStyles";
 import Info from "./Info";
+import AvailableSection from "@elements/Profile/AvailableSection";
+import OnSaleSection from "@elements/Profile/OnSaleSection";
+import AuctionSection from "@elements/Profile/AuctionSection";
+import RaffleSection from "@elements/Profile/RaffleSection";
+import LoanSection from "@elements/Profile/LoanSection";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -83,28 +88,28 @@ const ProfileSection = () => {
 	}, {
 		name: "Available",
 		isActive: false,
-		title: "Available",
-		component: <>Work in progress ⚒🚧</>
+		title: <>Available <span className="emoji">🐋</span></>,
+		component: <AvailableSection />
 	}, {
 		name: "On Sale",
 		isActive: false,
-		title: "On Sale",
-		component: <>Work in progress ⚒🚧</>
+		title: <>On Sale <span className="emoji">📃</span></>,
+		component: <OnSaleSection />
 	}, {
 		name: "Auctions",
 		isActive: false,
-		title: "Auctions",
-		component: <>Work in progress ⚒🚧</>
+		title: <>Auctions <span className="emoji">⌛</span></>,
+		component: <AuctionSection />
 	}, {
 		name: "Raffles",
 		isActive: false,
-		title: "Raffles",
-		component: <>Work in progress ⚒🚧</>
+		title: <>Raffles <span className="emoji">🎲</span></>,
+		component: <RaffleSection />
 	}, {
 		name: "Loans",
 		isActive: false,
-		title: "Loans",
-		component: <>Work in progress ⚒🚧</>
+		title: <>Loans <span className="emoji">🏦</span></>,
+		component: <LoanSection />
 	}])
 	const options = navRoutes.map(route => ({
 		label: route.name,

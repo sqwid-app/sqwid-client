@@ -9,8 +9,9 @@ import { getBalance } from '@utils/getBalance';
 import { numberSeparator } from '@utils/numberSeparator';
 import FadeLoaderIcon from '@static/svg/FadeLoader';
 import constants from '@utils/constants';
+import bread from '@utils/bread';
 
-const BasicDetailsContainer = styled(Link)`
+const BasicDetailsContainer = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -21,6 +22,11 @@ const BasicDetailsContainer = styled(Link)`
 	color: var(--app-text);
 	text-decoration: none;
 	user-select: none;
+`
+
+const NotStyledLink = styled(Link)`
+	text-decoration: none;
+	color: inherit;
 `
 
 const ProfilePicture = styled.div`
@@ -95,15 +101,23 @@ const ProfileElement = () => {
 	useEffect(() => {
 		auth && setUsername(auth.meta.name)
 	}, [auth])
+	const copyAddress = () => {
+		navigator.clipboard.writeText(auth.evmAddress)
+			.then(() => {
+				bread(<p style={{ lineHeight: "1", fontWeight: "900", color: "var(--app-container-text-primary-hover)" }}>Copied address to clipboard!</p>)
+			})
+	}
 	return (
 		<>
-			<BasicDetailsContainer
-				to="/profile"
-			>
-				<ProfilePicture url={getAvatarFromId(auth.address)} />
+			<BasicDetailsContainer>
+				<NotStyledLink
+					to="/profile"
+				><ProfilePicture url={getAvatarFromId(auth.address)} /></NotStyledLink>
 				<ProfileDetails >
-					<ProfileName title={username}>{username}</ProfileName>
-					<ProfileAddress title={auth.evmAddress}>{auth.evmAddress}</ProfileAddress>
+					<NotStyledLink
+						to="/profile"
+					><ProfileName title={username}>{username}</ProfileName></NotStyledLink>
+					<ProfileAddress onClick={copyAddress} title={auth.evmAddress}>{auth.evmAddress}</ProfileAddress>
 				</ProfileDetails>
 			</BasicDetailsContainer>
 			<DividerHorizontal />
