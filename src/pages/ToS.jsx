@@ -57,9 +57,9 @@ const ToS = () => {
 
 				<p>This will let Sqwid to terminate upon violations of any of these restrictions. Upon termination, your viewing right will also be terminated and you should destroy any downloaded materials in your possession whether it is printed or electronic format.</p>
 
-				<h2>3. Disclaimer</h2>
+				<h2>3. Disclaimer of warranties and Limitation of liability</h2>
 
-				<p>All the materials on Sqwid’s Website are provided "as is". Sqwid makes no warranties, may it be expressed or implied, therefore negates all other warranties. Furthermore, Sqwid does not make any representations concerning the accuracy or reliability of the use of the materials on its Website or otherwise relating to such materials or any sites linked to this Website.</p>
+				<p>This website is provided by the authors "as is" and any express or implied warranties, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event shall the authors be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this website, even if advised of the possibility of such damage.</p>
 
 				<h2>4. Limitations</h2>
 
@@ -80,6 +80,11 @@ const ToS = () => {
 				<h2>8. Your Privacy</h2>
 
 				<p>Please read our <a href="/privacy-policy">Privacy Policy.</a></p>
+
+				<h2>9. Copyright Complaints</h2>
+
+				<p>Sqwid respects the intellectual property of others. If you believe that your work has been copied in
+					a way that constitutes copyright infringement, please <a href="mailto:contact@sqwid.app">email us</a></p>
 			</Container>
 		</Wrapper>
 	)
