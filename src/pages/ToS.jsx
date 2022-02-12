@@ -50,7 +50,7 @@ const ToS = () => {
 				<ul>
 					<li>modify or copy the materials;</li>
 					<li>use the materials for any commercial purpose or for any public display;</li>
-					<li>attempt to reverse engineer any software contained on sqwid's Website;</li>
+					<li>attempt to reverse engineer any software contained on Sqwid's Website;</li>
 					<li>remove any copyright or other proprietary notations from the materials; or</li>
 					<li>transferring the materials to another person or "mirror" the materials on any other server.</li>
 				</ul>
