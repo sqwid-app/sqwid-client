@@ -162,6 +162,9 @@ const VideoCard = ({ url, isLoading }) => {
 
 		previousUrl.current = url;
 	}, [url])
+	useEffect(() => {
+		isPlaying ? videoRef.current.play() : videoRef.current.pause();
+	}, [isPlaying]);
 	return (
 		<>
 			<LoaderContainer style={{ display: !videoLoading && "none" }}>
