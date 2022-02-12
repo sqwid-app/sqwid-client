@@ -14,6 +14,7 @@ const Container = styled.div`
 	h1{
 		font-size: 2rem;
 		font-weight: 800;
+		margin-bottom: 2rem;
 	}
 	p, ul{
 		color: var(--app-container-text-primary-hover);

@@ -1,4 +1,5 @@
 import Divider from "@elements/Default/Divider";
+import InfoBtn from "@elements/Navbar/InfoBtn";
 import LinkGroups from "@elements/Navbar/LinkGroups";
 import { MenuToggle } from "@elements/Navbar/MenuToggle";
 import Navigation from "@elements/Navbar/Navigation";
@@ -84,6 +85,7 @@ const Navbar = () => {
 						<Divider />
 						{/* <Search/> */}
 						<SignInBtn />
+						<InfoBtn />
 					</>
 				) : (
 					<>

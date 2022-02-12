@@ -3,7 +3,7 @@ import PaginatedCards from "@elements/Explore/Cards/Default/PaginatedCards";
 import { useParams } from "react-router-dom";
 import AuthContext from "@contexts/Auth/AuthContext";
 import { Container, Wrapper } from "./StyledElements";
-const AuctionCard = React.lazy(() => import("@elements/Explore/Cards/Auction/AuctionCard"));
+const SalesCard = React.lazy(() => import("@elements/Explore/Cards/Sales/SalesCard"));
 
 const AvailableSection = () => {
 	const { auth } = useContext(AuthContext)
@@ -13,7 +13,7 @@ const AvailableSection = () => {
 		<>
 			<Wrapper>
 				<Container>
-					<PaginatedCards profile={userID} Card={AuctionCard} state={0} />
+					<PaginatedCards profile={userID} Card={SalesCard} state={0} />
 				</Container>
 			</Wrapper>
 		</>
