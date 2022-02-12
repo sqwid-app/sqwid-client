@@ -10,6 +10,8 @@ import TopBanner from "@components/Default/TopBanner";
 import BreadContainer from "@components/Default/BreadContainer";
 import Sac from "@pages/Sac";
 import explorePages from "@routes/explorePages";
+import ToS from "@pages/ToS";
+import Privacy from "@pages/Privacy";
 
 const Explore = React.lazy(() => import("@pages/Explore"));
 const Collectible = React.lazy(() => import("@pages/Collectible"));
@@ -65,6 +67,16 @@ const Routes = () => {
 						path="/sac/:id"
 						exact
 						component={Sac}
+					/>
+					<Route
+						path="/terms-of-service"
+						exact
+						component={ToS}
+					/>
+					<Route
+						path="/privacy-policy"
+						exact
+						component={Privacy}
 					/>
 					<Route
 						path="/collectible/:addr/:ownerID?"
