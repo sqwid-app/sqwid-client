@@ -22,7 +22,7 @@ const Nav = styled.nav`
 	font-size: 1.25rem;
 	padding: 2.5rem 3.75rem;
 	backdrop-filter: ${props => props.blur ? `blur(5px) brightness(0.75)` : `none`};
-	z-index: 100;
+	z-index: 50;
 	top:0;
 	border-bottom: ${props => props.blur ? `1px` : `0`} solid var(--app-container-bg-primary);
 	transition: backdrop-filter 0.2s ease, border-bottom 0.1s ease;

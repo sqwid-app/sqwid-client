@@ -47,7 +47,7 @@ const TopBannerContainer = styled.div`
 	font-weight: 900;
 	font-size: 1rem;
 	background: var(--app-theme-primary);
-	z-index: 15;
+	z-index: 100;
 	${props => !props.remove ? modalEntryAnim : modalExitAnim};
 	${respondTo.md`
 		top:auto;
