@@ -34,7 +34,7 @@ const LinkWrapper = styled(Link)`
 
 const DeadlineContainer = styled.div`
 	position:absolute;
-	z-index: 1;
+	z-index: 3;
 	top:0;
 	left:50%;
 	margin-top: 0.5rem;
