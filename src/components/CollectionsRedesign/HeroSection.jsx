@@ -58,10 +58,10 @@ const Creator = styled(Link)`
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
-	font-weight: 900;
+	font-weight: 800;
 	cursor: pointer;
 	text-decoration: none;
-	color: var(--app-container-text-primary-hover);
+	color: var(--app-text);
 `
 const LoadingContainer = styled.div`
 	height: 70vh;

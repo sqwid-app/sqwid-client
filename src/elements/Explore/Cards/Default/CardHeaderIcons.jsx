@@ -80,8 +80,6 @@ const AnimatedIcons = (props) => {
 				y: -5,
 				scale: 1.05
 			}}
-			target="_blank"
-			rel="noreferrer"
 			{...props}
 		>
 			{props.children}

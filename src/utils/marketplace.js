@@ -57,121 +57,121 @@ const fetchStateItems = async (state, pageNumber = 1) => {
 };
 
 const unlistPositionOnSale = async (positionId) => {
-	await checkAndApproveMarketplace ();
+	await checkAndApproveMarketplace();
 	try {
-		const { signer } = await Interact ();
-		const marketplaceContractInstance = marketplaceContract (signer);
-		const tx = await marketplaceContractInstance.unlistPositionOnSale (positionId);
-		const receipt = await tx.wait ();
+		const { signer } = await Interact();
+		const marketplaceContractInstance = marketplaceContract(signer);
+		const tx = await marketplaceContractInstance.unlistPositionOnSale(positionId);
+		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
-		console.error (error);
+		// console.error (error);
 		return null;
 	}
 }
 
 const putItemOnSale = async (itemId, copies, price) => {
-	await checkAndApproveMarketplace ();
+	await checkAndApproveMarketplace();
 	try {
-		const { signer } = await Interact ();
-		const marketplaceContractInstance = marketplaceContract (signer);
-		const tx = await marketplaceContractInstance.putItemOnSale (itemId, copies, ethers.utils.parseEther (price));
-		const receipt = await tx.wait ();
+		const { signer } = await Interact();
+		const marketplaceContractInstance = marketplaceContract(signer);
+		const tx = await marketplaceContractInstance.putItemOnSale(itemId, copies, ethers.utils.parseEther(price));
+		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
-		console.error (error);
+		// console.error (error);
 		return null;
 	}
 }
 
 
 const createItemLoan = async (itemId, loanAmount, feeAmount, tokenAmount, duration) => {
-	await checkAndApproveMarketplace ();
+	await checkAndApproveMarketplace();
 	try {
-		const { signer } = await Interact ();
-		const marketplaceContractInstance = marketplaceContract (signer);
-		const tx = await marketplaceContractInstance.createItemLoan (itemId, ethers.utils.parseEther (loanAmount), ethers.utils.parseEther (feeAmount), tokenAmount, duration);
-		const receipt = await tx.wait ();
+		const { signer } = await Interact();
+		const marketplaceContractInstance = marketplaceContract(signer);
+		const tx = await marketplaceContractInstance.createItemLoan(itemId, ethers.utils.parseEther(loanAmount), ethers.utils.parseEther(feeAmount), tokenAmount, duration);
+		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
-		console.error (error);
+		// console.error (error);
 		return null;
 	}
 }
 
 const createItemAuction = async (itemId, tokenAmount, duration, minBid) => {
-	await checkAndApproveMarketplace ();
+	await checkAndApproveMarketplace();
 	try {
-		const { signer } = await Interact ();
-		const marketplaceContractInstance = marketplaceContract (signer);
-		const tx = await marketplaceContractInstance.createItemAuction (itemId, tokenAmount, duration, ethers.utils.parseEther (minBid));
-		const receipt = await tx.wait ();
+		const { signer } = await Interact();
+		const marketplaceContractInstance = marketplaceContract(signer);
+		const tx = await marketplaceContractInstance.createItemAuction(itemId, tokenAmount, duration, ethers.utils.parseEther(minBid));
+		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
-		console.error (error);
+		// console.error (error);
 		return null;
 	}
 }
 
 const createItemRaffle = async (itemId, tokenAmount, duration) => {
-	await checkAndApproveMarketplace ();
+	await checkAndApproveMarketplace();
 	try {
-		const { signer } = await Interact ();
-		const marketplaceContractInstance = marketplaceContract (signer);
-		const tx = await marketplaceContractInstance.createItemRaffle (itemId, tokenAmount, duration);
-		const receipt = await tx.wait ();
+		const { signer } = await Interact();
+		const marketplaceContractInstance = marketplaceContract(signer);
+		const tx = await marketplaceContractInstance.createItemRaffle(itemId, tokenAmount, duration);
+		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
-		console.error (error);
+		// console.error (error);
 		return null;
 	}
 }
 
 
 const enterRaffle = async (itemId, amount) => {
-	await checkAndApproveMarketplace ();
+	await checkAndApproveMarketplace();
 	try {
-		const { signer } = await Interact ();
-		const marketplaceContractInstance = marketplaceContract (signer);
-		const tx = await marketplaceContractInstance.enterRaffle (itemId, {
-			value: ethers.utils.parseEther (amount),
+		const { signer } = await Interact();
+		const marketplaceContractInstance = marketplaceContract(signer);
+		const tx = await marketplaceContractInstance.enterRaffle(itemId, {
+			value: ethers.utils.parseEther(amount),
 		});
-		const receipt = await tx.wait ();
+		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
-		console.error (error);
+		// console.error (error);
 		return null;
 	}
 }
 
 const createBid = async (itemId, amount) => {
-	await checkAndApproveMarketplace ();
+	await checkAndApproveMarketplace();
 	try {
-		const { signer } = await Interact ();
-		const marketplaceContractInstance = marketplaceContract (signer);
-		const tx = await marketplaceContractInstance.createBid (itemId, {
-			value: ethers.utils.parseEther (amount),
+		const { signer } = await Interact();
+		const marketplaceContractInstance = marketplaceContract(signer);
+		const tx = await marketplaceContractInstance.createBid(itemId, {
+			value: ethers.utils.parseEther(amount),
 		});
-		const receipt = await tx.wait ();
+		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
-		console.error (error);
+		// console.error (error);
 		return null;
 	}
 }
 
 const createSale = async (positionId, tokenAmount, price) => {
-	await checkAndApproveMarketplace ();
+	await checkAndApproveMarketplace();
 	try {
-		const { signer } = await Interact ();
-		const marketplaceContractInstance = marketplaceContract (signer);
-		const tx = await marketplaceContractInstance.createSale (positionId, tokenAmount, {
-			value: ethers.utils.parseEther ((Number (tokenAmount) * Number (price)).toString ()),
+		const { signer } = await Interact();
+		const marketplaceContractInstance = marketplaceContract(signer);
+		const tx = await marketplaceContractInstance.createSale(positionId, tokenAmount, {
+			value: ethers.utils.parseEther((Number(tokenAmount) * Number(price)).toString()),
 		});
-		const receipt = await tx.wait ();
+		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
-		console.error (error);
+		// console.error (error);
 		return null;
 	}
 }

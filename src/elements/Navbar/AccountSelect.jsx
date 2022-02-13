@@ -6,7 +6,9 @@ import { truncateAddress } from "@utils/textUtils";
 import AuthContext from "@contexts/Auth/AuthContext";
 import bread from "@utils/bread";
 import ProfileElement from "./ProfileElement";
+import FadeLoaderIcon from "@static/svg/FadeLoader";
 import { DividerHorizontal } from "@elements/Default/Divider";
+import constants from "@utils/constants";
 
 const swipeRightToLeft = keyframes`
 	0% {
@@ -116,6 +118,17 @@ const Title = styled.h1`
 	margin-bottom: 0.25rem;
 `
 
+const networkButtonStyles = css`
+	--app-theme-opacity: 0.25;
+	--app-theme-text: rgb(211 231 255);
+	border: solid 0.15rem var(--app-theme-primary);
+	background: rgba(
+		var(--app-theme-value),
+		var(--app-theme-opacity)
+	);
+	color: var(--app-theme-text);
+`
+
 const Button = styled(m.a)`
 	display: flex;
 	align-items: center;
@@ -131,6 +144,7 @@ const Button = styled(m.a)`
 	cursor: pointer;
 	z-index:2;
 	user-select:none;
+	${props => props.network && networkButtonStyles};
 `
 
 const Alert = styled.div`
@@ -159,12 +173,25 @@ const Content = styled.p`
 	color:var(--app-container-text-primary-hover);
 `
 
+const ButtonsContainer = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+`
+
 const elemContains = (rect, x, y) => {
 	return rect ? (rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height) : false;
 }
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
+	const initialNetwork = localStorage.getItem(`${constants.APP_NAME}__network`)
+	const [testnetIsActive, setTestnetIsActive] = useState(initialNetwork || true)
+	const [networkButtonText, setNetworkButtonText] = useState(<FadeLoaderIcon />)
+	useEffect(() => {
+		!initialNetwork && localStorage.setItem(`${constants.APP_NAME}__network`, true)
+		//eslint-disable-next-line
+	}, [])
 	const [signer, setSigner] = useState("")
 	const { auth, login, logout, setLoading } = useContext(AuthContext);
 	const [alert, setAlert] = useState({
@@ -224,6 +251,10 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		}
 	}, [alert.isActive])
 
+	useEffect(() => {
+		setNetworkButtonText(!testnetIsActive ? `Mainnet` : `Testnet`)
+	}, [testnetIsActive])
+
 	const handleClickOutside = (e) => {
 		let rect = modalRef?.current?.getBoundingClientRect();
 		let rect2 = alertRef?.current?.getBoundingClientRect();
@@ -269,20 +300,37 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 						{auth && (
 							<>
 								<DividerHorizontal />
-								<Button
-									whileHover={{
-										y: -5,
-										x: 0,
-										scale: 1.02
-									}}
-									whileTap={{
-										scale: 0.99
-									}}
-									onClick={() => {
-										logout()
-										window.location.reload()
-									}}
-								>Logout</Button>
+								<ButtonsContainer>
+									<Button
+										whileHover={{
+											y: -5,
+											x: 0,
+											scale: 1.02
+										}}
+										whileTap={{
+											scale: 0.99
+										}}
+										network
+										title="Switch Network"
+										onClick={() => {
+											setTestnetIsActive(!testnetIsActive)
+										}}
+									>{networkButtonText}</Button>
+									<Button
+										whileHover={{
+											y: -5,
+											x: 0,
+											scale: 1.02
+										}}
+										whileTap={{
+											scale: 0.99
+										}}
+										onClick={() => {
+											logout()
+											window.location.reload()
+										}}
+									>Logout</Button>
+								</ButtonsContainer>
 							</>
 						)}
 					</Modal>

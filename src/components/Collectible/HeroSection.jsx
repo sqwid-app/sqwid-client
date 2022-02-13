@@ -18,12 +18,15 @@ import useStateInfo from "@utils/useStateInfo";
 const Wrapper = styled.div`
 	padding: 0 6rem;
 	height: calc(100vh - 12rem);
-	display: flex;
+	/* display: flex; */
+	display: grid;
+	grid-auto-columns: minmax(0, 1fr);
+	grid-auto-flow: column;
 	/* grid-template-columns: repeat(2,minmax(0,1fr)); */
 	gap: 2rem;
 	${respondTo.md`
 		padding: 0 2rem;
-		flex-direction: column-reverse;
+		grid-auto-flow: row;
 		min-height: 85vh;
 		height: auto;
 	`}

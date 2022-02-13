@@ -4,11 +4,16 @@
 	/*
 		app config
 	*/
+	--app-theme-value: 13, 104, 216;
+	--app-theme-opacity: 0.5;
 	--app-background: hsl(230, 36%, 4%);
 	--app-background-transparent: hsla(230, 36%, 4%, 85%);
 	--app-text: hsl(0, 0%, 100%);
-	--app-theme-primary: rgb(13, 104, 216);
-	--app-theme-primary-transparent: rgba(13, 104, 216, 0.5);
+	--app-theme-primary: rgb(var(--app-theme-value));
+	--app-theme-primary-transparent: rgba(
+		var(--app-theme-value),
+		var(--app-theme-opacity)
+	);
 	--app-theme-primary-disabled: rgb(11, 77, 159);
 	--app-container-bg-primary: hsl(240, 10%, 16%);
 	--app-container-text-primary: rgb(120, 121, 135);

@@ -8,27 +8,29 @@ import { CSSTransition } from 'react-transition-group';
 import { getCloudflareURL, getDwebURL } from "@utils/getIPFSURL";
 
 const Container = styled.div`
-	flex:1;
 	display: grid;
 	place-items: center;
+	user-select: none;
 	${respondTo.md`
-		flex: none;
+		grid-row: 1;
 	`}
 `
 
 const blur = css`
 	filter: blur(2rem) brightness(0.5);
 	transform: scale(1.1);
+	pointer-events: none;
 `
 
 const ImageContainer = styled.img`
-	width: 100%;
+	height: 100%;
+    width: 100%;
+	max-height: 80vh;
 	/* background-image: url(${props => props.url && props.url});
 	background-size:contain;
 	background-repeat:no-repeat;
 	background-position: center; */
 	object-fit: contain;
-    max-width: 100%;
 	transition: filter 0.1s ease, transform 0.2s ease;
 	${props => props.blur && blur}
 	${respondTo.md`
@@ -46,15 +48,15 @@ const WarningTextContainer = styled.div`
 	z-index:2;
 	border-radius: 0.5rem;
 	background-color: rgb(251 191 36 / 25%);
-	font-weight: 700;
+	font-weight: 500;
 	border: solid 0.125rem var(--warning-border);
 	color:var(--warning-text);
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px, inset rgba(0, 0, 0, 0.0.05) 0px 10px 15px -3px, inset rgba(0, 0, 0, 0.025) 0px 4px 6px -2px;
 	p{
 		width: calc(100% - (2 * var(--close-btn-dimension)));
 	}
 	b{
-		font-weight: 900;
+		font-weight: 700;
 	}
 	svg{
 		position: absolute;
@@ -71,9 +73,11 @@ const WarningTextContainer = styled.div`
 
 const ImageWrapper = styled.div`
 	position: relative;
-	height: fit-content;
 	width: 100%;
+	max-height: 100%;
 	overflow: hidden;
+	display: grid;
+    place-items: center;
 `
 
 const VideoWrapper = styled.div`
@@ -125,8 +129,8 @@ const PlyrCover = styled.div`
 	background - repeat: no - repeat;
 	background - size: cover;
 	background - position: center;
-	min - height: 24rem;
-	min - width: 100 %;
+	min-height: 24rem;
+	min-width: 100%;
 	border - radius: 0.25rem 0.25rem 0 0;
 	${respondTo.md`
 		min-height: 12rem;
