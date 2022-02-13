@@ -1,8 +1,7 @@
 import { respondTo } from "@styles/styledMediaQuery";
 // import { getAvatarFromId } from "@utils/getAvatarFromId";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import axios from 'axios';
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { Link } from "react-router-dom";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
@@ -13,6 +12,7 @@ import RaffleSection from "@elements/Collections/Sections/RaffleSection";
 import LoanSection from "@elements/Collections/Sections/LoanSection";
 import Select from "react-select";
 import { styles } from "@styles/reactSelectStyles";
+import { getCloudflareURL } from "@utils/getIPFSURL";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -122,9 +122,7 @@ const NavContent = styled.p`
 
 const NavContainer = styled.div``
 
-const HeroSection = ({ id }) => {
-	const [collectionsInfo, setCollectionsInfo] = useState({});
-	const [isLoading, setIsLoading] = useState(true)
+const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 
 	const [navRoutes, setNavRoutes] = useState([{
 		name: "Available",
@@ -158,15 +156,6 @@ const HeroSection = ({ id }) => {
 	}))
 	const isTabletOrMobile = useIsTabletOrMobile();
 
-	useEffect(() => {
-		const fetchData = async () => {
-			const { data } = await axios(`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItems/collection/${id}`);
-			setCollectionsInfo(data);
-			setIsLoading(false);
-		}
-		fetchData();
-	}, [id]);
-
 	return (
 		<>
 			{isLoading ? (
@@ -180,18 +169,18 @@ const HeroSection = ({ id }) => {
 						<HeaderContainer>
 							<Header>
 								<CollectionsLogo
-									url={collectionsInfo.thumb}
+									url={getCloudflareURL(collectionInfo.thumb)}
 								/>
-								{collectionsInfo.name}
+								{collectionInfo.name}
 							</Header>
 							<Creator
-								to={`/profile/${collectionsInfo.creator.id}`}
+								to={`/profile/${collectionInfo.creator.id}`}
 							>
 								by
 								<CreatorLogo
-									url={collectionsInfo.creator.thumb}
+									url={collectionInfo.creator.thumb}
 								/>
-								{collectionsInfo.creator.name}
+								{collectionInfo.creator.name}
 							</Creator>
 						</HeaderContainer>
 						<NavContainer>
