@@ -123,6 +123,10 @@ const InputWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.75rem;
+	span{
+		color: var(--app-container-text-primary-hover);
+		font-weight: 700;
+	}
 `
 
 const Btn = styled(BtnBaseAnimated)`
@@ -402,7 +406,7 @@ export const CreateAuctionModal = (props) => {
 						onChange={handleMinutesInput}
 						placeholder={`Duration of the auction in minutes`}
 					/>
-					<span>{duration ? intervalToFormattedDuration(minutesToMilliseconds(Number(duration))) : 'Enter a duration'}</span>
+					<span>{duration ? intervalToFormattedDuration(minutesToMilliseconds(Number(duration))) : '(Duration will appear here once you start typing)'}</span>
 				</InputWrapper>
 				<InfoSection link="/blog/auctions" fee={props.fee} />
 				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
@@ -583,7 +587,7 @@ export const LendModal = (props) => {
 						onChange={handleMinutesInput}
 						placeholder={`Duration of the loan in minutes`}
 					/>
-					<span>{duration ? intervalToFormattedDuration(minutesToMilliseconds(Number(duration))) : 'Enter a duration'}</span>
+					<span>{duration ? intervalToFormattedDuration(minutesToMilliseconds(Number(duration))) : '(Duration will appear here once you start typing)'}</span>
 				</InputWrapper>
 				<InfoSection link="/blog/loan" fee={props.fee} />
 				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
@@ -661,7 +665,7 @@ export const RaffleModal = (props) => {
 						onChange={handleMinutesInput}
 						placeholder={`Duration of the raffle in minutes`}
 					/>
-					<span>{duration ? intervalToFormattedDuration(minutesToMilliseconds(Number(duration))) : 'Enter a duration'}</span>
+					<span>{duration ? intervalToFormattedDuration(minutesToMilliseconds(Number(duration))) : '(Duration will appear here once you start typing)'}</span>
 				</InputWrapper>
 				<InfoSection link="/blog/raffle" fee={props.fee} />
 				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
