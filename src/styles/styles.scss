@@ -52,6 +52,31 @@ span.emoji {
 	display: none !important;
 }
 
+.warning-enter {
+	opacity: 0;
+	transform: translateY(-100%);
+	transition: all 0.2s var(--easing);
+}
+
+.warning-enter-active,
+.warning-enter-done,
+.warning-exit {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.warning-exit-active {
+	opacity: 0;
+	transform: translateY(-100%);
+	transition: all 0.2s var(--easing);
+}
+
+.warning-exit-done {
+	opacity: 0;
+	transform: translateY(100%);
+	display: none !important;
+}
+
 @keyframes animate-logo {
 	0% {
 		stroke-dashoffset: 0px;

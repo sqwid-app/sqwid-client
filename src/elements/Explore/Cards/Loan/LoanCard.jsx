@@ -8,7 +8,7 @@ import Deadline from "@elements/Explore/Cards/Default/Deadline";
 import { format } from "date-fns";
 import Loader from "../Default/Loader";
 
-const Wrapper = styled(m(Link))`
+const Wrapper = styled(m.div)`
 	position: relative;
 	display: grid;
 	grid-template-rows: 2fr 1fr;
@@ -21,6 +21,15 @@ const Wrapper = styled(m(Link))`
 	user-select: none;
 	text-decoration: none;
 	color: var(--app-text);
+`
+
+const LinkWrapper = styled(Link)`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index:1;
 `
 
 const DeadlineContainer = styled.div`
@@ -43,8 +52,8 @@ const LoanCard = ({ data, isLoading }) => {
 					y: 0,
 					scale: 0.99
 				}}
-				to={`/collectible/${data.positionId}`}
 			>
+				<LinkWrapper to={`/collectible/${data.positionId}`}></LinkWrapper>
 				{lenderExists && <DeadlineContainer title={`Deadline: ${formattedDeadline}`}><Deadline loan time={data.loan?.deadline} /></DeadlineContainer>}
 				<CardMedia meta={data.meta} deadline={data.loan?.deadline} />
 				{isLoading ? <Loader /> : (<CardInfo data={data} lenderExists={lenderExists} />)}

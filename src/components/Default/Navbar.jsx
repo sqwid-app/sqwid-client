@@ -58,7 +58,7 @@ const ContentContainer = styled.div`
 	gap: 1rem;
 `
 
-const Navbar = () => {
+const Navbar = React.memo(() => {
 	const [isAtTop, setIsAtTop] = useState(true)
 	const isTabletOrMobile = useIsTabletOrMobile();
 	const [isOpen, toggleOpen] = useCycle(false, true);
@@ -94,6 +94,6 @@ const Navbar = () => {
 			</ContentContainer>
 		</Nav>
 	)
-}
+})
 
-export default React.memo(Navbar)
+export default Navbar
