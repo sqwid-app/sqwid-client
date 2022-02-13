@@ -17,6 +17,9 @@ import AuthContext from '@contexts/Auth/AuthContext';
 import constants from "@utils/constants";
 import { formatReefPrice } from '@utils/formatReefPrice';
 import useStateInfo from '@utils/useStateInfo';
+import { unlistPositionOnSale } from '@utils/marketplace';
+import Loading from '@elements/Default/Loading';
+import { useHistory } from 'react-router-dom';
 
 /*
 	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/sections.png
@@ -278,6 +281,30 @@ const Deadline = () => {
 	)
 }
 
+const RaffleValue = () => {
+	const stateInfo = useStateInfo()
+	return (
+		<SectionContainer>
+			<Heading>Total Raffle Value</Heading>
+			<PriceContainer>
+				<ReefIcon size={28} />
+				<p>{numberSeparator(formatReefPrice(stateInfo.totalValue))}</p>
+			</PriceContainer>
+		</SectionContainer>
+	)
+}
+
+const TotalAddresses = () => {
+	const stateInfo = useStateInfo()
+	return (
+		<SectionContainer>
+			<Heading>Participating Addresses</Heading>
+			<p>{stateInfo.totalAddresses}</p>
+		</SectionContainer>
+	)
+}
+
+
 const MinimumBid = () => {
 	const stateInfo = useStateInfo()
 	return (
@@ -395,7 +422,7 @@ const Config2 = () => {
 				Put On Sale
 			</AnimBtn>
 			<AnimBtn onClick={() => setShowLendModal(!showLendModal)}>
-				Lend
+				Create Loan Proposal
 			</AnimBtn>
 			<AnimBtn onClick={() => setShowAuctionModal(!showAuctionModal)}>
 				Create Auction
@@ -403,10 +430,10 @@ const Config2 = () => {
 			<AnimBtn onClick={() => setShowRaffleModal(!showRaffleModal)}>
 				Create Raffle
 			</AnimBtn>
-			<CreateAuctionModal fee={50} isActive={showAuctionModal} setIsActive={setShowAuctionModal} />
-			<PutOnSaleModal fee={25} isActive={showPutOnSaleModal} setIsActive={setShowPutOnSaleModal} />
-			<LendModal fee={69} isActive={showLendModal} setIsActive={setShowLendModal} />
-			<RaffleModal fee={0} isActive={showRaffleModal} setIsActive={setShowRaffleModal} />
+			<CreateAuctionModal fee={2.5} isActive={showAuctionModal} setIsActive={setShowAuctionModal} />
+			<PutOnSaleModal fee={2.5} isActive={showPutOnSaleModal} setIsActive={setShowPutOnSaleModal} />
+			<LendModal fee={2.5} isActive={showLendModal} setIsActive={setShowLendModal} />
+			<RaffleModal fee={2.5} isActive={showRaffleModal} setIsActive={setShowRaffleModal} />
 		</BottomContainer>
 	)
 }
@@ -429,14 +456,29 @@ const Config3 = () => {
 
 const Config4 = () => {
 	// state-1 / owned
-
+	const history = useHistory();
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState('Unlist');
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const handleClick = async () => {
+		setButtonText(<Loading/>);
+		setIsLoading(true);
+		const receipt = await unlistPositionOnSale (collectibleInfo.positionId);
+		if (receipt) {
+			history.push ('/profile');
+		} else {
+			setButtonText('Unlist');
+			setIsLoading(false);
+		}
+	}
+		
 	return (
 		<BottomContainer>
 			<RightContainer>
 				<CurrentPrice />
 			</RightContainer>
-			<AnimBtn>
-				Unlist
+			<AnimBtn disabled = {isLoading} onClick = {handleClick}>
+				{buttonText}
 			</AnimBtn>
 		</BottomContainer>
 	)
@@ -466,6 +508,7 @@ const Config5 = () => {
 
 const Config6 = () => {
 	// state-2 / not owned / active / highest bidder
+	const [showBidsModal, setShowBidsModal] = useState(false)
 
 	return (
 		<BottomWrapper>
@@ -475,10 +518,11 @@ const Config6 = () => {
 				<HighestBid />
 			</TopSection>
 			<BottomContainer parent={false}>
-				<AnimBtn>
+				<AnimBtn onClick={() => setShowBidsModal(!showBidsModal)}>
 					Increase Bid
 				</AnimBtn>
 			</BottomContainer>
+			<BidsModal isActive={showBidsModal} setIsActive={setShowBidsModal} />
 		</BottomWrapper>
 	)
 }
@@ -531,7 +575,11 @@ const Config10 = () => {
 
 	return (
 		<BottomWrapper>
-			<Deadline />
+			<TopSection>
+				<RaffleValue />
+				<TotalAddresses />
+				<Deadline />
+			</TopSection>
 			<BottomContainer parent={false}>
 				<AnimBtn onClick={() => setShowEnterRaffleModal(!showEnterRaffleModal)}>
 					Enter Raffle
@@ -547,7 +595,11 @@ const Config11 = () => {
 
 	return (
 		<BottomWrapper>
-			<Deadline />
+			<TopSection>
+				<RaffleValue />
+				<TotalAddresses />
+				<Deadline />
+			</TopSection>
 			<BottomContainer parent={false}>
 				<AnimBtn>
 					Finalize Raffle
@@ -561,7 +613,11 @@ const Config12 = () => {
 	// state-3 / owned / active
 	return (
 		<BottomWrapper>
-			<Deadline />
+			<TopSection>
+				<RaffleValue />
+				<TotalAddresses />
+				<Deadline />
+			</TopSection>
 		</BottomWrapper>
 	)
 }

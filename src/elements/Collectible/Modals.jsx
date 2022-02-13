@@ -7,11 +7,15 @@ import ReefIcon from "@static/svg/ReefIcon";
 import Loading from "@elements/Default/Loading";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 //eslint-disable-next-line
-import { addBid, buyNow, putOnSale } from "@utils/marketplace";
+import { addBid, buyNow, createBid, createItemAuction, createItemLoan, createItemRaffle, createSale, enterRaffle, putItemOnSale, putOnSale } from "@utils/marketplace";
 //eslint-disable-next-line
 import bread from "@utils/bread";
 import { Link } from "react-router-dom";
 import AlertIcon from "@static/svg/AlertIcon";
+import { useHistory } from "react-router-dom";
+import intervalToFormattedDuration from "@utils/intervalToFormattedDuration";
+import { minutesToMilliseconds } from "date-fns";
+import AuthContext from "@contexts/Auth/AuthContext";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -167,6 +171,11 @@ const StyledLink = styled(Link)`
 	}
 `
 
+const ToastLink = styled.a`
+text-decoration: none;
+color: var(--app-theme-primary);
+`
+
 const InfoSection = ({ fee, link }) => {
 	return (
 		<InfoWrapper>
@@ -310,20 +319,56 @@ export const TransferModal = (props) => {
 */
 
 export const CreateAuctionModal = (props) => {
+	const history = useHistory ();
 	const [isLoading, setIsLoading] = useState(false);
 	const initialButtonText = "Create Auction";
 	const [buttonText, setButtonText] = useState(initialButtonText);
 	const [minBid, setMinBid] = useState("");
-	const [numberOfCopies, setNumberOfCopies] = useState("");
-	const [numberOfDays, setNumberOfDays] = useState("");
-	const handleClick = () => {
-		if (!isLoading) {
-			setIsLoading(true)
+	const [copies, setCopies] = useState("");
+	const [duration, setDuration] = useState("");
+
+	const { collectibleInfo, setCollectibleInfo } = useContext (CollectibleContext);
+
+	const handleMinutesInput = (e) => {
+		let amount = Math.min (Number (e.target.value), 525600);
+		setDuration (amount < 1 ? '' : amount);
+	}
+
+	const handleClick = async () => {
+		if (!isLoading && Number (minBid) >= 1 && Number (copies) > 0 && Number (duration) > 1) {
+			setIsLoading(true);
 			setButtonText(<Loading />);
-			setTimeout(() => {
+			const receipt = await createItemAuction (collectibleInfo.itemId, Number (copies), Number (duration), minBid);
+			if (receipt) {
+				if (Number (copies) === collectibleInfo.amount) {
+					history.push ("/profile");
+				} else {
+					setCollectibleInfo ({
+						...collectibleInfo,
+						amount: collectibleInfo.amount - Number (copies),
+					});
+					setIsLoading(false)
+					setButtonText(initialButtonText);
+					setCopies ("");
+					setDuration ("");
+					setMinBid ("");
+					props.setIsActive (false);
+					const newPositionId = receipt.events[1].args['positionId'].toNumber ();
+					const shortUrl = `/collectible/${newPositionId}`;
+					bread (
+						<div>
+							Auction created! Check it out <ToastLink
+								href={shortUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>here</ToastLink>!
+						</div>
+					)
+				}
+			} else {
 				setIsLoading(false)
 				setButtonText(initialButtonText);
-			}, 10000)
+			}
 		}
 	}
 	return (
@@ -341,17 +386,18 @@ export const CreateAuctionModal = (props) => {
 					<InputTitle>Number of Copies</InputTitle>
 					<InputContainer
 						type="number"
-						value={numberOfCopies}
-						onChange={(e) => { setNumberOfCopies(e.target.value) }}
+						value={copies}
+						onChange={(e) => { setCopies(e.target.value) }}
 						placeholder={`Number of copies for the lot`}
 					/>
-					<InputTitle>Number of Days</InputTitle>
+					<InputTitle>Number of Minutes</InputTitle>
 					<InputContainer
 						type="number"
-						value={numberOfDays}
-						onChange={(e) => { setNumberOfDays(e.target.value) }}
-						placeholder={`Duration of the auction in days`}
+						value={duration}
+						onChange={handleMinutesInput}
+						placeholder={`Duration of the auction in minutes`}
 					/>
+					<span>{duration ? intervalToFormattedDuration(minutesToMilliseconds(Number (duration))) : 'Enter a duration'}</span>
 				</InputWrapper>
 				<InfoSection link="/blog/auctions" fee={props.fee} />
 				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
@@ -361,35 +407,56 @@ export const CreateAuctionModal = (props) => {
 }
 
 export const PutOnSaleModal = (props) => {
-	const [price, setPrice] = useState("")
-	const [copies, setCopies] = useState("")
+	const history = useHistory ();
+	const [price, setPrice] = useState("");
+	const [copies, setCopies] = useState("");
 	const initialButtonText = "Submit";
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState(initialButtonText);
-	//eslint-disable-next-line
-	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+	const { collectibleInfo, setCollectibleInfo } = useContext (CollectibleContext);
+
 	const handleInput = (e) => {
 		setPrice(e.target.value)
 	}
-	const handleClick = () => {
-		setIsLoading(true);
-		setButtonText(<Loading />);
-		// putOnSale(props.itemId, price).then(res => {
-		// 	setIsLoading(false);
-		// 	setButtonText("Submit");
-		// 	setCollectibleInfo({
-		// 		...collectibleInfo,
-		// 		isOnSale: true,
-		// 		price: price,
-		// 	});
-		// 	props.setIsActive(false);
-		// }).catch(err => {
-		// 	bread(err.response.data.error)
-		// });
-		setTimeout(() => {
-			setIsLoading(false)
-			setButtonText(initialButtonText);
-		}, 10000);
+	const handleCopiesInput = (e) => {
+		const amount = Math.min (Number (e.target.value), collectibleInfo.amount);
+		setCopies (amount || '');
+	}
+	const handleClick = async () => {
+		if (!isLoading && Number (price) >= 1 && Number (copies) >= 1) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			const receipt = await putItemOnSale (collectibleInfo.itemId, Number (copies), price);
+			if (receipt) {
+				if (Number (copies) === collectibleInfo.amount) {
+					history.push ("/profile");
+				} else {
+					setCollectibleInfo ({
+						...collectibleInfo,
+						amount: collectibleInfo.amount - Number (copies),
+					});
+					setIsLoading(false)
+					setButtonText(initialButtonText);
+					setPrice ("");
+					setCopies ("");
+					props.setIsActive (false);
+					const newPositionId = receipt.events[1].args['positionId'].toNumber ();
+					const shortUrl = `/collectible/${newPositionId}`;
+					bread (
+						<div>
+							Sale created! Check it out <ToastLink
+								href={shortUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>here</ToastLink>!
+						</div>
+					)
+				}
+			} else {
+				setIsLoading(false)
+				setButtonText(initialButtonText);
+			}
+		}
 	}
 	return (
 		<ModalContainer {...props}>
@@ -403,11 +470,11 @@ export const PutOnSaleModal = (props) => {
 						onChange={handleInput}
 						placeholder={`Enter Price (in Reef)`}
 					/>
-					<InputTitle>Number of Copies</InputTitle>
+					<InputTitle>Number of Copies (max {collectibleInfo.amount})</InputTitle>
 					<InputContainer
 						type="number"
 						value={copies}
-						onChange={(e) => setCopies(e.target.value)}
+						onChange={handleCopiesInput}
 						placeholder={`Number of copies for sale`}
 					/>
 				</InputWrapper>
@@ -419,6 +486,7 @@ export const PutOnSaleModal = (props) => {
 }
 
 export const LendModal = (props) => {
+	const history = useHistory ();
 	const [amount, setAmount] = useState("")
 	const [paybackFee, setPaybackFee] = useState("")
 	const [copies, setCopies] = useState("")
@@ -428,25 +496,54 @@ export const LendModal = (props) => {
 	const [buttonText, setButtonText] = useState(initialButtonText);
 	//eslint-disable-next-line
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
-	const handleClick = () => {
-		setIsLoading(true);
-		setButtonText(<Loading />);
-		// putOnSale(props.itemId, price).then(res => {
-		// 	setIsLoading(false);
-		// 	setButtonText("Submit");
-		// 	setCollectibleInfo({
-		// 		...collectibleInfo,
-		// 		isOnSale: true,
-		// 		price: price,
-		// 	});
-		// 	props.setIsActive(false);
-		// }).catch(err => {
-		// 	bread(err.response.data.error)
-		// });
-		setTimeout(() => {
-			setIsLoading(false)
-			setButtonText(initialButtonText);
-		}, 10000);
+
+	const handleCopiesInput = (e) => {
+		const amount = Math.min (Number (e.target.value), collectibleInfo.amount);
+		setCopies (amount || '');
+	}
+
+	const handleMinutesInput = (e) => {
+		let amount = Math.min (Number (e.target.value), 525600);
+		setDuration (amount < 1 ? '' : amount);
+	}
+
+	const handleClick = async () => {
+		if (!isLoading && Number (amount) >= 1 && Number (copies) >= 1 && Number (paybackFee) >= 0 && Number (duration) > 0) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			const receipt = await createItemLoan (collectibleInfo.itemId, amount, paybackFee, Number (copies), Number (duration));
+			if (receipt) {
+				if (Number (copies) === collectibleInfo.amount) {
+					history.push ("/profile");
+				} else {
+					setCollectibleInfo ({
+						...collectibleInfo,
+						amount: collectibleInfo.amount - Number (copies),
+					});
+					setIsLoading(false)
+					setButtonText(initialButtonText);
+					setAmount ("");
+					setCopies ("");
+					setPaybackFee ("");
+					setDuration ("");
+					props.setIsActive (false);
+					const newPositionId = receipt.events[1].args['positionId'].toNumber ();
+					const shortUrl = `/collectible/${newPositionId}`;
+					bread (
+						<div>
+							Loan proposal created! Check it out <ToastLink
+								href={shortUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>here</ToastLink>!
+						</div>
+					)
+				}
+			} else {
+				setIsLoading(false)
+				setButtonText(initialButtonText);
+			}
+		}
 	}
 	return (
 		<ModalContainer {...props}>
@@ -471,16 +568,17 @@ export const LendModal = (props) => {
 					<InputContainer
 						type="number"
 						value={copies}
-						onChange={(e) => setCopies(e.target.value)}
+						onChange={handleCopiesInput}
 						placeholder={`Number of copies for the lot`}
 					/>
 					<InputTitle>Duration</InputTitle>
 					<InputContainer
 						type="number"
 						value={duration}
-						onChange={(e) => setDuration(e.target.value)}
-						placeholder={`Duration of the loan in days`}
+						onChange={handleMinutesInput}
+						placeholder={`Duration of the loan in minutes`}
 					/>
+					<span>{duration ? intervalToFormattedDuration(minutesToMilliseconds(Number (duration))) : 'Enter a duration'}</span>
 				</InputWrapper>
 				<InfoSection link="/blog/loan" fee={props.fee} />
 				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
@@ -490,32 +588,54 @@ export const LendModal = (props) => {
 }
 
 export const RaffleModal = (props) => {
+	const history = useHistory ();
 	const [copies, setCopies] = useState("")
 	const [duration, setDuration] = useState("")
 	const initialButtonText = "Submit";
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState(initialButtonText);
-	//eslint-disable-next-line
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
-	const handleClick = () => {
-		setIsLoading(true);
-		setButtonText(<Loading />);
-		// putOnSale(props.itemId, price).then(res => {
-		// 	setIsLoading(false);
-		// 	setButtonText("Submit");
-		// 	setCollectibleInfo({
-		// 		...collectibleInfo,
-		// 		isOnSale: true,
-		// 		price: price,
-		// 	});
-		// 	props.setIsActive(false);
-		// }).catch(err => {
-		// 	bread(err.response.data.error)
-		// });
-		setTimeout(() => {
-			setIsLoading(false)
-			setButtonText(initialButtonText);
-		}, 10000);
+
+	const handleMinutesInput = (e) => {
+		let amount = Math.min (Number (e.target.value), 525600);
+		setDuration (amount < 1 ? '' : amount);
+	}
+
+	const handleClick = async () => {
+		if (!isLoading && Number (copies) >= 1 && Number (duration) >= 1) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			const receipt = await createItemRaffle (collectibleInfo.itemId, Number (copies), Number (duration));
+			if (receipt) {
+				if (Number (copies) === collectibleInfo.amount) {
+					history.push ("/profile");
+				} else {
+					setCollectibleInfo ({
+						...collectibleInfo,
+						amount: collectibleInfo.amount - Number (copies),
+					});
+					setIsLoading(false)
+					setButtonText(initialButtonText);
+					setDuration ("");
+					setCopies ("");
+					props.setIsActive (false);
+					const newPositionId = receipt.events[1].args['positionId'].toNumber ();
+					const shortUrl = `/collectible/${newPositionId}`;
+					bread (
+						<div>
+							Raffle created! Check it out <ToastLink
+								href={shortUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>here</ToastLink>!
+						</div>
+					)
+				}
+			} else {
+				setIsLoading(false)
+				setButtonText(initialButtonText);
+			}
+		}
 	}
 	return (
 		<ModalContainer {...props}>
@@ -533,9 +653,10 @@ export const RaffleModal = (props) => {
 					<InputContainer
 						type="number"
 						value={duration}
-						onChange={(e) => setDuration(e.target.value)}
-						placeholder={`Duration of the loan in days`}
+						onChange={handleMinutesInput}
+						placeholder={`Duration of the raffle in minutes`}
 					/>
+					<span>{duration ? intervalToFormattedDuration(minutesToMilliseconds(Number (duration))) : 'Enter a duration'}</span>
 				</InputWrapper>
 				<InfoSection link="/blog/raffle" fee={props.fee} />
 				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
@@ -549,31 +670,34 @@ export const EnterRaffleModal = (props) => {
 	const initialButtonText = "Submit";
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState(initialButtonText);
-	//eslint-disable-next-line
+	// eslint-disable-next-line
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
-	const handleClick = () => {
-		setIsLoading(true);
-		setButtonText(<Loading />);
-		// putOnSale(props.itemId, price).then(res => {
-		// 	setIsLoading(false);
-		// 	setButtonText("Submit");
-		// 	setCollectibleInfo({
-		// 		...collectibleInfo,
-		// 		isOnSale: true,
-		// 		price: price,
-		// 	});
-		// 	props.setIsActive(false);
-		// }).catch(err => {
-		// 	bread(err.response.data.error)
-		// });
-		setTimeout(() => {
+	const handleClick = async () => {
+		if (!isLoading && Number (amount) >= 1) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			const receipt = await enterRaffle (collectibleInfo.positionId, amount);
+			if (receipt) {
+				setIsLoading(false)
+				setButtonText(initialButtonText);
+				setAmount ("");
+				props.setIsActive (false);
+				bread (`You've added ${amount} Reef to the raffle!`);
+				setTimeout (() => {
+					window.location.reload ();
+				}, 3000);
+			} else {
+				setIsLoading(false)
+				setButtonText(initialButtonText);
+			}
+		} else {
 			setIsLoading(false)
 			setButtonText(initialButtonText);
-		}, 10000);
+		}
 	}
 	return (
 		<ModalContainer {...props}>
-			<Title>Create Raffle</Title>
+			<Title>Enter Raffle</Title>
 			<Group>
 				<InputTitle>Amount</InputTitle>
 				<InputContainer
@@ -593,37 +717,63 @@ export const BidsModal = (props) => {
 	const initialButtonText = "Submit";
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState(initialButtonText);
+	// const [minToBid, setMinToBid] = useState(0);
+	const { auth } = useContext(AuthContext);
 	//eslint-disable-next-line
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
-	const handleClick = () => {
-		setIsLoading(true);
-		setButtonText(<Loading />);
-		// putOnSale(props.itemId, price).then(res => {
-		// 	setIsLoading(false);
-		// 	setButtonText("Submit");
-		// 	setCollectibleInfo({
-		// 		...collectibleInfo,
-		// 		isOnSale: true,
-		// 		price: price,
-		// 	});
-		// 	props.setIsActive(false);
-		// }).catch(err => {
-		// 	bread(err.response.data.error)
-		// });
-		setTimeout(() => {
+	const minToBid = Math.max (collectibleInfo.auction.minBid / 10 ** 18, collectibleInfo.auction.highestBid / 10 ** 18);
+	
+	const handleAmountInput = (e) => {
+		setAmount (e.target.value);
+	}
+
+	const handleClick = async () => {
+		if (!isLoading && Number (amount) >= minToBid) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			const receipt = await createBid (collectibleInfo.positionId, amount);
+			if (receipt) {
+				console.log (receipt);
+				setCollectibleInfo ({
+					...collectibleInfo,
+					auction: {
+						...collectibleInfo.auction,
+						highestBid: amount * 10 ** 18,
+						highestBidder: {
+							...collectibleInfo.auction.highestBidder,
+							address: auth?.evmAddress
+						}
+					}
+				});
+				setIsLoading(false)
+				setButtonText(initialButtonText);
+				setAmount ("");
+				props.setIsActive (false);
+				bread (`You bid ${amount} Reef!`);
+			} else {
+				setIsLoading(false)
+				setButtonText(initialButtonText);
+			}
+		} else {
 			setIsLoading(false)
 			setButtonText(initialButtonText);
-		}, 10000);
+		}
 	}
 	return (
 		<ModalContainer {...props}>
-			<Title>Bid</Title>
+			<Title>Bid or increase your bid</Title>
 			<Group>
-				<InputTitle>Amount</InputTitle>
+				<div>
+					If you've already bid, your new bid will be added to your total,<br/> and the total must be more than the highest bid.
+				</div> <br/>
+				<div>
+					For now please keep track of your bids until we implement <br/> a way of tracking them.
+				</div><br/>
+				<InputTitle>Amount (more than {minToBid})</InputTitle>
 				<InputContainer
 					type="number"
 					value={amount}
-					onChange={(e) => setAmount(e.target.value)}
+					onChange={handleAmountInput}
 					placeholder={`Amount to bid (in Reef)`}
 				/>
 				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>
@@ -633,41 +783,71 @@ export const BidsModal = (props) => {
 }
 
 export const BuyModal = (props) => {
+	const history = useHistory ();
 	const [copies, setCopies] = useState("")
-	const initialButtonText = "Submit";
+	const initialButtonText = "Buy";
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState(initialButtonText);
 	//eslint-disable-next-line
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
-	const handleClick = () => {
-		setIsLoading(true);
-		setButtonText(<Loading />);
-		// putOnSale(props.itemId, price).then(res => {
-		// 	setIsLoading(false);
-		// 	setButtonText("Submit");
-		// 	setCollectibleInfo({
-		// 		...collectibleInfo,
-		// 		isOnSale: true,
-		// 		price: price,
-		// 	});
-		// 	props.setIsActive(false);
-		// }).catch(err => {
-		// 	bread(err.response.data.error)
-		// });
-		setTimeout(() => {
-			setIsLoading(false)
+
+	const handleCopiesInput = (e) => {
+		const amount = Math.min (Number (e.target.value), collectibleInfo.amount);
+		setCopies (amount || '');
+		if (amount) {
+			setButtonText(`Buy for ${amount * (collectibleInfo.sale.price / (10 ** 18))} Reef`);
+		} else {
 			setButtonText(initialButtonText);
-		}, 10000);
+		}
+	}
+
+	const handleClick = async () => {
+		if (!isLoading && Number (copies) >= 1) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			const receipt = await createSale (collectibleInfo.positionId, Number (copies), Number (collectibleInfo.sale.price) / 10 ** 18);
+			if (receipt) {
+				console.log (receipt);
+				
+				if (Number (copies) === collectibleInfo.amount) {
+					const newPositionId = receipt.events[1].args['positionId'].toNumber ();
+					history.push (`/collectibles/${newPositionId}`);
+				} else {
+					setCollectibleInfo ({
+						...collectibleInfo,
+						amount: collectibleInfo.amount - Number (copies),
+					});
+					setIsLoading(false)
+					setButtonText(initialButtonText);
+					setCopies ("");
+					props.setIsActive (false);
+					const newPositionId = receipt.events[2].args['positionId'].toNumber ();
+					const shortUrl = `/collectible/${newPositionId}`;
+					bread (
+						<div>
+							Item{copies.length > 1 ? 's' : ''} bought! Check {copies.length > 1 ? 'them' : 'it'} out <ToastLink
+								href={shortUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>here</ToastLink>!
+						</div>
+					)
+				}
+			} else {
+				setIsLoading(false)
+				setButtonText(initialButtonText);
+			}
+		}
 	}
 	return (
 		<ModalContainer {...props}>
 			<Title>Buy</Title>
 			<Group>
-				<InputTitle>Number of copies</InputTitle>
+				<InputTitle>Number of copies (max {collectibleInfo.amount})</InputTitle>
 				<InputContainer
 					type="number"
 					value={copies}
-					onChange={(e) => setCopies(e.target.value)}
+					onChange={handleCopiesInput}
 					placeholder={`Number of copies to buy`}
 				/>
 				<AnimBtn disabled={isLoading} onClick={handleClick}>{buttonText}</AnimBtn>

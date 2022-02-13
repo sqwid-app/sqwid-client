@@ -56,7 +56,7 @@ const createCollectibleOld = async (files) => {
 			let { signer } = await Interact(address);
 			const to = await signer.getAddress();
 			let contract = new ethers.Contract(
-				getContract('reef_testnet', 'marketplace'),
+				getContract('marketplace'),
 				contractABI,
 				signer
 			);
@@ -123,7 +123,7 @@ const createCollectible = async (files) => {
 	let { signer } = await Interact(address);
 	const to = await signer.getAddress();
 	let contract = new ethers.Contract(
-		getContract('reef_testnet', 'marketplace'),
+		getContract('marketplace'),
 		contractABI,
 		signer
 	);

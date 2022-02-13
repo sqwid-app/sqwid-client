@@ -7,12 +7,12 @@ const approveMarketplace = async () => {
     let { signer } = await Interact ();
 
     let contract = new ethers.Contract (
-        getContract ('reef_testnet', 'erc1155'),
+        getContract ('erc1155'),
         contractABI,
         signer
     );
 
-    const tx = await contract.setApprovalForAll (getContract ('reef_testnet', 'marketplace'), true);
+    const tx = await contract.setApprovalForAll (getContract ('marketplace'), true);
     return await tx.wait ();
 };
 
@@ -21,12 +21,12 @@ const isMarketplaceApproved = async () => {
     const address = await signer.getAddress ();
 
     let contract = new ethers.Contract (
-        getContract ('reef_testnet', 'erc1155'),
+        getContract ('erc1155'),
         contractABI,
         provider
     );
 
-    const isApproved = await contract.isApprovedForAll (address, getContract ('reef_testnet', 'marketplace'));
+    const isApproved = await contract.isApprovedForAll (address, getContract ('marketplace'));
     return isApproved;
 };
 

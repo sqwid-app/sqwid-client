@@ -16,6 +16,7 @@ import bread from "@utils/bread";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import { domAnimation, LazyMotion } from "framer-motion";
 import MetadataContainer from "./MetadataContainer";
+import { getBackend } from "@utils/network";
 
 const Card = styled.div`
 	display: flex;
@@ -294,7 +295,7 @@ const NameEditSection = ({ name, setSync }) => {
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
 			if (info.name.length) {
-				axios.post(`${process.env.REACT_APP_API_URL}/edit/user/displayName`, {
+				axios.post(`${getBackend ()}/edit/user/displayName`, {
 					displayName: info.name
 				}, {
 					headers: {
@@ -355,7 +356,7 @@ const DescriptionEditSection = ({ description, setSync }) => {
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
 			if (info.description.length) {
-				axios.post(`${process.env.REACT_APP_API_URL}/edit/user/bio`, {
+				axios.post(`${getBackend ()}/edit/user/bio`, {
 					bio: info.description
 				}, {
 					headers: {
@@ -373,7 +374,7 @@ const DescriptionEditSection = ({ description, setSync }) => {
 				setSync(false)
 				setIsLoading(false)
 			}
-		}, 500)
+		}, 2000)
 
 		return () => clearTimeout(delayDebounceFn)
 		//eslint-disable-next-line
@@ -435,7 +436,7 @@ const ProfileCard = () => {
 	const [userData, setUserData] = useState(initialState)
 	useEffect(() => {
 		let address = id ? id : auth.address
-		axios.get(`${process.env.REACT_APP_API_URL}/get/user/${address}`)
+		axios.get(`${getBackend ()}/get/user/${address}`)
 			.then(({ data }) => {
 				if (id) {
 					setUserData({

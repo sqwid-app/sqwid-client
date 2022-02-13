@@ -7,7 +7,7 @@ const getTokensByOwner = async (id) => {
     let { provider } = await Interact ();
 
     let contract = new ethers.Contract (
-        getContract ('reef_testnet', 'erc1155'),
+        getContract ('erc1155'),
         contractABI,
         provider
     );

@@ -7,7 +7,7 @@ import constants from './constants';
 import { isMarketplaceApproved, approveMarketplace } from './marketplaceApproval';
 import { getBackend, getContract } from './network';
 
-const marketplaceContract = (signerOrProvider) => new ethers.Contract(getContract('reef_testnet', 'marketplace'), marketplaceContractABI, signerOrProvider);
+const marketplaceContract = (signerOrProvider) => new ethers.Contract(getContract('marketplace'), marketplaceContractABI, signerOrProvider);
 
 const checkAndApproveMarketplace = async () => {
 	const approved = await isMarketplaceApproved();
@@ -55,6 +55,130 @@ const fetchStateItems = async (state, pageNumber = 1) => {
 	}
 	return data;
 };
+
+const unlistPositionOnSale = async (positionId) => {
+	await checkAndApproveMarketplace ();
+	try {
+		const { signer } = await Interact ();
+		const marketplaceContractInstance = marketplaceContract (signer);
+		const tx = await marketplaceContractInstance.unlistPositionOnSale (positionId);
+		const receipt = await tx.wait ();
+		return receipt;
+	} catch (error) {
+		console.error (error);
+		return null;
+	}
+}
+
+const putItemOnSale = async (itemId, copies, price) => {
+	await checkAndApproveMarketplace ();
+	try {
+		const { signer } = await Interact ();
+		const marketplaceContractInstance = marketplaceContract (signer);
+		const tx = await marketplaceContractInstance.putItemOnSale (itemId, copies, ethers.utils.parseEther (price));
+		const receipt = await tx.wait ();
+		return receipt;
+	} catch (error) {
+		console.error (error);
+		return null;
+	}
+}
+
+
+const createItemLoan = async (itemId, loanAmount, feeAmount, tokenAmount, duration) => {
+	await checkAndApproveMarketplace ();
+	try {
+		const { signer } = await Interact ();
+		const marketplaceContractInstance = marketplaceContract (signer);
+		const tx = await marketplaceContractInstance.createItemLoan (itemId, ethers.utils.parseEther (loanAmount), ethers.utils.parseEther (feeAmount), tokenAmount, duration);
+		const receipt = await tx.wait ();
+		return receipt;
+	} catch (error) {
+		console.error (error);
+		return null;
+	}
+}
+
+const createItemAuction = async (itemId, tokenAmount, duration, minBid) => {
+	await checkAndApproveMarketplace ();
+	try {
+		const { signer } = await Interact ();
+		const marketplaceContractInstance = marketplaceContract (signer);
+		const tx = await marketplaceContractInstance.createItemAuction (itemId, tokenAmount, duration, ethers.utils.parseEther (minBid));
+		const receipt = await tx.wait ();
+		return receipt;
+	} catch (error) {
+		console.error (error);
+		return null;
+	}
+}
+
+const createItemRaffle = async (itemId, tokenAmount, duration) => {
+	await checkAndApproveMarketplace ();
+	try {
+		const { signer } = await Interact ();
+		const marketplaceContractInstance = marketplaceContract (signer);
+		const tx = await marketplaceContractInstance.createItemRaffle (itemId, tokenAmount, duration);
+		const receipt = await tx.wait ();
+		return receipt;
+	} catch (error) {
+		console.error (error);
+		return null;
+	}
+}
+
+
+const enterRaffle = async (itemId, amount) => {
+	await checkAndApproveMarketplace ();
+	try {
+		const { signer } = await Interact ();
+		const marketplaceContractInstance = marketplaceContract (signer);
+		const tx = await marketplaceContractInstance.enterRaffle (itemId, {
+			value: ethers.utils.parseEther (amount),
+		});
+		const receipt = await tx.wait ();
+		return receipt;
+	} catch (error) {
+		console.error (error);
+		return null;
+	}
+}
+
+const createBid = async (itemId, amount) => {
+	await checkAndApproveMarketplace ();
+	try {
+		const { signer } = await Interact ();
+		const marketplaceContractInstance = marketplaceContract (signer);
+		const tx = await marketplaceContractInstance.createBid (itemId, {
+			value: ethers.utils.parseEther (amount),
+		});
+		const receipt = await tx.wait ();
+		return receipt;
+	} catch (error) {
+		console.error (error);
+		return null;
+	}
+}
+
+const createSale = async (positionId, tokenAmount, price) => {
+	await checkAndApproveMarketplace ();
+	try {
+		const { signer } = await Interact ();
+		const marketplaceContractInstance = marketplaceContract (signer);
+		const tx = await marketplaceContractInstance.createSale (positionId, tokenAmount, {
+			value: ethers.utils.parseEther ((Number (tokenAmount) * Number (price)).toString ()),
+		});
+		const receipt = await tx.wait ();
+		return receipt;
+	} catch (error) {
+		console.error (error);
+		return null;
+	}
+}
+
+
+
+// --- old stuff ---
 
 // returns a certain marketplace item
 const fetchMarketplaceItem = async (itemId) => {
@@ -169,6 +293,14 @@ const getTokenSupplyByItemId = async (itemId) => {
 };
 
 export {
+	createSale,
+	createBid,
+	enterRaffle,
+	createItemRaffle,
+	createItemAuction,
+	createItemLoan,
+	putItemOnSale,
+	unlistPositionOnSale,
 	marketplaceItemExists,
 	fetchMarketplaceItems,
 	fetchStateItems,

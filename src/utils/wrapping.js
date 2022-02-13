@@ -38,20 +38,20 @@ const doApproval = async (contract, signer, contractAddress) => {
             signer
         );
         let erc1155Contract = new ethers.Contract (
-            getContract ('reef_testnet', 'erc1155'),
+            getContract ('erc1155'),
             ERC1155ABI,
             signer
         );
 
-        await erc721Contract.setApprovalForAll (getContract ('reef_testnet', 'wrapper'), true);
-        await erc1155Contract.setApprovalForAll (getContract ('reef_testnet', 'wrapper'), true);
+        await erc721Contract.setApprovalForAll (getContract ('wrapper'), true);
+        await erc1155Contract.setApprovalForAll (getContract ('wrapper'), true);
     }
 }
 
 export const wrap = async (contractAddress, eip, wrappedId) => {
     let { signer } = await Interact ();
     let contract = new ethers.Contract (
-        getContract ('reef_testnet', 'wrapper'),
+        getContract ('wrapper'),
         wrapperABI,
         signer
     );
@@ -79,7 +79,7 @@ export const wrap = async (contractAddress, eip, wrappedId) => {
 export const unwrap = async (eip, wrappedId) => {
     let { signer } = await Interact ();
     let contract = new ethers.Contract (
-        getContract ('reef_testnet', 'wrapper'),
+        getContract ('wrapper'),
         wrapperABI,
         signer
     );

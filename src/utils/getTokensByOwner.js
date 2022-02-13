@@ -10,7 +10,7 @@ const getTokensByOwner = async (address, evm = false) => {
     if (!evm) address = await getEVMAddress (address);
 
     let contract = new ethers.Contract (
-        getContract ('reef_testnet', 'erc1155'),
+        getContract ('erc1155'),
         contractABI,
         provider
     );
