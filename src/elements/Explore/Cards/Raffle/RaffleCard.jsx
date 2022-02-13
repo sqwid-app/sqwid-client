@@ -29,7 +29,7 @@ const LinkWrapper = styled(Link)`
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index:1;
+	z-index:0;
 `
 
 const DeadlineContainer = styled.div`
@@ -54,7 +54,7 @@ const RaffleCard = ({ data, isLoading }) => {
 			>
 				<LinkWrapper to={`/collectible/${data.positionId}`}></LinkWrapper>
 				<DeadlineContainer title={`Deadline: ${formattedDeadline}`}><Deadline time={data.raffle?.deadline} /></DeadlineContainer>
-				<CardMedia meta={data.meta} deadline={data.raffle?.deadline} />
+				<CardMedia to={`/collectible/${data.positionId}`} meta={data.meta} deadline={data.raffle?.deadline} />
 				{isLoading ? <Loader /> : (<CardInfo data={data} isLoading={isLoading} />)}
 			</Wrapper>
 		</LazyMotion>

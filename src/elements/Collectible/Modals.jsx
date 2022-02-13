@@ -81,6 +81,11 @@ const Title = styled.h1`
 const InputTitle = styled.h1`
 	font-size: 1.125rem;
 	font-weight: 900;
+	span{
+		color: var(--app-container-text-primary);
+		font-weight: 700;
+		font-size: 1rem;
+	}
 `
 
 const InputContainer = styled.input`
@@ -470,7 +475,7 @@ export const PutOnSaleModal = (props) => {
 						onChange={handleInput}
 						placeholder={`Enter Price (in Reef)`}
 					/>
-					<InputTitle>Number of Copies (max {collectibleInfo.amount})</InputTitle>
+					<InputTitle>Number of Copies <span>(max {collectibleInfo.amount})</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={copies}
@@ -839,7 +844,7 @@ export const BuyModal = (props) => {
 		<ModalContainer {...props}>
 			<Title>Buy</Title>
 			<Group>
-				<InputTitle>Number of copies (max {collectibleInfo.amount})</InputTitle>
+				<InputTitle>Number of copies <span>(max {collectibleInfo.amount})</span></InputTitle>
 				<InputContainer
 					type="number"
 					value={copies}
