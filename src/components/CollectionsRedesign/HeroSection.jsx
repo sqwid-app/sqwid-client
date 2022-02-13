@@ -32,6 +32,15 @@ const Header = styled.h1`
 	align-items: center;
 	gap: 1rem;
 	font-weight: 900;
+	${respondTo.md`
+		span{
+			font-size: 1.25rem;
+			max-width: 10rem;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+		}
+	`}
 `
 
 const HeaderContainer = styled.div`
@@ -76,6 +85,13 @@ const Creator = styled(Link)`
 	cursor: pointer;
 	text-decoration: none;
 	color: var(--app-text);
+	${respondTo.md`
+		font-size: 1rem;
+		max-width: 10rem;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+	`}
 `
 const LoadingContainer = styled.div`
 	height: 70vh;
@@ -86,6 +102,8 @@ const LoadingContainer = styled.div`
 
 const StyledSelect = styled(Select)`
 	min-width: 6rem;
+	position: relative;
+	z-index: 3;
 `
 
 const Navbar = styled.nav`
@@ -169,9 +187,10 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 						<HeaderContainer>
 							<Header>
 								<CollectionsLogo
+									title={collectionInfo.name}
 									url={getCloudflareURL(collectionInfo.thumb)}
 								/>
-								{collectionInfo.name}
+								<span>{collectionInfo.name}</span>
 							</Header>
 							<Creator
 								to={`/profile/${collectionInfo.creator.id}`}
