@@ -38,7 +38,7 @@ const ImageContainer = styled.img`
 
 const WarningTextContainer = styled.div`
 	--close-btn-dimension: 1.5rem;
-	--warning-text: rgb(254 243 199);
+	--warning-text: rgb(255 251 235);
 	--warning-border: rgb(251 191 36);
 	position: absolute;
 	margin: 1rem;
