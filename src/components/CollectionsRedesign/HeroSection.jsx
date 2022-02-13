@@ -35,10 +35,6 @@ const Header = styled.h1`
 	${respondTo.md`
 		span{
 			font-size: 1.25rem;
-			max-width: 10rem;
-			text-overflow: ellipsis;
-			overflow: hidden;
-			white-space: nowrap;
 		}
 	`}
 `
@@ -48,6 +44,9 @@ const HeaderContainer = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	gap: 0.5rem;
+	${respondTo.md`
+		flex: 0 0 100%;
+	`}
 `
 
 const HeaderWrapper = styled.div`
@@ -55,6 +54,9 @@ const HeaderWrapper = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	${respondTo.md`
+		flex-wrap: wrap;
+	`}
 `
 
 const CollectionsLogo = styled.div`
@@ -87,10 +89,7 @@ const Creator = styled(Link)`
 	color: var(--app-text);
 	${respondTo.md`
 		font-size: 1rem;
-		max-width: 10rem;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		white-space: nowrap;
+		color: var(--app-container-text-primary-hover);
 	`}
 `
 const LoadingContainer = styled.div`
@@ -138,7 +137,12 @@ const NavContent = styled.p`
 	}
 `
 
-const NavContainer = styled.div``
+const NavContainer = styled.div`
+	${respondTo.md`
+		margin: 1rem 0;
+		margin-left: auto;
+	`}
+`
 
 const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 
@@ -183,7 +187,6 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 			) : (
 				<Section>
 					<HeaderWrapper>
-
 						<HeaderContainer>
 							<Header>
 								<CollectionsLogo

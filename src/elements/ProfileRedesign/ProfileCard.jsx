@@ -225,6 +225,7 @@ const AdditionalDetailsContainer = styled.div`
 	padding-top: 1.5rem;
 	${respondTo.md`
 		gap: 1.5rem;
+		align-items: center;
 	`}
 `
 
@@ -295,7 +296,7 @@ const NameEditSection = ({ name, setSync }) => {
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
 			if (info.name.length) {
-				axios.post(`${getBackend ()}/edit/user/displayName`, {
+				axios.post(`${getBackend()}/edit/user/displayName`, {
 					displayName: info.name
 				}, {
 					headers: {
@@ -356,7 +357,7 @@ const DescriptionEditSection = ({ description, setSync }) => {
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
 			if (info.description.length) {
-				axios.post(`${getBackend ()}/edit/user/bio`, {
+				axios.post(`${getBackend()}/edit/user/bio`, {
 					bio: info.description
 				}, {
 					headers: {
@@ -436,7 +437,7 @@ const ProfileCard = () => {
 	const [userData, setUserData] = useState(initialState)
 	useEffect(() => {
 		let address = id ? id : auth.address
-		axios.get(`${getBackend ()}/get/user/${address}`)
+		axios.get(`${getBackend()}/get/user/${address}`)
 			.then(({ data }) => {
 				if (id) {
 					setUserData({
