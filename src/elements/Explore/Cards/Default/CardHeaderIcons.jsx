@@ -95,7 +95,7 @@ const CardHeaderIcons = ({ data }) => {
 			<Wrapper>
 				<AnimatedIcons to={`/profile/${owner.address}`} url={owner.avatar} tooltip={`Owner: ${owner.name}`} />
 				<AnimatedIcons to={`/profile/${creator.address}`} url={creator.avatar} tooltip={`Creator: ${creator.name}`} />
-				<AnimatedIcons to={`/collections/${collection.address}`} url={getCloudflareURL(collection.image)} tooltip={`Collection: ${collection.name}`} />
+				<AnimatedIcons to={`/collections/${collection.id}`} url={getCloudflareURL(collection.image)} tooltip={`Collection: ${collection.name}`} />
 			</Wrapper>
 		</LazyMotion>
 	)

@@ -13,6 +13,11 @@ const opacityToggle = css`
 		display: none;
 	`}
 `
+const infoBtn = css`
+	right: 0;
+	padding-right: 2rem;
+	font-size: 1rem;
+`
 
 const Wrapper = styled.div`
 	position: absolute;
@@ -20,6 +25,7 @@ const Wrapper = styled.div`
 	transform: translateY(-4rem);
 	padding-top:2rem;
 	${opacityToggle}
+	${props => props.info && infoBtn};
 `
 
 const DropdownContainer = styled.div`
@@ -32,10 +38,11 @@ const DropdownContainer = styled.div`
 	cursor: default;
 	overflow: hidden;
 	min-width: 10rem;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
 `
 
 const Option = styled(NavLink)`
-	padding: 0.675rem 1.75rem;
+	padding: ${props => props.info ? `0.5rem 1rem` : `0.675rem 1.75rem`};
 	border-radius: 0.25rem;
 	text-decoration: none;
 	color: var(--app-text);
@@ -52,6 +59,23 @@ const Dropdown = ({ options, isVisible }) => {
 				<DropdownContainer>
 					{options.map(option => (
 						<Option key={option.name} to={option.link}>
+							{option.name}
+						</Option>
+					))}
+				</DropdownContainer>
+			</Wrapper>
+		</CSSTransition>
+	)
+}
+
+export const DropdownHelp = ({ options, isVisible }) => {
+	const [locallyVisible, setLocallyVisible] = useState(false);
+	return (
+		<CSSTransition onEnter={() => setLocallyVisible(true)} onExit={() => setLocallyVisible(false)} in={isVisible} timeout={200} classNames="dropdown">
+			<Wrapper info isVisible={locallyVisible}>
+				<DropdownContainer>
+					{options.map(option => (
+						<Option info key={option.name} to={option.link}>
 							{option.name}
 						</Option>
 					))}
