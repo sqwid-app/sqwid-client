@@ -11,6 +11,9 @@ export const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+	h1{
+		font-size: 1.25rem;
+	}
 	${respondTo.md`
 		padding: 0;
 		h1{

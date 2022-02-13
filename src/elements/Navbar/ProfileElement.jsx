@@ -16,7 +16,7 @@ const BasicDetailsContainer = styled.div`
 	align-items: center;
 	justify-content: center;
 	gap: 1rem;
-    padding: 0.5rem;
+    padding: 0.5rem 0;
     cursor: pointer;
     border-radius: 0.5rem;
 	color: var(--app-text);

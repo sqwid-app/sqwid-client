@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import styled from "styled-components";
 import CardSectionContainer from "@elements/Default/CardSectionContainer";
 import ReactPaginate from 'react-paginate';
-import { fetchStateItems, fetchUserItems } from "@utils/marketplace";
+import { fetchCollectionItems, fetchStateItems, fetchUserItems } from "@utils/marketplace";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import constants from "@utils/constants";
 
@@ -125,13 +125,13 @@ const EmptySection = ({ state }) => {
 	)
 }
 
-const PaginatedCards = ({ Card, state, profile }) => {
+const PaginatedCards = ({ Card, state, profile, collection }) => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [isCardLoading, setIsCardLoading] = useState(true)
 	const [stateItems, setStateItems] = useState([]);
 	useEffect(() => {
 		const fetchData = async () => {
-			const items = profile ? await fetchUserItems(profile, state) : await fetchStateItems(state);
+			const items = profile ? await fetchUserItems(profile, state) : (collection ? await fetchCollectionItems(collection, state) : await fetchStateItems(state));
 			setStateItems(items);
 			setIsLoading(false);
 			setIsCardLoading(false)
@@ -149,7 +149,7 @@ const PaginatedCards = ({ Card, state, profile }) => {
 	const handlePageClick = (event) => {
 		const fetchData = async () => {
 			setIsCardLoading(true)
-			const items = profile ? await fetchUserItems(profile, state, event.selected + 1) : await fetchStateItems(state, event.selected + 1);
+			const items = profile ? await fetchUserItems(profile, state, event.selected + 1) : (collection ? await fetchCollectionItems(collection, state, event.selected + 1) : await fetchStateItems(state, event.selected + 1));
 			setStateItems(items);
 			setIsCardLoading(false)
 		}

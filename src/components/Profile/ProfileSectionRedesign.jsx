@@ -8,11 +8,11 @@ import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import Select from "react-select";
 import { styles } from "@styles/reactSelectStyles";
 import Info from "./Info";
-import AvailableSection from "@elements/Profile/AvailableSection";
-import OnSaleSection from "@elements/Profile/OnSaleSection";
-import AuctionSection from "@elements/Profile/AuctionSection";
-import RaffleSection from "@elements/Profile/RaffleSection";
-import LoanSection from "@elements/Profile/LoanSection";
+import AvailableSection from "@elements/ProfileRedesign/Sections/AvailableSection";
+import OnSaleSection from "@elements/ProfileRedesign/Sections/OnSaleSection";
+import AuctionSection from "@elements/ProfileRedesign/Sections/AuctionSection";
+import RaffleSection from "@elements/ProfileRedesign/Sections/RaffleSection";
+import LoanSection from "@elements/ProfileRedesign/Sections/LoanSection";
 
 const Section = styled.section`
 	padding: 0 6rem;

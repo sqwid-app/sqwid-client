@@ -46,6 +46,16 @@ const fetchUserItems = async (address, state = -1, pageNumber = 1) => {
 	return data;
 };
 
+// returns collection-wise items
+const fetchCollectionItems = async (address, state = -1, pageNumber = 1) => {
+	const res = await axios(`${getBackend()}/get/marketplace/by-collection/${address}${state >= 0 ? `/${state}` : ""}?perPage=${constants.EXPLORE_PAGINATION_LIMIT}&page=${pageNumber}`);
+	const { data } = res;
+	if (data.error) {
+		return [];
+	}
+	return data;
+};
+
 // returns the state-wise items
 const fetchStateItems = async (state, pageNumber = 1) => {
 	const res = await axios(`${getBackend()}/get/marketplace/all/${state}?perPage=${constants.EXPLORE_PAGINATION_LIMIT}&page=${pageNumber}`);
@@ -316,4 +326,5 @@ export {
 	getTokenSupply,
 	getTokenSupplyByItemId,
 	fetchUserItems,
+	fetchCollectionItems
 }
