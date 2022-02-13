@@ -26,6 +26,15 @@ const LinkContainer = styled.div`
 	`}
 `
 
+const StyledNavLink = styled(NavLink)`
+	text-decoration: none;
+	color: inherit;
+`
+
+const DropdownContainer = styled.div`
+	cursor: pointer;
+`
+
 const LinkGroups = () => {
 	const [exploreIsVisible, setExploreIsVisible] = useState(false);
 	const isTabletOrMobile = useIsTabletOrMobile();
@@ -33,7 +42,7 @@ const LinkGroups = () => {
 	const isLoggedIn = auth !== null
 	return (
 		<LinkContainer>
-			<NavLink
+			<DropdownContainer
 				onMouseOver={() => setExploreIsVisible(true)}
 				onMouseOut={() => setExploreIsVisible(false)}
 				to="/explore"
@@ -41,7 +50,10 @@ const LinkGroups = () => {
 				className="nav-links"
 				activeClassName="nav-selected"
 			>
-				Explore
+				<StyledNavLink
+					to="/explore"
+					exact
+				>Explore</StyledNavLink>
 				{!isTabletOrMobile &&
 					<Dropdown
 						isVisible={exploreIsVisible}
@@ -61,7 +73,7 @@ const LinkGroups = () => {
 						}]}
 					/>
 				}
-			</NavLink>
+			</DropdownContainer>
 			{isLoggedIn && (
 				<>
 					{/* <NavLink to="/lagoon" exact className="nav-links" activeClassName="nav-selected">

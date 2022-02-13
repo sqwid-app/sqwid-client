@@ -38,7 +38,7 @@ const DropzoneButton = styled(m.a)`
 	font-weight: 700;
 	padding: 0.675rem 1.25rem;
 	border-radius: 1000rem;
-	background: ${props=>props.modal?`var(--app-modal-btn-primary)`:`var(--app-container-bg-primary)`};
+	background: ${props => props.modal ? `var(--app-modal-btn-primary)` : `var(--app-container-bg-primary)`};
 	color: var(--app-container-text-primary);
 	outline: none;
 	border: none;
@@ -48,38 +48,38 @@ const DropzoneButton = styled(m.a)`
 `
 
 const Dropzone = (props) => {
-	const initialDragText = props.modal?"PNG, JPEG, GIF or WEBP. Max 30mb.":"PNG, GIF, WEBP, MP4, or MP3. Max 30mb."
+	const initialDragText = props.modal ? "PNG, JPEG, GIF or WEBP. Max 30mb." : "PNG, GIF, WEBP, MP4, or MP3. Max 30mb."
 	const [dragText, setDragText] = useState(initialDragText)
-	const {getRootProps, getInputProps, open, acceptedFiles,isDragActive,fileRejections} = useDropzone({
+	const { getRootProps, getInputProps, open, acceptedFiles, isDragActive, fileRejections } = useDropzone({
 		noClick: true,
 		noKeyboard: true,
-		maxFiles:1,
-		accept: `image/jpeg, image/gif, image/png, image/webp, ${!props.modal&&`audio/mpeg, video/mp4`}`
+		maxFiles: 1,
+		accept: `image/jpeg, image/gif, image/png, image/webp, ${!props.modal && `audio/mpeg, video/mp4`}`
 	});
 	useEffect(() => {
-		if(acceptedFiles.length){
+		if (acceptedFiles.length) {
 			props.setInfo({
 				...props.info,
 				file: acceptedFiles[0]
 			});
 		}
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [acceptedFiles])
 	useEffect(() => {
-		isDragActive?setDragText(`Drop your files here`):setDragText(initialDragText)
-	//eslint-disable-next-line
+		isDragActive ? setDragText(`Drop your files here`) : setDragText(initialDragText)
+		//eslint-disable-next-line
 	}, [isDragActive])
 	useEffect(() => {
-		if(fileRejections.length){
+		if (fileRejections.length) {
 			setDragText(fileRejections[0].errors[0].message)
 			setTimeout(() => {
 				setDragText(initialDragText);
 			}, 3000);
 		}
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [fileRejections])
 	return (
-		<div {...getRootProps({className: 'dropzone'})}>
+		<div {...getRootProps({ className: 'dropzone' })}>
 			<input {...getInputProps()} />
 			<DropzoneText>
 				{dragText}
@@ -90,10 +90,10 @@ const Dropzone = (props) => {
 				whileHover={{
 					y: -5,
 					x: 0,
-					scale:1.02
+					scale: 1.02
 				}}
 				whileTap={{
-					scale:0.99
+					scale: 0.99
 				}}
 			>
 				Choose File
@@ -103,11 +103,11 @@ const Dropzone = (props) => {
 
 }
 
-const CustomDropzoneModal = ({modal, info, setInfo}) => {
+const CustomDropzoneModal = ({ modal, info, setInfo }) => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
-				<Dropzone info={info} setInfo={setInfo} modal={modal} maxSize={30000000}/>
+				<Dropzone info={info} setInfo={setInfo} modal={modal} maxSize={30000000} />
 			</Wrapper>
 		</LazyMotion>
 	)
