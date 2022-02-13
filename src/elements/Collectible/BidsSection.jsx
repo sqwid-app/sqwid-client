@@ -13,6 +13,7 @@ import Loading from "@elements/Default/Loading";
 import bread from "@utils/bread";
 import { respondTo } from "@styles/styledMediaQuery";
 import { Link } from "react-router-dom";
+import { getBackend } from "@utils/network";
 
 const Wrapper = styled(SimpleBarReact)`
 	overflow: auto;
@@ -250,7 +251,7 @@ const BidsSection = () => {
 		// axios black magic moment
 		// basically put this inside .then 👍
 		const fetchData = async () => {
-			const result = await axios(`${process.env.REACT_APP_API_URL}/get/r/marketplace/bids/${collectibleInfo.itemId}`);
+			const result = await axios(`${getBackend()}/get/r/marketplace/bids/${collectibleInfo.itemId}`);
 			let items = result.data;
 			const bidsHistory = items.sort((itemA, itemB) => { return Number(itemB.id) - Number(itemA.id) });
 			// setIsLoading (false);

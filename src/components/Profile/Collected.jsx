@@ -9,6 +9,7 @@ import axios from 'axios';
 import Wrapper from "@elements/ProfileRedesign/Wrapper";
 import bread from "@utils/bread";
 import LoadingIcon from "@static/svg/LoadingIcon";
+import { getBackend } from "@utils/network";
 
 const LoadingContainer = styled.div`
 	width: 100%;
@@ -24,16 +25,16 @@ const Collected = () => {
 
 	useEffect(() => {
 		let addressToCheck = id || auth?.evmAddress;
-		axios(`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItems/owner/${addressToCheck}`)
-		.then(result => {
-			setItems(result.data);
-		})
-		.catch(err => {
-			bread(err.response.data.error)
-		})
-		.finally(() => {
-			setIsLoading(false)
-		})
+		axios(`${getBackend()}/get/r/marketplace/fetchMarketItems/owner/${addressToCheck}`)
+			.then(result => {
+				setItems(result.data);
+			})
+			.catch(err => {
+				bread(err.response.data.error)
+			})
+			.finally(() => {
+				setIsLoading(false)
+			})
 	}, [auth, auth?.evmAddress, id]);
 	return (
 		<Wrapper>
@@ -41,7 +42,7 @@ const Collected = () => {
 				<LoadingContainer>
 					<LoadingIcon />
 				</LoadingContainer>
-			):(
+			) : (
 				<>
 					{items.length !== 0 && (
 						<CardSectionContainer>

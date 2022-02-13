@@ -43,7 +43,11 @@ const CollectionsSection = () => {
 	const [isLoading, setIsLoading] = useState(true)
 	const isTabletOrMobile = useIsTabletOrMobile();
 	useEffect(() => {
+<<<<<<< HEAD
 		axios.get(`${getBackend ()}/get/collections/owner/${userID}`)
+=======
+		axios.get(`${getBackend()}/get/collections/owner/${userID}`)
+>>>>>>> 8c756f533e08400c84a321276aebb2ae0225acac
 			.then((res) => {
 				localStorage.setItem("collections", JSON.stringify(res.data.collections))
 				setCards(res.data.collections.map(item => {

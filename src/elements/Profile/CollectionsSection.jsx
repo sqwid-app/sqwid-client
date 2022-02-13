@@ -10,6 +10,7 @@ import LoadingIcon from "@static/svg/LoadingIcon";
 import { respondTo } from "@styles/styledMediaQuery";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import bread from "@utils/bread";
+import { getBackend } from "@utils/network";
 
 const Wrapper = styled.div`
 	position: relative;
@@ -63,7 +64,7 @@ const CollectionsSection = () => {
 	const [isLoading, setIsLoading] = useState(true)
 	const isTabletOrMobile = useIsTabletOrMobile();
 	useEffect(() => {
-		axios.get(`${process.env.REACT_APP_API_URL}/get/collections/owner/${userID}`)
+		axios.get(`${getBackend()}/get/collections/owner/${userID}`)
 			.then((res) => {
 				localStorage.setItem("collections", JSON.stringify(res.data.collections))
 				setCards(res.data.collections.map(item => {

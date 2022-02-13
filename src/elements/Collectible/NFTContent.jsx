@@ -190,10 +190,7 @@ const WarningText = ({ isBlurred, setIsBlurred }) => {
 
 const NFTContent = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
-	// console.log("🦊 | file: NFTContent.jsx | line 193 | NFTContent | collectibleInfo", collectibleInfo);
-	// replace this with the collectible info thing once Andi implements it yes
-	const isPendingApproval = true;
-	const [isBlurred, setIsBlurred] = useState(isPendingApproval);
+	const [isBlurred, setIsBlurred] = useState(!collectibleInfo.approved);
 
 	/*
 	Couldn't be arsed to change the value every time so two constants 👍

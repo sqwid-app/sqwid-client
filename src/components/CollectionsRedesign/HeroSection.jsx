@@ -1,8 +1,7 @@
 import { respondTo } from "@styles/styledMediaQuery";
 // import { getAvatarFromId } from "@utils/getAvatarFromId";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import axios from 'axios';
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { Link } from "react-router-dom";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
@@ -13,6 +12,7 @@ import RaffleSection from "@elements/Collections/Sections/RaffleSection";
 import LoanSection from "@elements/Collections/Sections/LoanSection";
 import Select from "react-select";
 import { styles } from "@styles/reactSelectStyles";
+import { getCloudflareURL } from "@utils/getIPFSURL";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -32,6 +32,11 @@ const Header = styled.h1`
 	align-items: center;
 	gap: 1rem;
 	font-weight: 900;
+	${respondTo.md`
+		span{
+			font-size: 1.25rem;
+		}
+	`}
 `
 
 const HeaderContainer = styled.div`
@@ -39,6 +44,9 @@ const HeaderContainer = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	gap: 0.5rem;
+	${respondTo.md`
+		flex: 0 0 100%;
+	`}
 `
 
 const HeaderWrapper = styled.div`
@@ -46,6 +54,9 @@ const HeaderWrapper = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	${respondTo.md`
+		flex-wrap: wrap;
+	`}
 `
 
 const CollectionsLogo = styled.div`
@@ -76,6 +87,10 @@ const Creator = styled(Link)`
 	cursor: pointer;
 	text-decoration: none;
 	color: var(--app-text);
+	${respondTo.md`
+		font-size: 1rem;
+		color: var(--app-container-text-primary-hover);
+	`}
 `
 const LoadingContainer = styled.div`
 	height: 70vh;
@@ -86,6 +101,8 @@ const LoadingContainer = styled.div`
 
 const StyledSelect = styled(Select)`
 	min-width: 6rem;
+	position: relative;
+	z-index: 3;
 `
 
 const Navbar = styled.nav`
@@ -120,11 +137,14 @@ const NavContent = styled.p`
 	}
 `
 
-const NavContainer = styled.div``
+const NavContainer = styled.div`
+	${respondTo.md`
+		margin: 1rem 0;
+		margin-left: auto;
+	`}
+`
 
-const HeroSection = ({ id }) => {
-	const [collectionsInfo, setCollectionsInfo] = useState({});
-	const [isLoading, setIsLoading] = useState(true)
+const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 
 	const [navRoutes, setNavRoutes] = useState([{
 		name: "Available",
@@ -158,15 +178,6 @@ const HeroSection = ({ id }) => {
 	}))
 	const isTabletOrMobile = useIsTabletOrMobile();
 
-	useEffect(() => {
-		const fetchData = async () => {
-			const { data } = await axios(`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItems/collection/${id}`);
-			setCollectionsInfo(data);
-			setIsLoading(false);
-		}
-		fetchData();
-	}, [id]);
-
 	return (
 		<>
 			{isLoading ? (
@@ -176,22 +187,22 @@ const HeroSection = ({ id }) => {
 			) : (
 				<Section>
 					<HeaderWrapper>
-
 						<HeaderContainer>
 							<Header>
 								<CollectionsLogo
-									url={collectionsInfo.thumb}
+									title={collectionInfo.name}
+									url={getCloudflareURL(collectionInfo.thumb)}
 								/>
-								{collectionsInfo.name}
+								<span>{collectionInfo.name}</span>
 							</Header>
 							<Creator
-								to={`/profile/${collectionsInfo.creator.id}`}
+								to={`/profile/${collectionInfo.creator.id}`}
 							>
 								by
 								<CreatorLogo
-									url={collectionsInfo.creator.thumb}
+									url={collectionInfo.creator.thumb}
 								/>
-								{collectionsInfo.creator.name}
+								{collectionInfo.creator.name}
 							</Creator>
 						</HeaderContainer>
 						<NavContainer>
