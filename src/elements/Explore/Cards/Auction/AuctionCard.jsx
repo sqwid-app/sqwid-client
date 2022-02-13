@@ -42,7 +42,7 @@ const DeadlineContainer = styled.div`
 `
 
 const AuctionCard = ({ data, isLoading }) => {
-	const formattedDeadline = data.auction && format(new Date(data.auction?.deadline), "EEEE, LLLL d, uuuu h:mm a")
+	const formattedDeadline = data.auction && format(new Date(data.auction?.deadline * 1000), "EEEE, LLLL d, uuuu h:mm a")
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper
