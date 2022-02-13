@@ -129,7 +129,11 @@ const createCollectible = async (files) => {
 	);
 
 	try {
-		const nft = await contract.mint(copies, meta, to, royalty, false);
+		const approved = await isMarketplaceApproved();
+		if (!approved) {
+			await approveMarketplace();
+		}
+		const nft = await contract.mint(copies, meta, file.type.split ('/')[0], to, royalty);
 		// eslint-disable-next-line
 		const receipt = await nft.wait();
 		// eslint-disable-next-line
