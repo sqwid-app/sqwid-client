@@ -7,7 +7,7 @@ export const networks = {
 			utility: '0x7AB030fA1953074762484167D0BA48C1bEd20CF7',
 			wrapper: '0x304377e6c790347B978B6E496829011e43E43Aa2'
 		},
-		backend: 'testnet'
+		backend: 'https://testnet-api.sqwid.app'
 	},
 	reef_mainnet: {
 		rpc: 'wss://rpc-testnet.reefscan.com/ws',

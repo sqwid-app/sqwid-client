@@ -356,6 +356,7 @@ export {
 	fetchMarketplaceItems,
 	fetchUserItems,
 	fetchCollectionItems,
+	fetchCollectionInfo,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,
@@ -364,8 +365,5 @@ export {
 	buyNow,
 	addBid,
 	cancelBid,
-	acceptBid,
-	fetchUserItems,
-	fetchCollectionItems,
-	fetchCollectionInfo
+	acceptBid
 }
