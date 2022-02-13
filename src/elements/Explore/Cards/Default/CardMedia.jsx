@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { getCloudflareURL, getDwebURL } from "@utils/getIPFSURL";
+import { Link } from "react-router-dom";
 
 const audioOverlay = css`
 	content: "";
@@ -23,7 +24,7 @@ const audioOverlay = css`
 	transition: opacity 0.2s ease;
 `
 
-const ImageContainer = styled.div`
+const ImageContainer = styled(Link)`
 	position: relative;
 	height: 16rem;
 	width: 100%;
@@ -31,6 +32,7 @@ const ImageContainer = styled.div`
 	justify-content:center;
 	border-radius: 0.25rem 0.25rem 0 0;
 	overflow:hidden;
+	z-index:2;
 	&:hover {
 		img{
 			transform: scale(1.1);
@@ -83,13 +85,14 @@ const videoOverlay = css`
 	margin: 1rem;
 `
 
-const VideoContainer = styled.div`
+const VideoContainer = styled(Link)`
 	position:relative;
 	height: 16rem;
 	width: 100%;
 	text-align: center;
 	object-fit: cover;
 	overflow: hidden;
+	z-index:2;
 	& video{
 		width: 100% !important;
 		height: 100% !important;
@@ -143,7 +146,7 @@ const LoaderContainer = styled.div`
 	animation: ${skeletonAnim} 1.2s infinite 0.6s;
 `;
 
-const VideoCard = ({ url, isLoading }) => {
+const VideoCard = ({ url, isLoading, to }) => {
 	const videoRef = useRef();
 	const [videoLoading, setVideoLoading] = useState(true);
 	const [isPlaying, setIsPlaying] = useState(false);
@@ -171,6 +174,7 @@ const VideoCard = ({ url, isLoading }) => {
 				<LoadingIcon size="48" />
 			</LoaderContainer>
 			<VideoContainer
+				to={to}
 				style={{ display: videoLoading && "none" }}
 				playing={isPlaying}
 				onMouseEnter={togglePlay}
@@ -196,7 +200,7 @@ const VideoCard = ({ url, isLoading }) => {
 	)
 }
 
-const ImageCard = ({ url, isLoading }) => {
+const ImageCard = ({ url, isLoading, to }) => {
 	const [loading, setLoading] = useState(false);
 	const imageRef = useRef();
 	useEffect(() => {
@@ -208,7 +212,7 @@ const ImageCard = ({ url, isLoading }) => {
 			<LoaderContainer style={{ display: !loading ? "none" : "flex" }}>
 				<LoadingIcon size="48" />
 			</LoaderContainer>
-			<ImageContainer style={{ display: loading ? "none" : "flex" }} url={url}>
+			<ImageContainer to={to} style={{ display: loading ? "none" : "flex" }} url={url}>
 				<Image ref={imageRef} src={url} loading="lazy" />
 			</ImageContainer>
 		</>
@@ -224,15 +228,15 @@ const AudioCard = ({ image, isLoading }) => {
 	)
 }
 
-const CardMedia = ({ meta, isLoading }) => {
+const CardMedia = ({ meta, isLoading, to }) => {
 	//eslint-disable-next-line
 	const { image, media, mimetype } = meta
 	return (
 		<>
 			{
 				{
-					"image": <ImageCard isLoading={isLoading} url={getCloudflareURL(media)} />,
-					"video": <VideoCard isLoading={isLoading} url={getDwebURL(media)} />,
+					"image": <ImageCard to={to} isLoading={isLoading} url={getCloudflareURL(media)} />,
+					"video": <VideoCard to={to} isLoading={isLoading} url={getDwebURL(media)} />,
 					"audio": <AudioCard isLoading={isLoading} image={getDwebURL(image)} />
 				}[mimetype.split("/")[0]]
 			}

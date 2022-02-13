@@ -29,7 +29,7 @@ const LinkWrapper = styled(Link)`
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index:1;
+	z-index:0;
 `
 
 const DeadlineContainer = styled.div`
@@ -53,9 +53,9 @@ const LoanCard = ({ data, isLoading }) => {
 					scale: 0.99
 				}}
 			>
-				<LinkWrapper to={`/collectible/${data.positionId}`}></LinkWrapper>
 				{lenderExists && <DeadlineContainer title={`Deadline: ${formattedDeadline}`}><Deadline loan time={data.loan?.deadline} /></DeadlineContainer>}
-				<CardMedia meta={data.meta} deadline={data.loan?.deadline} />
+				<CardMedia to={`/collectible/${data.positionId}`} meta={data.meta} deadline={data.loan?.deadline} />
+				<LinkWrapper to={`/collectible/${data.positionId}`}></LinkWrapper>
 				{isLoading ? <Loader /> : (<CardInfo data={data} lenderExists={lenderExists} />)}
 			</Wrapper>
 		</LazyMotion>

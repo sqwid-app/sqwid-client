@@ -28,7 +28,7 @@ const LinkWrapper = styled(Link)`
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index:1;
+	z-index:0;
 `
 
 const SalesCard = ({ data, isLoading }) => {
@@ -42,7 +42,7 @@ const SalesCard = ({ data, isLoading }) => {
 				}}
 			>
 				<LinkWrapper to={`/collectible/${data.positionId}`}></LinkWrapper>
-				<CardMedia meta={data.meta} />
+				<CardMedia to={`/collectible/${data.positionId}`} meta={data.meta} />
 				{isLoading ? <Loader /> : (<CardInfo data={data} isLoading={isLoading} />)}
 			</Wrapper>
 		</LazyMotion>
