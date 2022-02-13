@@ -29,6 +29,7 @@
 
 export const initialState = {
 	isValidCollectible: true,
+	approved: false,
 	positionId: "",
 	itemId: "",
 	tokenId: "",
