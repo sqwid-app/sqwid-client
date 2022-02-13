@@ -80,12 +80,7 @@ const ImageWrapper = styled.div`
     place-items: center;
 `
 
-const VideoWrapper = styled.div`
-	position: relative;
-	height: fit-content;
-	width: 100%;
-	overflow: hidden;
-`
+const VideoWrapper = ImageWrapper
 
 const center = css`
 	display: grid;
@@ -195,6 +190,7 @@ const WarningText = ({ isBlurred, setIsBlurred }) => {
 
 const NFTContent = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
+	// console.log("🦊 | file: NFTContent.jsx | line 193 | NFTContent | collectibleInfo", collectibleInfo);
 	// replace this with the collectible info thing once Andi implements it yes
 	const isPendingApproval = true;
 	const [isBlurred, setIsBlurred] = useState(isPendingApproval);
