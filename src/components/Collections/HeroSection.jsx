@@ -6,6 +6,7 @@ import styled from "styled-components";
 import axios from 'axios';
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { Link } from "react-router-dom";
+import { getBackend } from "@utils/network";
 const Card = React.lazy(() => import("@elements/Default/Card"));
 
 const Wrapper = styled.div`
@@ -84,7 +85,7 @@ const HeroSection = ({ id }) => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const result = await axios(`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItems/collection/${id}`);
+			const result = await axios(`${getBackend()}/get/r/marketplace/fetchMarketItems/collection/${id}`);
 			let items = result.data;
 			setCollectionsInfo(items);
 			setIsLoading(false);

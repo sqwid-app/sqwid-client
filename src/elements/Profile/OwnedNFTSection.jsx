@@ -7,6 +7,7 @@ import { useParams } from "react-router";
 import { Suspense } from "react";
 import styled from "styled-components";
 import axios from 'axios';
+import { getBackend } from "@utils/network";
 
 const Wrapper = styled.div`
 	position: relative;
@@ -30,27 +31,27 @@ const Header = styled.h1`
 `
 
 const OwnedNFTSection = () => {
-	const { auth } = useContext (AuthContext);
+	const { auth } = useContext(AuthContext);
 	const { id } = useParams()
 	const [items, setItems] = useState([]);
 
-	useEffect (() => {
+	useEffect(() => {
 		let addressToCheck = id || auth?.evmAddress;
 		const fetchData = async () => {
-			const result = await axios (`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItems/owner/${addressToCheck}`);
+			const result = await axios(`${getBackend()}/get/r/marketplace/fetchMarketItems/owner/${addressToCheck}`);
 			let items = result.data;
-			setItems (items);
+			setItems(items);
 		}
-		fetchData ();
+		fetchData();
 	}, [auth, auth?.evmAddress, id]);
 	return (
 		<>
-			{items.length!==0&&(
+			{items.length !== 0 && (
 				<Wrapper>
 					<Header>Collected</Header>
 					<CardSectionContainer>
 						<Suspense>
-							{items.map((item,index)=>(
+							{items.map((item, index) => (
 								<Card
 									key={index}
 									data={item}

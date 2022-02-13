@@ -13,6 +13,7 @@ import FileContext from "@contexts/File/FileContext";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import bread from "@utils/bread";
 import LoadingIcon from "@static/svg/LoadingIcon";
+import { getBackend } from "@utils/network";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -342,7 +343,7 @@ const Existing = ({ isActive, setIsActive }) => {
 	const { auth } = useContext(AuthContext);
 	const { files, setFiles } = useContext(FileContext);
 	useEffect(() => {
-		axios.get(`${process.env.REACT_APP_API_URL}/get/collections/owner/${auth.address}`)
+		axios.get(`${getBackend()}/get/collections/owner/${auth.address}`)
 			.then((res) => {
 				localStorage.setItem("collections", JSON.stringify(res.data.collections))
 				setCollections(res.data.collections)
