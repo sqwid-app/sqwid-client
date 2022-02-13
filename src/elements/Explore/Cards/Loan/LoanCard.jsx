@@ -43,7 +43,7 @@ const DeadlineContainer = styled.div`
 
 const LoanCard = ({ data, isLoading }) => {
 	const lenderExists = Number(data.loan?.lender?.address) !== 0
-	const formattedDeadline = data.loan && format(new Date(data.loan?.deadline), "EEEE, LLLL d, uuuu h:mm a")
+	const formattedDeadline = data.loan && format(new Date(data.loan?.deadline * 1000), "EEEE, LLLL d, uuuu h:mm a")
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper

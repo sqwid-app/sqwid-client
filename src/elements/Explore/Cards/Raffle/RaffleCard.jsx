@@ -42,7 +42,7 @@ const DeadlineContainer = styled.div`
 `
 
 const RaffleCard = ({ data, isLoading }) => {
-	const formattedDeadline = data.raffle && format(new Date(data.raffle?.deadline), "EEEE, LLLL d, uuuu h:mm a")
+	const formattedDeadline = data.raffle && format(new Date(data.raffle?.deadline * 1000), "EEEE, LLLL d, uuuu h:mm a")
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper
