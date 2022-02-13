@@ -53,7 +53,7 @@ const WarningTextContainer = styled.div`
 	p{
 		width: calc(100% - (2 * var(--close-btn-dimension)));
 	}
-	span.important{
+	b{
 		font-weight: 900;
 	}
 	svg{
@@ -182,7 +182,7 @@ const WarningText = ({ isBlurred, setIsBlurred }) => {
 			<WarningTextContainer>
 				<div onClick={() => setIsBlurred(!isBlurred)} ><CloseBtn /></div>
 				<p>This item isn't approved. If you're the creator and you've just minted it, please allow a few minutes for Sqwid to approve it.
-					<span className="important"> Closing this warning will unblur this image for you!</span>
+					<b> Closing this warning will unblur this media for you!</b>
 				</p>
 			</WarningTextContainer>
 		</CSSTransition>
