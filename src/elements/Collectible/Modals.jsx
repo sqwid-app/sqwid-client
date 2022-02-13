@@ -769,7 +769,7 @@ export const BidsModal = (props) => {
 				<div>
 					For now please keep track of your bids until we implement <br /> a way of tracking them.
 				</div><br />
-				<InputTitle>Amount (more than {minToBid})</InputTitle>
+				<InputTitle>Amount (total more than {minToBid})</InputTitle>
 				<InputContainer
 					type="number"
 					value={amount}
@@ -807,10 +807,8 @@ export const BuyModal = (props) => {
 			setButtonText(<Loading />);
 			const receipt = await createSale(collectibleInfo.positionId, Number(copies), Number(collectibleInfo.sale.price) / 10 ** 18);
 			if (receipt) {
-				// console.log (receipt);
 				if (Number(copies) === collectibleInfo.amount) {
-					const newPositionId = receipt.events[1].args['positionId'].toNumber();
-					history.push(`/collectibles/${newPositionId}`);
+					history.push(`/profile`);
 				} else {
 					setCollectibleInfo({
 						...collectibleInfo,
@@ -820,15 +818,14 @@ export const BuyModal = (props) => {
 					setButtonText(initialButtonText);
 					setCopies("");
 					props.setIsActive(false);
-					const newPositionId = receipt.events[2].args['positionId'].toNumber();
-					const shortUrl = `/collectible/${newPositionId}`;
+					const shortUrl = `/profile`;
 					bread(
 						<div>
 							Item{copies.length > 1 ? 's' : ''} bought! Check {copies.length > 1 ? 'them' : 'it'} out <ToastLink
 								href={shortUrl}
 								target="_blank"
 								rel="noopener noreferrer"
-							>here</ToastLink>!
+							>on your profile</ToastLink>!
 						</div>
 					)
 				}

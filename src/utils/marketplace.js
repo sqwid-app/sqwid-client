@@ -186,7 +186,49 @@ const createSale = async (positionId, tokenAmount, price) => {
 	}
 }
 
+const endAuction = async (positionId) => {
+	await checkAndApproveMarketplace();
+	try {
+		const { signer } = await Interact();
+		const marketplaceContractInstance = marketplaceContract(signer);
+		const tx = await marketplaceContractInstance.endAuction (positionId);
+		const receipt = await tx.wait();
+		return receipt;
+	} catch (error) {
+		// console.error (error);
+		return null;
+	}
+}
 
+const endRaffle = async (positionId) => {
+	await checkAndApproveMarketplace();
+	try {
+		const { signer } = await Interact();
+		const marketplaceContractInstance = marketplaceContract(signer);
+		const tx = await marketplaceContractInstance.endRaffle (positionId);
+		const receipt = await tx.wait();
+		return receipt;
+	} catch (error) {
+		// console.error (error);
+		return null;
+	}
+}
+
+const fundLoan = async (positionId, amount) => {
+	await checkAndApproveMarketplace();
+	try {
+		const { signer } = await Interact();
+		const marketplaceContractInstance = marketplaceContract(signer);
+		const tx = await marketplaceContractInstance.fundLoan(positionId, {
+			value: ethers.utils.parseEther(amount.toString ()),
+		});
+		const receipt = await tx.wait();
+		return receipt;
+	} catch (error) {
+		// console.error (error);
+		return null;
+	}
+};
 
 // --- old stuff ---
 
@@ -248,11 +290,6 @@ const buyNow = async (itemId, amount, itemPrice) => {
 	return receipt;
 };
 
-// fetch all bids for an item
-const fetchBids = async (itemId) => {
-
-};
-
 // add a bid to an item
 const addBid = async (itemId, price, amount) => {
 	await checkAndApproveMarketplace();
@@ -287,22 +324,10 @@ const acceptBid = async (itemId, bidId) => {
 	return receipt;
 };
 
-// returns the highest bid for a certain item
-const fetchHighestBid = async (itemId) => {
-
-};
-
-// returns the total number of tokens in existence
-const getTokenSupply = async (tokenId) => {
-
-};
-
-// returns the total number of tokens in existence by itemId
-const getTokenSupplyByItemId = async (itemId) => {
-
-};
-
 export {
+	fundLoan,
+	endRaffle,
+	endAuction,
 	createSale,
 	createBid,
 	enterRaffle,
@@ -311,20 +336,17 @@ export {
 	createItemLoan,
 	putItemOnSale,
 	unlistPositionOnSale,
-	marketplaceItemExists,
-	fetchMarketplaceItems,
 	fetchStateItems,
+	fetchMarketplaceItems,
+	fetchUserItems,
+	fetchCollectionItems,
+	// these are old, need to be removed
+	marketplaceItemExists,
 	fetchMarketplaceItem,
 	putOnSale,
 	removeFromSale,
 	buyNow,
-	fetchBids,
 	addBid,
 	cancelBid,
-	acceptBid,
-	fetchHighestBid,
-	getTokenSupply,
-	getTokenSupplyByItemId,
-	fetchUserItems,
-	fetchCollectionItems
+	acceptBid
 }

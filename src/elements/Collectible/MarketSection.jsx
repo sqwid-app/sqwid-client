@@ -17,7 +17,7 @@ import AuthContext from '@contexts/Auth/AuthContext';
 import constants from "@utils/constants";
 import { formatReefPrice } from '@utils/formatReefPrice';
 import useStateInfo from '@utils/useStateInfo';
-import { unlistPositionOnSale } from '@utils/marketplace';
+import { endAuction, endRaffle, fundLoan, unlistPositionOnSale } from '@utils/marketplace';
 import Loading from '@elements/Default/Loading';
 import { useHistory } from 'react-router-dom';
 
@@ -265,14 +265,21 @@ const CurrentPrice = () => {
 const Deadline = () => {
 	const stateInfo = useStateInfo()
 	const deadline = stateInfo.deadline * 1000 //converting deadline from s to ms
-	// const deadline = 1643836298054
+	const [timeLeft, setTimeLeft] = useState("");
+	useEffect (() => {
+		const interval = setInterval(() => {
+			const timeLeft = formatDistance(new Date(deadline), new Date (), { addSuffix: true });
+			setTimeLeft(timeLeft);
+		}, 1000)
+		return () => clearInterval(interval)
+	}, [deadline])
 	return (
 		<SectionContainer>
 			<Heading>Deadline</Heading>
 			{stateInfo.deadline === 0 ? <p className="unavailable">Not set</p> : (
 				<p>
-					<TooltipCustom base={<TimeText>{formatDistance(new Date(deadline), new Date(), { addSuffix: true })}</TimeText>}>
-						{capitalize(formatRelative(new Date(deadline), new Date()))}<br />
+					<TooltipCustom base={<TimeText>{timeLeft}</TimeText>}>
+						{capitalize(formatRelative(new Date(deadline), new Date ()))}<br />
 						({format(new Date(deadline), "EEEE, LLLL d, uuuu h:mm a")})
 					</TooltipCustom>
 				</p>
@@ -529,6 +536,21 @@ const Config6 = () => {
 
 const Config7 = () => {
 	// state-2 / not owned / deadline over
+	const history = useHistory();
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState('Finalize');
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const handleClick = async () => {
+		setButtonText(<Loading/>);
+		setIsLoading(true);
+		const receipt = await endAuction (collectibleInfo.positionId);
+		if (receipt) {
+			history.push ('/profile');
+		} else {
+			setButtonText('Finalize');
+			setIsLoading(false);
+		}
+	}
 
 	return (
 		<BottomWrapper>
@@ -538,8 +560,8 @@ const Config7 = () => {
 				<HighestBid />
 			</TopSection>
 			<BottomContainer parent={false}>
-				<AnimBtn>
-					Finalize Auction
+				<AnimBtn disabled = {isLoading} onClick = {handleClick}>
+					{buttonText}
 				</AnimBtn>
 			</BottomContainer>
 		</BottomWrapper>
@@ -571,8 +593,6 @@ const Config9 = () => {
 const Config10 = () => {
 	// state-3 / not owned / active
 	const [showEnterRaffleModal, setShowEnterRaffleModal] = useState(false)
-
-
 	return (
 		<BottomWrapper>
 			<TopSection>
@@ -593,6 +613,22 @@ const Config10 = () => {
 const Config11 = () => {
 	// state-3 / not owned / deadline over
 
+	const history = useHistory();
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState('Finalize');
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const handleClick = async () => {
+		setButtonText(<Loading/>);
+		setIsLoading(true);
+		const receipt = await endRaffle (collectibleInfo.positionId);
+		if (receipt) {
+			history.push ('/profile');
+		} else {
+			setButtonText('Finalize');
+			setIsLoading(false);
+		}
+	}
+
 	return (
 		<BottomWrapper>
 			<TopSection>
@@ -601,8 +637,8 @@ const Config11 = () => {
 				<Deadline />
 			</TopSection>
 			<BottomContainer parent={false}>
-				<AnimBtn>
-					Finalize Raffle
+				<AnimBtn disabled = {isLoading} onClick = {handleClick}>
+					{buttonText}
 				</AnimBtn>
 			</BottomContainer>
 		</BottomWrapper>
@@ -633,6 +669,21 @@ const Config13 = () => {
 const Config14 = () => {
 	// state-4 / not owned / not funded
 
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState('Fund');
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const handleClick = async () => {
+		setButtonText(<Loading/>);
+		setIsLoading(true);
+		const receipt = await fundLoan (collectibleInfo.positionId, collectibleInfo.loan.loanAmount / 10 ** 18);
+		if (receipt) {
+			window.location.reload ();
+		} else {
+			setButtonText('Fund');
+			setIsLoading(false);
+		}
+	}
+
 	return (
 		<BottomWrapper>
 			<TopSection>
@@ -643,8 +694,8 @@ const Config14 = () => {
 				<RightContainer>
 					<CurrentPrice />
 				</RightContainer>
-				<AnimBtn>
-					Fund Loan
+				<AnimBtn disabled = {isLoading} onClick = {handleClick}>
+					{buttonText}
 				</AnimBtn>
 			</BottomContainer>
 		</BottomWrapper>

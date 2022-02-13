@@ -185,11 +185,11 @@ const elemContains = (rect, x, y) => {
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
-	const initialNetwork = localStorage.getItem(`${constants.APP_NAME}__network`)
-	const [testnetIsActive, setTestnetIsActive] = useState(initialNetwork || true)
+	const initialNetwork = localStorage.getItem(`${constants.APP_NAME}__chosen_network`)
+	const [chosenNetwork, setChosenNetwork] = useState(initialNetwork || 'reef_testnet')
 	const [networkButtonText, setNetworkButtonText] = useState(<FadeLoaderIcon />)
 	useEffect(() => {
-		!initialNetwork && localStorage.setItem(`${constants.APP_NAME}__network`, true)
+		!initialNetwork && localStorage.setItem(`${constants.APP_NAME}__chosen_network`, 'reef_testnet');
 		//eslint-disable-next-line
 	}, [])
 	const [signer, setSigner] = useState("")
@@ -252,8 +252,8 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	}, [alert.isActive])
 
 	useEffect(() => {
-		setNetworkButtonText(!testnetIsActive ? `Mainnet` : `Testnet`)
-	}, [testnetIsActive])
+		setNetworkButtonText (chosenNetwork === 'reef_testnet' ? 'Testnet' : 'Mainnet')
+	}, [chosenNetwork])
 
 	const handleClickOutside = (e) => {
 		let rect = modalRef?.current?.getBoundingClientRect();
@@ -313,7 +313,10 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 										network
 										title="Switch Network"
 										onClick={() => {
-											setTestnetIsActive(!testnetIsActive)
+											let newNetwork = chosenNetwork === 'reef_testnet' ? 'reef_mainnet' : 'reef_testnet'
+											localStorage.setItem (`${constants.APP_NAME}__chosen_network`, newNetwork);
+											setChosenNetwork (newNetwork)
+											window.location.reload ();
 										}}
 									>{networkButtonText}</Button>
 									<Button

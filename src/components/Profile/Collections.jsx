@@ -11,6 +11,7 @@ import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import bread from "@utils/bread";
 import CardSectionContainer from "@elements/Default/CardSectionContainer";
 import Wrapper from "@elements/ProfileRedesign/Wrapper";
+import { getBackend } from "@utils/network";
 
 const Container = styled.div`
 	position: absolute;
@@ -42,7 +43,7 @@ const CollectionsSection = () => {
 	const [isLoading, setIsLoading] = useState(true)
 	const isTabletOrMobile = useIsTabletOrMobile();
 	useEffect(() => {
-		axios.get(`${process.env.REACT_APP_API_URL}/get/collections/owner/${userID}`)
+		axios.get(`${getBackend ()}/get/collections/owner/${userID}`)
 			.then((res) => {
 				localStorage.setItem("collections", JSON.stringify(res.data.collections))
 				setCards(res.data.collections.map(item => {
