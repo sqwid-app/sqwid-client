@@ -345,8 +345,11 @@ export const CreateAuctionModal = (props) => {
 			setButtonText(<Loading />);
 			const receipt = await createItemAuction(collectibleInfo.itemId, Number(copies), Number(duration), minBid);
 			if (receipt) {
+				const newPositionId = receipt.events[1].args['positionId'].toNumber();
+				const shortUrl = `/collectible/${newPositionId}`;
 				if (Number(copies) === collectibleInfo.amount) {
-					history.push("/profile");
+					history.push(shortUrl);
+					window.location.reload();
 				} else {
 					setCollectibleInfo({
 						...collectibleInfo,
@@ -358,8 +361,7 @@ export const CreateAuctionModal = (props) => {
 					setDuration("");
 					setMinBid("");
 					props.setIsActive(false);
-					const newPositionId = receipt.events[1].args['positionId'].toNumber();
-					const shortUrl = `/collectible/${newPositionId}`;
+					
 					bread(
 						<div>
 							Auction created! Check it out <ToastLink
@@ -433,8 +435,11 @@ export const PutOnSaleModal = (props) => {
 			setButtonText(<Loading />);
 			const receipt = await putItemOnSale(collectibleInfo.itemId, Number(copies), price);
 			if (receipt) {
+				const newPositionId = receipt.events[1].args['positionId'].toNumber();
+				const shortUrl = `/collectible/${newPositionId}`;
 				if (Number(copies) === collectibleInfo.amount) {
-					history.push("/profile");
+					history.push(shortUrl);
+					window.location.reload();
 				} else {
 					setCollectibleInfo({
 						...collectibleInfo,
@@ -445,8 +450,6 @@ export const PutOnSaleModal = (props) => {
 					setPrice("");
 					setCopies("");
 					props.setIsActive(false);
-					const newPositionId = receipt.events[1].args['positionId'].toNumber();
-					const shortUrl = `/collectible/${newPositionId}`;
 					bread(
 						<div>
 							Sale created! Check it out <ToastLink
@@ -518,8 +521,11 @@ export const LendModal = (props) => {
 			setButtonText(<Loading />);
 			const receipt = await createItemLoan(collectibleInfo.itemId, amount, paybackFee, Number(copies), Number(duration));
 			if (receipt) {
+				const newPositionId = receipt.events[1].args['positionId'].toNumber();
+				const shortUrl = `/collectible/${newPositionId}`;
 				if (Number(copies) === collectibleInfo.amount) {
-					history.push("/profile");
+					history.push(shortUrl);
+					window.location.reload();
 				} else {
 					setCollectibleInfo({
 						...collectibleInfo,
@@ -532,8 +538,6 @@ export const LendModal = (props) => {
 					setPaybackFee("");
 					setDuration("");
 					props.setIsActive(false);
-					const newPositionId = receipt.events[1].args['positionId'].toNumber();
-					const shortUrl = `/collectible/${newPositionId}`;
 					bread(
 						<div>
 							Loan proposal created! Check it out <ToastLink
@@ -612,8 +616,11 @@ export const RaffleModal = (props) => {
 			setButtonText(<Loading />);
 			const receipt = await createItemRaffle(collectibleInfo.itemId, Number(copies), Number(duration));
 			if (receipt) {
+				const newPositionId = receipt.events[1].args['positionId'].toNumber();
+				const shortUrl = `/collectible/${newPositionId}`;
 				if (Number(copies) === collectibleInfo.amount) {
-					history.push("/profile");
+					history.push(shortUrl);
+					window.location.reload();
 				} else {
 					setCollectibleInfo({
 						...collectibleInfo,
@@ -624,8 +631,6 @@ export const RaffleModal = (props) => {
 					setDuration("");
 					setCopies("");
 					props.setIsActive(false);
-					const newPositionId = receipt.events[1].args['positionId'].toNumber();
-					const shortUrl = `/collectible/${newPositionId}`;
 					bread(
 						<div>
 							Raffle created! Check it out <ToastLink
@@ -704,6 +709,9 @@ export const EnterRaffleModal = (props) => {
 		<ModalContainer {...props}>
 			<Title>Enter Raffle</Title>
 			<Group>
+				<div>
+					Any amount you send will be added to your total
+				</div> <br/>
 				<InputTitle>Amount</InputTitle>
 				<InputContainer
 					type="number"
@@ -727,13 +735,13 @@ export const BidsModal = (props) => {
 	//eslint-disable-next-line
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
 	const minToBid = Math.max(collectibleInfo.auction.minBid / 10 ** 18, collectibleInfo.auction.highestBid / 10 ** 18);
-
+	const currentBid = collectibleInfo.auction.myBid || 0;
 	const handleAmountInput = (e) => {
 		setAmount(e.target.value);
 	}
 
 	const handleClick = async () => {
-		if (!isLoading && Number(amount) >= minToBid) {
+		if (!isLoading && Number(amount) + currentBid >= minToBid) {
 			setIsLoading(true);
 			setButtonText(<Loading />);
 			const receipt = await createBid(collectibleInfo.positionId, amount);
@@ -755,6 +763,9 @@ export const BidsModal = (props) => {
 				setAmount("");
 				props.setIsActive(false);
 				bread(`You bid ${amount} Reef!`);
+				setTimeout(() => {
+					window.location.reload();
+				}, 3000);
 			} else {
 				setIsLoading(false)
 				setButtonText(initialButtonText);
@@ -771,9 +782,6 @@ export const BidsModal = (props) => {
 				<div>
 					If you've already bid, your new bid will be added to your total,<br /> and the total must be more than the highest bid.
 				</div> <br />
-				<div>
-					For now please keep track of your bids until we implement <br /> a way of tracking them.
-				</div><br />
 				<InputTitle>Amount (total more than {minToBid})</InputTitle>
 				<InputContainer
 					type="number"

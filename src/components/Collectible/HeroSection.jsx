@@ -6,7 +6,7 @@ import { respondTo } from "@styles/styledMediaQuery";
 import bread from "@utils/bread";
 import constants from "@utils/constants";
 //eslint-disable-next-line
-import { fetchMarketplaceItem, marketplaceItemExists } from "@utils/marketplace";
+import { fetchMarketplaceItem, fetchRaffleEntries, marketplaceItemExists } from "@utils/marketplace";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
@@ -77,7 +77,8 @@ const HeroSection = () => {
 
 	useEffect(() => {
 		// Axios request goes here ebin...
-		const getData = async () => {
+		// eslint-disable-next-line
+		const getDataOld = async () => {
 			const { data } = await axios.get(`${getBackend()}/get/marketplace/position/${addr}`)
 			if (data && !data.error) {
 				let conversionRate = null;
@@ -100,6 +101,33 @@ const HeroSection = () => {
 					...collectibleInfo,
 					isValidCollectible: false,
 				})
+			}
+		}
+
+		const getData = async () => {
+			const collectiblePromise = axios.get(`${getBackend()}/get/marketplace/position/${addr}`);
+			const pricePromise = axios('https://api.coingecko.com/api/v3/simple/price?ids=reef-finance&vs_currencies=usd');
+			try {
+				const [collectible, price] = await Promise.all([collectiblePromise, pricePromise]);
+				if (collectible.data && collectible.data.error) setCollectibleInfo({
+					...collectibleInfo,
+					isValidCollectible: false,
+				});
+				else {
+					let conversionRate = price.data ? price.data['reef-finance'].usd : 0;
+					setCollectibleInfo({
+						...collectible.data,
+						conversionRate,
+						isValidCollectible: true
+					});
+					setIsLoading(false)
+				}
+			} catch (err) {
+				bread(err);
+				setCollectibleInfo({
+					...collectibleInfo,
+					isValidCollectible: false,
+				});
 			}
 		}
 

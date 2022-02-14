@@ -17,9 +17,10 @@ import AuthContext from '@contexts/Auth/AuthContext';
 import constants from "@utils/constants";
 import { formatReefPrice } from '@utils/formatReefPrice';
 import useStateInfo from '@utils/useStateInfo';
-import { endAuction, endRaffle, fundLoan, unlistPositionOnSale } from '@utils/marketplace';
+import { endAuction, endRaffle, fetchAuctionBids, fetchRaffleEntries, fundLoan, liquidateLoan, repayLoan, unlistLoanProposal, unlistPositionOnSale } from '@utils/marketplace';
 import Loading from '@elements/Default/Loading';
 import { useHistory } from 'react-router-dom';
+import { ethers } from 'ethers';
 
 /*
 	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/sections.png
@@ -265,7 +266,7 @@ const CurrentPrice = () => {
 const Deadline = () => {
 	const stateInfo = useStateInfo()
 	const deadline = stateInfo.deadline * 1000 //converting deadline from s to ms
-	const [timeLeft, setTimeLeft] = useState("");
+	const [timeLeft, setTimeLeft] = useState(formatDistance(new Date(deadline), new Date (), { addSuffix: true }));
 	useEffect (() => {
 		const interval = setInterval(() => {
 			const timeLeft = formatDistance(new Date(deadline), new Date (), { addSuffix: true });
@@ -284,6 +285,84 @@ const Deadline = () => {
 					</TooltipCustom>
 				</p>
 			)}
+		</SectionContainer>
+	)
+}
+
+const MyRaffleValue = () => {
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const [myRaffleValue, setMyRaffleValue] = useState("");
+	const { auth } = useContext(AuthContext)
+	useEffect (() => {
+		const grabRaffleValue = async () => {
+			let entries = await fetchRaffleEntries (collectibleInfo.positionId);
+			let index = entries[0].indexOf (auth?.evmAddress);
+			if (index !== -1) {
+				setMyRaffleValue (entries[1][index].toString ());
+			} else {
+				setMyRaffleValue ("0");
+			}
+		}
+		grabRaffleValue ();
+		// eslint-disable-next-line
+	} , [auth])
+	return (
+		<SectionContainer>
+			<Heading>Your Raffle Value</Heading>
+			{
+				myRaffleValue.length ? (
+					<PriceContainer>
+						<ReefIcon size={28} />
+						<p>{numberSeparator(myRaffleValue)}</p>
+					</PriceContainer>
+				) : <Loading/>
+			}
+		</SectionContainer>
+	)
+}
+
+const MyAuctionBid = () => {
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext)
+	const [myBid, setMyBid] = useState("");
+	const { auth } = useContext(AuthContext)
+	useEffect (() => {
+		const grabAuctionBid = async () => {
+			let bids = await fetchAuctionBids (collectibleInfo.positionId);
+			let index = bids[0].indexOf (auth?.evmAddress);
+			if (index !== -1) {
+				setMyBid (ethers.utils.formatEther(bids[1][index].toString ()));
+				setCollectibleInfo ({ 
+					...collectibleInfo,
+					auction: {
+						...collectibleInfo.auction,
+						myBid: Number (ethers.utils.formatEther (bids[1][index].toString ()))
+					}
+				});
+			} else {
+				setMyBid("0");
+				setCollectibleInfo ({ 
+					...collectibleInfo,
+					auction: {
+						...collectibleInfo.auction,
+						myBid: 0
+					}
+				});
+			}
+		}
+		grabAuctionBid ();
+		// eslint-disable-next-line
+	} , [auth])
+	return (
+		<SectionContainer>
+			<Heading>Your Bid</Heading>
+			{
+				myBid.length ? (
+					<PriceContainer>
+						<ReefIcon size={28} />
+						<p>{numberSeparator(myBid)}</p>
+					</PriceContainer>
+				) : <Loading/>
+			}
 		</SectionContainer>
 	)
 }
@@ -504,6 +583,9 @@ const Config5 = () => {
 				<HighestBid />
 			</TopSection>
 			<BottomContainer parent={false}>
+				<RightContainer>
+					<MyAuctionBid/>
+				</RightContainer>
 				<AnimBtn onClick={() => setShowBidsModal(!showBidsModal)}>
 					Bid
 				</AnimBtn>
@@ -525,6 +607,9 @@ const Config6 = () => {
 				<HighestBid />
 			</TopSection>
 			<BottomContainer parent={false}>
+				<RightContainer>
+					<MyAuctionBid/>
+				</RightContainer>
 				<AnimBtn onClick={() => setShowBidsModal(!showBidsModal)}>
 					Increase Bid
 				</AnimBtn>
@@ -601,8 +686,11 @@ const Config10 = () => {
 				<Deadline />
 			</TopSection>
 			<BottomContainer parent={false}>
+				<RightContainer>
+					<MyRaffleValue/>
+				</RightContainer>
 				<AnimBtn onClick={() => setShowEnterRaffleModal(!showEnterRaffleModal)}>
-					Enter Raffle
+					Participate
 				</AnimBtn>
 			</BottomContainer>
 			<EnterRaffleModal isActive={showEnterRaffleModal} setIsActive={setShowEnterRaffleModal} />
@@ -637,6 +725,9 @@ const Config11 = () => {
 				<Deadline />
 			</TopSection>
 			<BottomContainer parent={false}>
+				<RightContainer>
+					<MyRaffleValue/>
+				</RightContainer>
 				<AnimBtn disabled = {isLoading} onClick = {handleClick}>
 					{buttonText}
 				</AnimBtn>
@@ -716,11 +807,14 @@ const Config16 = () => {
 	return (
 		<BottomWrapper>
 			<TopSection>
-				<Deadline />
 				<PaybackFee />
+				<Deadline />
 			</TopSection>
 			<BottomContainer parent={false}>
-				<CurrentPrice />
+				<RightContainer>
+					<CurrentPrice />
+				</RightContainer>
+				<Funder />
 			</BottomContainer>
 		</BottomWrapper>
 	)
@@ -728,6 +822,21 @@ const Config16 = () => {
 
 const Config17 = () => {
 	// state-4 / funder / funded / deadline over
+	const history = useHistory();
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState('Liquidate');
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const handleClick = async () => {
+		setButtonText(<Loading/>);
+		setIsLoading(true);
+		const receipt = await liquidateLoan (collectibleInfo.positionId);
+		if (receipt) {
+			history.push ('/profile');
+		} else {
+			setButtonText('Liquidate');
+			setIsLoading(false);
+		}
+	}
 
 	return (
 		<BottomWrapper>
@@ -739,8 +848,8 @@ const Config17 = () => {
 				<RightContainer>
 					<CurrentPrice />
 				</RightContainer>
-				<AnimBtn>
-					Liquidate Loan
+				<AnimBtn disabled = {isLoading} onClick = {handleClick}>
+					{buttonText}
 				</AnimBtn>
 			</BottomContainer>
 		</BottomWrapper>
@@ -749,6 +858,21 @@ const Config17 = () => {
 
 const Config18 = () => {
 	// state-4 / owned / not funded
+	const history = useHistory();
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState('Unlist');
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const handleClick = async () => {
+		setButtonText(<Loading/>);
+		setIsLoading(true);
+		const receipt = await unlistLoanProposal (collectibleInfo.positionId);
+		if (receipt) {
+			history.push ('/profile');
+		} else {
+			setButtonText('Unlist');
+			setIsLoading(false);
+		}
+	}
 
 	return (
 		<BottomWrapper>
@@ -760,8 +884,8 @@ const Config18 = () => {
 				<RightContainer>
 					<CurrentPrice />
 				</RightContainer>
-				<AnimBtn>
-					Unlist
+				<AnimBtn disabled = {isLoading} onClick = {handleClick}>
+					{buttonText}
 				</AnimBtn>
 			</BottomContainer>
 		</BottomWrapper>
@@ -770,6 +894,21 @@ const Config18 = () => {
 
 const Config19 = () => {
 	// state-4 / owned / funded
+	const history = useHistory();
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState('Repay');
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const handleClick = async () => {
+		setButtonText(<Loading/>);
+		setIsLoading(true);
+		const receipt = await repayLoan (collectibleInfo.positionId, collectibleInfo.loan.loanAmount / 10 ** 18 + collectibleInfo.loan.feeAmount / 10 ** 18);
+		if (receipt) {
+			history.push ('/profile');
+		} else {
+			setButtonText('Repay');
+			setIsLoading(false);
+		}
+	}
 
 	return (
 		<BottomWrapper>
@@ -782,8 +921,8 @@ const Config19 = () => {
 				<RightContainer>
 					<CurrentPrice />
 				</RightContainer>
-				<AnimBtn>
-					Repay
+				<AnimBtn disabled = {isLoading} onClick = {handleClick}>
+					{buttonText}
 				</AnimBtn>
 			</BottomContainer>
 		</BottomWrapper>
@@ -914,6 +1053,27 @@ const MarketSection = () => {
 		setCollectibleInfo(updatedInfo)
 		//eslint-disable-next-line
 	}, [auth]);
+
+	/*
+	useEffect(() => {
+		const fetchExtras = async () => {
+			if (collectibleInfo.raffle) {
+				
+			} else if (collectibleInfo.auction) {
+				let bids = await fetchAuctionBids (collectibleInfo.positionId);
+				setCollectibleInfo ({
+					...collectibleInfo,
+					auction: {
+						...collectibleInfo.auction,
+						bids
+					}
+				})
+			}
+		}
+		// fetchExtras()
+		//eslint-disable-next-line
+	} , [])
+	*/
 	return (
 		<LazyMotion features={domAnimation}>
 			{getComponent(market)}
