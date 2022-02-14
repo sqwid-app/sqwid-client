@@ -25,7 +25,7 @@ const Wrapper = styled.div`
 	transform: translateY(-4rem);
 	padding-top:2rem;
 	${opacityToggle}
-	${props => props.info && infoBtn};
+	${props => props.type === "help" && infoBtn};
 `
 
 const DropdownContainer = styled.div`
@@ -42,7 +42,7 @@ const DropdownContainer = styled.div`
 `
 
 const Option = styled(NavLink)`
-	padding: ${props => props.info ? `0.5rem 1rem` : `0.675rem 1.75rem`};
+	padding: ${props => props.type === "help" ? `0.5rem 1rem` : `0.675rem 1.75rem`};
 	border-radius: 0.25rem;
 	text-decoration: none;
 	color: var(--app-text);
@@ -72,10 +72,10 @@ export const DropdownHelp = ({ options, isVisible }) => {
 	const [locallyVisible, setLocallyVisible] = useState(false);
 	return (
 		<CSSTransition onEnter={() => setLocallyVisible(true)} onExit={() => setLocallyVisible(false)} in={isVisible} timeout={200} classNames="dropdown">
-			<Wrapper info isVisible={locallyVisible}>
+			<Wrapper type={`help`} isVisible={locallyVisible}>
 				<DropdownContainer>
 					{options.map(option => (
-						<Option info key={option.name} to={option.link}>
+						<Option type={`help`} key={option.name} to={option.link}>
 							{option.name}
 						</Option>
 					))}
