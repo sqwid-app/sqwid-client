@@ -38,7 +38,7 @@ const LoadingContainer = styled.div`
 const CollectionsSection = () => {
 	const { auth } = useContext(AuthContext)
 	const { id } = useParams()
-	const userID = id ? id : auth?.address
+	const userID = id ? id : auth?.evmAddress
 	const [cards, setCards] = useState(JSON.parse(localStorage.getItem("collections")) || [])
 	const [isLoading, setIsLoading] = useState(true)
 	const isTabletOrMobile = useIsTabletOrMobile();
