@@ -4,27 +4,14 @@ import styled from "styled-components";
 import { CSSTransition } from 'react-transition-group';
 import { css } from "styled-components";
 
-const opacityToggle = css`
-	${props => props.isVisible ? `
-		opacity: 1;
-		display: block;
-	` : `
-		opacity: 0;
-		display: none;
-	`}
-`
 const infoBtn = css`
 	right: 0;
-	padding-right: 2rem;
 	font-size: 1rem;
 `
 
 const Wrapper = styled.div`
 	position: absolute;
-	top: 100%;
-	transform: translateY(-4rem);
-	padding-top:2rem;
-	${opacityToggle}
+	padding-top:1.25rem;
 	${props => props.type === "help" && infoBtn};
 `
 
@@ -42,46 +29,41 @@ const DropdownContainer = styled.div`
 `
 
 const Option = styled(NavLink)`
-	padding: ${props => props.type === "help" ? `0.5rem 1rem` : `0.675rem 1.75rem`};
+	padding: 0.5rem 1rem;
 	border-radius: 0.25rem;
 	text-decoration: none;
 	color: var(--app-text);
+	white-space: nowrap;
 	&:hover{
 		background: var(--app-container-bg-secondary);
 	}
 `
 
-const Dropdown = ({ options, isVisible }) => {
-	const [locallyVisible, setLocallyVisible] = useState(false);
+const Dropdown = ({ options }) => {
 	return (
-		<CSSTransition onEnter={() => setLocallyVisible(true)} onExit={() => setLocallyVisible(false)} in={isVisible} timeout={200} classNames="dropdown">
-			<Wrapper isVisible={locallyVisible}>
-				<DropdownContainer>
-					{options.map(option => (
-						<Option key={option.name} to={option.link}>
-							{option.name}
-						</Option>
-					))}
-				</DropdownContainer>
-			</Wrapper>
-		</CSSTransition>
+		<Wrapper className="dropdown-content">
+			<DropdownContainer>
+				{options.map(option => (
+					<Option key={option.name} to={option.link}>
+						{option.name}
+					</Option>
+				))}
+			</DropdownContainer>
+		</Wrapper>
 	)
 }
 
 export const DropdownHelp = ({ options, isVisible }) => {
-	const [locallyVisible, setLocallyVisible] = useState(false);
 	return (
-		<CSSTransition onEnter={() => setLocallyVisible(true)} onExit={() => setLocallyVisible(false)} in={isVisible} timeout={200} classNames="dropdown">
-			<Wrapper type={`help`} isVisible={locallyVisible}>
-				<DropdownContainer>
-					{options.map(option => (
-						<Option type={`help`} key={option.name} to={option.link}>
-							{option.name}
-						</Option>
-					))}
-				</DropdownContainer>
-			</Wrapper>
-		</CSSTransition>
+		<Wrapper type={`help`} className="dropdown-content">
+			<DropdownContainer>
+				{options.map(option => (
+					<Option key={option.name} to={option.link}>
+						{option.name}
+					</Option>
+				))}
+			</DropdownContainer>
+		</Wrapper>
 	)
 }
 

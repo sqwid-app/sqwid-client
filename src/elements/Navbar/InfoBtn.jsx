@@ -5,10 +5,12 @@ import React, { useState } from 'react'
 import styled from 'styled-components';
 
 const BtnContainer = styled.div`
-	display: grid;
-	place-items:center;
 	cursor: pointer;
 	z-index: 0;
+	span{
+		display: grid;
+		align-items:center;
+	}
 	&:hover{
 		svg{
 			color: var(--app-container-text-primary-hover);
@@ -30,9 +32,8 @@ const InfoBtn = () => {
 	const [helpIsVisible, setHelpIsVisible] = useState(false);
 	return (
 		<BtnContainer
-			onMouseOver={() => setHelpIsVisible(true)}
-			onMouseOut={() => setHelpIsVisible(false)}
-		><AlertIcon />
+			className="dropdown"
+		><span><AlertIcon /></span>
 			{!isTabletOrMobile &&
 				<DropdownHelp
 					isVisible={helpIsVisible}

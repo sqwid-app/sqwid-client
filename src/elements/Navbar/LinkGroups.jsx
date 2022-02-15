@@ -5,6 +5,7 @@ import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { keyframes } from "styled-components";
 
 const LinkContainer = styled.div`
 	display: grid;
@@ -31,23 +32,18 @@ const StyledNavLink = styled(NavLink)`
 	color: inherit;
 `
 
-const DropdownContainer = styled.div`
-	cursor: pointer;
-`
+const DropdownContainer = styled.div``
 
 const LinkGroups = () => {
-	const [exploreIsVisible, setExploreIsVisible] = useState(false);
 	const isTabletOrMobile = useIsTabletOrMobile();
 	const { auth } = useContext(AuthContext)
 	const isLoggedIn = auth !== null
 	return (
 		<LinkContainer>
 			<DropdownContainer
-				onMouseOver={() => setExploreIsVisible(true)}
-				onMouseOut={() => setExploreIsVisible(false)}
 				to="/explore"
 				exact
-				className="nav-links"
+				className="nav-links dropdown"
 				activeClassName="nav-selected"
 			>
 				<StyledNavLink
@@ -56,8 +52,6 @@ const LinkGroups = () => {
 				>Explore</StyledNavLink>
 				{!isTabletOrMobile &&
 					<Dropdown
-						isVisible={exploreIsVisible}
-						setIsVisible={setExploreIsVisible}
 						options={[{
 							name: "On Sale",
 							link: "/explore/sale"

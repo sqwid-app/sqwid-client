@@ -28,28 +28,28 @@ span.emoji {
 	font-weight: 100;
 }
 
-.dropdown-enter {
-	opacity: 0;
-	display: flex !important;
-	transition: opacity 0.2s ease;
+@keyframes showDropdown {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
-.dropdown-enter-active {
-	opacity: 1;
-}
+.dropdown {
+	cursor: pointer;
+	position: relative;
+	display: inline-block;
 
-.dropdown-exit {
-	opacity: 1;
-}
+	.dropdown-content {
+		display: none;
+	}
 
-.dropdown-exit-active {
-	opacity: 0;
-	transition: opacity 0.2s ease;
-}
-
-.dropdown-exit-done {
-	opacity: 0;
-	display: none !important;
+	&:hover .dropdown-content {
+		display: block;
+		animation: showDropdown 0.1s ease;
+	}
 }
 
 .warning-enter {
