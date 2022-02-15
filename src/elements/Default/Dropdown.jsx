@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import { CSSTransition } from 'react-transition-group';
 import { css } from "styled-components";
 
 const infoBtn = css`

@@ -2,10 +2,9 @@ import AuthContext from "@contexts/Auth/AuthContext";
 import Dropdown from "@elements/Default/Dropdown";
 import { respondTo } from "@styles/styledMediaQuery";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import { keyframes } from "styled-components";
 
 const LinkContainer = styled.div`
 	display: grid;
