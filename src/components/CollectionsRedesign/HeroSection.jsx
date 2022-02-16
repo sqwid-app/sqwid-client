@@ -210,7 +210,7 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 								<StyledSelect
 									options={options}
 									styles={styles}
-									isSearchable
+									isSearchable={false}
 									defaultValue={options[0]}
 									placeholder="Select Route"
 									onChange={({ value: item }) => {

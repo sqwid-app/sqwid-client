@@ -22,9 +22,9 @@ const ERCSelect = ({ wrapDetails, setWrapDetails }) => {
 			<Select
 				options={options}
 				styles={styles}
-				isSearchable
 				defaultValue={options[0]}
 				placeholder="Select ERC"
+				isSearchable={false}
 				onChange={value => setWrapDetails({
 					...wrapDetails,
 					erc: value.value

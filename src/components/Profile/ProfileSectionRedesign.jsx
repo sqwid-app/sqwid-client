@@ -71,7 +71,9 @@ const NavContent = styled.p`
 `
 
 const StyledSelect = styled(Select)`
-	min-width: 6rem;
+	min-width: 8rem;
+	z-index: 6;
+	position: relative;
 `
 
 const ProfileSection = () => {
@@ -126,7 +128,7 @@ const ProfileSection = () => {
 							<StyledSelect
 								options={options}
 								styles={styles}
-								isSearchable
+								isSearchable={false}
 								defaultValue={options[0]}
 								placeholder="Select Route"
 								onChange={({ value: item }) => {

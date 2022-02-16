@@ -51,6 +51,9 @@ const Heading = styled.h3`
 	${props => props.align === "right" && css`
 		text-align: right;
 	`}
+	${respondTo.md`
+		text-align: left;
+	`}
 `
 
 const Content = styled.div`

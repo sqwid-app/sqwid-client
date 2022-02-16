@@ -51,6 +51,9 @@ const ProfileAddress = styled.h4`
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+	font-family: var(--font-family-mono);
+	font-weight: 400;
+	font-size: 1rem;
 `
 
 const ProfileName = styled.h3`
