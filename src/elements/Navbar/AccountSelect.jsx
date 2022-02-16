@@ -55,19 +55,19 @@ const swipeUpwards = keyframes`
 `
 
 const modalEntryAnim = css`
-	animation: ${swipeRightToLeft} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+	animation: ${swipeRightToLeft} 0.2s var(--easing) forwards;
 `
 
 const modalExitAnim = css`
-	animation: ${swipeLeftToRight} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+	animation: ${swipeLeftToRight} 0.2s var(--easing) forwards;
 `
 
 const alertEntryAnim = css`
-	animation: ${swipeDownwards} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+	animation: ${swipeDownwards} 0.2s var(--easing) forwards;
 `
 
 const alertExitAnim = css`
-	animation: ${swipeUpwards} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+	animation: ${swipeUpwards} 0.2s var(--easing) forwards;
 `
 
 const BackDrop = styled.div`
@@ -252,7 +252,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	}, [alert.isActive])
 
 	useEffect(() => {
-		setNetworkButtonText (chosenNetwork === 'reef_testnet' ? 'Testnet' : 'Mainnet')
+		setNetworkButtonText(chosenNetwork === 'reef_testnet' ? 'Testnet' : 'Mainnet')
 	}, [chosenNetwork])
 
 	const handleClickOutside = (e) => {
@@ -314,9 +314,9 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 										title="Switch Network"
 										onClick={() => {
 											let newNetwork = chosenNetwork === 'reef_testnet' ? 'reef_mainnet' : 'reef_testnet'
-											localStorage.setItem (`${constants.APP_NAME}__chosen_network`, newNetwork);
-											setChosenNetwork (newNetwork)
-											window.location.reload ();
+											localStorage.setItem(`${constants.APP_NAME}__chosen_network`, newNetwork);
+											setChosenNetwork(newNetwork)
+											window.location.reload();
 										}}
 									>{networkButtonText}</Button>
 									<Button

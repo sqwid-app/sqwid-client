@@ -77,6 +77,59 @@ span.emoji {
 	display: none !important;
 }
 
+// React Modal Transition
+
+.ReactModal__Overlay {
+	opacity: 0;
+	transform: translateY(2rem);
+	transition: all 0.15s ease;
+}
+
+.ReactModal__Overlay--after-open {
+	opacity: 1;
+	transform: translateY(0px);
+}
+
+.ReactModal__Overlay--before-close {
+	opacity: 0;
+	transform: translateY(4rem);
+}
+
+// React Modal Styling
+
+.ReactModal__Overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1000;
+	background: var(--modal-backdrop);
+}
+
+.ReactModal__Content {
+	position: absolute;
+	-webkit-overflow-scrolling: touch;
+	outline: none;
+	padding: 20px;
+	color: var(--app-text);
+	padding: 0;
+	inset: none;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: max-content;
+	height: 100%;
+	max-height: 90vh;
+	max-width: 90vw;
+	img {
+		height: 100%;
+		width: 100%;
+		object-fit: contain;
+		border-radius: 0.5rem;
+	}
+}
+
 @keyframes animate-logo {
 	0% {
 		stroke-dashoffset: 0px;

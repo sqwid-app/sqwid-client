@@ -6,6 +6,7 @@ import Plyr from "@elements/Default/Plyr";
 import "@styles/plyr.css";
 import { CSSTransition } from 'react-transition-group';
 import { getCloudflareURL, getDwebURL } from "@utils/getIPFSURL";
+import ModalComponent from "./ModalComponent";
 
 const Container = styled.div`
 	display: grid;
@@ -32,6 +33,7 @@ const ImageContainer = styled.img`
 	background-position: center; */
 	object-fit: contain;
 	transition: filter 0.1s ease, transform 0.2s ease;
+	cursor: zoom-in;
 	${props => props.blur && blur}
 	${respondTo.md`
 		min-height: 16rem;
@@ -97,6 +99,7 @@ const Content = styled.div`
 		padding: 0;
 	`}
 `
+
 
 const PlyrContainer = styled.div`
 	width: 100%;
@@ -191,6 +194,7 @@ const WarningText = ({ isBlurred, setIsBlurred }) => {
 const NFTContent = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
 	const [isBlurred, setIsBlurred] = useState(!collectibleInfo.approved);
+	const [modalIsOpen, setModalIsOpen] = useState(false)
 
 	/*
 	Couldn't be arsed to change the value every time so two constants 👍
@@ -211,10 +215,16 @@ const NFTContent = () => {
 	return (
 		<Container>
 			{collectibleInfo.meta?.mimetype.startsWith("image") ? (
-				<ImageWrapper title={collectibleInfo.meta.name}>
-					<WarningText isBlurred={isBlurred} setIsBlurred={setIsBlurred} />
-					<ImageContainer blur={isBlurred} src={getCloudflareURL(collectibleInfo.meta.media)} />
-				</ImageWrapper>
+				<>
+					<ImageWrapper title={collectibleInfo.meta.name}>
+						<WarningText isBlurred={isBlurred} setIsBlurred={setIsBlurred} />
+						<ImageContainer onClick={() => setModalIsOpen(true)} blur={isBlurred} src={getCloudflareURL(collectibleInfo.meta.media)} />
+					</ImageWrapper>
+					<ModalComponent modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} details={{
+						image: getCloudflareURL(collectibleInfo.meta.media),
+						name: collectibleInfo.meta.name,
+					}} />
+				</>
 			) : (
 				<VideoWrapper>
 					<WarningText isBlurred={isBlurred} setIsBlurred={setIsBlurred} />

@@ -45,7 +45,6 @@ const parentMargin = css`
 const BottomContainer = styled.div`
 	height: ${props => !props.parent ? `auto` : `100%`};
 	/* ${parentMargin}; */
-	margin-top: 1.5rem;
 	display: flex;
 	justify-content: flex-end;
 	align-items: flex-end;
@@ -127,7 +126,7 @@ const BottomWrapper = styled.div`
 `
 
 const TimeText = styled.span`
-	margin-right: 0.5rem;
+	margin-right: ${props => props.right ? `0` : `0.5rem`};
 	font-size: 1.125rem;
 `
 
@@ -135,6 +134,7 @@ const TopSection = styled.div`
 	display: flex;
 	align-items:center;
 	justify-content:space-between;
+	margin-bottom: ${props => props.bottom ? `0` : `1.5rem`};
 `
 
 const Content = styled.div`
@@ -187,7 +187,8 @@ const Logo = styled.div`
 `
 
 const FunderSection = styled.div`
-	margin-top: 1rem;
+	margin-top: 0.375rem;
+	margin-bottom: ${props => !props.bottom ? `0` : `1.5rem`};
 `
 
 const Title = styled.h2`
@@ -245,6 +246,19 @@ const SectionContainer = styled.div`
     height: 100%;
 `
 
+const TopSectionContainer = styled.div`
+	width: 100%;
+	display: flex;
+    flex-direction: column;
+	gap: 0.875rem;
+`
+
+const TopSectionContent = styled.div`
+	display: flex;
+	align-items:center;
+    justify-content: space-between;
+`
+
 const AnimBtn = ({ children, ...props }) => (
 	<Btn
 		whileTap={{
@@ -286,7 +300,7 @@ const CurrentPrice = () => {
 	)
 }
 
-const Deadline = () => {
+const Deadline = ({ right }) => {
 	const stateInfo = useStateInfo()
 	const deadline = stateInfo.deadline * 1000 //converting deadline from s to ms
 	const [timeLeft, setTimeLeft] = useState(formatDistance(new Date(deadline), new Date(), { addSuffix: true }));
@@ -299,10 +313,10 @@ const Deadline = () => {
 	}, [deadline])
 	return (
 		<SectionContainer>
-			<Heading>Deadline</Heading>
+			<Heading align={right && "right"}>Deadline</Heading>
 			{stateInfo.deadline === 0 ? <p className="unavailable">Not set</p> : (
 				<p>
-					<TooltipCustom base={<TimeText>{timeLeft}</TimeText>}>
+					<TooltipCustom base={<TimeText right={right}>{timeLeft}</TimeText>}>
 						{capitalize(formatRelative(new Date(deadline), new Date()))}<br />
 						({format(new Date(deadline), "EEEE, LLLL d, uuuu h:mm a")})
 					</TooltipCustom>
@@ -408,7 +422,7 @@ const TotalAddresses = () => {
 	return (
 		<SectionContainer>
 			<Heading>Participating Addresses</Heading>
-			<p>{stateInfo.totalAddresses}</p>
+			<p style={{ textAlign: "right" }}>{stateInfo.totalAddresses}</p>
 		</SectionContainer>
 	)
 }
@@ -469,7 +483,7 @@ const PaybackFee = () => {
 	}, [collectibleInfo.conversionRate])
 	return (
 		<SectionContainer>
-			<Heading>Payback Fee</Heading>
+			<Heading align="right">Payback Fee</Heading>
 			<PriceContainer>
 				<ReefIcon size={28} />
 				<p>
@@ -481,10 +495,10 @@ const PaybackFee = () => {
 	)
 }
 
-const Funder = () => {
+const Funder = ({ bottom }) => {
 	const stateInfo = useStateInfo()
 	return (
-		<FunderSection>
+		<FunderSection bottom={bottom}>
 			<Heading>Funder</Heading>
 			<Content>
 				<Logo
@@ -707,14 +721,18 @@ const Config10 = () => {
 	return (
 		<BottomWrapper>
 			<TopSection>
-				<RaffleValue />
-				<TotalAddresses />
-				<Deadline />
+				<TopSectionContainer>
+					<TopSectionContent>
+						<RaffleValue />
+						<Deadline right />
+					</TopSectionContent>
+					<TopSectionContent>
+						<MyRaffleValue />
+						<TotalAddresses />
+					</TopSectionContent>
+				</TopSectionContainer>
 			</TopSection>
 			<BottomContainer parent={false}>
-				<RightContainer>
-					<MyRaffleValue />
-				</RightContainer>
 				<AnimBtn onClick={() => setShowEnterRaffleModal(!showEnterRaffleModal)}>
 					Participate
 				</AnimBtn>
@@ -746,14 +764,18 @@ const Config11 = () => {
 	return (
 		<BottomWrapper>
 			<TopSection>
-				<RaffleValue />
-				<TotalAddresses />
-				<Deadline />
+				<TopSectionContainer>
+					<TopSectionContent>
+						<RaffleValue />
+						<Deadline right />
+					</TopSectionContent>
+					<TopSectionContent>
+						<MyRaffleValue />
+						<TotalAddresses />
+					</TopSectionContent>
+				</TopSectionContainer>
 			</TopSection>
 			<BottomContainer parent={false}>
-				<RightContainer>
-					<MyRaffleValue />
-				</RightContainer>
 				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					{buttonText}
 				</AnimBtn>
@@ -938,11 +960,11 @@ const Config19 = () => {
 
 	return (
 		<BottomWrapper>
-			<TopSection>
+			<TopSection bottom>
 				<Deadline />
 				<PaybackFee />
 			</TopSection>
-			<Funder />
+			<Funder bottom />
 			<BottomContainer parent={false}>
 				<RightContainer>
 					<CurrentPrice />
@@ -1073,7 +1095,7 @@ const MarketSection = () => {
 				active: (stateInfo && stateInfo.deadline) ? Date.now() < stateInfo.deadline * 1000 : false, // only for auctions, raffles, loans (dictated by deadline)
 				highestBidder: stateInfo ? auth?.evmAddress === stateInfo.highestBidder?.address : false, // only for auctions
 				funded: stateInfo ? Number(stateInfo.lender?.address) !== 0 : false, // only for loans
-				funder: stateInfo ? auth?.evmAddress === stateInfo.lender?.address : false // only for loans
+				funder: stateInfo ? auth?.evmAddress === stateInfo.lender?.address : false, // only for loans
 			}
 		}
 		setCollectibleInfo(updatedInfo)
@@ -1084,7 +1106,6 @@ const MarketSection = () => {
 	useEffect(() => {
 		const fetchExtras = async () => {
 			if (collectibleInfo.raffle) {
-				
 			} else if (collectibleInfo.auction) {
 				let bids = await fetchAuctionBids (collectibleInfo.positionId);
 				setCollectibleInfo ({

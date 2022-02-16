@@ -23,8 +23,7 @@ const TitleContainer = styled.div`
 const Title = styled.h1`
 	font-weight: 900;
 	font-size: 2.5rem;
-	max-width: 45rem;
-	word-break: break-word;
+	max-width: 100%;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
@@ -34,7 +33,7 @@ const Description = styled.h3`
 	margin-top:0.5rem;
 	font-weight: 800;
 	font-size: 1rem;
-	max-width: 45rem;
+	max-width: 100%;
 	word-break: break-all;
 	color: var(--app-container-text-primary-hover);
 `
