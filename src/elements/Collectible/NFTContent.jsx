@@ -17,7 +17,7 @@ const Container = styled.div`
 `
 
 const blur = css`
-	filter: blur(2rem) brightness(0.5);
+	filter: blur(2rem) brightness(0.4);
 	transform: scale(1.1);
 	pointer-events: none;
 `
