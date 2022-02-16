@@ -33,34 +33,41 @@ const ImageMagnifier = ({
 	magnifierWidth = 250,
 	zoomLevel = 2.5
 }) => {
-	const [[x, y], setXY] = useState([0, 0]);
 	const [[imgWidth, imgHeight], setSize] = useState([0, 0]);
 	const [showMagnifier, setShowMagnifier] = useState(false);
+	const [[x, y], setXY] = useState([0, 0]);
+	const handleEnter = (e) => {
+		const elem = e.currentTarget;
+		const { width, height } = elem.getBoundingClientRect();
+		setSize([width, height]);
+		setShowMagnifier(true);
+	}
+	const handleMove = (e) => {
+
+		const elem = e.currentTarget;
+		const { top, left } = elem.getBoundingClientRect();
+
+		// const x = e.pageX - left - window.pageXOffset;
+		// const y = e.pageY - top - window.pageYOffset;
+
+		const x = e.clientX - left;
+		const y = e.clientY - top;
+
+		setXY([x, y]);
+	}
+	const handleLeave = () => {
+		setShowMagnifier(false);
+	}
 	return (
 		<Container>
 			<Image
 				src={src}
 				height={height}
 				width={width}
-				onMouseEnter={(e) => {
-					const elem = e.currentTarget;
-					const { width, height } = elem.getBoundingClientRect();
-					setSize([width, height]);
-					setShowMagnifier(true);
-				}}
-				onMouseMove={(e) => {
-
-					const elem = e.currentTarget;
-					const { top, left } = elem.getBoundingClientRect();
-
-					const x = e.pageX - left - window.pageXOffset;
-					const y = e.pageY - top - window.pageYOffset;
-
-					setXY([x, y]);
-				}}
-				onMouseLeave={() => {
-					setShowMagnifier(false);
-				}}
+				onMouseEnter={handleEnter}
+				onMouseMove={handleMove}
+				onMouseLeave={handleLeave}
+				onContextMenu={(e) => e.preventDefault()}
 				alt={alt}
 			/>
 
