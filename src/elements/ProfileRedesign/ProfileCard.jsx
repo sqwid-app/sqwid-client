@@ -35,12 +35,13 @@ const Card = styled.div`
 const Address = styled.h1`
 	display: block;
 	font-size: 1.25rem;
+	font-family: var(--font-family-mono);
+	font-weight: 400;
 `
 
 const Name = styled.h1`
 	display: block;
 	font-size: 1.75rem;
-	margin-top: 1.5rem;
 	max-width: 100%;
 	text-overflow:ellipsis;
 	overflow:hidden;
@@ -56,7 +57,6 @@ const AddressContainer = styled.div`
 	position:relative;
 	display: flex;
 	align-items:center;
-	margin-top: 1rem;
 	gap: 0.5rem;
 	${respondTo.md`
 		justify-content: center;
@@ -76,7 +76,8 @@ const Tooltip = styled.div`
 `
 
 const Description = styled.p`
-	margin: 1.5rem 0;
+	margin: 0;
+	margin-top: 1rem;
 	font-weight: 200;
 	width: 75%;
 	color: var(--app-container-text-primary-hover);
@@ -94,14 +95,14 @@ const swipeDownwards = keyframes`
 	}
 	100% {
 		opacity:1;
-		transform: translateX(calc(100% + 2rem));
+		transform: translateX(calc(100% + 3.25rem));
 	}
 `
 
 const swipeUpwards = keyframes`
 	0% {
 		opacity: 1;
-		transform: translateX(calc(100% + 2rem));
+		transform: translateX(calc(100% + 3.25rem));
 	}
 	100% {
 		opacity:0;
@@ -137,6 +138,7 @@ const Container = styled.div`
 	align-items:center;
 	width: 100%;
 	padding: 0 3rem;
+	padding-top: 1.5rem;
 	${containerEntryAnim}
 	${respondTo.md`
 		flex-direction: column;
@@ -211,6 +213,7 @@ const InputWrapper = styled.div`
 const ContentContainer = styled.div`
 	padding: 0 5rem;
 	flex:1;
+	display:grid;
 	${respondTo.md`
 		padding: 0;
 	`}
@@ -222,10 +225,10 @@ const AdditionalDetailsContainer = styled.div`
 	align-items: flex-end;
 	height: 100%;
 	gap: 1rem;
-	padding-top: 1.5rem;
 	${respondTo.md`
 		gap: 1.5rem;
 		align-items: center;
+		margin-top: 1.5rem;
 	`}
 `
 
