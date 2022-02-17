@@ -9,6 +9,18 @@ import ProfileElement from "./ProfileElement";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
 import { DividerHorizontal } from "@elements/Default/Divider";
 import constants from "@utils/constants";
+import SimpleBar from "simplebar-react";
+import "simplebar/src/simplebar.css";
+
+const StyledSimpleBar = styled(SimpleBar)`
+	p:not(:first-child){
+		margin-top: 0.5rem;
+	}
+	.simplebar-track.simplebar-horizontal .simplebar-scrollbar:before,
+	.simplebar-track.simplebar-vertical .simplebar-scrollbar:before {
+		background: var(--app-background);
+	}
+`
 
 const swipeRightToLeft = keyframes`
 	0% {
@@ -280,24 +292,26 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 							<ProfileElement />
 						)}
 						<Title>Choose an{auth && "other"} account</Title>
-						{accounts?.length ?
-							<>
-								{accounts ? accounts.filter(item => auth ? auth.address !== item.address : true).map((account, index) => {
-									return <m.p
-										whileHover={{
-											y: -2.5,
-											x: 0
-										}}
-										whileTap={{
-											scale: 0.99
-										}}
-										onClick={() => _onAccountChange(account.meta.name)}
-										key={index}
-									> {account.meta.name}<label title={account.address}>{truncateAddress(account.address)}</label> </m.p>
-								}) : null}
-							</>
-							: 'Please connect your wallet'}
-							{!auth && <>
+						<StyledSimpleBar style={{ maxHeight: 300 }}>
+							{accounts?.length ?
+								<>
+									{accounts ? accounts.filter(item => auth ? auth.address !== item.address : true).map((account, index) => {
+										return <m.p
+											whileHover={{
+												y: -2.5,
+												x: 0
+											}}
+											whileTap={{
+												scale: 0.99
+											}}
+											onClick={() => _onAccountChange(account.meta.name)}
+											key={index}
+										> {account.meta.name}<label title={account.address}>{truncateAddress(account.address)}</label> </m.p>
+									}) : null}
+								</>
+								: 'Please connect your wallet'}
+						</StyledSimpleBar>
+						{!auth && <>
 							<DividerHorizontal />
 							<Button
 								whileHover={{
@@ -317,7 +331,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 									window.location.reload();
 								}}
 							>{networkButtonText}</Button>
-							</>}
+						</>}
 						{auth && (
 							<>
 								<DividerHorizontal />
