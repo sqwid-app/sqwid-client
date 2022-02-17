@@ -107,20 +107,23 @@ const Modal = styled.div`
 	flex-direction: column;
 	gap: 0.5rem;
 	p{
+		line-height:1;
 		font-size: 1.5rem;
 		user-select:none;
 		background: var(--app-container-bg-secondary);
-		padding: 0.5rem 1.25rem;
+		padding: 1rem 1.25rem;
 		cursor:pointer;
 		border-radius: 0.25rem;
 		box-shadow:  0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	}
 	label{
 		display: block;
-		font-weight: 500;
-		font-size: 1rem;
 		color: var(--app-container-text-primary-hover);
 		cursor: pointer;
+		font-family: var(--font-family-mono);
+		font-weight: 400;
+		font-size: 1rem;
+		margin-top: 0.25rem;
 	}
 	${props => !props.remove ? modalEntryAnim : modalExitAnim}
 `
