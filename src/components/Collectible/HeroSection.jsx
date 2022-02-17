@@ -9,7 +9,7 @@ import constants from "@utils/constants";
 import { fetchMarketplaceItem, fetchRaffleEntries, marketplaceItemExists } from "@utils/marketplace";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import { getBackend } from "@utils/network";

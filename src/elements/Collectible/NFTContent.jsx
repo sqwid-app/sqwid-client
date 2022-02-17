@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useMemo, useState, useRef } from "react";
 import styled, { css } from "styled-components";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { respondTo } from "@styles/styledMediaQuery";
@@ -174,14 +174,16 @@ const CloseBtn = () => {
 }
 
 const WarningText = ({ isBlurred, setIsBlurred }) => {
+	const nodeRef = useRef()
 	return (
 		<CSSTransition
 			in={isBlurred}
 			timeout={300}
 			classNames="warning"
+			nodeRef={nodeRef}
 			unmountOnExit
 		>
-			<WarningTextContainer>
+			<WarningTextContainer ref={nodeRef}>
 				<div onClick={() => setIsBlurred(!isBlurred)} ><CloseBtn /></div>
 				<p>This item isn't approved. If you're the creator and you've just minted it, please allow a few minutes for Sqwid to approve it.
 					<b> Closing this warning will unblur this media for you!</b>

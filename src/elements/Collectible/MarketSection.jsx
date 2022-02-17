@@ -69,7 +69,7 @@ const Heading = styled.h3`
 	`}
 `
 
-const Price = styled.p`
+const Price = styled.div`
 	font-weight: 900;
 	font-size: 1.5rem;
 	display: flex;
