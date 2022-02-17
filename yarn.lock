@@ -2576,10 +2576,22 @@
     "@reef-defi/api-derive" "^1.0.1"
     "@reef-defi/types" "^1.0.1"
 
-"@reef-defi/evm-provider@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@reef-defi/evm-provider/-/evm-provider-1.0.2.tgz#a48f6d209e87fb5275bc624c5ce59ea8e4289dac"
-  integrity sha512-31vPQrh96xuBKoqpbXJiVT5qHBo+32k7axmlKVFmpT2GP46xPyOJyMsUI0Vwju8RLzFPvr55yfBaGt4i8UjJGQ==
+"@reef-defi/api@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@reef-defi/api/-/api-1.0.3.tgz#e96b9338fc3676b078249a3e8b152be3f2b14ce5"
+  integrity sha512-IAHHQhDnYw6JXDsWnfb2Sc3AKdm6eOIUSyznsHsal3PZoE++ibff8tGnVvPHcL/O+GZQaJ/XPASQZKZgJDhJ+A==
+  dependencies:
+    "@babel/runtime" "^7.10.2"
+    "@open-web3/orml-api-derive" "^1.0.1"
+    "@polkadot/api" "^6.3.1"
+    "@polkadot/rpc-core" "^6.3.1"
+    "@reef-defi/api-derive" "^1.0.1"
+    "@reef-defi/types" "^1.0.1"
+
+"@reef-defi/evm-provider@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@reef-defi/evm-provider/-/evm-provider-1.0.4.tgz#4c02a1d22b6f302edb8ec49ac9e525581485f2b5"
+  integrity sha512-Sl+fjcZr3AHeUPNfX2/39qGY5DSyI2cUGzHciCP29v64VYZGwbcVVgTYk6gQL7ZKiqkg5jCZ4rqxySfFg5Fr+Q==
   dependencies:
     "@open-web3/dev-config" "^0.1.13"
     "@open-web3/scanner" "^1.0.1"
