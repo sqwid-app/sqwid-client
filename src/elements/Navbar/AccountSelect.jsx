@@ -297,6 +297,27 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 								}) : null}
 							</>
 							: 'Please connect your wallet'}
+							{!auth && <>
+							<DividerHorizontal />
+							<Button
+								whileHover={{
+									y: -5,
+									x: 0,
+									scale: 1.02
+								}}
+								whileTap={{
+									scale: 0.99
+								}}
+								network
+								title="Switch Network"
+								onClick={() => {
+									let newNetwork = chosenNetwork === 'reef_testnet' ? 'reef_mainnet' : 'reef_testnet'
+									localStorage.setItem(`${constants.APP_NAME}__chosen_network`, newNetwork);
+									setChosenNetwork(newNetwork)
+									window.location.reload();
+								}}
+							>{networkButtonText}</Button>
+							</>}
 						{auth && (
 							<>
 								<DividerHorizontal />
