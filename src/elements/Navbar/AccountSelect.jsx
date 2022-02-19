@@ -13,6 +13,7 @@ import SimpleBar from "simplebar-react";
 import "simplebar/src/simplebar.css";
 
 const StyledSimpleBar = styled(SimpleBar)`
+	min-width:12rem;
 	p:not(:first-child){
 		margin-top: 0.5rem;
 	}
@@ -238,7 +239,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 				}
 			})
 			.catch(err => {
-				bread(err.response.data.error)
+				bread(err);
 			})
 			.finally(() => {
 				setLoading(false);

@@ -52,6 +52,22 @@
 	--progress-shadow: hsl(230, 25%, 23.5%);
 	--bar-primary: rgb(13, 104, 216);
 	--bar-secondary: rgb(97, 158, 255);
+	/*
+		status config
+
+	*/
+
+	/*
+
+		border hsla(color,50%,100%)
+		bg hsla(color,50%,25%)
+		text hsla(color,95%,25%)
+
+	*/
+
+	--status-approved: 148, 100%;
+	--status-pending: 43, 100%;
+	--status-rejected: 338, 100%;
 }
 
 ::selection {

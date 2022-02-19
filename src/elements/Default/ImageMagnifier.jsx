@@ -21,7 +21,7 @@ const Container = styled.div`
 const Image = styled.img`
 	height: ${props => props.height};
 	width: ${props => props.height};
-	cursor: none;
+	cursor: ${props => props.isCursorShown ? `default` : `none`};
 `
 
 const ImageMagnifier = ({
@@ -36,7 +36,8 @@ const ImageMagnifier = ({
 	const [[imgWidth, imgHeight], setSize] = useState([0, 0]);
 	const [showMagnifier, setShowMagnifier] = useState(false);
 	const [[x, y], setXY] = useState([0, 0]);
-	const handleEnter = (e) => {
+	const handleEnter = e => {
+		e.preventDefault()
 		const elem = e.currentTarget;
 		const { width, height } = elem.getBoundingClientRect();
 		setSize([width, height]);
@@ -55,7 +56,8 @@ const ImageMagnifier = ({
 
 		setXY([x, y]);
 	}
-	const handleLeave = () => {
+	const handleLeave = e => {
+		e.preventDefault()
 		setShowMagnifier(false);
 	}
 	return (
@@ -64,10 +66,12 @@ const ImageMagnifier = ({
 				src={src}
 				height={height}
 				width={width}
-				onMouseEnter={handleEnter}
+				isCursorShown={!showMagnifier}
+				onMouseDown={handleEnter}
+				onMouseUp={handleLeave}
 				onMouseMove={handleMove}
 				onMouseLeave={handleLeave}
-				onContextMenu={(e) => e.preventDefault()}
+				onContextMenu={e => e.preventDefault()}
 				alt={alt}
 			/>
 

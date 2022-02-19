@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 //eslint-disable-next-line
 import BidsSection from "./BidsSection";
+import DetailsSection from "./DetailsSection";
 import InfoSection from "./InfoSection";
 import MarketSection from "./MarketSection";
 
@@ -64,6 +65,11 @@ const InfoContainer = () => {
 		isActive: false,
 		// component: <BidsSection />
 		component: <>Work in progress ⚒🚧</>
+	}, {
+		name: "Details",
+		isActive: false,
+		// component: <BidsSection />
+		component: <DetailsSection />
 	}])
 	return (
 		<Container>

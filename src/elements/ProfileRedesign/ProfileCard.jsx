@@ -37,6 +37,7 @@ const Address = styled.h1`
 	font-size: 1.25rem;
 	font-family: var(--font-family-mono);
 	font-weight: 400;
+	color: var(--app-container-text-primary-hover);
 `
 
 const Name = styled.h1`

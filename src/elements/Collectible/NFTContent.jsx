@@ -1,4 +1,5 @@
-import React, { useContext, useMemo, useState, useRef } from "react";
+import React, { useContext, useMemo, useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { respondTo } from "@styles/styledMediaQuery";
@@ -7,6 +8,7 @@ import "@styles/plyr.css";
 import { CSSTransition } from 'react-transition-group';
 import { getCloudflareURL, getDwebURL } from "@utils/getIPFSURL";
 import ModalComponent from "./ModalComponent";
+import { LazyMotion, m, domAnimation } from "framer-motion";
 
 const Container = styled.div`
 	display: grid;
@@ -23,21 +25,29 @@ const blur = css`
 	pointer-events: none;
 `
 
-const ImageContainer = styled.img`
+const ImgWrapper = styled.div`
+	position: relative;
+    max-height: 80vh;
 	height: 100%;
-    width: 100%;
-	max-height: 80vh;
-	/* background-image: url(${props => props.url && props.url});
-	background-size:contain;
-	background-repeat:no-repeat;
-	background-position: center; */
-	object-fit: contain;
-	transition: filter 0.1s ease, transform 0.2s ease;
-	cursor: zoom-in;
-	${props => props.blur && blur}
-	${respondTo.md`
-		min-height: 16rem;
-	`}
+	overflow: hidden;
+	border-radius: 0.75rem;
+	img{
+		height: 100%;
+		width: 100%;
+		// I cant figure it out rn so ill just leave it as cover :(
+		object-fit: cover;
+		/* background-image: url(${props => props.url && props.url});
+		background-size:contain;
+		background-repeat:no-repeat;
+		background-position: center; */
+		transition: filter 0.1s ease, transform 0.2s ease;
+		cursor: zoom-in;
+		user-select: none;
+		${props => props.blur && blur}
+		${respondTo.md`
+			min-height: 16rem;
+		`}
+	}
 `
 
 const WarningTextContainer = styled.div`
@@ -45,6 +55,8 @@ const WarningTextContainer = styled.div`
 	--warning-text: rgb(255 251 235);
 	--warning-border: rgb(251 191 36);
 	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
 	margin: 1rem;
 	padding: 0.75rem 1rem;
 	z-index:2;
@@ -76,10 +88,19 @@ const WarningTextContainer = styled.div`
 const ImageWrapper = styled.div`
 	position: relative;
 	width: 100%;
-	max-height: 100%;
+	height: 100%;
 	overflow: hidden;
 	display: grid;
     place-items: center;
+	.utility-wrapper{
+		transition: all 0.15s ease 0.075s;
+		opacity: 0;
+		transform: translateY(100%);
+	}
+	img:hover + .utility-wrapper, .utility-wrapper:hover{
+		opacity: 1;
+		transform: translateY(0);
+	}
 `
 
 const VideoWrapper = ImageWrapper
@@ -99,7 +120,6 @@ const Content = styled.div`
 		padding: 0;
 	`}
 `
-
 
 const PlyrContainer = styled.div`
 	width: 100%;
@@ -134,6 +154,123 @@ const PlyrCover = styled.div`
 		min-height: 12rem;
 	`}
 `
+
+const UtilityWrapper = styled.div`
+	display:grid;
+	place-items: center;
+	position:absolute;
+	z-index:2;
+	bottom:0;
+	width: 100%;
+	border-radius: 0 0 0.75rem 0.75rem;
+	padding: 0.5rem;
+	min-height: 4rem;
+	background: linear-gradient(180deg,transparent,rgba(0,0,0,0.65));
+`
+
+const UtilityContainer = styled.div`
+	display: flex;
+	align-items:center;
+	justify-content: center;
+	gap: 1rem;
+	padding: 0.75rem;
+	margin: 0.75rem 0;
+	border-radius: 1000rem;
+`
+
+const BtnContainer = styled.div`
+	position: relative;
+	.popup{
+		padding-top: 0.25rem;
+		position:absolute;
+		font-weight: 800;
+		bottom: calc( -50% - 0.125rem);
+		left: 50%;
+		transform: translateX(-50%);
+		opacity:0;
+		transition: opacity 0.2s ease 0.15s;
+
+	}
+	&:hover{
+		.popup{
+			opacity:1;
+		}
+	}
+`
+
+const ShareBtn = ({ to }) => {
+	const MotionLink = m(Link)
+	return (
+		<BtnContainer>
+			<MotionLink whileHover={{
+				scale: 1.1,
+			}} whileTap={{
+				scale: 0.95
+			}} title="Share" className="btn btn__share" to="/">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12c0 1.654 1.346 3 3 3 .794 0 1.512-.315 2.049-.82l5.991 3.424c-.018.13-.04.26-.04.396 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3c-.794 0-1.512.315-2.049.82L8.96 12.397c.018-.131.04-.261.04-.397s-.022-.266-.04-.397l5.991-3.423c.537.505 1.255.82 2.049.82 1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .136.022.266.04.397L8.049 9.82A2.982 2.982 0 0 0 6 9c-1.654 0-3 1.346-3 3z"></path></svg>
+				{/* <span>Share</span> */}
+			</MotionLink>
+			<p className="popup">Share</p>
+		</BtnContainer>
+	)
+}
+
+const ReportBtn = () => {
+	return (
+		<BtnContainer>
+			<m.div whileHover={{
+				scale: 1.1,
+			}} whileTap={{
+				scale: 0.95
+			}} title="Report" className="btn btn__report">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zM4 12c0-1.846.634-3.542 1.688-4.897l11.209 11.209A7.946 7.946 0 0 1 12 20c-4.411 0-8-3.589-8-8zm14.312 4.897L7.103 5.688A7.948 7.948 0 0 1 12 4c4.411 0 8 3.589 8 8a7.954 7.954 0 0 1-1.688 4.897z"></path></svg>
+				{/* <span>Report</span> */}
+			</m.div>
+			<p className="popup">Report</p>
+		</BtnContainer >
+	)
+}
+
+const HeartBtn = () => {
+	const [isHearted, setIsHearted] = useState(true);
+	return (
+		<BtnContainer>
+			<m.div disabled={!isHearted} whileHover={{
+				scale: 1.1,
+			}} whileTap={{
+				scale: 0.95
+			}} title="Heart" onClick={() => setIsHearted(!isHearted)} className="btn btn__heart">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path></svg>
+				{/* <span>Report</span> */}
+			</m.div>
+			<p className="popup">Heart</p>
+		</BtnContainer>
+	)
+}
+
+const Utility = () => {
+	return (
+		<UtilityWrapper className="utility-wrapper">
+			<LazyMotion features={domAnimation}>
+				<UtilityContainer>
+					<HeartBtn />
+					<ShareBtn />
+					<ReportBtn />
+				</UtilityContainer>
+			</LazyMotion>
+		</UtilityWrapper>
+	)
+}
+
+const ImageContainer = ({ isBlurred, setIsBlurred, ...props }) => {
+	return (
+		<ImgWrapper blur={isBlurred}>
+			<WarningText isBlurred={isBlurred} setIsBlurred={setIsBlurred} />
+			<img alt="NFT" {...props} draggable={false} />
+			<Utility />
+		</ImgWrapper>
+	)
+}
 
 const VideoContainer = ({ data, blur }) => {
 	let type = data.mimetype.split("/")[0];
@@ -219,8 +356,7 @@ const NFTContent = () => {
 			{collectibleInfo.meta?.mimetype.startsWith("image") ? (
 				<>
 					<ImageWrapper title={collectibleInfo.meta.name}>
-						<WarningText isBlurred={isBlurred} setIsBlurred={setIsBlurred} />
-						<ImageContainer onClick={() => setModalIsOpen(true)} blur={isBlurred} src={getCloudflareURL(collectibleInfo.meta.media)} />
+						<ImageContainer onClick={() => setModalIsOpen(true)} isBlurred={isBlurred} setIsBlurred={setIsBlurred} src={getCloudflareURL(collectibleInfo.meta.media)} />
 					</ImageWrapper>
 					<ModalComponent modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} details={{
 						image: getCloudflareURL(collectibleInfo.meta.media),

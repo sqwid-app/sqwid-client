@@ -54,6 +54,7 @@ const ProfileAddress = styled.h4`
 	font-family: var(--font-family-mono);
 	font-weight: 400;
 	font-size: 1rem;
+	color: var(--app-container-text-primary-hover);
 `
 
 const ProfileName = styled.h3`
