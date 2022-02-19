@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState, useRef, useEffect } from "react";
+import React, { useContext, useMemo, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
