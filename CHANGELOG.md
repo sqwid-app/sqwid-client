@@ -2,6 +2,68 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.11](https://github.com/boidushya/sqwid-client/compare/v0.2.10...v0.2.11) (2022-02-19)
+
+
+### Features
+
+* added collections page redesign ([db13a67](https://github.com/boidushya/sqwid-client/commit/db13a6700704d7d809f8f8d397ba0ba669d4b71e))
+* Added Details section for single collectible and mainnet fix ([11a4705](https://github.com/boidushya/sqwid-client/commit/11a47058539f303c00cbaa250042c204882e537b))
+* added dropdown in navbar for tos and privacy ([195b687](https://github.com/boidushya/sqwid-client/commit/195b6874f75efe27fea0cf31c5133a03635967dd))
+* added GDPR and ToS ([b51e68f](https://github.com/boidushya/sqwid-client/commit/b51e68fa37d2290254af7ddc4c5505859525420b))
+* added integrations for collections page ([8a943ff](https://github.com/boidushya/sqwid-client/commit/8a943ff5b1136d483d8c01943fb3cd1e79ff68c0))
+* added masking for Explicit content on single collectible ([8d42ba2](https://github.com/boidushya/sqwid-client/commit/8d42ba28ad7e19f4aba4de7d933615b6f1564276))
+* added state sections to profile ([6c32169](https://github.com/boidushya/sqwid-client/commit/6c32169b72ba25fc86e15b4da05e5d2e952840ef))
+* finalize single collectible market interactions ([a53095d](https://github.com/boidushya/sqwid-client/commit/a53095d9d2779126f3235bd91799c78f7477186c))
+* implement blockchain interactions ([b6e7b0c](https://github.com/boidushya/sqwid-client/commit/b6e7b0ca3383539e891e2ebc729d206bac1ed77d))
+* integrated more buttons ([2d531e6](https://github.com/boidushya/sqwid-client/commit/2d531e689af89b7dd515ca51e04925ddfe9e0e5c))
+
+
+### Bug Fixes
+
+* added fullscreen mode and image magnifying glass for nft content ([36dea3c](https://github.com/boidushya/sqwid-client/commit/36dea3c8de06db05e5612fa7b2e6904de62ecbc1))
+* added scrollbar for account select ([b4e754f](https://github.com/boidushya/sqwid-client/commit/b4e754f3414c2aff1236cfe4b5b6a58a653ffd6f))
+* added WIP for items ([d2949a7](https://github.com/boidushya/sqwid-client/commit/d2949a71d7b608d0038b2179951cb4bd2a5fa6a6))
+* backend url in networks file ([5a2d356](https://github.com/boidushya/sqwid-client/commit/5a2d356bf889cb3a04ade06ab3ae1bc1988a8482))
+* bumped z-index for deadline ([5e075b3](https://github.com/boidushya/sqwid-client/commit/5e075b3ab7b51b32cd046c56c4cb96b74351deef))
+* case fix for ToS ([32c9f7f](https://github.com/boidushya/sqwid-client/commit/32c9f7fc7cb0341d14e793a60034c783c628149a))
+* chagned backend url to new function ([8c756f5](https://github.com/boidushya/sqwid-client/commit/8c756f533e08400c84a321276aebb2ae0225acac))
+* changed amount location ([ae003f3](https://github.com/boidushya/sqwid-client/commit/ae003f3a2289fccf9da24d98db7ddd0ce51d3ca4))
+* changed contracts ([cf2f556](https://github.com/boidushya/sqwid-client/commit/cf2f5566bdfef73bdec20b214f7fd632a4a2c130))
+* changed font to monospace for address fields ([da66165](https://github.com/boidushya/sqwid-client/commit/da661651e04d5c7d27aca842f0e4f79f8587b522))
+* changed how dropdowns work ([2a56d92](https://github.com/boidushya/sqwid-client/commit/2a56d921bce73bd267d7c71e3d3b4c5f7efd8b1a))
+* changed marketsection layout for single collectible ([3d601ed](https://github.com/boidushya/sqwid-client/commit/3d601edd26509403e8b442b5adca1fb32c7321f5))
+* collectible page image max-height ([224c2ad](https://github.com/boidushya/sqwid-client/commit/224c2ad5c3a1b5a56de7e1dc6cc2304ba791ca4c))
+* deadline bug ([ea52dfc](https://github.com/boidushya/sqwid-client/commit/ea52dfc3a07b440c0f8f0d830c128aa454ab6d50))
+* ESLINT warnings ([b528abb](https://github.com/boidushya/sqwid-client/commit/b528abb66bc6b4b991ca4d7bba25334bea8bec10))
+* fetching collections ([2218840](https://github.com/boidushya/sqwid-client/commit/22188402d4f81092331291d99c922498dc23a6ea))
+* fixed videowrapper ([870a7f4](https://github.com/boidushya/sqwid-client/commit/870a7f4fbdef8195c50fbbaeac6bd7feebf37541))
+* formatted duration text and style for modals ([57a9d21](https://github.com/boidushya/sqwid-client/commit/57a9d2121209a09df4df7a6eba07bdec02a80ada))
+* integrated NFT approval ([fea19b2](https://github.com/boidushya/sqwid-client/commit/fea19b2d094b3beba471f1eedcaacba26451c473))
+* made Select non searchable and fixed z-index ([975e792](https://github.com/boidushya/sqwid-client/commit/975e7926c9110dcf7a7702989161dd03c85e9fb9))
+* managed responsiveness for collections page ([f43793b](https://github.com/boidushya/sqwid-client/commit/f43793b1a53f704ce524b3f08e517352adbcc983))
+* managed responsiveness for profile card ([9bf772e](https://github.com/boidushya/sqwid-client/commit/9bf772e70e902d3785663b5527adc82fef09d311))
+* modified address font for account select ([eca8043](https://github.com/boidushya/sqwid-client/commit/eca8043ac19d2b20b93224202dc5c29a35b72aeb))
+* modified banner z-index ([5ef59bf](https://github.com/boidushya/sqwid-client/commit/5ef59bf80d9d3c2650784ee7a480a249a726b813))
+* navbar info button modal issue ([ab0bbb3](https://github.com/boidushya/sqwid-client/commit/ab0bbb3a48fe0f34366036d5930d2861e0268a7d))
+* reduced brightness for blur ([b2e1662](https://github.com/boidushya/sqwid-client/commit/b2e1662a9592fec935a0afc61af17394b8a97882))
+* refactored magnifying glass events ([4b84c70](https://github.com/boidushya/sqwid-client/commit/4b84c7073dea9ad5be416881ea46f4c4a63b5b6f))
+* removed governing laws for ToS ([ef4f222](https://github.com/boidushya/sqwid-client/commit/ef4f222b57dd43a5f6a55b607d7f8dc164fbb5b1))
+* removed loaders for images due to bugs in onLoad ([2e7d10a](https://github.com/boidushya/sqwid-client/commit/2e7d10af8a3104816f7a38323646ad7e87e8476c))
+* replaced react-helmet with react-helmet-async ([61a600c](https://github.com/boidushya/sqwid-client/commit/61a600cbc2e8d044b21f8aea6afe3567f8336c98))
+* slight modifications to ToS content ([2342573](https://github.com/boidushya/sqwid-client/commit/23425736d206b25d2b52dd9d66b2af4a65cb33de))
+* stopped profile page background from re-rendering ([eee799e](https://github.com/boidushya/sqwid-client/commit/eee799e1fe050731cced0759b2684aa3dd36b192))
+* styled max amount for modals ([806f623](https://github.com/boidushya/sqwid-client/commit/806f623fa70b689692b56d5e40922cc0b3d6f873))
+* tweaked content for ToS and privacy ([26b318c](https://github.com/boidushya/sqwid-client/commit/26b318cb4b922943a857d4f4fe8f8e84f7b1a9de))
+* tweaked warning text color for collectible page ([d046d86](https://github.com/boidushya/sqwid-client/commit/d046d862be3d4054b23d7a770f0d5cdb0c3fdebf))
+* tweaked warning text content ([9eac76a](https://github.com/boidushya/sqwid-client/commit/9eac76a9a6c62fc6bc7695858de722c60698a103))
+* un-interactable cards ([dd5cee2](https://github.com/boidushya/sqwid-client/commit/dd5cee2d183fd6807d591b318ce82ef0e9600f88))
+* update mainnet contract addresses ([a0d9eed](https://github.com/boidushya/sqwid-client/commit/a0d9eed730e54132c47f9ca72799e4f9cfc12890))
+* updated contracts ([044f0f0](https://github.com/boidushya/sqwid-client/commit/044f0f0ebd5af3e5167b3547c8631b648a11cb2b))
+* validateDOMNesting and non boolean attribute error for navbar dropdowns ([1fab752](https://github.com/boidushya/sqwid-client/commit/1fab752b66e130da180593818b80d23578b5b6eb))
+* video cards work again :) ([ecf5cb0](https://github.com/boidushya/sqwid-client/commit/ecf5cb0fc8e6353c2f1a5856e537087f80a41ddf))
+* yet another case fix for ToS ([9256283](https://github.com/boidushya/sqwid-client/commit/92562838f8310c519dd1e6a2ed1501cbea5a0587))
+
 ### [0.2.10](https://github.com/boidushya/sqwid-client/compare/v0.2.9...v0.2.10) (2022-02-11)
 
 
