@@ -32,7 +32,7 @@ const constants = {
 	CREATE_ACCEPTED_MIMETYPES: [
 		"image/jpeg",
 		"image/png",
-		"video/mp4",
+		// "video/mp4",
 	],
 	EXPLORE_PAGINATION_LIMIT: 12,
 }
