@@ -12,7 +12,7 @@ import Changes from "@elements/ProfileRedesign/Changes";
 import EditDetailsContext from "@contexts/EditDetails/EditDetailsContext";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { respondTo } from "@styles/styledMediaQuery";
-import bread from "@utils/bread";
+import bread, { wipBread } from "@utils/bread";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import { domAnimation, LazyMotion } from "framer-motion";
 import MetadataContainer from "./MetadataContainer";
@@ -508,7 +508,8 @@ const ProfileCard = () => {
 						</ContentContainer>
 						<AdditionalDetailsContainer>
 							<LazyMotion features={domAnimation}>
-								<Btn onClick={() => { bread(<p style={{ lineHeight: "1", fontWeight: "900", color: "var(--app-container-text-primary-hover)" }}>Work in progress ⚒🚧</p>) }}>Follow</Btn>
+								<Btn onClick={wipBread}
+								>Follow</Btn>
 							</LazyMotion>
 							<MetadataContainer followers={0} collections={0} nfts={0} />
 							{isOwnAccount && (<EditDetailsContainer onClick={() => setEditIsActive(true)} title={`${!editIsActive ? `Enter` : `Exit`} Edit Mode`}><span>Edit Profile Details</span><EditIcon /></EditDetailsContainer>)}

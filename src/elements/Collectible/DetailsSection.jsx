@@ -1,5 +1,10 @@
+import { useState, useEffect } from "react";
 import CollectibleContext from '@contexts/Collectible/CollectibleContext'
+import AuthContext from '@contexts/Auth/AuthContext'
 import ReefIcon from '@static/svg/ReefIcon'
+import { wipBread } from '@utils/bread'
+import constants from '@utils/constants'
+import getIPFSURL from '@utils/getIPFSURL'
 import { LazyMotion, m, domAnimation } from 'framer-motion'
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
@@ -54,6 +59,27 @@ const LinkWrapper = styled(Link)`
 	}
 `
 
+const HTMLLinkWrapper = styled.a`
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	text-decoration: none;
+	color: inherit;
+	transition: color 0.2s ease;
+	cursor: pointer;
+	&:hover{
+		color: var(--app-text);
+	}
+	svg{
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+	span{
+		font-size: 1.25rem;
+		font-weight: 800;
+	}
+`
+
 const StatusWrapper = styled.div`
 	display: flex;
 	align-items: center;
@@ -81,6 +107,9 @@ const BottomContainer = styled.div`
 
 const BtnContainer = styled.div`
 	position: relative;
+	span{
+		text-transform: capitalize;
+	}
 	.popup{
 		padding-top: 0.25rem;
 		position:absolute;
@@ -159,24 +188,50 @@ const ShareBtn = ({ to }) => {
 	)
 }
 
-const ReportBtn = () => {
+const Icon = ({ type }) => {
 	return (
-		<BtnContainer>
-			<m.div whileHover={{
-				y: -2.5,
-			}} whileTap={{
-				scale: 0.95
-			}} title="Report" className="btn--dark btn--dark__report">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zM4 12c0-1.846.634-3.542 1.688-4.897l11.209 11.209A7.946 7.946 0 0 1 12 20c-4.411 0-8-3.589-8-8zm14.312 4.897L7.103 5.688A7.948 7.948 0 0 1 12 4c4.411 0 8 3.589 8 8a7.954 7.954 0 0 1-1.688 4.897z"></path></svg>
-				<span>Report</span>
-			</m.div>
-		</BtnContainer >
+		<>
+			{type === "Report" && <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zM4 12c0-1.846.634-3.542 1.688-4.897l11.209 11.209A7.946 7.946 0 0 1 12 20c-4.411 0-8-3.589-8-8zm14.312 4.897L7.103 5.688A7.948 7.948 0 0 1 12 4c4.411 0 8 3.589 8 8a7.954 7.954 0 0 1-1.688 4.897z"></path></svg>}
+			{type === "Appeal" && <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.953 2C6.465 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.493 2 11.953 2zM12 20c-4.411 0-8-3.589-8-8s3.567-8 7.953-8C16.391 4 20 7.589 20 12s-3.589 8-8 8z"></path><path d="M11 7h2v7h-2zm0 8h2v2h-2z"></path></svg>}
+		</>
+	)
+}
+
+const ReportBtn = () => {
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const { auth } = useContext(AuthContext)
+	const [mode, setMode] = useState("")
+	useEffect(() => {
+		if (collectibleInfo.approved === false) {
+			setMode("Appeal")
+		}
+		else if (collectibleInfo.approved === true && ![collectibleInfo.creator.address, collectibleInfo.owner.address].includes(auth.evmAddress)) {
+			setMode("Report")
+		}
+		//eslint-disable-next-line
+	}, [])
+	return (
+		<>
+			{mode && mode.length !== 0 && (
+				<BtnContainer>
+					<m.div whileHover={{
+						y: -2.5,
+					}} whileTap={{
+						scale: 0.95
+					}} onClick={() => wipBread()} title={mode} className={`btn--dark btn--dark__${mode.toLowerCase()}`}>
+						<Icon type={mode} />
+						<span>{mode}</span>
+					</m.div>
+				</BtnContainer >
+			)}
+		</>
 	)
 }
 
 const MetadataSection = () => {
+	const url = "/"
 	return (
-		<LinkWrapper>
+		<LinkWrapper to={url}>
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6c0-2.168-3.663-4-8-4S4 3.832 4 6v2c0 2.168 3.663 4 8 4s8-1.832 8-4V6zm-8 13c-4.337 0-8-1.832-8-4v3c0 2.168 3.663 4 8 4s8-1.832 8-4v-3c0 2.168-3.663 4-8 4z"></path><path d="M20 10c0 2.168-3.663 4-8 4s-8-1.832-8-4v3c0 2.168 3.663 4 8 4s8-1.832 8-4v-3z"></path></svg>
 			<span>Metadata</span>
 		</LinkWrapper>
@@ -184,20 +239,23 @@ const MetadataSection = () => {
 }
 
 const ScanSection = () => {
+	const url = `${constants.APP_SCAN_BASE_URL}/`;
 	return (
-		<LinkWrapper>
+		<HTMLLinkWrapper target="_blank" rel="noopener noreferrer" href={url}>
 			<ReefIcon />
 			<span>ReefScan</span>
-		</LinkWrapper>
+		</HTMLLinkWrapper>
 	)
 }
 
 const IPFSSection = () => {
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const url = getIPFSURL(collectibleInfo?.meta?.media);
 	return (
-		<LinkWrapper>
+		<HTMLLinkWrapper target="_blank" rel="noopener noreferrer" href={url}>
 			<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" ><path d="M2.165 19.551c.186.28.499.449.835.449h15c.4 0 .762-.238.919-.606l3-7A.998.998 0 0 0 21 11h-1V8c0-1.103-.897-2-2-2h-6.655L8.789 4H4c-1.103 0-2 .897-2 2v13h.007a1 1 0 0 0 .158.551zM18 8v3H6c-.4 0-.762.238-.919.606L4 14.129V8h14z"></path></svg>
 			<span>IPFS</span>
-		</LinkWrapper>
+		</HTMLLinkWrapper>
 	)
 }
 

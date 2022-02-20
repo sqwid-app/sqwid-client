@@ -192,7 +192,7 @@ const PreviewSection = () => {
 						</FilePreview>
 					)}
 				</PreviewContainer>
-				{["video", "audio"].includes(fileType) && (
+				{["audio"].includes(fileType) && (
 					<UploadCover />
 				)}
 			</Group>

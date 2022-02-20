@@ -2,6 +2,7 @@ const constants = {
 	APP_NAME: "Sqwid",
 	APP_DESCRIPTION: "An ocean of possibilities",
 	APP_WEBSITE: "https://sqwid.app",
+	APP_SCAN_BASE_URL: "https://reefscan.com",
 	STATE_TYPES: [
 		"Available",
 		"Sale",
@@ -31,6 +32,7 @@ const constants = {
 	CREATE_ACCEPTED_MIMETYPES: [
 		"image/jpeg",
 		"image/png",
+		"video/mp4",
 	],
 	EXPLORE_PAGINATION_LIMIT: 12,
 }

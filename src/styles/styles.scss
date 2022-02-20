@@ -135,6 +135,7 @@ span.emoji {
 	--btn-share: 205, 100%;
 	--btn-heart: 4, 100%;
 	--btn-report: 338, 100%;
+	--btn-appeal: 40, 100%;
 	--btn-color-l: 55%;
 	--btn-color-l-dark: 53%;
 	--btn-bg-l: 97%;
@@ -299,6 +300,9 @@ span.emoji {
 	}
 	&__share {
 		@include btn(share, $dark: true);
+	}
+	&__appeal {
+		@include btn(appeal, $dark: true);
 	}
 }
 

@@ -9,6 +9,10 @@ import { CSSTransition } from 'react-transition-group';
 import { getCloudflareURL, getDwebURL } from "@utils/getIPFSURL";
 import ModalComponent from "./ModalComponent";
 import { LazyMotion, m, domAnimation } from "framer-motion";
+import { wipBread } from "@utils/bread";
+import constants from "@utils/constants";
+import { capitalize } from "@utils/textUtils";
+import LoadingIcon from "@static/svg/LoadingIcon";
 
 const Container = styled.div`
 	display: grid;
@@ -25,12 +29,18 @@ const blur = css`
 	pointer-events: none;
 `
 
-const ImgWrapper = styled.div`
+const ImageWrapper = styled.div`
 	position: relative;
     max-height: 80vh;
-	height: 100%;
+	${props => props.fillHeight ? css`
+		height: 100%;
+	`: css`
+		width: 100%;
+	`}
 	overflow: hidden;
 	border-radius: 0.75rem;
+	display: flex;
+	flex-direction: column;
 	img{
 		height: 100%;
 		width: 100%;
@@ -48,12 +58,27 @@ const ImgWrapper = styled.div`
 			min-height: 16rem;
 		`}
 	}
+	.utility-wrapper{
+		transition: all 0.15s ease 0.075s;
+		opacity: 0;
+		transform: translateY(100%);
+	}
+	img:hover + .utility-wrapper, .utility-wrapper:hover{
+		opacity: 1;
+		transform: translateY(0);
+	}
 `
 
 const WarningTextContainer = styled.div`
 	--close-btn-dimension: 1.5rem;
 	--warning-text: rgb(255 251 235);
 	--warning-border: rgb(251 191 36);
+	--warning-background: rgb(251 191 36 / 25%);
+	${props => props.rejected && css`
+		--warning-text: rgb(255 224 224);
+		--warning-border: rgb(255 0 0);
+		--warning-background: rgb(255 0 0 / 25%);
+	`}
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
@@ -61,7 +86,7 @@ const WarningTextContainer = styled.div`
 	padding: 0.75rem 1rem;
 	z-index:2;
 	border-radius: 0.5rem;
-	background-color: rgb(251 191 36 / 25%);
+	background-color: var(--warning-background);
 	font-weight: 500;
 	border: solid 0.125rem var(--warning-border);
 	color:var(--warning-text);
@@ -70,7 +95,10 @@ const WarningTextContainer = styled.div`
 		width: calc(100% - (2 * var(--close-btn-dimension)));
 	}
 	b{
+		display: block;
+		margin-top: 0.25rem;
 		font-weight: 700;
+		font-size: 1rem;
 	}
 	svg{
 		position: absolute;
@@ -85,13 +113,33 @@ const WarningTextContainer = styled.div`
 	}
 `
 
-const ImageWrapper = styled.div`
+//Might break with audio or something dont delete pls
+
+// const ImageWrapper = styled.div`
+// 	position: relative;
+// 	width: 100%;
+// 	height: 100%;
+// 	overflow: hidden;
+// 	display: grid;
+//     place-items: center;
+// 	.utility-wrapper{
+// 		transition: all 0.15s ease 0.075s;
+// 		opacity: 0;
+// 		transform: translateY(100%);
+// 	}
+// 	img:hover + .utility-wrapper, .utility-wrapper:hover{
+// 		opacity: 1;
+// 		transform: translateY(0);
+// 	}
+// `
+
+const VideoWrapper = styled.div`
 	position: relative;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
 	display: grid;
-    place-items: center;
+	place-items: center;
 	.utility-wrapper{
 		transition: all 0.15s ease 0.075s;
 		opacity: 0;
@@ -102,8 +150,6 @@ const ImageWrapper = styled.div`
 		transform: translateY(0);
 	}
 `
-
-const VideoWrapper = ImageWrapper
 
 const center = css`
 	display: grid;
@@ -215,6 +261,7 @@ const ShareBtn = ({ to }) => {
 	)
 }
 
+//eslint-disable-next-line
 const ReportBtn = () => {
 	return (
 		<BtnContainer>
@@ -233,13 +280,17 @@ const ReportBtn = () => {
 
 const HeartBtn = () => {
 	const [isHearted, setIsHearted] = useState(true);
+	const handleHeartClick = () => {
+		setIsHearted(!isHearted)
+		!isHearted && wipBread()
+	}
 	return (
 		<BtnContainer>
 			<m.div disabled={!isHearted} whileHover={{
 				scale: 1.1,
 			}} whileTap={{
 				scale: 0.95
-			}} title="Heart" onClick={() => setIsHearted(!isHearted)} className="btn btn__heart">
+			}} onClick={handleHeartClick} title="Heart" className="btn btn__heart">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path></svg>
 				{/* <span>Report</span> */}
 			</m.div>
@@ -255,20 +306,31 @@ const Utility = () => {
 				<UtilityContainer>
 					<HeartBtn />
 					<ShareBtn />
-					<ReportBtn />
 				</UtilityContainer>
 			</LazyMotion>
 		</UtilityWrapper>
 	)
 }
 
-const ImageContainer = ({ isBlurred, setIsBlurred, ...props }) => {
+const ImageContainer = ({ title, isBlurred, setIsBlurred, ...props }) => {
+	const [fillHeight, setFillHeight] = useState(false)
+	const [loading, setLoading] = useState(true)
+	const handleLoad = (e) => {
+		setLoading(false);
+		setFillHeight(e.target.height > e.target.width) //yes i used  javascript to solve a css issue 👍
+	}
+
 	return (
-		<ImgWrapper blur={isBlurred}>
-			<WarningText isBlurred={isBlurred} setIsBlurred={setIsBlurred} />
-			<img alt="NFT" {...props} draggable={false} />
-			<Utility />
-		</ImgWrapper>
+		<>
+			<div style={{ display: !loading && "none" }}>
+				<LoadingIcon size="64" />
+			</div>
+			<ImageWrapper style={{ display: loading && "none" }} title={title} blur={isBlurred} fillHeight={fillHeight}>
+				<WarningText isBlurred={isBlurred} setIsBlurred={setIsBlurred} />
+				<img alt="NFT" src={props.src} onLoad={handleLoad} draggable={false} />
+				<Utility />
+			</ImageWrapper>
+		</>
 	)
 }
 
@@ -312,6 +374,17 @@ const CloseBtn = () => {
 
 const WarningText = ({ isBlurred, setIsBlurred }) => {
 	const nodeRef = useRef()
+	const rejected = true;
+
+	const warningText = <p>This item isn't approved. If you're the creator and you've just minted it, please allow a few minutes for Sqwid to approve it.</p>
+
+	const rejectedText = <>
+		<p>
+			This item has been automatically rejected by {capitalize(constants.APP_NAME)} Automod.</p>
+		<p>If you're the creator and you think we made a mistake, please let us know by going to the <code>Details</code> tab and clicking the <code>Appeal</code> button.</p>
+		<p> The feedback you provide us will help us improve the ways we keep {capitalize(constants.APP_NAME)} safe.</p>
+	</>
+
 	return (
 		<CSSTransition
 			in={isBlurred}
@@ -320,13 +393,12 @@ const WarningText = ({ isBlurred, setIsBlurred }) => {
 			nodeRef={nodeRef}
 			unmountOnExit
 		>
-			<WarningTextContainer ref={nodeRef}>
+			<WarningTextContainer rejected={rejected} ref={nodeRef}>
 				<div onClick={() => setIsBlurred(!isBlurred)} ><CloseBtn /></div>
-				<p>This item isn't approved. If you're the creator and you've just minted it, please allow a few minutes for Sqwid to approve it.
-					<b> Closing this warning will unblur this media for you!</b>
-				</p>
+				{rejected ? rejectedText : warningText}
+				<b> Closing this warning will unblur the media for you!</b>
 			</WarningTextContainer>
-		</CSSTransition>
+		</CSSTransition >
 	)
 }
 
@@ -355,9 +427,7 @@ const NFTContent = () => {
 		<Container>
 			{collectibleInfo.meta?.mimetype.startsWith("image") ? (
 				<>
-					<ImageWrapper title={collectibleInfo.meta.name}>
-						<ImageContainer onClick={() => setModalIsOpen(true)} isBlurred={isBlurred} setIsBlurred={setIsBlurred} src={getCloudflareURL(collectibleInfo.meta.media)} />
-					</ImageWrapper>
+					<ImageContainer title={collectibleInfo.meta.name} onClick={() => setModalIsOpen(true)} isBlurred={isBlurred} setIsBlurred={setIsBlurred} src={getCloudflareURL(collectibleInfo.meta.media)} />
 					<ModalComponent modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} details={{
 						image: getCloudflareURL(collectibleInfo.meta.media),
 						name: collectibleInfo.meta.name,
