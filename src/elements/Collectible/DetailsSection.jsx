@@ -202,7 +202,7 @@ const ReportBtn = () => {
 	const { auth } = useContext(AuthContext)
 	const [mode, setMode] = useState("")
 	useEffect(() => {
-		if (collectibleInfo.approved === false) {
+		if (collectibleInfo.approved === false && (auth.evmAddress === collectibleInfo.creator.address)) {
 			setMode("Appeal")
 		}
 		else if (collectibleInfo.approved === true && ![collectibleInfo.creator.address, collectibleInfo.owner.address].includes(auth.evmAddress)) {
