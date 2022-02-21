@@ -203,6 +203,8 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
 	const initialNetwork = localStorage.getItem(`${constants.APP_NAME}__chosen_network`)
 	const [chosenNetwork, setChosenNetwork] = useState(initialNetwork || 'reef_testnet')
+	const initialClaimButtonText = 'I Accept'
+	const [claimButtonText, setClaimButtonText] = useState(initialClaimButtonText)
 	const [networkButtonText, setNetworkButtonText] = useState(<FadeLoaderIcon />)
 	useEffect(() => {
 		!initialNetwork && localStorage.setItem(`${constants.APP_NAME}__chosen_network`, 'reef_testnet');
@@ -355,6 +357,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 											let newNetwork = chosenNetwork === 'reef_testnet' ? 'reef_mainnet' : 'reef_testnet'
 											localStorage.setItem(`${constants.APP_NAME}__chosen_network`, newNetwork);
 											setChosenNetwork(newNetwork)
+											logout()
 											window.location.reload();
 										}}
 									>{networkButtonText}</Button>
@@ -390,23 +393,30 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 							whileHover={{
 								y: -5,
 								x: 0,
-								scale: 1.02
+								scale: 1.01
 							}}
 							whileTap={{
 								scale: 0.99
 							}}
 							onClick={() => {
-								setAlert({
-									...alert,
-									isActive: false,
-								})
+								//startLoading
+								setClaimButtonText(<FadeLoaderIcon />)
 								signer.claimDefaultAccount()
+									.catch(e => {
+										bread("EVM account could not be claimed! Please try again later.")
+									})
 									.finally(() => {
+										//stopLoading
+										setClaimButtonText(initialClaimButtonText)
 										setIsActive(false)
+										setAlert({
+											...alert,
+											isActive: false,
+										})
 									})
 
 							}}
-						>I Accept</Button>
+						>{claimButtonText}</Button>
 					</Alert>)}
 				</BackDrop>
 			)}
