@@ -327,7 +327,7 @@ const ImageContainer = ({ title, isBlurred, setIsBlurred, ...props }) => {
 			</div>
 			<ImageWrapper style={{ display: loading && "none" }} title={title} blur={isBlurred} fillHeight={fillHeight}>
 				<WarningText isBlurred={isBlurred} setIsBlurred={setIsBlurred} />
-				<img alt="NFT" src={props.src} onLoad={handleLoad} draggable={false} />
+				<img alt="NFT" {...props} onLoad={handleLoad} draggable={false} />
 				<Utility />
 			</ImageWrapper>
 		</>
