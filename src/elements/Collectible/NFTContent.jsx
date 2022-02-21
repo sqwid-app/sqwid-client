@@ -317,7 +317,7 @@ const ImageContainer = ({ title, isBlurred, setIsBlurred, ...props }) => {
 	const [loading, setLoading] = useState(true)
 	const handleLoad = (e) => {
 		setLoading(false);
-		setFillHeight(e.target.height > e.target.width) //yes i used  javascript to solve a css issue 👍
+		setFillHeight(e.target.height >= e.target.width) //yes i used  javascript to solve a css issue 👍
 	}
 
 	return (
