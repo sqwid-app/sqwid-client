@@ -85,7 +85,7 @@ const TopBanner = () => {
 		<>
 			{elemIsVisible && (
 				<TopBannerContainer remove={!isWarningVisible}>
-					{constants.APP_NAME} Beta - use on Reef Testnet
+					{constants.APP_NAME} Beta
 					<CancelContainer onClick={handleCancel}>
 						<CancelIcon />
 					</CancelContainer>

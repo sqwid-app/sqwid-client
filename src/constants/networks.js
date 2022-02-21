@@ -19,4 +19,4 @@ export const networks = {
 	}
 }
 
-export const defaultNetwork = 'reef_testnet';
+export const defaultNetwork = 'reef_mainnet';
