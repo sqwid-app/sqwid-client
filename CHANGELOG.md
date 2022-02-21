@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.12](https://github.com/boidushya/sqwid-client/compare/v0.2.11...v0.2.12) (2022-02-21)
+
+
+### Features
+
+* implemented warning text for rejected items and items pending approval ([3377d5b](https://github.com/boidushya/sqwid-client/commit/3377d5bd4411758af896f37e4aac4b2a786ee0ab))
+* update marketplace contract ABI ([0a16039](https://github.com/boidushya/sqwid-client/commit/0a160398d6ba47ef2435ee8e9761aacfeb3fbfce))
+* update testnet contract addresses ([f1affd7](https://github.com/boidushya/sqwid-client/commit/f1affd7afa53278a3fda5f7eb6ae2fc8f1ab3c95))
+
+
+### Bug Fixes
+
+* added creator check for approve button ([602b527](https://github.com/boidushya/sqwid-client/commit/602b5270e9df2a3213cccd7d5b7a5369be3d8d6b))
+* added loader and fixed the object-fit issue ([1c608c3](https://github.com/boidushya/sqwid-client/commit/1c608c38018c012ad97b155c36b07cadd13e6302))
+* added preference for height when dealing with square images ([e1e92c5](https://github.com/boidushya/sqwid-client/commit/e1e92c5e79e931d7140fccd5a1f21b4baa51e75c))
+* fixed zoom-in not workingfor single collectible ([498261b](https://github.com/boidushya/sqwid-client/commit/498261b88db21669f3304d9b17776f42546b6650))
+* loader for claim account and log out on network switch ([499a168](https://github.com/boidushya/sqwid-client/commit/499a1682cde539bd11397d529ff54104c376e564))
+* removed useEffect for ESLint ([ec6aed7](https://github.com/boidushya/sqwid-client/commit/ec6aed747831030790c5d58c1b0e551d390a8888))
+* removed video from accepted mimetypes ([1c1c00f](https://github.com/boidushya/sqwid-client/commit/1c1c00fbb24db7f797a4ef83d5305722a7c9d047))
+* revert testnet contracts ([40b4112](https://github.com/boidushya/sqwid-client/commit/40b411220504d67e3a6ed952f7f89ca49fc34302))
+
 ### [0.2.11](https://github.com/boidushya/sqwid-client/compare/v0.2.10...v0.2.11) (2022-02-19)
 
 
