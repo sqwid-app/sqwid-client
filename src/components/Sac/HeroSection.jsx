@@ -16,10 +16,7 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	gap: 1rem;
 	${respondTo.md`
-		padding: 0;
-		h1.heading{
-			padding-left: 2rem;
-		}
+		padding: 0 1.5rem;
 	`}
 `
 
@@ -60,6 +57,22 @@ const ContentContainer = styled.div`
 	& div:nth-child(4) {
 		grid-area: 2 / 1 / 3 / 4;
 	}
+	${respondTo.md`
+		grid-template-rows: auto 1fr auto;
+		grid-template-columns: repeat(2, auto);
+		& div:nth-child(1) {
+			grid-area: 1 / 1 / 1 / 4;
+		}
+		& div:nth-child(2) {
+			grid-area: 2 / 1 / 2 / 4;
+		}
+		& div:nth-child(3) {
+			grid-area: 3 / 1 / 3 / 4;
+		}
+		& div:nth-child(4) {
+			grid-area: 4 / 1 / 4 / 4;
+		}
+	`}
 `
 
 const ErrorContainer = styled(Wrapper)`
@@ -88,7 +101,7 @@ const Error = ({ stack }) => {
 const HeroSection = () => {
 	const { setSacDetails } = useContext(SacContext)
 	const { id } = useParams()
-	const [ hasError, setHasError ] = useState(false)
+	const [hasError, setHasError] = useState(false)
 
 	const redeemCard1 = {
 		id: 2,
@@ -96,18 +109,18 @@ const HeroSection = () => {
 		wave: "1",
 		price: "100",
 		image: "https://images.unsplash.com/photo-1638130419943-1242ff0300bf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
-		totalSellers:"10",
-		topSellers:[{
+		totalSellers: "10",
+		topSellers: [{
 			id: "0x2c15d99D65b2DB4592653827F1BCB9788a943f78",
 			name: "Boidushya",
-		},{
+		}, {
 			id: "5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
 			name: "Andi"
 		}],
 		accumulated: "42069",
-		date:"01/11/2021",
-		percent:"10",
-		redeemCards:[]
+		date: "01/11/2021",
+		percent: "10",
+		redeemCards: []
 	}
 	const redeemCard2 = {
 		id: 3,
@@ -115,17 +128,17 @@ const HeroSection = () => {
 		wave: "2",
 		price: "500",
 		image: "https://images.unsplash.com/photo-1639459841176-a520a8aff562?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
-		totalSellers:"14",
-		topSellers:[{
+		totalSellers: "14",
+		topSellers: [{
 			id: "0x2c15d99D65b2DB4592653827F1BCB9788a943f78",
 			name: "Boidushya",
-		},{
+		}, {
 			id: "5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
 			name: "Andi"
 		}],
 		accumulated: "111",
-		date:"01/11/2021",
-		percent:"33",
+		date: "01/11/2021",
+		percent: "33",
 		redeemCards: [
 			redeemCard1,
 		]
@@ -136,17 +149,17 @@ const HeroSection = () => {
 		wave: "5",
 		price: "500",
 		image: "https://images.unsplash.com/photo-1639745297141-347515fdb8aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
-		totalSellers:"90",
-		topSellers:[{
+		totalSellers: "90",
+		topSellers: [{
 			id: "0x2c15d99D65b2DB4592653827F1BCB9788a943f78",
 			name: "Boidushya",
-		},{
+		}, {
 			id: "5FYmfz6QSbwQZ1MrYLhfdGVADmPyUZmE8USLBkYP4QmgkgDA",
 			name: "Andi"
 		}],
 		accumulated: "123456",
-		date:"01/11/2021",
-		percent:"90",
+		date: "01/11/2021",
+		percent: "90",
 		redeemCards: [
 			redeemCard1,
 			redeemCard2,
@@ -189,29 +202,29 @@ const HeroSection = () => {
 	useEffect(() => {
 		(activeSac) ? setSacDetails(activeSac) : setHasError(true)
 
-	//eslint-disable-next-line
-	}, [setSacDetails,id])
+		//eslint-disable-next-line
+	}, [setSacDetails, id])
 	return (
 		<>
-		{!hasError ? (
-			<Wrapper>
-				<HeadingSection>
-					<Heading className="heading">Ink Sacs</Heading>
-					<SubHeading>
-						Sustainable Revenue Sharing
-						<Tooltip>Why is this awesome?</Tooltip>
-					</SubHeading>
-				</HeadingSection>
-				<ContentContainer>
-					<ClaimSection/>
-					<WaveSection/>
-					<RedeemSection/>
-					<StatsSection/>
-				</ContentContainer>
-			</Wrapper>
-		) : (
-			<Error stack={`Ink Sac with id ${id} is not valid`} />
-		)}
+			{!hasError ? (
+				<Wrapper>
+					<HeadingSection>
+						<Heading className="heading">Ink Sacs</Heading>
+						<SubHeading>
+							Sustainable Revenue Sharing
+							<Tooltip>Why is this awesome?</Tooltip>
+						</SubHeading>
+					</HeadingSection>
+					<ContentContainer>
+						<ClaimSection />
+						<WaveSection />
+						<RedeemSection />
+						<StatsSection />
+					</ContentContainer>
+				</Wrapper>
+			) : (
+				<Error stack={`Ink Sac with id ${id} is not valid`} />
+			)}
 		</>
 	)
 }

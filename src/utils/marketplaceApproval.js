@@ -1,17 +1,18 @@
 import { ethers } from 'ethers';
 import { Interact } from './connect';
 import contractABI from '../constants/contracts/SqwidERC1155';
+import { getContract } from './network';
 
 const approveMarketplace = async () => {
     let { signer } = await Interact ();
 
     let contract = new ethers.Contract (
-        process.env.REACT_APP_COLLECTIBLE_CONTRACT_ADDRESS,
+        getContract ('erc1155'),
         contractABI,
         signer
     );
 
-    const tx = await contract.setApprovalForAll (process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS, true);
+    const tx = await contract.setApprovalForAll (getContract ('marketplace'), true);
     return await tx.wait ();
 };
 
@@ -20,12 +21,12 @@ const isMarketplaceApproved = async () => {
     const address = await signer.getAddress ();
 
     let contract = new ethers.Contract (
-        process.env.REACT_APP_COLLECTIBLE_CONTRACT_ADDRESS,
+        getContract ('erc1155'),
         contractABI,
         provider
     );
 
-    const isApproved = await contract.isApprovedForAll (address, process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS);
+    const isApproved = await contract.isApprovedForAll (address, getContract ('marketplace'));
     return isApproved;
 };
 

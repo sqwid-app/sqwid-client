@@ -12,6 +12,8 @@ import { getCloudflareURL } from "@utils/getIPFSURL";
 import FileContext from "@contexts/File/FileContext";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import bread from "@utils/bread";
+import LoadingIcon from "@static/svg/LoadingIcon";
+import { getBackend } from "@utils/network";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -68,7 +70,7 @@ const Modal = styled.div`
 	flex-direction: column;
 	gap: 0.5rem;
 	word-wrap: break-word;
-	${props=>!props.remove?modalEntryAnim:modalExitAnim}
+	${props => !props.remove ? modalEntryAnim : modalExitAnim}
 `
 
 const Title = styled.h1`
@@ -86,11 +88,11 @@ const InputContainer = styled.input`
 	color: var(--app-text);
 	padding: 0.5rem 0;
 	margin-bottom: 1rem;
-	border-bottom: 2px solid var(--app-container-text-primary);
+	border-bottom: 0.125rem solid var(--app-container-text-primary);
 	width: 100%;
 	transition: border-bottom 0.2s ease;
 	&:focus{
-		border-bottom: 2px solid var(--app-container-text-primary-hover);
+		border-bottom: 0.125rem solid var(--app-container-text-primary-hover);
 	}
 `
 
@@ -117,10 +119,10 @@ const AnimBtn = ({ children, onClick, disabled }) => (
 		whileHover={{
 			y: -5,
 			x: 0,
-			scale:1.02
+			scale: 1.02
 		}}
 		whileTap={{
-			scale:0.99
+			scale: 0.99
 		}}
 		onClick={onClick}
 		disabled={disabled}
@@ -144,7 +146,7 @@ const Header = styled.h1`
 `
 
 const border = css`
-	border: 2px solid var(--app-container-text-primary);
+	border: 0.125rem solid var(--app-container-text-primary);
 	border-radius: 0.5rem;
 `
 
@@ -215,10 +217,10 @@ const CollectionContainer = styled(m.div)`
 	background: var(--app-container-bg-secondary);
 	border-radius: 0.25rem;
 	box-shadow:  0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-	border: 2px solid rgba(0,0,0,0);
+	border: 0.125rem solid rgba(0,0,0,0);
 	transition: border 0.1s ease;
 	&:hover{
-		border: 2px solid var(--app-container-text-primary);
+		border: 0.125rem solid var(--app-container-text-primary);
 	}
 	img{
 		aspect-ratio:1;
@@ -238,7 +240,14 @@ const CollectionContainer = styled(m.div)`
 	}
 `
 
-const elemContains =  (rect, x, y) => {
+const LoadingContainer = styled.div`
+	display: flex;
+	align-items:center;
+	justify-content: center;
+	height: 6rem;
+`
+
+const elemContains = (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
 }
 
@@ -246,44 +255,44 @@ const New = ({ isActive, setIsActive }) => {
 	const [buttonText, setButtonText] = useState("Create Collection")
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const initialInfo = {
-		name:"",
-		description:"",
-		file:null,
+		name: "",
+		description: "",
+		file: null,
 	}
 	const [info, setInfo] = useState(initialInfo)
 	const [fileURL, setFileURL] = useState("")
-	useEffect (() => {
-		if (info.file){
+	useEffect(() => {
+		if (info.file) {
 			const { file } = info;
-			setFileURL (window.URL.createObjectURL (file))
+			setFileURL(window.URL.createObjectURL(file))
 		}
-		else{
-			setFileURL ("")
+		else {
+			setFileURL("")
 		}
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [info.file])
 	const handleClick = () => {
-		setButtonText(<Loading size="24"/>)
+		setButtonText(<Loading size="24" />)
 		setIsSubmitting(true)
-		if(info.file&&info.name.length){
-			createCollection (info.file,info.name,info.description)
-			.then (res => {
-				setButtonText("Created Collection!")
-				setTimeout(() => {
-					setIsActive({...isActive,status: false});
-				}, 500);
-				setIsSubmitting(false)
-			})
-			.catch(err=>{
-				bread(err.response.data.error)
-			})
-			.finally(()=>{
-				setTimeout(() => {
-					setButtonText("Create Collection")
-				}, 2000);
-			});
+		if (info.file && info.name.length) {
+			createCollection(info.file, info.name, info.description)
+				.then(res => {
+					setButtonText("Created Collection!")
+					setTimeout(() => {
+						setIsActive({ ...isActive, status: false });
+					}, 500);
+					setIsSubmitting(false)
+				})
+				.catch(err => {
+					bread(err.response.data.error)
+				})
+				.finally(() => {
+					setTimeout(() => {
+						setButtonText("Create Collection")
+					}, 2000);
+				});
 		}
-		else{
+		else {
 			setButtonText("Created Collection!")
 		}
 		setInfo(initialInfo)
@@ -295,22 +304,22 @@ const New = ({ isActive, setIsActive }) => {
 				<Title>Name</Title>
 				<InputContainer
 					value={info.name}
-					onChange = {(e)=>setInfo({...info,name:e.target.value})}
+					onChange={(e) => setInfo({ ...info, name: e.target.value })}
 					placeholder={`e.g "Doggo collection"`}
 				/>
 				<Title>Description</Title>
 				<InputContainer
 					value={info.description}
-					onChange = {(e)=>setInfo({...info,description:e.target.value})}
+					onChange={(e) => setInfo({ ...info, description: e.target.value })}
 					placeholder={`e.g "Pics of my heckin doggo"`}
 				/>
 				<Title>Cover Image</Title>
-				{!fileURL.length?(
-					<CustomDropzoneModal modal info={info} setInfo={setInfo}/>
-				):(
+				{!fileURL.length ? (
+					<CustomDropzoneModal modal info={info} setInfo={setInfo} />
+				) : (
 					<PreviewContainer>
 						<FilePreview>
-							<img src = {fileURL} alt = {info.name} />
+							<img src={fileURL} alt={info.name} />
 						</FilePreview>
 						<PreviewTextContainer>
 							<PreviewText>(This image will show up as your collection thumbnail)</PreviewText>
@@ -319,7 +328,7 @@ const New = ({ isActive, setIsActive }) => {
 				)}
 				<BtnContainer>
 					<AnimBtn
-						disabled={(isSubmitting)?true:false}
+						disabled={(isSubmitting) ? true : false}
 						onClick={handleClick}
 					>{buttonText}</AnimBtn>
 				</BtnContainer>
@@ -329,46 +338,58 @@ const New = ({ isActive, setIsActive }) => {
 }
 
 const Existing = ({ isActive, setIsActive }) => {
-	const [ collections, setCollections ] = useState(JSON.parse(localStorage.getItem("collections"))||[])
+	const [collections, setCollections] = useState(JSON.parse(localStorage.getItem("collections")) || [])
+	const [isLoading, setIsLoading] = useState(true)
 	const { auth } = useContext(AuthContext);
 	const { files, setFiles } = useContext(FileContext);
 	useEffect(() => {
-		axios.get(`${process.env.REACT_APP_API_URL}/get/collections/owner/${auth.address}`)
-		.then((res)=>{
-			localStorage.setItem("collections",JSON.stringify(res.data.collections))
-			setCollections(res.data.collections)
-		})
-		.catch(err=>{
-			bread(err.response.data.error)
-		})
+		axios.get(`${getBackend()}/get/collections/owner/${auth.evmAddress}`)
+			.then((res) => {
+				localStorage.setItem("collections", JSON.stringify(res.data.collections))
+				setCollections(res.data.collections)
+			})
+			.catch(err => {
+				bread(err.response.data.error)
+			})
+			.finally(() => {
+				setIsLoading(false)
+			})
 		return () => {
 			setCollections([])
 		}
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [])
 	return (
 		<LazyMotion features={domAnimation}>
 			<Header>Choose Collection</Header>
 			<ExistingContainer>
-				{collections.map(item=>(
-					<CollectionContainer
-						key={item.id}
-						whileTap={{
-							scale:0.99
-						}}
-						onClick={()=>{
-							setFiles({
-								...files,
-								collection:item.id,
-								collectionName:item.data.name
-							})
-							setIsActive({...isActive,status: false});
-						}}
-					>
-						<img src={getCloudflareURL(item.data.image)} alt={item.data.description}/>
-						<p>{item.data.name}</p>
-					</CollectionContainer>
-				))}
+				{isLoading ? (
+					<LoadingContainer>
+						<LoadingIcon size="40" />
+					</LoadingContainer>
+				) : (
+					<>
+						{collections.map(item => (
+							<CollectionContainer
+								key={item.id}
+								whileTap={{
+									scale: 0.99
+								}}
+								onClick={() => {
+									setFiles({
+										...files,
+										collection: item.id,
+										collectionName: item.data.name
+									})
+									setIsActive({ ...isActive, status: false });
+								}}
+							>
+								<img src={getCloudflareURL(item.data.image)} alt={item.data.description} />
+								<p>{item.data.name}</p>
+							</CollectionContainer>
+						))}
+					</>
+				)}
 			</ExistingContainer>
 		</LazyMotion>
 	)
@@ -381,38 +402,38 @@ const CollectionModal = ({ isActive, setIsActive, accounts }) => {
 	const modalRef = useRef()
 	//eslint-disable-next-line
 	useEffect(() => {
-		if(isActive.status===false){
+		if (isActive.status === false) {
 			setTimeout(() => {
 				setElemIsVisible(isActive.status);
 			}, 200);
 		}
-		else{
+		else {
 			setElemIsVisible(isActive.status);
 		}
 	}, [isActive.status])
 
 	const handleClickOutside = (e) => {
 		let rect = modalRef.current.getBoundingClientRect();
-		if(!elemContains(rect,e.clientX,e.clientY)){
-			setIsActive({...isActive,status: false})
+		if (!elemContains(rect, e.clientX, e.clientY)) {
+			setIsActive({ ...isActive, status: false })
 		}
 	}
 	return (
 		<LazyMotion features={domAnimation}>
-			{elemIsVisible&&(
+			{elemIsVisible && (
 				<BackDrop remove={!isActive.status} onClick={handleClickOutside}>
 					<Modal
 						remove={!isActive.status}
 						ref={modalRef}
-					>{isLoggedIn?(
+					>{isLoggedIn ? (
 						(() => {
 							switch (isActive.type) {
-								case "new":  return <New isActive={isActive} setIsActive={setIsActive}/>;
-								case "choose": return <Existing isActive={isActive} setIsActive={setIsActive}/>;
+								case "new": return <New isActive={isActive} setIsActive={setIsActive} />;
+								case "choose": return <Existing isActive={isActive} setIsActive={setIsActive} />;
 								default: return "u wot m8";
 							}
 						})()
-					):(
+					) : (
 						<Title>You need to connect your wallet first</Title>
 					)}
 					</Modal>

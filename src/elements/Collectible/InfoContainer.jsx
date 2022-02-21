@@ -1,15 +1,19 @@
 import PropertiesSection from "@elements/Collectible/PropertiesSection";
 import React, { useState } from "react";
 import styled from "styled-components";
+//eslint-disable-next-line
 import BidsSection from "./BidsSection";
+import DetailsSection from "./DetailsSection";
 import InfoSection from "./InfoSection";
+import MarketSection from "./MarketSection";
 
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
-	flex:1 1 0;
 	height: 100%;
+	/* flex:1 1 0;
+	height: 100%; */
 `
 
 const Navbar = styled.nav`
@@ -26,7 +30,7 @@ const NavContent = styled.p`
 	position:relative;
 	padding: 0.1rem 0.5rem;
 	font-weight: 900;
-	color: ${props=>props.active?`inherit`:`var(--app-container-text-primary)`};
+	color: ${props => props.active ? `inherit` : `var(--app-container-text-primary)`};
 	cursor: pointer;
 	text-decoration:none;
 	transition: all 0.2s ease;
@@ -40,7 +44,7 @@ const NavContent = styled.p`
 		border-bottom: 0.1rem solid var(--app-text);
 		border-radius: 0.1rem;
 		opacity: 0;
-		opacity: ${props=>props.active?`1`:`0`};
+		opacity: ${props => props.active ? `1` : `0`};
 		transition: opacity 0.1s ease;
 	}
 `
@@ -51,26 +55,33 @@ const InfoContainer = () => {
 		isActive: true,
 		component: (
 			<>
-				<InfoSection/>
-				<PropertiesSection/>
+				<InfoSection />
+				<PropertiesSection />
+				<MarketSection />
 			</>
 		)
-	},{
-		name: "Bids",
+	}, {
+		name: "History",
 		isActive: false,
-		component: <BidsSection/>
+		// component: <BidsSection />
+		component: <>Work in progress ⚒🚧</>
+	}, {
+		name: "Details",
+		isActive: false,
+		// component: <BidsSection />
+		component: <DetailsSection />
 	}])
 	return (
 		<Container>
 			<Navbar>
-				{navRoutes.map((item,index)=>(
+				{navRoutes.map((item, index) => (
 					<NavContent
 						key={index}
 						active={item.isActive}
 						disabled={item.isActive}
-						onClick = {()=>{
-							if(!item.isActive){
-								let newVal = [...navRoutes.map(a=>({...a,isActive:false}))]
+						onClick={() => {
+							if (!item.isActive) {
+								let newVal = [...navRoutes.map(a => ({ ...a, isActive: false }))]
 								newVal[index].isActive = true
 								setNavRoutes(newVal)
 							}
@@ -78,7 +89,7 @@ const InfoContainer = () => {
 					>{item.name}</NavContent>
 				))}
 			</Navbar>
-			{navRoutes.find(item=>item.isActive).component}
+			{navRoutes.find(item => item.isActive).component}
 		</Container>
 	)
 }

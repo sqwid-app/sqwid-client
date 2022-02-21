@@ -6,7 +6,7 @@ import { domAnimation, LazyMotion } from "framer-motion";
 import ReefIcon from "@static/svg/ReefIcon";
 import { numberSeparator } from "@utils/numberSeparator";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
-import { BidsModal, PutOnSaleModal, BuyModal } from "./Modals";
+import { BidsModal, PutOnSaleModal, BuyModal, TransferModal } from "./Modals";
 
 import { removeFromSale } from "@utils/marketplace";
 import Loading from "@elements/Default/Loading";
@@ -139,7 +139,8 @@ const Bid = () => {
 				itemId: collectibleInfo.itemId,
 				price: collectibleInfo.price,
 				maxAmount: collectibleInfo.owners.current.quantity.owns
-			}} itemId = { collectibleInfo.itemId } isActive={showModal} setIsActive={setShowModal}/>
+			}} itemId = { collectibleInfo.itemId } isActive={showModal} setIsActive={setShowModal}
+		/>
 		</>
 	)
 }
@@ -167,6 +168,28 @@ const StopSale = () => {
 		<AnimBtn disabled = {isLoading} onClick = { handleClick }>
 			{buttonText}
 		</AnimBtn>
+	)
+}
+
+const Transfer = () => {
+	const [showModal, setShowModal] = useState(false)
+	const { collectibleInfo } = useContext(CollectibleContext)
+	return (
+		<>
+			{collectibleInfo.owners.current.quantity.owns>1&&(
+				<>
+					<AnimBtn onClick={() => setShowModal(!showModal)}>
+						Transfer Ownership
+					</AnimBtn>
+					<TransferModal
+						itemInfo={{
+							itemId: collectibleInfo.itemId,
+							maxAmount: collectibleInfo.owners.current.quantity.owns
+						}} itemId={collectibleInfo.itemId} isActive={showModal} setIsActive={setShowModal}
+					/>
+				</>
+			)}
+		</>
 	)
 }
 
@@ -214,7 +237,10 @@ const Sale = () => {
 				<HighestBid/>
 			</PriceInfoContainer>
 			{auth&&(isOwner?(
-				<StopSale/>
+				<BtnContainer>
+					<StopSale/>
+					<Transfer/>
+				</BtnContainer>
 			):(
 				<BtnContainer>
 					<BuyNow/>
@@ -233,7 +259,10 @@ const NoSale = () => {
 		<>
 			<HighestBid/>
 			{auth&&(isOwner?(
-				<PutOnSale/>
+				<BtnContainer>
+					<PutOnSale/>
+					<Transfer/>
+				</BtnContainer>
 			):(
 				<Bid/>
 			))}

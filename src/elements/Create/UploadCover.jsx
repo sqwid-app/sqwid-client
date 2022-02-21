@@ -5,7 +5,7 @@ import styled, { css } from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 
 const border = css`
-	border: 2px solid var(--app-container-text-primary);
+	border: 0.125rem solid var(--app-container-text-primary);
 	border-radius: 0.5rem;
 `;
 
@@ -13,7 +13,7 @@ const FilePreview = styled.div`
 	overflow: hidden;
 	padding: 0;
 	max-width: 100%;
-	min-height: ${props=>!props.fileType?`100%`:`auto`};
+	min-height: ${props => !props.fileType ? `100%` : `auto`};
 	overflow: hidden;
 	display:grid;
 	grid-template-columns: 1fr auto;
@@ -75,7 +75,7 @@ const DropzoneButton = styled(m.a)`
 	font-weight: 700;
 	padding: 0.5rem 1rem;
 	border-radius: 1000rem;
-	background: ${props=>props.modal?`var(--app-modal-btn-primary)`:`var(--app-container-bg-primary)`};
+	background: ${props => props.modal ? `var(--app-modal-btn-primary)` : `var(--app-container-bg-primary)`};
 	color: var(--app-container-text-primary);
 	outline: none;
 	border: none;
@@ -87,7 +87,7 @@ const DropzoneButton = styled(m.a)`
 const ImageThumb = () => {
 	const { fileData, setFileData } = useContext(FileContext)
 	let image = fileData.coverFile
-	return(
+	return (
 		<ImageThumbWrapper>
 			<Title>Cover Image</Title>
 			<FilePreview>
@@ -97,14 +97,14 @@ const ImageThumb = () => {
 						whileHover={{
 							y: -5,
 							x: 0,
-							scale:1.02
+							scale: 1.02
 						}}
 						whileTap={{
-							scale:0.99
+							scale: 0.99
 						}}
-						onClick={()=>setFileData({
+						onClick={() => setFileData({
 							...fileData,
-							coverFile:null
+							coverFile: null
 						})}
 					>Reset Image</DropzoneButton>
 				</LazyMotion>
@@ -118,40 +118,40 @@ const Dropzone = (props) => {
 	const initialDragText = "PNG, JPEG, GIF or WEBP. Max 2mb."
 	const { fileData, setFileData } = useContext(FileContext)
 	const [dragText, setDragText] = useState(initialDragText)
-	const {getRootProps, getInputProps, open, acceptedFiles,isDragActive,fileRejections} = useDropzone({
+	const { getRootProps, getInputProps, open, acceptedFiles, isDragActive, fileRejections } = useDropzone({
 		noClick: true,
 		noKeyboard: true,
-		maxFiles:1,
+		maxFiles: 1,
 		accept: `image/jpeg, image/gif, image/png, image/webp`,
-		maxSize:props.maxSize
+		maxSize: props.maxSize
 	});
 	useEffect(() => {
-		if(acceptedFiles.length){
+		if (acceptedFiles.length) {
 			setFileData({
 				...fileData,
 				coverFile: acceptedFiles[0]
 			});
 		}
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [acceptedFiles])
 	useEffect(() => {
-		isDragActive?setDragText(`Drop your files here`):setDragText(initialDragText)
-	//eslint-disable-next-line
+		isDragActive ? setDragText(`Drop your files here`) : setDragText(initialDragText)
+		//eslint-disable-next-line
 	}, [isDragActive])
 	useEffect(() => {
-		if(fileRejections.length){
-			(fileRejections[0].errors[0].code==="file-too-large")?
-				setDragText("File cannot be larger than 2mb"):
+		if (fileRejections.length) {
+			(fileRejections[0].errors[0].code === "file-too-large") ?
+				setDragText("File cannot be larger than 2mb") :
 				setDragText(fileRejections[0].errors[0].message)
 			setTimeout(() => {
 				setDragText(initialDragText);
 			}, 3000);
 		}
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [fileRejections])
 	return (
 		<LazyMotion features={domAnimation}>
-			<div {...getRootProps({className: 'dropzone'})}>
+			<div {...getRootProps({ className: 'dropzone' })}>
 				<input {...getInputProps()} />
 				<DropzoneText>
 					{dragText}
@@ -162,10 +162,10 @@ const Dropzone = (props) => {
 					whileHover={{
 						y: -5,
 						x: 0,
-						scale:1.02
+						scale: 1.02
 					}}
 					whileTap={{
-						scale:0.99
+						scale: 0.99
 					}}
 				>
 					Choose Cover
@@ -180,7 +180,7 @@ const UploadCover = () => {
 	const { fileData } = useContext(FileContext)
 	return (
 		<Wrapper>
-			{!fileData.coverFile ?<Dropzone maxSize={2000000}/>:<ImageThumb/>}
+			{!fileData.coverFile ? <Dropzone maxSize={2000000} /> : <ImageThumb />}
 		</Wrapper>
 	)
 }

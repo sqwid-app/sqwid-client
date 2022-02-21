@@ -3,6 +3,8 @@ import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import FileContext from "@contexts/File/FileContext";
+import { sanitize } from "@utils/textUtils";
+import constants from "@utils/constants";
 
 const Wrapper = styled.div`
 	.dropzone{
@@ -39,7 +41,7 @@ const DropzoneButton = styled(m.a)`
 	font-weight: 700;
 	padding: 0.675rem 1.25rem;
 	border-radius: 1000rem;
-	background: ${props=>props.modal?`var(--app-modal-btn-primary)`:`var(--app-container-bg-primary)`};
+	background: ${props => props.modal ? `var(--app-modal-btn-primary)` : `var(--app-container-bg-primary)`};
 	color: var(--app-container-text-primary);
 	outline: none;
 	border: none;
@@ -49,42 +51,45 @@ const DropzoneButton = styled(m.a)`
 `
 
 const Dropzone = (props) => {
-	const initialDragText = props.modal?"PNG, JPEG, GIF or WEBP. Max 30mb.":"PNG, GIF, WEBP, MP4, or MP3. Max 30mb."
+	// const initialDragText = props.modal ? "PNG, JPEG, GIF or WEBP. Max 30mb." : "PNG, GIF, WEBP, MP4, or MP3. Max 30mb."
+	const initialDragText = "PNG or JPEG. Max 30mb."
 	const { fileData, setFileData } = useContext(FileContext)
 	const [dragText, setDragText] = useState(initialDragText)
-	const {getRootProps, getInputProps, open, acceptedFiles,isDragActive,fileRejections} = useDropzone({
+	const { getRootProps, getInputProps, open, acceptedFiles, isDragActive, fileRejections } = useDropzone({
 		noClick: true,
 		noKeyboard: true,
-		maxFiles:1,
-		accept: `image/jpeg, image/gif, image/png, image/webp, ${!props.modal&&`audio/mpeg, video/mp4`}`,
-		maxSize:props.maxSize
+		maxFiles: 1,
+		// accept: `image/jpeg, image/gif, image/png, image/webp, ${!props.modal&&`audio/mpeg, video/mp4`}`,
+		accept: `${constants.CREATE_ACCEPTED_MIMETYPES.join(", ")}`,
+		maxSize: props.maxSize
 	});
 	useEffect(() => {
-		if(acceptedFiles.length){
+		if (acceptedFiles.length) {
+			let file = acceptedFiles[0]
 			setFileData({
 				...fileData,
-				file: acceptedFiles[0]
+				file: new File([file], sanitize(file.name), { type: file.type })
 			});
 		}
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [acceptedFiles])
 	useEffect(() => {
-		isDragActive?setDragText(`Drop your files here`):setDragText(initialDragText)
-	//eslint-disable-next-line
+		isDragActive ? setDragText(`Drop your files here`) : setDragText(initialDragText)
+		//eslint-disable-next-line
 	}, [isDragActive])
 	useEffect(() => {
-		if(fileRejections.length){
-			(fileRejections[0].errors[0].code==="file-too-large")?
-				setDragText("File cannot be larger than 30mb"):
+		if (fileRejections.length) {
+			(fileRejections[0].errors[0].code === "file-too-large") ?
+				setDragText("File cannot be larger than 30mb") :
 				setDragText(fileRejections[0].errors[0].message)
 			setTimeout(() => {
 				setDragText(initialDragText);
 			}, 3000);
 		}
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [fileRejections])
 	return (
-		<div {...getRootProps({className: 'dropzone'})}>
+		<div {...getRootProps({ className: 'dropzone' })}>
 			<input {...getInputProps()} />
 			<DropzoneText>
 				{dragText}
@@ -95,10 +100,10 @@ const Dropzone = (props) => {
 				whileHover={{
 					y: -5,
 					x: 0,
-					scale:1.02
+					scale: 1.02
 				}}
 				whileTap={{
-					scale:0.99
+					scale: 0.99
 				}}
 			>
 				Choose File
@@ -108,11 +113,11 @@ const Dropzone = (props) => {
 
 }
 
-const CustomDropzone = ({modal}) => {
+const CustomDropzone = ({ modal }) => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
-				<Dropzone modal={modal} maxSize={30000000}/>
+				<Dropzone modal={modal} maxSize={30000000} />
 			</Wrapper>
 		</LazyMotion>
 	)

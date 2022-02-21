@@ -20,7 +20,7 @@ const ChooseBtn = styled(m.a)`
 	font-weight: 700;
 	padding: 0.675rem 0;
 	border-radius: 0.5rem;
-	border: 2px solid var(--app-container-text-primary);
+	border: 0.125rem solid var(--app-container-text-primary);
 	color: var(--app-container-text-primary);
 	outline: none;
 	cursor: pointer;
@@ -37,15 +37,15 @@ const PropertiesSection = () => {
 					whileHover={{
 						y: -2,
 						x: 0,
-						scale:1.01
+						scale: 1.01
 					}}
 					whileTap={{
-						scale:0.99
+						scale: 0.99
 					}}
-					onClick={()=>setShowModal(true)}
+					onClick={() => setShowModal(true)}
 				>Add properties</ChooseBtn>
 			</LazyMotion>
-			<PropertiesModal isActive={showModal} setIsActive={setShowModal}/>
+			<PropertiesModal isActive={showModal} setIsActive={setShowModal} />
 		</Container>
 	)
 }

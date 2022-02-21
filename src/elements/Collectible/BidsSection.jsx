@@ -12,6 +12,8 @@ import { acceptBid, cancelBid } from "@utils/marketplace";
 import Loading from "@elements/Default/Loading";
 import bread from "@utils/bread";
 import { respondTo } from "@styles/styledMediaQuery";
+import { Link } from "react-router-dom";
+import { getBackend } from "@utils/network";
 
 const Wrapper = styled(SimpleBarReact)`
 	overflow: auto;
@@ -21,7 +23,7 @@ const Wrapper = styled(SimpleBarReact)`
 
 const toolTip = css`
 	&:before{
-		content:"${props=>props.tooltip?props.tooltip:``}";
+		content:"${props => props.tooltip ? props.tooltip : ``}";
 		position:absolute;
 		top: -50%;
 		left: 0;
@@ -39,7 +41,7 @@ const toolTip = css`
 		overflow:hidden;
 		text-overflow: ellipsis;
 		max-width: 12rem;
-		border: 0.1rem solid ${props=>props.isBidder?`red`:`none`};
+		border: 0.1rem solid ${props => props.isBidder ? `red` : `none`};
 		box-shadow: rgba(0, 0, 0, 0.35) 0px -5px 15px;
 	}
 	&:hover {
@@ -77,7 +79,7 @@ const CardsContainer = styled.div`
 	margin: 0 0.75rem;
 	margin-bottom: 0.5rem;
 	gap: 1rem;
-	${props=>props.isBidder&&bidderContainer};
+	${props => props.isBidder && bidderContainer};
 
 `
 
@@ -92,9 +94,9 @@ const Icon = styled.div`
 	height: 1.75rem;
 	width: 1.75rem;
 	border-radius: 1000rem;
-	outline: 2px solid white;
+	outline: 0.125rem solid white;
 	background-color: var(--app-background);
-	background-image: url('${props=>props.url&&props.url}');
+	background-image: url('${props => props.url && props.url}');
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
@@ -122,7 +124,7 @@ const Copies = styled.div`
 	color: var(--app-container-text-primary);
 `
 
-const Name = styled.a`
+const Name = styled(Link)`
 	color: inherit;
 	font-weight: 900;
 	font-size: 1.25rem;
@@ -161,80 +163,81 @@ const AcceptContainer = styled(m.a)`
 const BidsCard = (info) => {
 	const { auth } = useContext(AuthContext)
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext)
-	const isSeller = auth&&(auth.evmAddress === collectibleInfo.owners.current.id)
+	const isSeller = auth && (auth.evmAddress === collectibleInfo.owners.current.id)
 	// const isSeller = true
-	const isBidder = auth&&(auth.evmAddress === info.bidder.id) && !isSeller
+	const isBidder = auth && (auth.evmAddress === info.bidder.id) && !isSeller
 
-	const [isLoading, setIsLoading] = useState (false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleAccept = () => {
 		if (!isLoading) {
-			setIsLoading (true);
+			setIsLoading(true);
 			let history = collectibleInfo.bidsHistory;
-			let index = history.findIndex (bid => bid.id === info.id);
-			history.splice (index, 1);
-			acceptBid (collectibleInfo.itemId, info.id)
-			.then (() => {
-				setIsLoading (false);
-				setCollectibleInfo ({
-					...collectibleInfo,
-					bidsHistory: history
+			let index = history.findIndex(bid => bid.id === info.id);
+			history.splice(index, 1);
+			acceptBid(collectibleInfo.itemId, info.id)
+				.then(() => {
+					setIsLoading(false);
+					setCollectibleInfo({
+						...collectibleInfo,
+						bidsHistory: history
+					});
+				})
+				.catch((err) => {
+					bread(err.response.data.error)
 				});
-			})
-			.catch((err)=>{
-				bread(err.response.data.error)
-			});
 		}
 	}
 
 	const handleCancel = () => {
 		if (isBidder && !isLoading) {
-			setIsLoading (true);
+			setIsLoading(true);
 			let history = collectibleInfo.bidsHistory;
-			let index = history.findIndex (bid => bid.id === info.id);
-			history.splice (index, 1);
-			cancelBid (collectibleInfo.itemId, info.id)
-			.then (() => {
-				setIsLoading (false);
-				setCollectibleInfo ({
-					...collectibleInfo,
-					bidsHistory: history
+			let index = history.findIndex(bid => bid.id === info.id);
+			history.splice(index, 1);
+			cancelBid(collectibleInfo.itemId, info.id)
+				.then(() => {
+					setIsLoading(false);
+					setCollectibleInfo({
+						...collectibleInfo,
+						bidsHistory: history
+					});
+				})
+				.catch((err) => {
+					bread(err.response.data.error)
 				});
-			})
-			.catch((err)=>{
-				bread(err.response.data.error)
-			});
 		}
 	}
 	return (
-		<CardsContainer isBidder={isBidder} tooltip={isBidder&&`Cancel Bid`} onClick = {handleCancel}>
-			{(!isLoading || isSeller) ? <InfoContainer>
-				<UserInfo>
-					<Icon url={info.bidder.thumb}/>
-					<Name href={`${window.location.origin}/profile/${info.bidder.id}`}>{info.bidder.name}</Name>
-				</UserInfo>
-				<PriceInfo>
-					<Price><ReefIcon centered size={24}/> <span>{numberSeparator(info.price)}</span></Price>
-					<Copies>{numberSeparator(info.copies)} Copies</Copies>
-				</PriceInfo>
-			</InfoContainer> : <><Loading/>Cancelling...</>}
-			{(isSeller&&!isBidder)&&(
+		<CardsContainer isBidder={isBidder} tooltip={isBidder && `Cancel Bid`} onClick={handleCancel}>
+			{(!isLoading || isSeller) ?
+				<InfoContainer>
+					<UserInfo>
+						<Icon url={info.bidder.thumb} />
+						<Name to={`/profile/${info.bidder.id}`}>{info.bidder.name}</Name>
+					</UserInfo>
+					<PriceInfo>
+						<Price><ReefIcon centered size={24} /> <span>{numberSeparator(info.price)}</span></Price>
+						<Copies>{numberSeparator(info.copies)} Copies</Copies>
+					</PriceInfo>
+				</InfoContainer> : <><Loading />Cancelling...</>}
+			{(isSeller && !isBidder) && (
 				<LazyMotion features={domAnimation}>
 					<AcceptContainer
 						whileHover={{
-							y:-5,
-							x:0
+							y: -5,
+							x: 0
 						}}
 						whileTap={{
 							scale: 0.95
 						}}
-						onClick = {handleAccept}
+						onClick={handleAccept}
 					>
-							<label
-								title="Accept Bid"
-							>
-								{!isLoading ? "Accept" : <Loading/>}
-							</label>
+						<label
+							title="Accept Bid"
+						>
+							{!isLoading ? "Accept" : <Loading />}
+						</label>
 					</AcceptContainer>
 				</LazyMotion>
 			)}
@@ -244,26 +247,26 @@ const BidsCard = (info) => {
 
 const BidsSection = () => {
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
-	useEffect(()=>{
+	useEffect(() => {
 		// axios black magic moment
 		// basically put this inside .then 👍
 		const fetchData = async () => {
-			const result = await axios (`${process.env.REACT_APP_API_URL}/get/r/marketplace/bids/${collectibleInfo.itemId}`);
+			const result = await axios(`${getBackend()}/get/r/marketplace/bids/${collectibleInfo.itemId}`);
 			let items = result.data;
-			const bidsHistory = items.sort ((itemA, itemB) => { return Number (itemB.id) - Number (itemA.id) });
+			const bidsHistory = items.sort((itemA, itemB) => { return Number(itemB.id) - Number(itemA.id) });
 			// setIsLoading (false);
 			setCollectibleInfo({
 				...collectibleInfo,
 				bidsHistory: bidsHistory
 			});
 		}
-		fetchData ();
-	//eslint-disable-next-line
-	},[])
+		fetchData();
+		//eslint-disable-next-line
+	}, [])
 	return (
 		<Wrapper>
-			{collectibleInfo.bidsHistory?.length ? collectibleInfo.bidsHistory.map((item,index)=>(
-				<BidsCard key={index} {...item}/>
+			{collectibleInfo.bidsHistory?.length ? collectibleInfo.bidsHistory.map((item, index) => (
+				<BidsCard key={index} {...item} />
 			)) : <>No bids yet...</>}
 		</Wrapper>
 	)

@@ -19,12 +19,12 @@ const InputContainer = styled.input`
 	color: var(--app-text);
 	padding: 0.5rem 0;
 	padding-right:2ch;
-	border-bottom: 2px solid var(--app-container-text-primary);
+	border-bottom: 0.125rem solid var(--app-container-text-primary);
 	width: 100%;
 	transition: border-bottom 0.2s ease;
 	position:relative;
 	&:focus{
-		border-bottom: 2px solid var(--app-container-text-primary-hover);
+		border-bottom: 0.125rem solid var(--app-container-text-primary-hover);
 	}
 	&::-webkit-outer-spin-button,
 	&::-webkit-inner-spin-button {
@@ -74,12 +74,12 @@ const RoyaltySection = () => {
 			<InputWrapper>
 				<InputContainer
 					value={files.royalty}
-					onChange = {handleInput}
+					onChange={handleInput}
 					placeholder={`10`}
 					type="number"
 					min="0"
 					max="50"
-					onBlur={(e)=>e.target.value==="0"&&setFiles({
+					onBlur={(e) => e.target.value === "0" && setFiles({
 						...files,
 						royalty: ""
 					})}

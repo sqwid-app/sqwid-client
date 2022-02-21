@@ -1,6 +1,17 @@
 let ABI = [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "marketFee_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "contract ISqwidERC1155",
+        "name": "sqwidERC1155_",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -9,36 +20,43 @@ let ABI = [
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint256",
-        "name": "itemId",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
       },
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "bidId",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "BalanceUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "positionId",
         "type": "uint256"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "bidder",
         "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "price",
+        "name": "value",
         "type": "uint256"
       }
     ],
-    "name": "BidAdded",
+    "name": "BidCreated",
     "type": "event"
   },
   {
@@ -67,21 +85,28 @@ let ABI = [
         "internalType": "address",
         "name": "creator",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "royaltyRecipient",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "royaltyAmount",
-        "type": "uint256"
       }
     ],
     "name": "ItemCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "funder",
+        "type": "address"
+      }
+    ],
+    "name": "LoanFunded",
     "type": "event"
   },
   {
@@ -120,17 +145,17 @@ let ABI = [
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "price",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "price",
+        "name": "amount",
         "type": "uint256"
       }
     ],
-    "name": "ItemSold",
+    "name": "MarketItemSold",
     "type": "event"
   },
   {
@@ -153,40 +178,91 @@ let ABI = [
     "type": "event"
   },
   {
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
         "internalType": "uint256",
-        "name": "itemId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "bidId",
+        "name": "positionId",
         "type": "uint256"
       }
     ],
-    "name": "acceptBid",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "name": "PositionDelete",
+    "type": "event"
   },
   {
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "itemId",
         "type": "uint256"
       },
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "marketFee",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum SqwidMarketplace.PositionState",
+        "name": "state",
+        "type": "uint8"
       }
     ],
-    "name": "addBid",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
+    "name": "PositionUpdate",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "RaffleEntered",
+    "type": "event"
   },
   {
     "inputs": [
@@ -194,32 +270,9 @@ let ABI = [
         "internalType": "uint256",
         "name": "itemId",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
       }
     ],
-    "name": "buyNow",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "itemId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "bidId",
-        "type": "uint256"
-      }
-    ],
-    "name": "cancelBid",
+    "name": "addAvailableTokens",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -228,23 +281,11 @@ let ABI = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "nftContract",
+        "name": "",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
       }
     ],
-    "name": "createMarketItem",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "currentId",
+    "name": "addressBalance",
     "outputs": [
       {
         "internalType": "uint256",
@@ -259,309 +300,285 @@ let ABI = [
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "createBid",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "createItem",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "itemId",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "bidId",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "numMinutes",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minBid",
+        "type": "uint256"
+      }
+    ],
+    "name": "createItemAuction",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "itemId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "loanAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "feeAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "numMinutes",
+        "type": "uint256"
+      }
+    ],
+    "name": "createItemLoan",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "itemId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "numMinutes",
+        "type": "uint256"
+      }
+    ],
+    "name": "createItemRaffle",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "createSale",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "currentItemId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "currentPositionId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "endAuction",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "endRaffle",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "enterRaffle",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "fetchAuctionData",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minBid",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "highestBidder",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "highestBid",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalAddresses",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct SqwidMarketplace.AuctionDataResponse",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bidIndex",
         "type": "uint256"
       }
     ],
     "name": "fetchBid",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "bidId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "itemId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address payable",
-            "name": "bidder",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "active",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct SqwidMarketplace.Bid",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "itemId",
-        "type": "uint256"
-      }
-    ],
-    "name": "fetchBidCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "itemId",
-        "type": "uint256"
-      }
-    ],
-    "name": "fetchBids",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "bidId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "itemId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address payable",
-            "name": "bidder",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "active",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct SqwidMarketplace.Bid[]",
-        "name": "bids",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "itemId",
-        "type": "uint256"
-      }
-    ],
-    "name": "fetchHighestBid",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "bidId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "itemId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address payable",
-            "name": "bidder",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "active",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct SqwidMarketplace.Bid",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "itemId",
-        "type": "uint256"
-      }
-    ],
-    "name": "fetchMarketItem",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "itemId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "nftContract",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address payable",
-            "name": "seller",
-            "type": "address"
-          },
-          {
-            "internalType": "address payable",
-            "name": "royaltyReceiver",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "royaltyAmount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "onSale",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct SqwidMarketplace.MarketItem",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "fetchMarketItems",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "itemId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "nftContract",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address payable",
-            "name": "seller",
-            "type": "address"
-          },
-          {
-            "internalType": "address payable",
-            "name": "royaltyReceiver",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "royaltyAmount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "onSale",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct SqwidMarketplace.MarketItem[]",
-        "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
-        "name": "nftContract",
+        "name": "",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "name": "fetchMarketItemsByTokenId",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "itemId",
+        "type": "uint256"
+      }
+    ],
+    "name": "fetchItem",
     "outputs": [
       {
         "components": [
@@ -581,34 +598,46 @@ let ABI = [
             "type": "uint256"
           },
           {
-            "internalType": "address payable",
-            "name": "seller",
-            "type": "address"
-          },
-          {
-            "internalType": "address payable",
-            "name": "royaltyReceiver",
+            "internalType": "address",
+            "name": "creator",
             "type": "address"
           },
           {
             "internalType": "uint256",
-            "name": "royaltyAmount",
+            "name": "positionCount",
             "type": "uint256"
           },
           {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "onSale",
-            "type": "bool"
+            "components": [
+              {
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "buyer",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct SqwidMarketplace.ItemSale[]",
+            "name": "sales",
+            "type": "tuple[]"
           }
         ],
-        "internalType": "struct SqwidMarketplace.MarketItem[]",
+        "internalType": "struct SqwidMarketplace.Item",
         "name": "",
-        "type": "tuple[]"
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -617,43 +646,79 @@ let ABI = [
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "seller",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
       }
     ],
-    "name": "fetchMarketItemsFromSeller",
+    "name": "fetchLoanData",
     "outputs": [
       {
         "components": [
+          {
+            "internalType": "uint256",
+            "name": "loanAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "feeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "numMinutes",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "lender",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct SqwidMarketplace.LoanData",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "fetchPosition",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "positionId",
+            "type": "uint256"
+          },
           {
             "internalType": "uint256",
             "name": "itemId",
             "type": "uint256"
           },
           {
-            "internalType": "address",
-            "name": "nftContract",
+            "internalType": "address payable",
+            "name": "owner",
             "type": "address"
           },
           {
             "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address payable",
-            "name": "seller",
-            "type": "address"
-          },
-          {
-            "internalType": "address payable",
-            "name": "royaltyReceiver",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "royaltyAmount",
+            "name": "amount",
             "type": "uint256"
           },
           {
@@ -662,27 +727,19 @@ let ABI = [
             "type": "uint256"
           },
           {
-            "internalType": "bool",
-            "name": "onSale",
-            "type": "bool"
+            "internalType": "uint256",
+            "name": "marketFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum SqwidMarketplace.PositionState",
+            "name": "state",
+            "type": "uint8"
           }
         ],
-        "internalType": "struct SqwidMarketplace.MarketItem[]",
+        "internalType": "struct SqwidMarketplace.Position",
         "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getPlatformFeePercent",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -691,10 +748,134 @@ let ABI = [
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "fetchRaffleData",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalValue",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalAddresses",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct SqwidMarketplace.RaffleDataResponse",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "entryIndex",
+        "type": "uint256"
+      }
+    ],
+    "name": "fetchRaffleEntry",
+    "outputs": [
+      {
         "internalType": "address",
-        "name": "to",
+        "name": "",
         "type": "address"
       },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "enum SqwidMarketplace.PositionState",
+        "name": "state",
+        "type": "uint8"
+      }
+    ],
+    "name": "fetchStateCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "fundLoan",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "liquidateLoan",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "enum SqwidMarketplace.PositionState",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "name": "marketFees",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
         "internalType": "uint256",
         "name": "amount",
@@ -706,6 +887,11 @@ let ABI = [
         "type": "string"
       },
       {
+        "internalType": "string",
+        "name": "mimeType",
+        "type": "string"
+      },
+      {
         "internalType": "address",
         "name": "royaltyRecipient",
         "type": "address"
@@ -714,19 +900,119 @@ let ABI = [
         "internalType": "uint256",
         "name": "royaltyValue",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "nftContract",
-        "type": "address"
       }
     ],
     "name": "mint",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "amounts",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "tokenURIs",
+        "type": "string[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "mimeTypes",
+        "type": "string[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "royaltyRecipients",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "royaltyValues",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "mintBatch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "onERC1155BatchReceived",
     "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "onERC1155Received",
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
       }
     ],
     "stateMutability": "nonpayable",
@@ -746,19 +1032,6 @@ let ABI = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "platformFee",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -767,24 +1040,16 @@ let ABI = [
       },
       {
         "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
         "name": "price",
         "type": "uint256"
       }
     ],
-    "name": "putOnSale",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "itemId",
-        "type": "uint256"
-      }
-    ],
-    "name": "removeFromSale",
+    "name": "putItemOnSale",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -799,12 +1064,30 @@ let ABI = [
   {
     "inputs": [
       {
-        "internalType": "uint16",
-        "name": "_platformFee",
-        "type": "uint16"
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
       }
     ],
-    "name": "setPlatformFeePercent",
+    "name": "repayLoan",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "marketFee_",
+        "type": "uint16"
+      },
+      {
+        "internalType": "enum SqwidMarketplace.PositionState",
+        "name": "typeFee",
+        "type": "uint8"
+      }
+    ],
+    "name": "setMarketFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -812,12 +1095,12 @@ let ABI = [
   {
     "inputs": [
       {
-        "internalType": "address payable",
-        "name": "_platformFeeRecipient",
+        "internalType": "contract ISqwidMigrator",
+        "name": "sqwidMigrator_",
         "type": "address"
       }
     ],
-    "name": "setPlatformFeeRecipient",
+    "name": "setMigratorAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -825,17 +1108,56 @@ let ABI = [
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "itemId",
-        "type": "uint256"
+        "internalType": "contract ISqwidERC1155",
+        "name": "sqwidERC1155_",
+        "type": "address"
       }
     ],
-    "name": "tokenBalanceByItemId",
+    "name": "setNftContractAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "sqwidERC1155",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "contract ISqwidERC1155",
         "name": "",
-        "type": "uint256"
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "sqwidMigrator",
+    "outputs": [
+      {
+        "internalType": "contract ISqwidMigrator",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -850,6 +1172,39 @@ let ABI = [
       }
     ],
     "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "unlistLoanProposal",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "unlistPositionOnSale",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

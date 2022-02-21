@@ -1,3 +1,4 @@
+import { respondTo } from "@styles/styledMediaQuery";
 import styled from "styled-components";
 
 const ProfilePicture = styled.img`
@@ -7,6 +8,9 @@ const ProfilePicture = styled.img`
 	width: 8rem;
 	border: 10px solid #FFFFFF;
 	border-radius: 1000rem;
+	${respondTo.md`
+		background: var(--app-background);
+	`}
 `
 
 export default ProfilePicture

@@ -1,5 +1,6 @@
 import CancelIcon from "@static/svg/CancelIcon";
 import { respondTo } from "@styles/styledMediaQuery";
+import constants from "@utils/constants";
 import React, { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 
@@ -46,8 +47,8 @@ const TopBannerContainer = styled.div`
 	font-weight: 900;
 	font-size: 1rem;
 	background: var(--app-theme-primary);
-	z-index: 15;
-	${props=>!props.remove?modalEntryAnim:modalExitAnim};
+	z-index: 100;
+	${props => !props.remove ? modalEntryAnim : modalExitAnim};
 	${respondTo.md`
 		top:auto;
 		bottom: 0;
@@ -64,31 +65,31 @@ const CancelContainer = styled.div`
 
 const TopBanner = () => {
 	const initialState = JSON.parse(localStorage.getItem("isWarningVisible"))
-	const [isWarningVisible, setIsWarningVisible] = useState(initialState!==null?initialState:true)
+	const [isWarningVisible, setIsWarningVisible] = useState(initialState !== null ? initialState : true)
 	const [elemIsVisible, setElemIsVisible] = useState(isWarningVisible)
 	useEffect(() => {
-		if(isWarningVisible===false){
+		if (isWarningVisible === false) {
 			setTimeout(() => {
 				setElemIsVisible(isWarningVisible);
 			}, 200);
 		}
-		else{
+		else {
 			setElemIsVisible(isWarningVisible);
 		}
 	}, [isWarningVisible])
-	const handleCancel = ()=>{
+	const handleCancel = () => {
 		setIsWarningVisible(false)
-		localStorage.setItem("isWarningVisible",false)
+		localStorage.setItem("isWarningVisible", false)
 	}
 	return (
 		<>
-		{elemIsVisible&&(
-			<TopBannerContainer remove={!isWarningVisible}>
-				Sqwid Beta - use on Reef Testnet
-				<CancelContainer onClick={handleCancel}>
-					<CancelIcon/>
-				</CancelContainer>
-			</TopBannerContainer>)}
+			{elemIsVisible && (
+				<TopBannerContainer remove={!isWarningVisible}>
+					{constants.APP_NAME} Beta - use on Reef Testnet
+					<CancelContainer onClick={handleCancel}>
+						<CancelIcon />
+					</CancelContainer>
+				</TopBannerContainer>)}
 		</>
 	)
 }

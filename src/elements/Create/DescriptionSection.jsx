@@ -22,11 +22,11 @@ const InputContainer = styled.input`
 	border: none;
 	color: var(--app-text);
 	padding: 0.5rem 0;
-	border-bottom: 2px solid var(--app-container-text-primary);
+	border-bottom: 0.125rem solid var(--app-container-text-primary);
 	width: 100%;
 	transition: border-bottom 0.2s ease;
 	&:focus{
-		border-bottom: 2px solid var(--app-container-text-primary-hover);
+		border-bottom: 0.125rem solid var(--app-container-text-primary-hover);
 	}
 `
 
@@ -43,7 +43,7 @@ const DescriptionSection = () => {
 			<Title>Description <span>(optional)</span></Title>
 			<InputContainer
 				value={files.description}
-				onChange = {handleInput}
+				onChange={handleInput}
 				placeholder={`e.g “The pogchamp logo, literally that.”`}
 			/>
 		</Container>
