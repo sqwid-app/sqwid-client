@@ -7,11 +7,6 @@ let ABI = [
         "type": "uint256"
       },
       {
-        "internalType": "uint256",
-        "name": "mimeTypeFee_",
-        "type": "uint256"
-      },
-      {
         "internalType": "contract ISqwidERC1155",
         "name": "sqwidERC1155_",
         "type": "address"
@@ -19,6 +14,50 @@ let ABI = [
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "BalanceUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "bidder",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "BidCreated",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -55,25 +94,19 @@ let ABI = [
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
-        "name": "prevValue",
+        "name": "positionId",
         "type": "uint256"
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newValue",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "enum SqwidMarketplace.PositionState",
-        "name": "typeFee",
-        "type": "uint8"
+        "indexed": true,
+        "internalType": "address",
+        "name": "funder",
+        "type": "address"
       }
     ],
-    "name": "MarketFeeChanged",
+    "name": "LoanFunded",
     "type": "event"
   },
   {
@@ -123,25 +156,6 @@ let ABI = [
       }
     ],
     "name": "MarketItemSold",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "prevValue",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newValue",
-        "type": "uint256"
-      }
-    ],
-    "name": "MimeTypeFeeChanged",
     "type": "event"
   },
   {
@@ -231,17 +245,23 @@ let ABI = [
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "positionId",
         "type": "uint256"
       },
       {
-        "indexed": false,
+        "indexed": true,
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      },
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "value",
         "type": "uint256"
       }
     ],
-    "name": "RoyaltiesPaid",
+    "name": "RaffleEntered",
     "type": "event"
   },
   {
@@ -305,7 +325,7 @@ let ABI = [
         "type": "uint256"
       }
     ],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -855,19 +875,6 @@ let ABI = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "mimeTypeFee",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -930,7 +937,7 @@ let ABI = [
     ],
     "name": "mintBatch",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1094,19 +1101,6 @@ let ABI = [
       }
     ],
     "name": "setMigratorAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "mimeTypeFee_",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMimeTypeFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

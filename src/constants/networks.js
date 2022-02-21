@@ -15,7 +15,7 @@ export const networks = {
 			erc1155: '0x5728847Ca5d2466dE6AcD33597D874f480acdAdB',
 			utility: '0x52CD9d5B4A9a3610Bd87668B5158B7d7259CA430'
 		},
-		backend: 'https://api.sqwid.app'
+		backend: 'https://mainnet-api.sqwid.app'
 	}
 }
 
