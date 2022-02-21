@@ -373,8 +373,9 @@ const CloseBtn = () => {
 }
 
 const WarningText = ({ isBlurred, setIsBlurred }) => {
+	const { collectibleInfo } = useContext(CollectibleContext)
+	const rejected = (collectibleInfo.approved === false);
 	const nodeRef = useRef()
-	const rejected = true;
 
 	const warningText = <p>This item isn't approved. If you're the creator and you've just minted it, please allow a few minutes for Sqwid to approve it.</p>
 
