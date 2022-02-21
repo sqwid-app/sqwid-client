@@ -377,7 +377,7 @@ const WarningText = ({ isBlurred, setIsBlurred }) => {
 	const rejected = (collectibleInfo.approved === false);
 	const nodeRef = useRef()
 
-	const warningText = <p>This item isn't approved. If you're the creator and you've just minted it, please allow a few minutes for Sqwid to approve it.</p>
+	const warningText = <p>This item is pending moderation. If you're the creator and you've just minted it, please allow a few minutes for Sqwid to approve it.</p>
 
 	const rejectedText = <>
 		<p>
