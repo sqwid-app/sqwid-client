@@ -5,7 +5,9 @@ import React, { Suspense, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from 'axios';
 import LoadingIcon from "@static/svg/LoadingIcon";
-const Card = React.lazy(()=>import("@elements/Default/Card"));
+import { Link } from "react-router-dom";
+import { getBackend } from "@utils/network";
+const Card = React.lazy(() => import("@elements/Default/Card"));
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -43,7 +45,7 @@ const CollectionsLogo = styled.div`
 	border-radius: 1000rem;
 	border: 3px solid var(--app-text);
 	background-color: var(--app-background);
-	background-image: url('${props=>props.url&&props.url}');
+	background-image: url('${props => props.url && props.url}');
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
@@ -53,10 +55,10 @@ const CollectionsLogo = styled.div`
 const CreatorLogo = styled(CollectionsLogo)`
 	height: 1.5rem;
 	width: 1.5rem;
-	border: 2px solid var(--app-text);
+	border: 0.125rem solid var(--app-text);
 `
 
-const Creator = styled.a`
+const Creator = styled(Link)`
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
@@ -81,23 +83,23 @@ const HeroSection = ({ id }) => {
 	const [collectionsInfo, setCollectionsInfo] = useState({});
 	const [isLoading, setIsLoading] = useState(true)
 
-	useEffect (() => {
+	useEffect(() => {
 		const fetchData = async () => {
-			const result = await axios (`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItems/collection/${id}`);
+			const result = await axios(`${getBackend()}/get/r/marketplace/fetchMarketItems/collection/${id}`);
 			let items = result.data;
-			setCollectionsInfo (items);
-			setIsLoading (false);
+			setCollectionsInfo(items);
+			setIsLoading(false);
 		}
-		fetchData ();
+		fetchData();
 	}, [id]);
 
 	return (
 		<>
-			{isLoading?(
+			{isLoading ? (
 				<LoadingContainer>
-					<LoadingIcon size={64}/>
+					<LoadingIcon size={64} />
 				</LoadingContainer>
-			):(
+			) : (
 				<Wrapper>
 					<HeaderContainer>
 						<Header>
@@ -107,28 +109,28 @@ const HeroSection = ({ id }) => {
 							{collectionsInfo.name}
 						</Header>
 						<Creator
-							href={`${window.location.origin}/profile/${collectionsInfo.creator.id}`}
+							to={`/profile/${collectionsInfo.creator.id}`}
 						>
 							by
 							<CreatorLogo
-								url = {collectionsInfo.creator.thumb}
+								url={collectionsInfo.creator.thumb}
 							/>
 							{collectionsInfo.creator.name}
 						</Creator>
 					</HeaderContainer>
 					{collectionsInfo.content.length === 0 ? (
-								<NoItems>No items in this collection 💀</NoItems>
+						<NoItems>No items in this collection 💀</NoItems>
 					) : <CardSectionContainer>
-							<Suspense>
-								{collectionsInfo.content.map((item,index)=>(
-									<Card
-										key={index}
-										data={item}
-										collections
-									/>
-								))}
-							</Suspense>
-						</CardSectionContainer>
+						<Suspense>
+							{collectionsInfo.content.map((item, index) => (
+								<Card
+									key={index}
+									data={item}
+									collections
+								/>
+							))}
+						</Suspense>
+					</CardSectionContainer>
 					}
 				</Wrapper>
 			)}

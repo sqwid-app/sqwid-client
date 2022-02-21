@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion"
+import { Link } from "react-router-dom";
 
-const CollectionCardContainer = styled(m.a)`
+const CollectionCardContainer = styled(m(Link))`
 	display: flex;
 	cursor: pointer;
 	user-select:none;
-	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%,rgba(0, 0, 0, 0.5) 65%, rgba(0, 0, 0, 0.75) 100%), url('${props=>props.src&&props.src}');
+	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%,rgba(0, 0, 0, 0.5) 65%, rgba(0, 0, 0, 0.75) 100%), url('${props => props.src && props.src}');
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -37,19 +38,19 @@ const CollectionCard = ({ src, title, link }) => {
 			<CollectionCardContainer
 				target="_blank"
 				referrer="no-referrer"
-				href={link}
+				to={link}
 				src={src}
 				whileHover={{
 					y: -10,
 					x: 0,
-					scale:1.02
+					scale: 1.02
 				}}
 				whileTap={{
-					scale:0.99
+					scale: 0.99
 				}}
 				transition={{
 					type: "tween",
-					ease:"backOut",
+					ease: "backOut",
 				}}
 			>
 				<div>{title}</div>

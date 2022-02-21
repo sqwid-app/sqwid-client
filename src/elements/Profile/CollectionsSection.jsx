@@ -10,6 +10,7 @@ import LoadingIcon from "@static/svg/LoadingIcon";
 import { respondTo } from "@styles/styledMediaQuery";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import bread from "@utils/bread";
+import { getBackend } from "@utils/network";
 
 const Wrapper = styled.div`
 	position: relative;
@@ -58,63 +59,63 @@ const Title = styled.h1`
 const CollectionsSection = () => {
 	const { auth } = useContext(AuthContext)
 	const { id } = useParams()
-	const userID = id?id:auth?.address
-	const [cards, setCards] = useState(JSON.parse(localStorage.getItem("collections"))||[])
+	const userID = id ? id : auth?.evmAddress
+	const [cards, setCards] = useState(JSON.parse(localStorage.getItem("collections")) || [])
 	const [isLoading, setIsLoading] = useState(true)
 	const isTabletOrMobile = useIsTabletOrMobile();
 	useEffect(() => {
-		axios.get(`${process.env.REACT_APP_API_URL}/get/collections/owner/${userID}`)
-		.then((res)=>{
-			localStorage.setItem("collections",JSON.stringify(res.data.collections))
-			setCards(res.data.collections.map(item=>{
-				return {
-					src: getCloudflareURL(item.data.image),
-					title:item.data.name,
-					link:`${window.location.origin}/collections/${item.id}`
-				}
-			}))
-		})
-		.catch(err=>{
-			bread(err.response.data.error)
-		})
-		.finally(()=>{
-			setIsLoading(false)
-		})
-	//eslint-disable-next-line
+		axios.get(`${getBackend()}/get/collections/owner/${userID}`)
+			.then((res) => {
+				localStorage.setItem("collections", JSON.stringify(res.data.collections))
+				setCards(res.data.collections.map(item => {
+					return {
+						src: getCloudflareURL(item.data.image),
+						title: item.data.name,
+						link: `/collections/${item.id}`
+					}
+				}))
+			})
+			.catch(err => {
+				bread(err.response.data.error)
+			})
+			.finally(() => {
+				setIsLoading(false)
+			})
+		//eslint-disable-next-line
 	}, [])
 	return (
 		<Wrapper>
-			{isTabletOrMobile?(
+			{isTabletOrMobile ? (
 				<>
 					<Title>Collections</Title>
-					{isLoading?(
+					{isLoading ? (
 						<LoadingContainer>
-							<LoadingIcon/>
+							<LoadingIcon />
 						</LoadingContainer>
-					):(
+					) : (
 						<Container>
-							{cards.map((item,index)=>(
-								<CollectionCard key={index} {...item} fullHeight={index===0&&true}/>
+							{cards.map((item, index) => (
+								<CollectionCard key={index} {...item} fullHeight={index === 0 && true} />
 							))}
 						</Container>
 					)}
 				</>
-			):(
+			) : (
 				<>
-				<Title>Collections</Title>
-				<CustomScrollbar autoHide>
-					{isLoading?(
-						<LoadingContainer>
-							<LoadingIcon/>
-						</LoadingContainer>
-					):(
-						<Container>
-							{cards.map((item,index)=>(
-								<CollectionCard key={index} {...item} fullHeight={index===0&&true}/>
-							))}
-						</Container>
-					)}
-				</CustomScrollbar>
+					<Title>Collections</Title>
+					<CustomScrollbar autoHide>
+						{isLoading ? (
+							<LoadingContainer>
+								<LoadingIcon />
+							</LoadingContainer>
+						) : (
+							<Container>
+								{cards.map((item, index) => (
+									<CollectionCard key={index} {...item} fullHeight={index === 0 && true} />
+								))}
+							</Container>
+						)}
+					</CustomScrollbar>
 				</>
 			)}
 		</Wrapper>

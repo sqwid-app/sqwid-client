@@ -57,7 +57,7 @@ const Modal = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
-	${props=>!props.remove?modalEntryAnim:modalExitAnim}
+	${props => !props.remove ? modalEntryAnim : modalExitAnim}
 `
 
 const PropertiesContainer = styled.div``
@@ -74,7 +74,7 @@ const Property = styled.div`
 	padding: 1rem 1.5rem;
 	gap: 1rem;
 	transition: all 0.12s ease;
-	${props=>props.isFocused&&propertyIsFocused};
+	${props => props.isFocused && propertyIsFocused};
 `
 
 const Input = styled.input`
@@ -86,11 +86,11 @@ const Input = styled.input`
 	border: none;
 	color: var(--app-text);
 	padding: 0.5rem 0;
-	border-bottom: 2px solid var(--app-container-text-primary);
+	border-bottom: 0.125rem solid var(--app-container-text-primary);
 	width: 100%;
 	transition: border-bottom 0.2s ease;
 	&:focus{
-		border-bottom: 2px solid var(--app-container-text-primary-hover);
+		border-bottom: 0.125rem solid var(--app-container-text-primary-hover);
 	}
 `
 
@@ -101,54 +101,54 @@ const Title = styled.h1`
 
 const Properties = () => {
 	const { files, setFiles } = useContext(FileContext);
-	const initialValue = JSON.parse(localStorage.getItem("properties"))||[{key:"",value:"",isFocused:true}]
+	const initialValue = JSON.parse(localStorage.getItem("properties")) || [{ key: "", value: "", isFocused: true }]
 	const [properties, setProperties] = useState(initialValue)
-	const addItem = () => setProperties([...properties,{key:"",value:"",isFocused:false}])
+	const addItem = () => setProperties([...properties, { key: "", value: "", isFocused: false }])
 	useEffect(() => {
-		properties.forEach((item,index)=>{
-			let isAllEmpty = Object.values({key:item.key,value:item.value}).every(x => x === null || x === '')
-			if(isAllEmpty && index!==properties.length-1) {
-				setProperties(properties.filter((x,y) => y!==index).map((x,y)=>(y===index)?{...x,isFocused:true}:x))
+		properties.forEach((item, index) => {
+			let isAllEmpty = Object.values({ key: item.key, value: item.value }).every(x => x === null || x === '')
+			if (isAllEmpty && index !== properties.length - 1) {
+				setProperties(properties.filter((x, y) => y !== index).map((x, y) => (y === index) ? { ...x, isFocused: true } : x))
 			}
 		})
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [properties])
 	useEffect(() => {
-		let isSomeEmpty = properties.some(item=>(
-			Object.values({key:item.key,value:item.value}).some(x => x === null || x === '')&&true
-			))
+		let isSomeEmpty = properties.some(item => (
+			Object.values({ key: item.key, value: item.value }).some(x => x === null || x === '') && true
+		))
 		!isSomeEmpty && addItem()
-	//eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [properties])
 	useEffect(() => {
 		setFiles({
 			...files,
 			properties: properties
 		})
-		localStorage.setItem("properties",JSON.stringify(properties))
-	//eslint-disable-next-line
+		localStorage.setItem("properties", JSON.stringify(properties))
+		//eslint-disable-next-line
 	}, [properties])
 	return (
 		<PropertiesContainer>
 			<Title>Properties</Title>
-			{properties.map((item,idx)=>{
+			{properties.map((item, idx) => {
 				return (
 					<Property key={idx} isFocused={item.isFocused}>
 						<Input
 							type="text"
 							value={item.key}
 							placeholder="key"
-							onChange={(e)=>{
+							onChange={(e) => {
 								let newVal = [...properties]
 								newVal[idx].key = e.target.value
 								setProperties(newVal)
 							}}
-							onFocus={()=>{
+							onFocus={() => {
 								let newVal = [...properties]
 								newVal[idx].isFocused = true
 								setProperties(newVal)
 							}}
-							onBlur={()=>{
+							onBlur={() => {
 								let newVal = [...properties]
 								newVal[idx].isFocused = false
 								setProperties(newVal)
@@ -158,17 +158,17 @@ const Properties = () => {
 							type="text"
 							value={item.value}
 							placeholder="value"
-							onChange={(e)=>{
+							onChange={(e) => {
 								let newVal = [...properties]
 								newVal[idx].value = e.target.value
 								setProperties(newVal)
 							}}
-							onFocus={()=>{
+							onFocus={() => {
 								let newVal = [...properties]
 								newVal[idx].isFocused = true
 								setProperties(newVal)
 							}}
-							onBlur={()=>{
+							onBlur={() => {
 								let newVal = [...properties]
 								newVal[idx].isFocused = false
 								setProperties(newVal)
@@ -181,7 +181,7 @@ const Properties = () => {
 	)
 }
 
-const elemContains =  (rect, x, y) => {
+const elemContains = (rect, x, y) => {
 	return rect.x <= x && x <= rect.x + rect.width && rect.y <= y && y <= rect.y + rect.height;
 }
 
@@ -190,31 +190,31 @@ const PropertiesModal = ({ isActive, setIsActive }) => {
 	const modalRef = useRef()
 	//eslint-disable-next-line
 	useEffect(() => {
-		if(isActive===false){
+		if (isActive === false) {
 			setTimeout(() => {
 				setElemIsVisible(isActive);
 			}, 200);
 		}
-		else{
+		else {
 			setElemIsVisible(isActive);
 		}
 	}, [isActive])
 
 	const handleClickOutside = (e) => {
 		let rect = modalRef.current.getBoundingClientRect();
-		if(!elemContains(rect,e.clientX,e.clientY)){
+		if (!elemContains(rect, e.clientX, e.clientY)) {
 			setIsActive(false)
 		}
 	}
 	return (
 		<LazyMotion features={domAnimation}>
-			{elemIsVisible&&(
+			{elemIsVisible && (
 				<BackDrop remove={!isActive} onClick={handleClickOutside}>
 					<Modal
 						remove={!isActive}
 						ref={modalRef}
 					>
-						<Properties/>
+						<Properties />
 					</Modal>
 				</BackDrop>
 			)}

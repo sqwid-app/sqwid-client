@@ -29,7 +29,7 @@ const ChooseBtn = styled(m.a)`
 	font-weight: 700;
 	padding: 0.675rem 0;
 	border-radius: 0.5rem;
-	border: 2px solid var(--app-container-text-primary);
+	border: 0.125rem solid var(--app-container-text-primary);
 	color: var(--app-container-text-primary);
 	outline: none;
 	cursor: pointer;
@@ -64,7 +64,7 @@ const ButtonText = styled.span`
 `
 
 const CollectionSection = () => {
-	const [isCollectionActive, setIsCollectionActive] = useState({status:false,type:""})
+	const [isCollectionActive, setIsCollectionActive] = useState({ status: false, type: "" })
 	const { files } = useContext(FileContext)
 	return (
 		<Container>
@@ -75,27 +75,27 @@ const CollectionSection = () => {
 						whileHover={{
 							y: -2,
 							x: 0,
-							scale:1.01
+							scale: 1.01
 						}}
 						whileTap={{
-							scale:0.99
+							scale: 0.99
 						}}
-						onClick={()=>setIsCollectionActive({status:true,type:"choose"})}
-					><ButtonText>{`${files.collectionName.length?files.collectionName:`Choose from existing`}`}</ButtonText></ChooseBtn>
+						onClick={() => setIsCollectionActive({ status: true, type: "choose" })}
+					><ButtonText>{`${files.collectionName.length ? files.collectionName : `Choose from existing`}`}</ButtonText></ChooseBtn>
 					<NewBtn
 						whileHover={{
 							y: -2,
 							x: 0,
-							scale:1.01
+							scale: 1.01
 						}}
 						whileTap={{
-							scale:0.98
+							scale: 0.98
 						}}
-						onClick={()=>setIsCollectionActive({status:true,type:"new"})}
+						onClick={() => setIsCollectionActive({ status: true, type: "new" })}
 					>+</NewBtn>
 				</LazyMotion>
 			</ButtonsContainer>
-			<CollectionModal isActive={isCollectionActive} setIsActive={setIsCollectionActive}/>
+			<CollectionModal isActive={isCollectionActive} setIsActive={setIsCollectionActive} />
 		</Container>
 	)
 }

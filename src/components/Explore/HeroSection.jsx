@@ -33,30 +33,30 @@ const HeroSection = () => {
 	const [hotBids, setHotBids] = useState([]);
 	const [recentlyListed, setRecentlyListed] = useState([]);
 	const [isLoading, setIsLoading] = useState(true)
-	useEffect (() => {
+	useEffect(() => {
 		const fetchData = async () => {
-			const items = await fetchMarketplaceItems ();
-			setHotBids (items.sort ((a, b) => Number (b.highestBid) - Number (a.highestBid)).slice (0, 3));
-			setRecentlyListed (items.sort ((itemA, itemB) => {
-				return Number (itemB.id) - Number (itemA.id);
+			const items = await fetchMarketplaceItems();
+			setHotBids(items.sort((a, b) => Number(b.highestBid) - Number(a.highestBid)).slice(0, 3));
+			setRecentlyListed(items.sort((itemA, itemB) => {
+				return Number(itemB.id) - Number(itemA.id);
 			}));
 
-			setIsLoading (false);
+			setIsLoading(false);
 		}
-		fetchData ();
+		fetchData();
 	}, []);
 
 	return (
 		<>
-			{isLoading?(
+			{isLoading ? (
 				<LoadingContainer>
-					<LoadingIcon size={64}/>
+					<LoadingIcon size={64} />
 				</LoadingContainer>
-			):(
+			) : (
 				<Wrapper>
-				<HotBids items = { hotBids } />
-				<RecentlyListedPaginated items = { recentlyListed }/>
-			</Wrapper>
+					<HotBids items={hotBids} />
+					<RecentlyListedPaginated items={recentlyListed} />
+				</Wrapper>
 			)}
 		</>
 	)

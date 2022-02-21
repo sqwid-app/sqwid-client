@@ -3,27 +3,49 @@ import { clamp } from "@utils/textUtils";
 import React, { useContext } from "react";
 import styled from "styled-components";
 
-const Container = styled.div``
+const Container = styled.div`
+	width: 100%;
+`
+
+const TitleContainer = styled.div`
+	span{
+		display: inline-block;
+		font-weight: 900;
+		font-size: 1.5rem;
+		margin-left: 1rem;
+		color: var(--app-container-text-primary);
+		&.cross{
+			padding: 0 1rem;
+		}
+	}
+`
 
 const Title = styled.h1`
 	font-weight: 900;
 	font-size: 2.5rem;
+	max-width: 100%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 `
 
 const Description = styled.h3`
 	margin-top:0.5rem;
 	font-weight: 800;
 	font-size: 1rem;
+	max-width: 100%;
+	word-break: break-all;
 	color: var(--app-container-text-primary-hover);
 `
 
 const MetaContainer = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
+
 	return (
 		<Container>
-			<Title>{collectibleInfo.title}</Title>
-			<label title={(collectibleInfo.description.length>196)?collectibleInfo.description:""}>
-				<Description>{clamp(collectibleInfo.description,196)}</Description>
+			<TitleContainer><Title title={collectibleInfo.meta.name}>{collectibleInfo.meta.name}</Title></TitleContainer>
+			<label title={(collectibleInfo.meta.description.length > 196) ? collectibleInfo.meta.description : ""}>
+				<Description>{clamp(collectibleInfo.meta.description, 196)}</Description>
 			</label>
 		</Container>
 	)

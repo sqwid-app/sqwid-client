@@ -6,6 +6,7 @@ import { LazyMotion, domAnimation } from "framer-motion";
 import AuthContext from "@contexts/Auth/AuthContext";
 import Loading from "@elements/Default/Loading";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
+import InfoBtn from "./InfoBtn";
 
 const Btn = styled(BtnBaseAnimated)`
 	display: flex;
@@ -21,7 +22,7 @@ const Btn = styled(BtnBaseAnimated)`
 const AnimBtn = ({ children, onClick }) => (
 	<Btn
 		whileTap={{
-			scale:0.97
+			scale: 0.97
 		}}
 		onClick={onClick}
 	>{children}</Btn>
@@ -29,31 +30,32 @@ const AnimBtn = ({ children, onClick }) => (
 
 const SignInBtn = () => {
 	const [isSelectionActive, setIsSelectionActive] = useState(false)
-	const [currentAccounts, setCurrentAccounts] = useState (null);
+	const [currentAccounts, setCurrentAccounts] = useState(null);
 	const [username, setUsername] = useState("")
 	const { loading, auth } = useContext(AuthContext);
 	const handleClick = () => {
 		(async () => {
-			let accs = await Init ();
-			setCurrentAccounts (accs);
-		}) ();
+			let accs = await Init();
+			setCurrentAccounts(accs);
+		})();
 		setIsSelectionActive(!isSelectionActive)
 	}
 	useEffect(() => {
-		auth&&setUsername(auth.meta.name)
+		auth && setUsername(auth.meta.name)
 	}, [auth])
 	return (
 		<LazyMotion features={domAnimation}>
 			<AnimBtn onClick={handleClick}>
-				{loading?(
-					<Loading navbar/>
-				):(
+				{loading ? (
+					<Loading navbar />
+				) : (
 					<>
-						{username.length?username:`Connect`}
+						{username.length ? username : `Connect`}
 					</>
 				)}
 			</AnimBtn>
-			<AccountSelect isActive={isSelectionActive} setIsActive={setIsSelectionActive} accounts={currentAccounts}/>
+			<InfoBtn />
+			<AccountSelect isActive={isSelectionActive} setIsActive={setIsSelectionActive} accounts={currentAccounts} />
 		</LazyMotion>
 	)
 }

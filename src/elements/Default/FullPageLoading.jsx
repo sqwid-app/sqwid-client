@@ -4,9 +4,10 @@ import styled from "styled-components";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
+import constants from "@utils/constants"
 
 const LoadingContainer = styled.div`
-	height: ${props=>props.init?`100vh`:`70vh`};
+	height: ${props => props.init ? `100vh` : `70vh`};
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -32,7 +33,7 @@ const LoadingContainer = styled.div`
 `
 const FullPageLoading = (props) => {
 	useEffect(() => {
-		if(props.init){
+		if (props.init) {
 			NProgress.configure({ showSpinner: false, easing: "ease" });
 			NProgress.start();
 			return () => {
@@ -42,9 +43,9 @@ const FullPageLoading = (props) => {
 	});
 	return (
 		<LoadingContainer {...props}>
-			<LoadingIcon size={props.init?72:48}/>
-			<h1>{props.init&&`Sqwid`}</h1>
-			{(props.init&&props.component)&&<p><span>Preparing {props.component} </span><FadeLoaderIcon/></p>}
+			<LoadingIcon size={props.init ? 72 : 48} />
+			<h1>{props.init && `${constants.APP_NAME}`}</h1>
+			{(props.init && props.component) && <p><span>Preparing {props.component} </span><FadeLoaderIcon /></p>}
 		</LoadingContainer>
 	)
 }

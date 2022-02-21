@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import { domAnimation, LazyMotion } from "framer-motion";
 import ERCSelect from "@elements/Create/Wrap/ERCSelect";
+import { wrap } from "@utils/wrapping";
 
 const Wrapper = styled.div`
 	display: grid;
@@ -74,6 +75,12 @@ const WrapSection = () => {
 		}
 		return setDisabled(true)
 	},[wrapDetails])
+
+	const handleClick = () => {
+		wrap (wrapDetails.address, wrapDetails.erc, wrapDetails.token).then (() => {
+			// console.log ('done');
+		});
+	}
 	return (
 		<Wrapper>
 			<Container>
@@ -91,7 +98,7 @@ const WrapSection = () => {
 				/>
 				<ButtonContainer>
 					<LazyMotion features={domAnimation}>
-						<AnimBtn disabled={disabled}>Wrap</AnimBtn>
+						<AnimBtn disabled={disabled} onClick = {handleClick} >Wrap</AnimBtn>
 					</LazyMotion>
 				</ButtonContainer>
 

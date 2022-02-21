@@ -1,10 +1,5 @@
 let ABI = [
   {
-    "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
     "anonymous": false,
     "inputs": [
       {
@@ -142,23 +137,47 @@ let ABI = [
     "type": "event"
   },
   {
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
         "internalType": "uint256",
-        "name": "",
+        "name": "tokenId",
         "type": "uint256"
-      }
-    ],
-    "name": "_tokenURIs",
-    "outputs": [
+      },
       {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isErc721",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "extTokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "extNftContract",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "wrapped",
+        "type": "bool"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "name": "WrapToken",
+    "type": "event"
   },
   {
     "inputs": [
@@ -209,16 +228,49 @@ let ABI = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "currentId",
-    "outputs": [
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
         "type": "uint256"
       }
     ],
-    "stateMutability": "view",
+    "name": "burn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "ids",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "amounts",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "burnBatch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -281,6 +333,47 @@ let ABI = [
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getWrappedToken",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isErc721",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "extTokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "extNftContract",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct SqwidERC1155Wrapper.WrappedToken",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "account",
         "type": "address"
@@ -305,6 +398,25 @@ let ABI = [
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "mimeType",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "to",
         "type": "address"
@@ -317,6 +429,11 @@ let ABI = [
       {
         "internalType": "string",
         "name": "tokenURI",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "mimeType_",
         "type": "string"
       },
       {
@@ -354,6 +471,16 @@ let ABI = [
         "type": "uint256[]"
       },
       {
+        "internalType": "string[]",
+        "name": "tokenURIs",
+        "type": "string[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "mimeTypes",
+        "type": "string[]"
+      },
+      {
         "internalType": "address[]",
         "name": "royaltyRecipients",
         "type": "address[]"
@@ -365,7 +492,125 @@ let ABI = [
       }
     ],
     "name": "mintBatch",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "onERC1155BatchReceived",
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "onERC1155Received",
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "onERC721Received",
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -398,7 +643,7 @@ let ABI = [
       },
       {
         "internalType": "uint256",
-        "name": "value",
+        "name": "saleValue",
         "type": "uint256"
       }
     ],
@@ -505,12 +750,17 @@ let ABI = [
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "marketplaceAddress",
-        "type": "address"
+        "internalType": "string",
+        "name": "mimeType_",
+        "type": "string"
+      },
+      {
+        "internalType": "bool",
+        "name": "valid",
+        "type": "bool"
       }
     ],
-    "name": "setMarketplaceAddress",
+    "name": "setValidMimeType",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -551,7 +801,33 @@ let ABI = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_id",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "unwrapERC1155",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "unwrapERC721",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
         "type": "uint256"
       }
     ],
@@ -564,6 +840,88 @@ let ABI = [
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "validMimeTypes",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "extNftContract",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "extTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "mimeType_",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "wrapERC1155",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "extNftContract",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "extTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "mimeType_",
+        "type": "string"
+      }
+    ],
+    "name": "wrapERC721",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ];

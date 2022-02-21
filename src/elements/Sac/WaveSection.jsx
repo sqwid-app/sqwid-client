@@ -6,12 +6,16 @@ import SacContext from "@contexts/Sac/SacContext";
 import styled from "styled-components";
 import { numberSeparator } from "@utils/numberSeparator";
 import ReefIcon from "@static/svg/ReefIcon";
+import { respondTo } from "@styles/styledMediaQuery";
 
-const ContentContainer =  styled.div`
+const ContentContainer = styled.div`
 	padding: 0 1rem;
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+	${respondTo.md`
+		padding: 0.5rem 0;
+	`}
 `
 
 const Base = styled.div`
@@ -41,11 +45,11 @@ const WaveSection = () => {
 		<Container>
 			<Heading>Wave #{sacDetails.wave}</Heading>
 			<ContentContainer>
-				<ProgressBar percent={sacDetails.percent} date={sacDetails.date}/>
+				<ProgressBar percent={sacDetails.percent} date={sacDetails.date} />
 				<AccumulatedCollateral>
 					<h3>Accumulated Collateral</h3>
 					<p>
-						<ReefIcon size={24}/>
+						<ReefIcon size={24} />
 						<span>{numberSeparator(sacDetails.accumulated)}</span>
 					</p>
 				</AccumulatedCollateral>

@@ -1,22 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&family=Source+Code+Pro:wght@400&display=swap");
 
-:root{
+:root {
 	/*
 		app config
 	*/
+	--app-theme-value: 13, 104, 216;
+	--app-theme-opacity: 0.5;
 	--app-background: hsl(230, 36%, 4%);
+	--app-background-transparent: hsla(230, 36%, 4%, 85%);
 	--app-text: hsl(0, 0%, 100%);
-	--app-theme-primary: rgb(13, 104, 216);
-	--app-theme-primary-transparent: rgba(13, 104, 216, 0.5);
+	--app-theme-primary: rgb(var(--app-theme-value));
+	--app-theme-primary-transparent: rgba(
+		var(--app-theme-value),
+		var(--app-theme-opacity)
+	);
 	--app-theme-primary-disabled: rgb(11, 77, 159);
 	--app-container-bg-primary: hsl(240, 10%, 16%);
 	--app-container-text-primary: rgb(120, 121, 135);
 	--app-container-text-primary-hover: hsl(240, 6%, 75%);
 	--app-container-bg-secondary: hsl(236deg 10% 23%);
 	--app-container-check: #0dbe00;
-	--app-modal-btn-primary:hsl(225, 14%, 9%);
-	--font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-	--easing:cubic-bezier(0.83, 0, 0.17, 1);
+	--app-modal-btn-primary: hsl(225, 14%, 9%);
+	--font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana,
+		sans-serif;
+	--font-family-mono: "Source Code Pro", "Courier New", Courier, monospace;
+	--easing: cubic-bezier(0.83, 0, 0.17, 1);
+	--modal-backdrop: hsla(230, 36%, 4%, 95%);
 	/*
 		plyr config
 	*/
@@ -28,12 +37,13 @@
 	*/
 	--toastify-color-dark: var(--app-container-bg-primary);
 	--toastify-color-error: var(--app-theme-primary);
+	--toastify-font-family: var(--font-family);
 	/*
 		tooltip config
 	*/
 	--tooltip-background: var(--app-container-bg-primary);
 	--tooltip-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-	rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+		rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 	/*
 		progress bar config
 	*/
@@ -42,6 +52,22 @@
 	--progress-shadow: hsl(230, 25%, 23.5%);
 	--bar-primary: rgb(13, 104, 216);
 	--bar-secondary: rgb(97, 158, 255);
+	/*
+		status config
+
+	*/
+
+	/*
+
+		border hsla(color,50%,100%)
+		bg hsla(color,50%,25%)
+		text hsla(color,95%,25%)
+
+	*/
+
+	--status-approved: 148, 100%;
+	--status-pending: 43, 100%;
+	--status-rejected: 338, 100%;
 }
 
 ::selection {
@@ -49,7 +75,8 @@
 	color: var(--app-container-bg-primary);
 }
 
-html, body{
+html,
+body {
 	font-family: var(--font-family);
 	font-weight: 500;
 	background: var(--app-background);
@@ -58,10 +85,18 @@ html, body{
 	text-rendering: optimizeLegibility;
 }
 
-*{
+* {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 	-webkit-tap-highlight-color: transparent;
+}
+
+code {
+	font-family: var(--font-family-mono);
+	font-size: 1rem;
+	padding: 0.25rem;
+	border-radius: 0.375rem;
+	font-weight: 500;
 }
