@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CollectibleContext from '@contexts/Collectible/CollectibleContext'
 import AuthContext from '@contexts/Auth/AuthContext'
 import ReefIcon from '@static/svg/ReefIcon'
-import { wipBread } from '@utils/bread'
 import constants from '@utils/constants'
 import getIPFSURL from '@utils/getIPFSURL'
 import { LazyMotion, m, domAnimation } from 'framer-motion'
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import styled from "styled-components"
+import styled, { css, keyframes } from "styled-components"
+import { respondTo } from "@styles/styledMediaQuery";
 
 const Wrapper = styled.div`
 
@@ -20,6 +20,11 @@ const Container = styled.div`
 	align-items:center;
 	justify-content:space-between;
 	padding: 1rem 0;
+	${respondTo.md`
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.75rem;
+	`}
 
 `
 
@@ -103,6 +108,10 @@ const BottomContainer = styled.div`
 	margin-top: 1rem;
 	border-top: solid 0.1rem var(--app-container-bg-primary);
 	padding-top: 1.5rem;
+	${respondTo.md`
+		justify-content: flex-start;
+		margin-bottom: 1rem;
+	`}
 `
 
 const BtnContainer = styled.div`
@@ -146,6 +155,54 @@ const StatusDisplay = styled.div`
 	}
 `
 
+const Tooltip = styled.div`
+	position: absolute;
+	top:0;
+	left:100%;
+	bottom:0;
+	right: 0;
+	padding: 0.5rem 0.75rem;
+	border-radius: 0.5rem;
+	box-shadow:  0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	background: var(--app-container-bg-primary);
+	user-select:none;
+	z-index: 15;
+	white-space: nowrap;
+	width: fit-content;
+	place-items:center;
+	${props => !props.remove ? entryAnim : exitAnim};
+`
+
+const swipeDownwards = keyframes`
+	0% {
+		opacity:0;
+		transform: translateX(-25%);
+	}
+	100% {
+		opacity:1;
+		transform: translateX(1rem);
+	}
+`
+
+const swipeUpwards = keyframes`
+	0% {
+		opacity: 1;
+		transform: translateX(1rem);
+	}
+	100% {
+		opacity:0;
+		transform: translateX(-25%);
+	}
+`
+
+const entryAnim = css`
+	animation: ${swipeDownwards} 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+`
+
+const exitAnim = css`
+	animation: ${swipeUpwards} 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+`
+
 const StatusSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
 	let status;
@@ -172,18 +229,43 @@ const StatusSection = () => {
 	)
 }
 const ShareBtn = ({ to }) => {
-	const MotionLink = m(Link)
+	const tooltipRef = useRef();
+	const [tooltipVisible, setTooltipVisible] = useState(false)
+	useEffect(() => {
+		if (tooltipVisible) tooltipRef.current.style.display = "grid";
+		else {
+			setTimeout(() => {
+				if (tooltipRef.current) tooltipRef.current.style.display = "none";
+			}, 400)
+		}
+	}, [tooltipVisible])
+
+	const copyAddress = () => {
+		navigator.clipboard.writeText(window.location.href)
+			.then(() => {
+				setTooltipVisible(true);
+				setTimeout(() => {
+					setTooltipVisible(false)
+				}, 1000);
+			})
+	}
+
 	return (
 		<BtnContainer>
-			<MotionLink whileHover={{
-				y: -2.5,
-			}} whileTap={{
-				scale: 0.95
-			}} title="Share" className="btn--dark btn--dark__share">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12c0 1.654 1.346 3 3 3 .794 0 1.512-.315 2.049-.82l5.991 3.424c-.018.13-.04.26-.04.396 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3c-.794 0-1.512.315-2.049.82L8.96 12.397c.018-.131.04-.261.04-.397s-.022-.266-.04-.397l5.991-3.423c.537.505 1.255.82 2.049.82 1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .136.022.266.04.397L8.049 9.82A2.982 2.982 0 0 0 6 9c-1.654 0-3 1.346-3 3z"></path></svg>
-				{/* <span>Share</span> */}
-			</MotionLink>
-			<p className="popup">Share</p>
+			{window.isSecureContext && (
+				<>
+					<m.div whileHover={{
+						y: -2.5,
+					}} whileTap={{
+						scale: 0.95
+					}} onClick={copyAddress} title="Share" className="btn--dark btn--dark__share">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12c0 1.654 1.346 3 3 3 .794 0 1.512-.315 2.049-.82l5.991 3.424c-.018.13-.04.26-.04.396 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3c-.794 0-1.512.315-2.049.82L8.96 12.397c.018-.131.04-.261.04-.397s-.022-.266-.04-.397l5.991-3.423c.537.505 1.255.82 2.049.82 1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .136.022.266.04.397L8.049 9.82A2.982 2.982 0 0 0 6 9c-1.654 0-3 1.346-3 3z"></path></svg>
+						{/* <span>Share</span> */}
+					</m.div>
+					<p className="popup">Share</p>
+				</>
+			)}
+			<Tooltip style={{ display: "none" }} ref={tooltipRef} remove={!tooltipVisible}> Copied to clipboard!</Tooltip >
 		</BtnContainer>
 	)
 }
@@ -201,11 +283,13 @@ const ReportBtn = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
 	const { auth } = useContext(AuthContext)
 	const [mode, setMode] = useState("")
+	const appealMailTo = `mailto:report@sqwid.app?subject=%5BAPPEAL%5D%20Requesting%20manual%20review%20for%20item%20with%20id%20${collectibleInfo.positionId}&body=Feel%20like%20your%20content%20was%20misidentified%20as%20violating%20our%20policy%3F%0D%0ALet%20us%20know%20below%3A`
+	const reportMailTo = `mailto:report@sqwid.app?subject=%5BREPORT%5D%20Requesting%20manual%20review%20for%20item%20with%20id%20${collectibleInfo.positionId}&body=Why%20are%20you%20reporting%20this%3F%0D%0A(Add%20an%20x%20inside%20%5B%5D%20to%20check%20it%2C%20for%20example%2C%20%5Bx%5D%20This%20content%20is%20spam)%0D%0A%0D%0A%5B%5D%20This%20content%20is%20spam%0D%0A%5B%5D%20This%20content%20should%20be%20marked%20as%20explicit%0D%0A%5B%5D%20This%20content%20is%20abusive%0D%0A%5B%5D%20This%20content%20promotes%2Fadvocates%20harm%2Fsuicide%2Flethal%20violence%0D%0A%5B%5D%20This%20content%20infringes%20upon%20my%20copyright%0D%0A%5B%5D%20Other%20%0D%0A%0D%0AOther%20(optional)%3A%20%3CFill%20this%20only%20if%20you've%20checked%20the%20%22other%22%20option%3E%0D%0A%0D%0ARemarks%20(optional)%3A%20%3CAnything%20else%20you%20want%20to%20mention%3E`
 	useEffect(() => {
-		if (collectibleInfo.approved === false && (auth.evmAddress === collectibleInfo.creator.address)) {
+		if (collectibleInfo.approved === false && (auth?.evmAddress === collectibleInfo.creator.address)) {
 			setMode("Appeal")
 		}
-		else if (collectibleInfo.approved === true && ![collectibleInfo.creator.address, collectibleInfo.owner.address].includes(auth.evmAddress)) {
+		else if (collectibleInfo.approved === true && ![collectibleInfo.creator.address, collectibleInfo.owner.address].includes(auth?.evmAddress)) {
 			setMode("Report")
 		}
 		//eslint-disable-next-line
@@ -214,14 +298,14 @@ const ReportBtn = () => {
 		<>
 			{mode && mode.length !== 0 && (
 				<BtnContainer>
-					<m.div whileHover={{
+					<m.a whileHover={{
 						y: -2.5,
 					}} whileTap={{
 						scale: 0.95
-					}} onClick={() => wipBread()} title={mode} className={`btn--dark btn--dark__${mode.toLowerCase()}`}>
+					}} href={mode === "Report" ? reportMailTo : appealMailTo} title={mode} className={`btn--dark btn--dark__${mode.toLowerCase()}`}>
 						<Icon type={mode} />
 						<span>{mode}</span>
-					</m.div>
+					</m.a>
 				</BtnContainer >
 			)}
 		</>
