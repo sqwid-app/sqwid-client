@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CollectibleContext from '@contexts/Collectible/CollectibleContext'
 import AuthContext from '@contexts/Auth/AuthContext'
 import ReefIcon from '@static/svg/ReefIcon'
@@ -8,7 +8,8 @@ import getIPFSURL from '@utils/getIPFSURL'
 import { LazyMotion, m, domAnimation } from 'framer-motion'
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import styled from "styled-components"
+import styled, { css, keyframes } from "styled-components"
+import { respondTo } from "@styles/styledMediaQuery";
 
 const Wrapper = styled.div`
 
@@ -20,6 +21,11 @@ const Container = styled.div`
 	align-items:center;
 	justify-content:space-between;
 	padding: 1rem 0;
+	${respondTo.md`
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.75rem;
+	`}
 
 `
 
@@ -103,6 +109,10 @@ const BottomContainer = styled.div`
 	margin-top: 1rem;
 	border-top: solid 0.1rem var(--app-container-bg-primary);
 	padding-top: 1.5rem;
+	${respondTo.md`
+		justify-content: flex-start;
+		margin-bottom: 1rem;
+	`}
 `
 
 const BtnContainer = styled.div`
@@ -146,6 +156,54 @@ const StatusDisplay = styled.div`
 	}
 `
 
+const Tooltip = styled.div`
+	position: absolute;
+	top:0;
+	left:100%;
+	bottom:0;
+	right: 0;
+	padding: 0.5rem 0.75rem;
+	border-radius: 0.5rem;
+	box-shadow:  0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	background: var(--app-container-bg-primary);
+	user-select:none;
+	z-index: 15;
+	white-space: nowrap;
+	width: fit-content;
+	place-items:center;
+	${props => !props.remove ? entryAnim : exitAnim};
+`
+
+const swipeDownwards = keyframes`
+	0% {
+		opacity:0;
+		transform: translateX(-25%);
+	}
+	100% {
+		opacity:1;
+		transform: translateX(1rem);
+	}
+`
+
+const swipeUpwards = keyframes`
+	0% {
+		opacity: 1;
+		transform: translateX(1rem);
+	}
+	100% {
+		opacity:0;
+		transform: translateX(-25%);
+	}
+`
+
+const entryAnim = css`
+	animation: ${swipeDownwards} 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+`
+
+const exitAnim = css`
+	animation: ${swipeUpwards} 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+`
+
 const StatusSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
 	let status;
@@ -172,18 +230,43 @@ const StatusSection = () => {
 	)
 }
 const ShareBtn = ({ to }) => {
-	const MotionLink = m(Link)
+	const tooltipRef = useRef();
+	const [tooltipVisible, setTooltipVisible] = useState(false)
+	useEffect(() => {
+		if (tooltipVisible) tooltipRef.current.style.display = "grid";
+		else {
+			setTimeout(() => {
+				if (tooltipRef.current) tooltipRef.current.style.display = "none";
+			}, 400)
+		}
+	}, [tooltipVisible])
+
+	const copyAddress = () => {
+		navigator.clipboard.writeText(window.location.href)
+			.then(() => {
+				setTooltipVisible(true);
+				setTimeout(() => {
+					setTooltipVisible(false)
+				}, 1000);
+			})
+	}
+
 	return (
 		<BtnContainer>
-			<MotionLink whileHover={{
-				y: -2.5,
-			}} whileTap={{
-				scale: 0.95
-			}} title="Share" className="btn--dark btn--dark__share">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12c0 1.654 1.346 3 3 3 .794 0 1.512-.315 2.049-.82l5.991 3.424c-.018.13-.04.26-.04.396 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3c-.794 0-1.512.315-2.049.82L8.96 12.397c.018-.131.04-.261.04-.397s-.022-.266-.04-.397l5.991-3.423c.537.505 1.255.82 2.049.82 1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .136.022.266.04.397L8.049 9.82A2.982 2.982 0 0 0 6 9c-1.654 0-3 1.346-3 3z"></path></svg>
-				{/* <span>Share</span> */}
-			</MotionLink>
-			<p className="popup">Share</p>
+			{window.isSecureContext && (
+				<>
+					<m.div whileHover={{
+						y: -2.5,
+					}} whileTap={{
+						scale: 0.95
+					}} onClick={copyAddress} title="Share" className="btn--dark btn--dark__share">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12c0 1.654 1.346 3 3 3 .794 0 1.512-.315 2.049-.82l5.991 3.424c-.018.13-.04.26-.04.396 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3c-.794 0-1.512.315-2.049.82L8.96 12.397c.018-.131.04-.261.04-.397s-.022-.266-.04-.397l5.991-3.423c.537.505 1.255.82 2.049.82 1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .136.022.266.04.397L8.049 9.82A2.982 2.982 0 0 0 6 9c-1.654 0-3 1.346-3 3z"></path></svg>
+						{/* <span>Share</span> */}
+					</m.div>
+					<p className="popup">Share</p>
+				</>
+			)}
+			<Tooltip style={{ display: "none" }} ref={tooltipRef} remove={!tooltipVisible}> Copied to clipboard!</Tooltip >
 		</BtnContainer>
 	)
 }
@@ -202,10 +285,10 @@ const ReportBtn = () => {
 	const { auth } = useContext(AuthContext)
 	const [mode, setMode] = useState("")
 	useEffect(() => {
-		if (collectibleInfo.approved === false && (auth.evmAddress === collectibleInfo.creator.address)) {
+		if (collectibleInfo.approved === false && (auth?.evmAddress === collectibleInfo.creator.address)) {
 			setMode("Appeal")
 		}
-		else if (collectibleInfo.approved === true && ![collectibleInfo.creator.address, collectibleInfo.owner.address].includes(auth.evmAddress)) {
+		else if (collectibleInfo.approved === true && ![collectibleInfo.creator.address, collectibleInfo.owner.address].includes(auth?.evmAddress)) {
 			setMode("Report")
 		}
 		//eslint-disable-next-line
