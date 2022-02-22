@@ -516,14 +516,12 @@ const ConfigWrapper = ({ children, state }) => {
 
 	return (
 		<ConfigContainer>
+			<TitleContainer>
+				<Title>{constants.STATE_TYPES[state]}</Title>
+				<span><b className="cross">×</b>{collectibleInfo.amount}</span>
+			</TitleContainer>
 			{!isEmpty ? (
-				<>
-					<TitleContainer>
-						<Title>{constants.STATE_TYPES[state]}</Title>
-						<span><b className="cross">×</b>{collectibleInfo.amount}</span>
-					</TitleContainer>
-					{children}
-				</>
+				<>{children}</>
 			) : (null)}
 		</ConfigContainer>
 	)
