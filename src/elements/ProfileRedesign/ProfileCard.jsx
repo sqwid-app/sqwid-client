@@ -508,7 +508,7 @@ const ProfileCard = () => {
 						</ContentContainer>
 						<AdditionalDetailsContainer>
 							<LazyMotion features={domAnimation}>
-								<Btn onClick={wipBread}
+								<Btn onClick={() => wipBread()}
 								>Follow</Btn>
 							</LazyMotion>
 							<MetadataContainer followers={0} collections={0} nfts={0} />
