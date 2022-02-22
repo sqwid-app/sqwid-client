@@ -207,7 +207,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [claimButtonText, setClaimButtonText] = useState(initialClaimButtonText)
 	const [networkButtonText, setNetworkButtonText] = useState(<FadeLoaderIcon />)
 	useEffect(() => {
-		!initialNetwork && localStorage.setItem(`${constants.APP_NAME}__chosen_network`, 'reef_testnet');
+		!initialNetwork && localStorage.setItem(`${constants.APP_NAME}__chosen_network`, 'reef_mainnet');
 		//eslint-disable-next-line
 	}, [])
 	const [signer, setSigner] = useState("")
