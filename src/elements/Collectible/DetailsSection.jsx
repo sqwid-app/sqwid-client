@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import CollectibleContext from '@contexts/Collectible/CollectibleContext'
 import AuthContext from '@contexts/Auth/AuthContext'
 import ReefIcon from '@static/svg/ReefIcon'
-import { wipBread } from '@utils/bread'
 import constants from '@utils/constants'
 import getIPFSURL from '@utils/getIPFSURL'
 import { LazyMotion, m, domAnimation } from 'framer-motion'
@@ -284,6 +283,8 @@ const ReportBtn = () => {
 	const { collectibleInfo } = useContext(CollectibleContext)
 	const { auth } = useContext(AuthContext)
 	const [mode, setMode] = useState("")
+	const appealMailTo = `mailto:report@sqwid.app?subject=%5BAPPEAL%5D%20Requesting%20manual%20review%20for%20item%20with%20id%20${collectibleInfo.positionId}&body=Feel%20like%20your%20content%20was%20misidentified%20as%20violating%20our%20policy%3F%0D%0ALet%20us%20know%20below%3A`
+	const reportMailTo = `mailto:report@sqwid.app?subject=%5BREPORT%5D%20Requesting%20manual%20review%20for%20item%20with%20id%20${collectibleInfo.positionId}&body=Why%20are%20you%20reporting%20this%3F%0D%0A(Add%20an%20x%20inside%20%5B%5D%20to%20check%20it%2C%20for%20example%2C%20%5Bx%5D%20This%20content%20is%20spam)%0D%0A%0D%0A%5B%5D%20This%20content%20is%20spam%0D%0A%5B%5D%20This%20content%20should%20be%20marked%20as%20explicit%0D%0A%5B%5D%20This%20content%20is%20abusive%0D%0A%5B%5D%20This%20content%20promotes%2Fadvocates%20harm%2Fsuicide%2Flethal%20violence%0D%0A%5B%5D%20This%20content%20infringes%20upon%20my%20copyright%0D%0A%5B%5D%20Other%20%0D%0A%0D%0AOther%20(optional)%3A%20%3CFill%20this%20only%20if%20you've%20checked%20the%20%22other%22%20option%3E%0D%0A%0D%0ARemarks%20(optional)%3A%20%3CAnything%20else%20you%20want%20to%20mention%3E`
 	useEffect(() => {
 		if (collectibleInfo.approved === false && (auth?.evmAddress === collectibleInfo.creator.address)) {
 			setMode("Appeal")
@@ -297,14 +298,14 @@ const ReportBtn = () => {
 		<>
 			{mode && mode.length !== 0 && (
 				<BtnContainer>
-					<m.div whileHover={{
+					<m.a whileHover={{
 						y: -2.5,
 					}} whileTap={{
 						scale: 0.95
-					}} onClick={() => wipBread()} title={mode} className={`btn--dark btn--dark__${mode.toLowerCase()}`}>
+					}} href={mode === "Report" ? reportMailTo : appealMailTo} title={mode} className={`btn--dark btn--dark__${mode.toLowerCase()}`}>
 						<Icon type={mode} />
 						<span>{mode}</span>
-					</m.div>
+					</m.a>
 				</BtnContainer >
 			)}
 		</>
