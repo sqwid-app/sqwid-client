@@ -11,6 +11,7 @@ import { DividerHorizontal } from "@elements/Default/Divider";
 import constants from "@utils/constants";
 import SimpleBar from "simplebar-react";
 import "simplebar/src/simplebar.css";
+import { defaultNetwork } from "@constants/networks";
 
 const StyledSimpleBar = styled(SimpleBar)`
 	min-width:12rem;
@@ -202,12 +203,12 @@ const elemContains = (rect, x, y) => {
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
 	const initialNetwork = localStorage.getItem(`${constants.APP_NAME}__chosen_network`)
-	const [chosenNetwork, setChosenNetwork] = useState(initialNetwork || 'reef_mainnet')
+	const [chosenNetwork, setChosenNetwork] = useState(initialNetwork || defaultNetwork)
 	const initialClaimButtonText = 'I Accept'
 	const [claimButtonText, setClaimButtonText] = useState(initialClaimButtonText)
 	const [networkButtonText, setNetworkButtonText] = useState(<FadeLoaderIcon />)
 	useEffect(() => {
-		!initialNetwork && localStorage.setItem(`${constants.APP_NAME}__chosen_network`, 'reef_mainnet');
+		!initialNetwork && localStorage.setItem(`${constants.APP_NAME}__chosen_network`, defaultNetwork);
 		//eslint-disable-next-line
 	}, [])
 	const [signer, setSigner] = useState("")

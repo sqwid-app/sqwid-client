@@ -19,4 +19,4 @@ export const networks = {
 	}
 }
 
-export const defaultNetwork = 'reef_mainnet';
+export const defaultNetwork = process.env.REACT_APP_DEFAULT_NETWORK || 'reef_testnet';
