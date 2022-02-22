@@ -202,7 +202,7 @@ const elemContains = (rect, x, y) => {
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
 	const initialNetwork = localStorage.getItem(`${constants.APP_NAME}__chosen_network`)
-	const [chosenNetwork, setChosenNetwork] = useState(initialNetwork || 'reef_testnet')
+	const [chosenNetwork, setChosenNetwork] = useState(initialNetwork || 'reef_mainnet')
 	const initialClaimButtonText = 'I Accept'
 	const [claimButtonText, setClaimButtonText] = useState(initialClaimButtonText)
 	const [networkButtonText, setNetworkButtonText] = useState(<FadeLoaderIcon />)
