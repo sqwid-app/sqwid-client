@@ -1,4 +1,5 @@
 import PropertiesSection from "@elements/Collectible/PropertiesSection";
+import useActiveTabs from "@utils/useActiveTabs";
 import React, { useState } from "react";
 import styled from "styled-components";
 //eslint-disable-next-line
@@ -72,6 +73,9 @@ const InfoContainer = () => {
 		// component: <BidsSection />
 		component: <DetailsSection />
 	}])
+
+	const replacer = useActiveTabs({ navRoutes, setNavRoutes })
+
 	return (
 		<Container>
 			<Navbar>
@@ -81,17 +85,13 @@ const InfoContainer = () => {
 						active={item.isActive}
 						disabled={item.isActive}
 						onClick={() => {
-							if (!item.isActive) {
-								let newVal = [...navRoutes.map(a => ({ ...a, isActive: false }))]
-								newVal[index].isActive = true
-								setNavRoutes(newVal)
-							}
+							replacer(item.name)
 						}}
 					>{item.name}</NavContent>
 				))}
 			</Navbar>
 			{navRoutes.find(item => item.isActive).component}
-		</Container>
+		</Container >
 	)
 }
 
