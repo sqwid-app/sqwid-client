@@ -7,14 +7,16 @@ const useActiveTabs = ({ navRoutes, setNavRoutes }) => {
 	const history = useHistory()
 	const location = useLocation();
 
+	const queryName = "tab"
+
 	const redirectToTab = (tab) => {
 		history.replace({
 			pathname: location.pathname,
-			search: `?activeTab=${tab}`
+			search: `?${queryName}=${tab}`
 		})
 	}
 	useEffect(() => {
-		const tab = query.get("activeTab")
+		const tab = query.get(queryName)
 		if (tab) {
 			if (navRoutes.map(route => route.name).includes(tab)) {
 				setNavRoutes(navRoutes.map(route => {
