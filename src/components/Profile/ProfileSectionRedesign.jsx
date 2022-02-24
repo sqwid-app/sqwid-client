@@ -1,5 +1,5 @@
 import EditDetailsProvider from "@contexts/EditDetails/EditDetailsProvider";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import Collections from "./Collections";
@@ -13,6 +13,7 @@ import OnSaleSection from "@elements/ProfileRedesign/Sections/OnSaleSection";
 import AuctionSection from "@elements/ProfileRedesign/Sections/AuctionSection";
 import RaffleSection from "@elements/ProfileRedesign/Sections/RaffleSection";
 import LoanSection from "@elements/ProfileRedesign/Sections/LoanSection";
+import useActiveTabs from "@utils/useActiveTabs";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -113,10 +114,28 @@ const ProfileSection = () => {
 		title: <>Loans <span className="emoji">🏦</span></>,
 		component: <LoanSection />
 	}])
+
+	const replacer = useActiveTabs({ navRoutes, setNavRoutes })
+
 	const options = navRoutes.map(route => ({
 		label: route.name,
 		value: route,
 	}))
+
+	const activeElement = navRoutes.find(item => item.isActive)
+	const [defaultValue, setDefaultValue] = useState({
+		label: activeElement.name,
+		value: activeElement
+	})
+
+	useEffect(() => {
+		const activeElement = navRoutes.find(item => item.isActive)
+		setDefaultValue({
+			label: activeElement.name,
+			value: activeElement
+		})
+	}, [navRoutes])
+
 	const isTabletOrMobile = useIsTabletOrMobile();
 	return (
 		<>
@@ -129,14 +148,10 @@ const ProfileSection = () => {
 								options={options}
 								styles={styles}
 								isSearchable={false}
-								defaultValue={options[0]}
+								value={defaultValue}
 								placeholder="Select Route"
 								onChange={({ value: item }) => {
-									if (!item.isActive) {
-										let newVal = [...navRoutes.map(a => ({ ...a, isActive: false }))]
-										newVal.find(e => e.name === item.name).isActive = true
-										setNavRoutes(newVal)
-									}
+									replacer(item.name)
 								}}
 							/>
 						) : (
@@ -147,11 +162,7 @@ const ProfileSection = () => {
 										active={item.isActive}
 										disabled={item.isActive}
 										onClick={() => {
-											if (!item.isActive) {
-												let newVal = [...navRoutes.map(a => ({ ...a, isActive: false }))]
-												newVal[index].isActive = true
-												setNavRoutes(newVal)
-											}
+											replacer(item.name)
 										}}
 									>{item.name}</NavContent>
 								))}
