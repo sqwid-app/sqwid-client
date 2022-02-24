@@ -111,6 +111,7 @@ const EmptySectionText = styled.h1`
 	font-weight: 900;
 	color: var(--app-container-text-primary);
 	text-align:center;
+	padding: 0 !important;
 `
 
 const EmptySection = ({ state }) => {

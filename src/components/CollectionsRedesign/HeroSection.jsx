@@ -1,6 +1,6 @@
 import { respondTo } from "@styles/styledMediaQuery";
 // import { getAvatarFromId } from "@utils/getAvatarFromId";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { Link } from "react-router-dom";
@@ -13,6 +13,7 @@ import LoanSection from "@elements/Collections/Sections/LoanSection";
 import Select from "react-select";
 import { styles } from "@styles/reactSelectStyles";
 import { getCloudflareURL } from "@utils/getIPFSURL";
+import useActiveTabs from "@utils/useActiveTabs";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -46,6 +47,9 @@ const HeaderContainer = styled.div`
 	gap: 0.5rem;
 	${respondTo.md`
 		flex: 0 0 100%;
+		flex-direction: row;
+		align-items: center;
+		justify-content:space-between;
 	`}
 `
 
@@ -172,10 +176,28 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 		title: <>Loans <span className="emoji">🏦</span></>,
 		component: <LoanSection />
 	}])
+
+	const replacer = useActiveTabs({ navRoutes, setNavRoutes })
+
 	const options = navRoutes.map(route => ({
 		label: route.name,
 		value: route,
 	}))
+
+	const activeElement = navRoutes.find(item => item.isActive)
+	const [defaultValue, setDefaultValue] = useState({
+		label: activeElement.name,
+		value: activeElement
+	})
+
+	useEffect(() => {
+		const activeElement = navRoutes.find(item => item.isActive)
+		setDefaultValue({
+			label: activeElement.name,
+			value: activeElement
+		})
+	}, [navRoutes])
+
 	const isTabletOrMobile = useIsTabletOrMobile();
 
 	return (
@@ -211,14 +233,10 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 									options={options}
 									styles={styles}
 									isSearchable={false}
-									defaultValue={options[0]}
+									value={defaultValue}
 									placeholder="Select Route"
 									onChange={({ value: item }) => {
-										if (!item.isActive) {
-											let newVal = [...navRoutes.map(a => ({ ...a, isActive: false }))]
-											newVal.find(e => e.name === item.name).isActive = true
-											setNavRoutes(newVal)
-										}
+										replacer(item.name)
 									}}
 								/>
 							) : (
@@ -229,11 +247,7 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 											active={item.isActive}
 											disabled={item.isActive}
 											onClick={() => {
-												if (!item.isActive) {
-													let newVal = [...navRoutes.map(a => ({ ...a, isActive: false }))]
-													newVal[index].isActive = true
-													setNavRoutes(newVal)
-												}
+												replacer(item.name)
 											}}
 										>{item.name}</NavContent>
 									))}
