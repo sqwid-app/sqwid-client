@@ -61,22 +61,6 @@ const DetailsChart = () => {
 	const accentColor = '13, 104, 216';
 	const borderColor = '120, 121, 135';
 
-	defaults.animation.easing = 'easeOutQuart';
-	defaults.animation.duration = 750;
-	defaults.font.family = `"Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif`;
-	defaults.font.size = 16;
-	defaults.font.weight = 800;
-	defaults.scale.grid.borderColor = `rgb(${borderColor})`;
-	defaults.scale.grid.borderWidth = 4;
-	defaults.scale.grid.borderDash = [6];
-	defaults.scale.grid.color = `rgba(${borderColor},0.125)`;
-	defaults.elements.line.fill = 'start';
-	defaults.elements.line.tension = 0.5;
-	defaults.datasets.line.borderColor = `rgba(${accentColor}, 1)`;
-	defaults.datasets.line.pointBackgroundColor = `rgba(${accentColor}, 1)`;
-	defaults.datasets.line.hoverPointBackgroundColor = `rgba(${accentColor}, 1)`;
-	defaults.datasets.line.pointBorderColor = 'rgba(255,255,255,1)';
-
 	const options = {
 		responsive: true,
 		scales: {
@@ -135,6 +119,26 @@ const DetailsChart = () => {
 	});
 
 	useEffect(() => {
+		defaults.animation.easing = 'easeOutQuart';
+		defaults.animation.duration = 750;
+		defaults.font.family = `"Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif`;
+		defaults.font.size = 16;
+		defaults.font.weight = 800;
+		defaults.scale.grid.borderColor = `rgb(${borderColor})`;
+		defaults.scale.grid.borderWidth = 4;
+		defaults.scale.grid.borderDash = [6];
+		defaults.scale.grid.color = `rgba(${borderColor},0.125)`;
+		defaults.elements.line.fill = 'start';
+		defaults.elements.line.tension = 0.5;
+		defaults.elements.line.borderJoinStyle = 'round';
+		defaults.elements.line.borderColor = `rgba(${accentColor}, 1)`;
+		defaults.elements.point.borderColor = 'rgba(255,255,255,1)';
+		defaults.elements.point.radius = 6;
+		defaults.elements.point.hoverRadius = 6;
+		defaults.elements.point.hitRadius = 18;
+		defaults.elements.point.borderWidth = 3;
+		defaults.elements.point.hoverBorderWidth = 3;
+
 		class ShadowLine extends LineController {
 			draw() {
 				super.draw(arguments);
@@ -180,6 +184,7 @@ const DetailsChart = () => {
 			datasets: [
 				{
 					backgroundColor: gradient,
+					pointBackgroundColor: `rgba(${accentColor}, 1)`,
 					label: 'Price',
 					data: getRandomData({
 						size: labels.length,
