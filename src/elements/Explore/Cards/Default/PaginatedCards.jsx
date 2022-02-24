@@ -107,11 +107,11 @@ const EmptySectionContainer = styled.div`
 	place-items:center;
 `
 
-const EmptySectionText = styled.h1`
+const EmptySectionText = styled.h2`
 	font-weight: 900;
 	color: var(--app-container-text-primary);
 	text-align:center;
-	padding: 0 !important;
+	font-size: 1.25rem;
 `
 
 const EmptySection = ({ state }) => {
