@@ -4,6 +4,7 @@ import styled from "styled-components";
 //eslint-disable-next-line
 import BidsSection from "./BidsSection";
 import DetailsSection from "./DetailsSection";
+import HistorySection from "./HistorySection";
 import InfoSection from "./InfoSection";
 import MarketSection from "./MarketSection";
 
@@ -63,8 +64,8 @@ const InfoContainer = () => {
 	}, {
 		name: "History",
 		isActive: false,
-		// component: <BidsSection />
-		component: <>Work in progress ⚒🚧</>
+		component: <HistorySection />
+		// component: <>Work in progress ⚒🚧</>
 	}, {
 		name: "Details",
 		isActive: false,
