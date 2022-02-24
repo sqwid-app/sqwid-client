@@ -14,6 +14,7 @@ import Changes from "@elements/Create/Changes";
 import WrapSection from "./WrapSection";
 //eslint-disable-next-line
 import UnwrapSection from "./UnwrapSection";
+import useActiveTabs from "@utils/useActiveTabs";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -140,6 +141,9 @@ const HeroSection = () => {
 		// component: <UnwrapSection/>
 		component: <>Work in progress ⚒🚧</>
 	}])
+
+	const replacer = useActiveTabs({ navRoutes, setNavRoutes })
+
 	return (
 		<FileProvider>
 			<Wrapper>
@@ -152,11 +156,7 @@ const HeroSection = () => {
 								active={item.isActive}
 								disabled={item.isActive}
 								onClick={() => {
-									if (!item.isActive) {
-										let newVal = [...navRoutes.map(a => ({ ...a, isActive: false }))]
-										newVal[index].isActive = true
-										setNavRoutes(newVal)
-									}
+									replacer(item.name)
 								}}
 							>{item.name}</NavContent>
 						))}
