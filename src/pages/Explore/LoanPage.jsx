@@ -33,7 +33,7 @@ const LoanPage = () => {
 		<>
 			<Wrapper>
 				<Container>
-					<Header>Auctions <span className="emoji">⌛</span></Header>
+					<Header>Loans <span className="emoji">🏦</span></Header>
 					<PaginatedCards Card={LoanCard} state={4} />
 				</Container>
 			</Wrapper>
