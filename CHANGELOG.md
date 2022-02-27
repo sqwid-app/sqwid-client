@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/boidushya/sqwid-client/compare/v0.3.0...v0.3.1) (2022-02-27)
+
+
+### Features
+
+* added active tabs for collections ([f26fe61](https://github.com/boidushya/sqwid-client/commit/f26fe61fde926b8dd6afac2717ef8a9486f58743))
+* added active tabs for create ([482e0bd](https://github.com/boidushya/sqwid-client/commit/482e0bde6eb9216150f2c6d2ca298dbfa6d8bc63))
+* added active tabs to profile ([8059a54](https://github.com/boidushya/sqwid-client/commit/8059a54f0c4ed5520271fed83e6145cc92d6f715))
+* added placeholder for chart in history section ([f1fc0a6](https://github.com/boidushya/sqwid-client/commit/f1fc0a6e5c70229cc024524ed4d971f8a0453213))
+* added vercel rewrite for testnet ([4c14d6c](https://github.com/boidushya/sqwid-client/commit/4c14d6c9155d358710e33778572f807384922d25))
+* changed default network for production ([26bbfed](https://github.com/boidushya/sqwid-client/commit/26bbfed040283a19254c0859fd74e89e22c5b929))
+* created hook to auto switch between active tabs ([b2eb2a7](https://github.com/boidushya/sqwid-client/commit/b2eb2a7d4466ffb945c361c829a674c5195a064c))
+* prioritize env default network over config file ([e66d8a1](https://github.com/boidushya/sqwid-client/commit/e66d8a1bcb1e22554a39159f4447ec69a706a31d))
+
+
+### Bug Fixes
+
+* added mailto for report and appeal buttons ([3cb2d93](https://github.com/boidushya/sqwid-client/commit/3cb2d934722d3d05f7b52e1bcd86d0c277d05910))
+* added shadows to history chart :) ([5be5f24](https://github.com/boidushya/sqwid-client/commit/5be5f24b66b909b60d9dd3d90bd3652ada5d4240))
+* change default network to mainnet ([95f0fe7](https://github.com/boidushya/sqwid-client/commit/95f0fe75c69902c6491c027e949c61c660dcaa71))
+* changed activeTab to tab ([b534263](https://github.com/boidushya/sqwid-client/commit/b534263284c5c0cc705234947e977011389972e7))
+* changed empty section text to h2 ([699f2f5](https://github.com/boidushya/sqwid-client/commit/699f2f5b7c5aa274e33cfc9de91c268653de325e))
+* changed state to use mainnet by default ([af43400](https://github.com/boidushya/sqwid-client/commit/af43400350c24e460c94f591033d3a7577050a72))
+* deployment error ([e4ef046](https://github.com/boidushya/sqwid-client/commit/e4ef046e447c6abeeae0a5a568fd9224e0b462a4))
+* details section not working for unauthenticated users and responsiveness ([a2e2abb](https://github.com/boidushya/sqwid-client/commit/a2e2abb4f2290ee5a9e0f0ecdc6a71418dcd7afe))
+* follow button bug ([fa96b95](https://github.com/boidushya/sqwid-client/commit/fa96b956f3c421adf706efc2057bce412fa98863))
+* made market section state name visible even when config is null ([f1c30b6](https://github.com/boidushya/sqwid-client/commit/f1c30b62feca36b886e23234db5af6f89b21604e))
+* removed use on testnet warning ([da04b42](https://github.com/boidushya/sqwid-client/commit/da04b4214ca3b4c0a0b0cac37f9db93b0a9d40e5))
+
 ## [0.3.0](https://github.com/boidushya/sqwid-client/compare/v0.2.12...v0.3.0) (2022-02-21)
 
 ### [0.2.12](https://github.com/boidushya/sqwid-client/compare/v0.2.11...v0.2.12) (2022-02-21)
