@@ -121,16 +121,21 @@ const NotStyledLink = styled(Link)`
 	color: inherit;
 	font-weight: 900;
 	font-size: 1rem;
-	div{
-		max-width: 20rem;
-		text-overflow:ellipsis;
-		overflow: hidden;
-		white-space:nowrap;
-		font-style: normal;
-		${respondTo.md`
-			max-width: 5rem;
-		`}
-	}
+	max-width: 20rem;
+	text-overflow:ellipsis;
+	overflow: hidden;
+	white-space:nowrap;
+`
+
+const LenderName = styled.div`
+	max-width: 8rem;
+	text-overflow:ellipsis;
+	overflow: hidden;
+	white-space:nowrap;
+	font-style: normal;
+	${respondTo.md`
+		max-width: 5rem;
+	`}
 `
 
 const CardInfo = ({ data, lenderExists }) => {
@@ -150,7 +155,7 @@ const CardInfo = ({ data, lenderExists }) => {
 						<Logo
 							url={getAvatarFromId(lender.address)}
 						/>
-						<NotStyledLink to={`/profile/${lender.address}`}><div>{lender.name}</div>
+						<NotStyledLink to={`/profile/${lender.address}`}><LenderName title={lender.name}>{lender.name}</LenderName>
 						</NotStyledLink>
 					</LenderContainer>
 					<Amount title={`Amount: ${data.amount}`}>x{data.amount}</Amount>
