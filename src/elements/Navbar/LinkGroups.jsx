@@ -1,4 +1,5 @@
 import AuthContext from "@contexts/Auth/AuthContext";
+//eslint-disable-next-line
 import Dropdown from "@elements/Default/Dropdown";
 import { respondTo } from "@styles/styledMediaQuery";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
@@ -26,20 +27,50 @@ const LinkContainer = styled.div`
 	`}
 `
 
+const InfoContainer = styled.div`
+	margin-top: 3rem;
+	display: grid;
+	font-size: 1rem;
+	gap: 0.5rem;
+	a{
+		text-decoration: underline !important;
+		text-underline-offset: 10%;
+		text-decoration-thickness: 0.1rem;
+
+	}
+`
+
+//eslint-disable-next-line
 const StyledNavLink = styled(NavLink)`
 	text-decoration: none;
 	color: inherit;
 `
 
+//eslint-disable-next-line
 const DropdownContainer = styled.div``
 
 const LinkGroups = () => {
+	//eslint-disable-next-line
 	const isTabletOrMobile = useIsTabletOrMobile();
 	const { auth } = useContext(AuthContext)
 	const isLoggedIn = auth !== null
+	const routes = [{
+		name: "On Sale",
+		link: "/explore/sale"
+	}, {
+		name: "Auctions",
+		link: "/explore/auctions"
+	}, {
+		name: "Raffles",
+		link: "/explore/raffles"
+	}, {
+		name: "Loans",
+		link: "/explore/loans"
+	}]
 	return (
 		<LinkContainer>
-			<DropdownContainer
+			{/* PRERELEASE 🚧 */}
+			{/* <DropdownContainer
 				to="/explore"
 				exact
 				className="nav-links dropdown"
@@ -51,22 +82,17 @@ const LinkGroups = () => {
 				>Explore</StyledNavLink>
 				{!isTabletOrMobile &&
 					<Dropdown
-						options={[{
-							name: "On Sale",
-							link: "/explore/sale"
-						}, {
-							name: "Auctions",
-							link: "/explore/auctions"
-						}, {
-							name: "Raffles",
-							link: "/explore/raffles"
-						}, {
-							name: "Loans",
-							link: "/explore/loans"
-						}]}
+						options={routes}
 					/>
 				}
-			</DropdownContainer>
+			</DropdownContainer> */}
+			<>
+				{routes.map(route => (
+					<NavLink to={route.link} exact className="nav-links" activeClassName="nav-selected">
+						{route.name}
+					</NavLink>
+				))}
+			</>
 			{isLoggedIn && (
 				<>
 					{/* <NavLink to="/lagoon" exact className="nav-links" activeClassName="nav-selected">
@@ -77,6 +103,16 @@ const LinkGroups = () => {
 					</NavLink>
 				</>
 			)}
+			{isTabletOrMobile &&
+				<InfoContainer>
+					<NavLink to={`/terms-of-service`} exact className="nav-links" activeClassName="nav-selected">
+						Terms of Service
+					</NavLink>
+					<NavLink to={`/privacy-policy`} exact className="nav-links" activeClassName="nav-selected">
+						Privacy Policy
+					</NavLink>
+				</InfoContainer>
+			}
 		</LinkContainer>
 	)
 }

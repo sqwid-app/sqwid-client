@@ -5,6 +5,7 @@ import styled from "styled-components";
 //eslint-disable-next-line
 import BidsSection from "./BidsSection";
 import DetailsSection from "./DetailsSection";
+//eslint-disable-next-line
 import HistorySection from "./HistorySection";
 import InfoSection from "./InfoSection";
 import MarketSection from "./MarketSection";
@@ -52,6 +53,7 @@ const NavContent = styled.p`
 `
 
 const InfoContainer = () => {
+	/* PRERELEASE 🚧 */
 	const [navRoutes, setNavRoutes] = useState([{
 		name: "Info",
 		isActive: true,
@@ -62,12 +64,14 @@ const InfoContainer = () => {
 				<MarketSection />
 			</>
 		)
-	}, {
-		name: "History",
-		isActive: false,
-		component: <HistorySection />
-		// component: <>Work in progress ⚒🚧</>
-	}, {
+	},
+	// {
+	// 	name: "History",
+	// 	isActive: false,
+	// 	component: <HistorySection />
+	// 	// component: <>Work in progress ⚒🚧</>
+	// },
+	{
 		name: "Details",
 		isActive: false,
 		// component: <BidsSection />
@@ -87,7 +91,7 @@ const InfoContainer = () => {
 						onClick={() => {
 							replacer(item.name)
 						}}
-					>{item.name}</NavContent>
+					>{navRoutes.length > 1 && item.name}</NavContent>
 				))}
 			</Navbar>
 			{navRoutes.find(item => item.isActive).component}

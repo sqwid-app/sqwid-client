@@ -299,6 +299,7 @@ const HeartBtn = () => {
 	)
 }
 
+//eslint-disable-next-line
 const Utility = () => {
 	return (
 		<UtilityWrapper className="utility-wrapper">
@@ -328,7 +329,8 @@ const ImageContainer = ({ title, isBlurred, setIsBlurred, ...props }) => {
 			<ImageWrapper style={{ display: loading && "none" }} title={title} blur={isBlurred} fillHeight={fillHeight}>
 				<WarningText isBlurred={isBlurred} setIsBlurred={setIsBlurred} />
 				<img alt="NFT" {...props} onLoad={handleLoad} draggable={false} />
-				<Utility />
+				{/* PRERELEASE 🚧 */}
+				{/* <Utility /> */}
 			</ImageWrapper>
 		</>
 	)

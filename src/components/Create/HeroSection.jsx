@@ -123,24 +123,27 @@ const NavContent = styled.p`
 `
 
 const HeroSection = () => {
+	/* PRERELEASE 🚧 */
 	const [navRoutes, setNavRoutes] = useState([{
 		name: "Create",
 		isActive: true,
 		title: "Create a Collectible",
 		component: <MainPage />
-	}, {
-		name: "Wrap",
-		isActive: false,
-		title: "Wrap",
-		// component:  <WrapSection/>
-		component: <>Work in progress ⚒🚧</>
-	}, {
-		name: "Unwrap",
-		isActive: false,
-		title: "Unwrap",
-		// component: <UnwrapSection/>
-		component: <>Work in progress ⚒🚧</>
-	}])
+	},
+		// {
+		// 	name: "Wrap",
+		// 	isActive: false,
+		// 	title: "Wrap",
+		// 	// component:  <WrapSection/>
+		// 	component: <>Work in progress ⚒🚧</>
+		// }, {
+		// 	name: "Unwrap",
+		// 	isActive: false,
+		// 	title: "Unwrap",
+		// 	// component: <UnwrapSection/>
+		// 	component: <>Work in progress ⚒🚧</>
+		// }
+	])
 
 	const replacer = useActiveTabs({ navRoutes, setNavRoutes })
 
@@ -149,18 +152,20 @@ const HeroSection = () => {
 			<Wrapper>
 				<HeaderSection>
 					<Title>{navRoutes.find(item => item.isActive).title}</Title>
-					<Navbar>
-						{navRoutes.map((item, index) => (
-							<NavContent
-								key={index}
-								active={item.isActive}
-								disabled={item.isActive}
-								onClick={() => {
-									replacer(item.name)
-								}}
-							>{item.name}</NavContent>
-						))}
-					</Navbar>
+					{navRoutes.length > 1 && (
+						<Navbar>
+							{navRoutes.map((item, index) => (
+								<NavContent
+									key={index}
+									active={item.isActive}
+									disabled={item.isActive}
+									onClick={() => {
+										replacer(item.name)
+									}}
+								>{item.name}</NavContent>
+							))}
+						</Navbar>
+					)}
 				</HeaderSection>
 				<>
 					{navRoutes.find(item => item.isActive).component}
