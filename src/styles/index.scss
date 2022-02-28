@@ -21,11 +21,18 @@
 	--app-container-bg-secondary: hsl(236deg 10% 23%);
 	--app-container-check: #0dbe00;
 	--app-modal-btn-primary: hsl(225, 14%, 9%);
+	--app-banner-bg: linear-gradient(
+		calc(90deg + var(--img-angle)),
+		rgba(var(--app-theme-value), 0.1) 0%,
+		rgba(135, 190, 254, 0.1) 60%,
+		rgba(135, 190, 254, 0) 80%
+	);
 	--font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana,
 		sans-serif;
 	--font-family-mono: "Source Code Pro", "Courier New", Courier, monospace;
 	--easing: cubic-bezier(0.83, 0, 0.17, 1);
 	--modal-backdrop: hsla(230, 36%, 4%, 95%);
+	--img-angle: 11.25deg;
 	/*
 		plyr config
 	*/

@@ -9,11 +9,10 @@ import Wave from 'react-wavify'
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
-	// padding-right:0;
-	height: 65vh;
 	display: grid;
 	place-items:center;
 	text-align:center;
+
 	${respondTo.md`
 		height: 90vh;
 		grid-template-rows: none;
@@ -87,34 +86,8 @@ const HeroSection = () => {
 		<>
 			<Wrapper>
 				<InfoContainer />
-				{isTabletOrMobile ? (
+				{isTabletOrMobile && (
 					<MobileContainer />
-				) : (
-					<WaveContainer>
-						<Wave
-							fill="url(#gradient)"
-							paused={false}
-							options={{
-								height: 30,
-								amplitude: 50,
-								speed: 0.25,
-								points: 3
-							}}
-						>
-							<defs>
-								<linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-									<stop offset="0%" style={{
-										stopColor: "var(--app-theme-primary)",
-										stopOpacity: "1"
-									}} />
-									<stop offset="100%" style={{
-										stopColor: "var(--app-theme-primary-transparent)",
-										stopOpacity: "1"
-									}} />
-								</linearGradient>
-							</defs>
-						</Wave>
-					</WaveContainer>
 				)}
 			</Wrapper>
 		</>
