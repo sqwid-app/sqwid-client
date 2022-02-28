@@ -1,7 +1,7 @@
 const constants = {
 	APP_NAME: "Sqwid",
 	APP_DESCRIPTION: "An ocean of possibilities",
-	APP_ABOUT: "%APP_NAME% aims to build a new creative economy — a world where creators can use the Ethereum blockchain to value their work in entirely new ways, and build stronger connections with their supporters.",
+	APP_ABOUT: "%APP_NAME% aims to build a new creative economy — a world where creators can use the Reef blockchain to value their work in entirely new ways, and build stronger connections with their supporters.",
 	APP_WEBSITE: "https://sqwid.app",
 	APP_SCAN_BASE_URL: "https://reefscan.com",
 	STATE_TYPES: [
