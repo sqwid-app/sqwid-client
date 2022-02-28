@@ -5,6 +5,7 @@ import InfoContainer from "./InfoContainer";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import { LazyMotion, domAnimation } from "framer-motion";
+//eslint-disable-next-line
 import Wave from 'react-wavify'
 
 const Wrapper = styled.div`
@@ -21,6 +22,7 @@ const Wrapper = styled.div`
 	`}
 `
 
+//eslint-disable-next-line
 const WaveContainer = styled.div`
 	position: absolute;
     bottom: 0;
