@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.2](https://github.com/boidushya/sqwid-client/compare/v0.3.1...v0.3.2) (2022-02-28)
+
+
+### Features
+
+* loan card name overflow bug ([8ef22ca](https://github.com/boidushya/sqwid-client/commit/8ef22ca6b85b22acf5551b69fe71ff898d9c2ef9))
+
+
+### Bug Fixes
+
+* rename /explore/loans to Loans ([9ffeaa4](https://github.com/boidushya/sqwid-client/commit/9ffeaa4b32c1f62d51c6d73c7bbe6b651d83a077))
+
 ### [0.3.1](https://github.com/boidushya/sqwid-client/compare/v0.3.0...v0.3.1) (2022-02-27)
 
 
