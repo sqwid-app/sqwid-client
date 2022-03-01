@@ -9,6 +9,7 @@ const Divider = styled.span`
 `
 
 export const DividerHorizontal = styled.span`
+	display: block;
 	width: 100%;
 	height: 0.1rem;
 	border-bottom: 0.1rem solid #42424c;

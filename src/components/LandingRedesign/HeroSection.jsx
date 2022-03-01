@@ -7,6 +7,7 @@ import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import { LazyMotion, domAnimation } from "framer-motion";
 //eslint-disable-next-line
 import Wave from 'react-wavify'
+import Explore from "./Explore";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -91,6 +92,7 @@ const HeroSection = () => {
 				{isTabletOrMobile && (
 					<MobileContainer />
 				)}
+				<Explore />
 			</Wrapper>
 		</>
 	)

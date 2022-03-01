@@ -88,7 +88,7 @@ const LinkGroups = () => {
 			</DropdownContainer> */}
 			<>
 				{routes.map(route => (
-					<NavLink to={route.link} exact className="nav-links" activeClassName="nav-selected">
+					<NavLink key={route.link} to={route.link} exact className="nav-links" activeClassName="nav-selected">
 						{route.name}
 					</NavLink>
 				))}

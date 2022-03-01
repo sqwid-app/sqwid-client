@@ -1,5 +1,5 @@
 import LoadingIcon from "@static/svg/LoadingIcon";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
@@ -31,7 +31,16 @@ const LoadingContainer = styled.div`
 		font-weight: 600;
 	}
 `
-const FullPageLoading = (props) => {
+const FullPageLoading = ({ delay, ...props }) => {
+	const [show, setShow] = useState(false);
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			setShow(true);
+		}, delay);
+		return () => {
+			clearTimeout(timeout);
+		};
+	}, [delay]);
 	useEffect(() => {
 		if (props.init) {
 			NProgress.configure({ showSpinner: false, easing: "ease" });
@@ -42,11 +51,15 @@ const FullPageLoading = (props) => {
 		}
 	});
 	return (
-		<LoadingContainer {...props}>
-			<LoadingIcon size={props.init ? 72 : 48} />
-			<h1>{props.init && `${constants.APP_NAME}`}</h1>
-			{(props.init && props.component) && <p><span>Preparing {props.component} </span><FadeLoaderIcon /></p>}
-		</LoadingContainer>
+		<>
+			{show ? (
+				<LoadingContainer {...props}>
+					<LoadingIcon size={props.init ? 72 : 48} />
+					<h1>{props.init && `${constants.APP_NAME}`}</h1>
+					{(props.init && props.component) && <p><span>Preparing {props.component} </span><FadeLoaderIcon /></p>}
+				</LoadingContainer >
+			) : null}
+		</>
 	)
 }
 

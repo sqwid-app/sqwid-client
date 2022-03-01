@@ -78,8 +78,12 @@
 }
 
 ::selection {
-	background: var(--app-container-text-primary-hover);
+	background: hsla(240, 6%, 75%, 0.75);
 	color: var(--app-container-bg-primary);
+}
+
+html {
+	scroll-behavior: smooth;
 }
 
 html,

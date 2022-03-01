@@ -24,19 +24,20 @@ const bgGradientAnimation = keyframes`
 const Wrapper = styled.div`
 	position: relative;
 	height: 75vh;
+	max-height: 75vh;
 	width: 100%;
 	background: var(--app-banner-bg);
 	border-radius: 2rem;
 	display: flex;
 	align-items:center;
 	justify-content: space-around;
-	max-height: 75vh;
 	line-height: 1.125;
 	gap: 2rem;
 	min-height: 100%;
 	text-align: left;
 	overflow: hidden;
 	h1{
+		line-height: 1;
 		font-weight: 900;
 		font-size: 4rem;
 		background: -webkit-linear-gradient(0deg,var(--app-text) 0%, #619feb 50%, var(--app-text) 100%);
@@ -48,6 +49,7 @@ const Wrapper = styled.div`
 		-webkit-text-fill-color: transparent;
 		cursor: pointer;
 		animation: ${bgGradientAnimation} 10s ease infinite;
+		user-select: none;
 	}
 	h2{
 		margin-top:2rem;
@@ -58,9 +60,16 @@ const Wrapper = styled.div`
 	}
 	${respondTo.md`
 		padding-left: 0;
-		h2{
+		background: transparent;
+		h1{
+			width: 100%;
+			font-size: 3rem;
 			text-align:center;
+		}
+		h2{
+			text-align:justify;
 			margin-right:0;
+			width: 100%;
 		}
 	`}
 `
@@ -81,13 +90,17 @@ const Btn = styled(BtnBaseAnimated)`
 `
 
 const outline = css`
-	--app-theme-opacity: 0.25;
-	--app-theme-text: rgb(211 231 255);
-	border: solid 0.3rem var(--app-theme-primary);
-	background: rgba(
+	--app-theme-opacity: 0.75;
+	--app-theme-text: rgb(191, 215, 245);
+	border: solid 0.2rem rgba(
 		var(--app-theme-value),
 		var(--app-theme-opacity)
 	);
+	/* background: rgba(
+		var(--app-theme-value),
+		calc(var(--app-theme-opacity) / 2)
+	); */
+	background: transparent;
 	color: var(--app-theme-text);
 `
 
@@ -100,8 +113,21 @@ const BtnContainer = styled.div`
 	gap: 1rem;
 `
 
+const float = keyframes`
+	0%{
+		transform: translateY(0);
+	}
+	50%{
+		transform: translateY(1rem);
+	}
+	100%{
+		transform: translateY(0);
+	}
+`
+
 const Image = styled.img`
 	height: 100%;
+	animation: ${float} 5s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 `
 
 const ImageContainer = styled.div`
@@ -159,7 +185,7 @@ const InfoContainer = () => {
 						<LazyMotion features={domAnimation}>
 							<AnimBtn
 								href="/explore"
-							>Dive in</AnimBtn>
+							>Explore</AnimBtn>
 							<AnimBtn
 								outline
 								href="/create"
@@ -168,9 +194,11 @@ const InfoContainer = () => {
 					</BtnContainer>
 				)}
 			</ContentContainer>
-			<ImageContainer>
-				<Image src={`https://res.cloudinary.com/etjfo/image/upload/v1646079322/sqwid/banner.png`} alt="banner" />
-			</ImageContainer>
+			{!isTabletOrMobile && (
+				<ImageContainer>
+					<Image src={`https://res.cloudinary.com/etjfo/image/upload/v1646079322/sqwid/banner.png`} alt="banner" />
+				</ImageContainer>
+			)}
 		</Wrapper>
 	)
 }
