@@ -122,11 +122,11 @@ const Explore = () => {
 
 	const fetchData = async () => {
 		// console.log("sending request")
-		const items = await fetchMarketplaceItems();
-		setOnSale(items.sale);
-		setAuctions(items.auction);
-		setRaffles(items.raffle);
-		setLoans(items.loan);
+		const { sale, auction, raffle, loan } = await fetchMarketplaceItems();
+		setOnSale(sale);
+		setAuctions(auction);
+		setRaffles(raffle);
+		setLoans(loan);
 		setIsLoading(false);
 	}
 
