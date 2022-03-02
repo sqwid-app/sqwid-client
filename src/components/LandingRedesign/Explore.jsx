@@ -1,6 +1,6 @@
 import { respondTo } from "@styles/styledMediaQuery";
 // import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import LoadingIcon from "@static/svg/LoadingIcon";
 // import RecentlyListed from "./RecentlyListed";
@@ -11,6 +11,7 @@ import RaffleSection from "@elements/Explore/Sections/RaffleSection";
 import LoansSection from "@elements/Explore/Sections/LoansSection";
 import { NavLink } from "react-router-dom";
 import ChevronRight from "@static/svg/ChevronRight";
+import useOnScreen from "@utils/useOnScreen";
 
 const Container = styled.div`
 	padding: 0 6rem;
@@ -47,6 +48,7 @@ const Section = styled.section`
 
 const Navbar = styled.nav`
 	position:relative;
+	z-index: 1;
 	display:flex;
 	gap:0.5rem;
 	/* border-bottom: 0.1rem solid var(--app-container-bg-primary); */
@@ -78,13 +80,15 @@ const Heading = styled.h1`
 	text-align:left;
 	width: fit-content;
 	transition: color 0.1s, transform 0.1s;
-	background: var(--app-background);
+	padding: 0.2rem;
+	text-shadow: -0.2rem 0.1rem 0 var(--app-theme-primary);
 	&:before{
 		content: "";
 		height: 100%;
 		width: 100%;
-		background-image: radial-gradient(hsla(240, 6%, 75%, 0.5) 0.5px, transparent 0.5px);
-		background-size: calc(10 * 0.5px) calc(10 * 0.5px);
+		background-image: radial-gradient(hsla(240, 6%, 75%, 0.5) 0.75px, transparent 0.75px);
+		background-size: calc(10 * 0.75px) calc(10 * 0.75px);
+		z-index: -1;
 		position: absolute;
 		transform: translate(-1rem, 1rem);
 	}
@@ -113,37 +117,58 @@ const Explore = () => {
 	const [auctions, setAuctions] = useState([]);
 	const [raffles, setRaffles] = useState([]);
 	const [loans, setLoans] = useState([]);
+	const containerRef = useRef()
+	const isVisible = useOnScreen(containerRef)
+
+	const fetchData = async () => {
+		// console.log("sending request")
+		const items = await fetchMarketplaceItems();
+		setOnSale(items.sale);
+		setAuctions(items.auction);
+		setRaffles(items.raffle);
+		setLoans(items.loan);
+		setIsLoading(false);
+	}
+
 	useEffect(() => {
-		const fetchData = async () => {
-			const items = await fetchMarketplaceItems();
-			setOnSale(items.sale);
-			setAuctions(items.auction);
-			setRaffles(items.raffle);
-			setLoans(items.loan);
-			setIsLoading(false);
-		}
-		fetchData();
-	}, []);
+		isVisible && (onSale.length === 0) && fetchData();
+		// console.log(isVisible ? "visible" : "not visible")
+		//eslint-disable-next-line
+	}, [isVisible])
+
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		const items = await fetchMarketplaceItems();
+	// 		setOnSale(items.sale);
+	// 		setAuctions(items.auction);
+	// 		setRaffles(items.raffle);
+	// 		setLoans(items.loan);
+	// 		setIsLoading(false);
+	// 	}
+	// 	fetchData();
+	// }, []);
 	return (
 		<Section id="explore">
-			{isLoading ? (
-				<LoadingContainer>
-					<LoadingIcon size={64} />
-				</LoadingContainer>
-			) : (
-				<Wrapper>
-					<Navbar>
-						<Heading>Explore</Heading>
-						<StyledNavLink to="/explore">Dive In <ChevronRight /></StyledNavLink>
-					</Navbar>
-					<Container>
-						<OnSaleSection items={onSale} />
-						<AuctionSection items={auctions} />
-						<RaffleSection items={raffles} />
-						<LoansSection items={loans} />
-					</Container>
-				</Wrapper>
-			)}
+			<Wrapper>
+				<Navbar>
+					<Heading>Explore</Heading>
+					<StyledNavLink to="/explore">Dive In <ChevronRight /></StyledNavLink>
+				</Navbar>
+				<Container ref={containerRef}>
+					{isLoading ? (
+						<LoadingContainer>
+							<LoadingIcon size={64} />
+						</LoadingContainer>
+					) : (
+						<>
+							<OnSaleSection items={onSale} />
+							<AuctionSection items={auctions} />
+							<RaffleSection items={raffles} />
+							<LoansSection items={loans} />
+						</>
+					)}
+				</Container>
+			</Wrapper>
 		</Section>
 	)
 }

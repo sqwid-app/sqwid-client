@@ -156,6 +156,8 @@ const AnimBtn = ({ children, ...props }) => (
 const InfoContainer = () => {
 	let about = constants.APP_ABOUT
 
+	const getImage = (dim) => `https://res.cloudinary.com/etjfo/image/upload/${dim}/v1646079322/sqwid/banner.png`
+
 	const isTabletOrMobile = useIsTabletOrMobile();
 	const getMatches = (str) => {
 		let res = []
@@ -196,7 +198,18 @@ const InfoContainer = () => {
 			</ContentContainer>
 			{!isTabletOrMobile && (
 				<ImageContainer>
-					<Image src={`https://res.cloudinary.com/etjfo/image/upload/v1646079322/sqwid/banner.png`} alt="banner" />
+					<Image
+						srcSet={`
+							 	${getImage("f_auto,q_70,w_256")} 256w,
+								${getImage("f_auto,q_70,w_512")} 512w,
+								${getImage("f_auto,q_70,w_768")} 768w,
+								${getImage("f_auto,q_70,w_1024")} 1024w,
+								${getImage("f_auto,q_70,w_1024")} 1280w,
+						`}
+						sizes="(min-width: 30em) 28em, 100vw"
+						src={`https://res.cloudinary.com/etjfo/image/upload/v1646079322/sqwid/banner.png`}
+						alt="banner"
+					/>
 				</ImageContainer>
 			)}
 		</Wrapper>

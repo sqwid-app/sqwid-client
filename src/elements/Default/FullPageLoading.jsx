@@ -52,13 +52,13 @@ const FullPageLoading = ({ delay, ...props }) => {
 	});
 	return (
 		<>
-			{show ? (
+			{show && (
 				<LoadingContainer {...props}>
 					<LoadingIcon size={props.init ? 72 : 48} />
 					<h1>{props.init && `${constants.APP_NAME}`}</h1>
 					{(props.init && props.component) && <p><span>Preparing {props.component} </span><FadeLoaderIcon /></p>}
 				</LoadingContainer >
-			) : null}
+			)}
 		</>
 	)
 }

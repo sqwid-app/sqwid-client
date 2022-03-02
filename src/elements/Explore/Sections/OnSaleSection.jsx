@@ -39,7 +39,7 @@ const OnSaleSection = ({ items }) => {
 	return (
 		<Container>
 			<HeaderSection>
-				<Header>On Sale <span className="emoji">💰</span></Header>
+				<Header>Sale <span className="emoji">💰</span></Header>
 				<StyledNavLink to="/explore/sale">View All <ChevronRight /></StyledNavLink>
 			</HeaderSection>
 			<CardSectionContainer>

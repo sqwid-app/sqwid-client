@@ -21,6 +21,7 @@
 	--app-container-bg-secondary: hsl(236deg 10% 23%);
 	--app-container-check: #0dbe00;
 	--app-modal-btn-primary: hsl(225, 14%, 9%);
+
 	--local-vignette: radial-gradient(transparent, rgba(0, 0, 0, 0.375));
 	// --local-vignette: linear-gradient(
 	// 	90deg,
@@ -34,6 +35,7 @@
 		rgba(var(--app-theme-value), 0.15) 0%,
 		rgba(135, 190, 254, 0.1) 100%
 	);
+
 	--app-banner-bg: var(--local-vignette), var(--local-dot-pattern),
 		var(--local-gradient);
 	--font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana,
