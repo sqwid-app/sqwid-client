@@ -23,11 +23,11 @@ const bgGradientAnimation = keyframes`
 
 const Wrapper = styled.div`
 	position: relative;
-	height: 75vh;
-	max-height: 75vh;
+	height: 36rem;
+	max-height: 36.625rem;
 	width: 100%;
 	background: var(--app-banner-bg);
-	border-radius: 2rem;
+	background-repeat: repeat;
 	display: flex;
 	align-items:center;
 	justify-content: space-around;

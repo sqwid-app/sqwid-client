@@ -10,6 +10,7 @@ import AuctionSection from "@elements/Explore/Sections/AuctionSection";
 import RaffleSection from "@elements/Explore/Sections/RaffleSection";
 import LoansSection from "@elements/Explore/Sections/LoansSection";
 import { NavLink } from "react-router-dom";
+import ChevronRight from "@static/svg/ChevronRight";
 
 const Container = styled.div`
 	padding: 0 6rem;
@@ -28,7 +29,7 @@ const Container = styled.div`
 `
 
 const Wrapper = styled.div`
-	padding: 0 6rem;
+	padding: 0 12rem;
 `
 
 const LoadingContainer = styled.div`
@@ -40,53 +41,69 @@ const LoadingContainer = styled.div`
 
 const Section = styled.section`
 	width: 100%;
-	margin: 6rem 0;
+	margin: 8rem 0;
 `
 
 
 const Navbar = styled.nav`
+	position:relative;
 	display:flex;
 	gap:0.5rem;
-	border-bottom: 0.1rem solid var(--app-container-bg-primary);
-	border-radius: 0.1rem;
+	/* border-bottom: 0.1rem solid var(--app-container-bg-primary); */
 	margin-bottom: 0.5rem;
 	user-select:none;
+	&:after{
+		content:'';
+		display:block;
+		margin-top: auto;
+		width:100%;
+		height:0.15rem;
+		border-radius: 1000rem;
+		background-color:var(--app-container-bg-primary);
+	}
 `
 
-const NavContent = styled(NavLink)`
+const Heading = styled.h1`
+	line-height: 1;
 	position:relative;
-	padding: 0.1rem 0.5rem;
-	font-size: 2rem;
+	margin: 0.1rem 0.5rem;
+	font-size: 3rem;
 	font-weight: 900;
 	color: ${props => props.active ? `inherit` : `var(--app-container-text-primary)`};
-	cursor: pointer;
 	text-decoration:none;
 	display: block;
 	text-decoration: none;
 	color: inherit;
-	font-size: 2rem;
 	font-weight: 900;
 	text-align:left;
 	width: fit-content;
-	transition: color 0.1s;
-	&:hover{
-		color: var(--app-container-text-primary-hover);
-		&:before{
-			border-bottom: 0.1rem solid var(--app-container-text-primary-hover);
-		}
-	}
+	transition: color 0.1s, transform 0.1s;
+	background: var(--app-background);
 	&:before{
 		content: "";
 		height: 100%;
 		width: 100%;
-		left:0;
-		top: 0;
+		background-image: radial-gradient(hsla(240, 6%, 75%, 0.5) 0.5px, transparent 0.5px);
+		background-size: calc(10 * 0.5px) calc(10 * 0.5px);
 		position: absolute;
-		border-bottom: 0.1rem solid var(--app-text);
-		border-radius: 0.1rem;
-		opacity: 0;
-		opacity: ${props => props.active ? `1` : `0`};
-		transition: opacity 0.1s ease;
+		transform: translate(-1rem, 1rem);
+	}
+`
+
+const StyledNavLink = styled(NavLink)`
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	margin-bottom: 0.5rem;
+	display: flex;
+	align-items:center;
+	text-decoration: none;
+	color: var(--app-container-text-primary-hover);
+	font-size: 1rem;
+	font-weight: 800;
+	transition: color 0.2s ease;
+	&:hover{
+		color: var(--app-text);
 	}
 `
 
@@ -116,7 +133,8 @@ const Explore = () => {
 			) : (
 				<Wrapper>
 					<Navbar>
-						<NavContent to="/explore" active>Explore</NavContent>
+						<Heading>Explore</Heading>
+						<StyledNavLink to="/explore">Dive In <ChevronRight /></StyledNavLink>
 					</Navbar>
 					<Container>
 						<OnSaleSection items={onSale} />

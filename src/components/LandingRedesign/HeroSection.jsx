@@ -10,7 +10,6 @@ import Wave from 'react-wavify'
 import Explore from "./Explore";
 
 const Wrapper = styled.div`
-	padding: 0 6rem;
 	display: grid;
 	place-items:center;
 	text-align:center;
