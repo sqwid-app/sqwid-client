@@ -13,9 +13,10 @@ import { NavLink } from "react-router-dom";
 import ChevronRight from "@static/svg/ChevronRight";
 import useOnScreen from "@utils/useOnScreen";
 
+// changed the min height ot 20 instead of 70 to stop the quirky thing
 const Container = styled.div`
 	padding: 0 6rem;
-	min-height: 70vh;
+	min-height: 20vh;
 	max-width: 90rem;
 	margin: 4rem auto;
 	display: flex;
@@ -131,7 +132,13 @@ const Explore = () => {
 	}
 
 	useEffect(() => {
+		// console.log ("isVisible", isVisible);
 		isVisible && (onSale.length === 0) && fetchData();
+		// if (isVisible && (onSale.length === 0)) {
+		// 	fetchData().then(() => {
+		// 		console.log ("fetchData")
+		// 	})
+		// }
 		// console.log(isVisible ? "visible" : "not visible")
 		//eslint-disable-next-line
 	}, [isVisible])
@@ -150,15 +157,16 @@ const Explore = () => {
 	return (
 		<Section id="explore">
 			<Wrapper>
-				<Navbar>
+				{/* <Navbar>
 					<Heading>Explore</Heading>
 					<StyledNavLink to="/explore">Dive In <ChevronRight /></StyledNavLink>
-				</Navbar>
+				</Navbar> */}
 				<Container ref={containerRef}>
 					{isLoading ? (
-						<LoadingContainer>
-							<LoadingIcon size={64} />
-						</LoadingContainer>
+						// <LoadingContainer>
+						// 	<LoadingIcon size={64} />
+						// </LoadingContainer>
+						<></>
 					) : (
 						<>
 							<OnSaleSection items={onSale} />
