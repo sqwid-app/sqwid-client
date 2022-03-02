@@ -23,8 +23,7 @@ const bgGradientAnimation = keyframes`
 
 const Wrapper = styled.div`
 	position: relative;
-	height: 36rem;
-	max-height: 36.625rem;
+	height:40rem;
 	width: 100%;
 	background: var(--app-banner-bg);
 	background-repeat: repeat;
@@ -54,7 +53,7 @@ const Wrapper = styled.div`
 	h2{
 		margin-top:2rem;
 		font-weight: 500;
-		font-size: 1.25rem;
+		font-size: 1.125rem;
 		width: 25rem;
 		color: var(--app-container-text-primary-hover);
 	}

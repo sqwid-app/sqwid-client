@@ -10,6 +10,13 @@ import Wave from 'react-wavify'
 import Explore from "./Explore";
 import { Suspense } from "react";
 import LoadingIcon from "@static/svg/LoadingIcon";
+import { NavLink } from "react-router-dom";
+import ChevronRight from "@static/svg/ChevronRight";
+
+const ExploreContainer = styled.div`
+	margin: 4rem auto;
+	width: 100%;
+`
 
 const Wrapper = styled.div`
 	display: grid;
@@ -64,6 +71,10 @@ const Btn = styled(BtnBaseAnimated)`
 	justify-content:center;
 `
 
+const NavWrapper = styled.div`
+	padding: 0 12rem;
+	width: 100%;
+`
 
 const LoadingContainer = styled.div`
 	height: 70vh;
@@ -120,6 +131,23 @@ const Heading = styled.h1`
 	}
 `
 
+const StyledNavLink = styled(NavLink)`
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	margin-bottom: 0.5rem;
+	display: flex;
+	align-items:center;
+	text-decoration: none;
+	color: var(--app-container-text-primary-hover);
+	font-size: 1rem;
+	font-weight: 800;
+	transition: color 0.2s ease;
+	&:hover{
+		color: var(--app-text);
+	}
+`
+
 const AnimBtn = ({ children, ...props }) => (
 	<Btn
 		whileTap={{
@@ -140,6 +168,8 @@ const MobileContainer = () => {
 	)
 }
 
+
+
 const HeroSection = () => {
 	const isTabletOrMobile = useIsTabletOrMobile();
 	return (
@@ -149,19 +179,28 @@ const HeroSection = () => {
 				{isTabletOrMobile && (
 					<MobileContainer />
 				)}
-				<Navbar>
-					<Heading>Dive&nbsp;in</Heading>
-				</Navbar>
-				<Suspense fallback={
-					<LoadingContainer>
-						<LoadingIcon size={64} />
-					</LoadingContainer>
-				}>
-					<Explore />
-				</Suspense>
+				<ExploreContainer>
+					<NavWrapper>
+						<Navbar>
+							<Heading>Explore</Heading>
+							<StyledNavLink to="/explore">Dive In <ChevronRight /></StyledNavLink>
+						</Navbar>
+					</NavWrapper>
+					<Suspense fallback={
+						<Loader />
+					}>
+						<Explore />
+					</Suspense>
+				</ExploreContainer>
 			</Wrapper>
 		</>
 	)
+}
+
+const Loader = () => {
+	return (<LoadingContainer>
+		<LoadingIcon size={64} />
+	</LoadingContainer>);
 }
 
 export default HeroSection
