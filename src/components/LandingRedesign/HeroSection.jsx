@@ -8,6 +8,8 @@ import { LazyMotion, domAnimation } from "framer-motion";
 //eslint-disable-next-line
 import Wave from 'react-wavify'
 import Explore from "./Explore";
+import { Suspense } from "react";
+import LoadingIcon from "@static/svg/LoadingIcon";
 
 const Wrapper = styled.div`
 	display: grid;
@@ -62,6 +64,62 @@ const Btn = styled(BtnBaseAnimated)`
 	justify-content:center;
 `
 
+
+const LoadingContainer = styled.div`
+	height: 70vh;
+	width: 100%;
+	display: grid;
+	place-items:center;
+`
+
+const Navbar = styled.nav`
+	position:relative;
+	z-index: 1;
+	display:flex;
+	gap:0.5rem;
+	/* border-bottom: 0.1rem solid var(--app-container-bg-primary); */
+	margin-bottom: 0.5rem;
+	user-select:none;
+	&:after{
+		content:'';
+		display:block;
+		margin-top: auto;
+		width:100%;
+		height:0.15rem;
+		border-radius: 1000rem;
+		background-color:var(--app-container-bg-primary);
+	}
+`
+
+const Heading = styled.h1`
+	line-height: 1;
+	position:relative;
+	margin: 0.1rem 0.5rem;
+	font-size: 3rem;
+	font-weight: 900;
+	color: ${props => props.active ? `inherit` : `var(--app-container-text-primary)`};
+	text-decoration:none;
+	display: block;
+	text-decoration: none;
+	color: inherit;
+	font-weight: 900;
+	text-align:left;
+	width: fit-content;
+	transition: color 0.1s, transform 0.1s;
+	padding: 0.2rem;
+	text-shadow: -0.2rem 0.1rem 0 var(--app-theme-primary);
+	&:before{
+		content: "";
+		height: 100%;
+		width: 100%;
+		background-image: radial-gradient(hsla(240, 6%, 75%, 0.5) 0.75px, transparent 0.75px);
+		background-size: calc(10 * 0.75px) calc(10 * 0.75px);
+		z-index: -1;
+		position: absolute;
+		transform: translate(-1rem, 1rem);
+	}
+`
+
 const AnimBtn = ({ children, ...props }) => (
 	<Btn
 		whileTap={{
@@ -91,7 +149,16 @@ const HeroSection = () => {
 				{isTabletOrMobile && (
 					<MobileContainer />
 				)}
-				<Explore />
+				<Navbar>
+					<Heading>Dive&nbsp;in</Heading>
+				</Navbar>
+				<Suspense fallback={
+					<LoadingContainer>
+						<LoadingIcon size={64} />
+					</LoadingContainer>
+				}>
+					<Explore />
+				</Suspense>
 			</Wrapper>
 		</>
 	)
