@@ -14,7 +14,6 @@ import useOnScreen from "@utils/useOnScreen";
 const Container = styled.div`
 	padding: 0 6rem;
 	min-height: 20vh;
-	max-width: 90rem;
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
@@ -55,36 +54,14 @@ const Explore = () => {
 	}
 
 	useEffect(() => {
-		// console.log ("isVisible", isVisible);
 		isVisible && (onSale.length === 0) && fetchData();
-		// if (isVisible && (onSale.length === 0)) {
-		// 	fetchData().then(() => {
-		// 		console.log ("fetchData")
-		// 	})
-		// }
-		// console.log(isVisible ? "visible" : "not visible")
 		//eslint-disable-next-line
 	}, [isVisible])
 
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const items = await fetchMarketplaceItems();
-	// 		setOnSale(items.sale);
-	// 		setAuctions(items.auction);
-	// 		setRaffles(items.raffle);
-	// 		setLoans(items.loan);
-	// 		setIsLoading(false);
-	// 	}
-	// 	fetchData();
-	// }, []);
 	return (
 		<Section id="explore">
 			<Wrapper>
-				{/* <Navbar>
-					<Heading>Explore</Heading>
-					<StyledNavLink to="/explore">Dive In <ChevronRight /></StyledNavLink>
-				</Navbar> */}
-				<Container ref={containerRef}>
+				<Container id="explore" ref={containerRef}>
 					{!isLoading && (
 						<>
 							<OnSaleSection items={onSale} />

@@ -185,8 +185,8 @@ const InfoContainer = () => {
 					<BtnContainer>
 						<LazyMotion features={domAnimation}>
 							<AnimBtn
-								href="/explore"
-							>Explore</AnimBtn>
+								href="/#explore"
+							>Dive In</AnimBtn>
 							<AnimBtn
 								outline
 								href="/create"

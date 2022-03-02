@@ -183,7 +183,7 @@ const HeroSection = () => {
 					<NavWrapper>
 						<Navbar>
 							<Heading>Explore</Heading>
-							<StyledNavLink to="/explore">Dive In <ChevronRight /></StyledNavLink>
+							<StyledNavLink to="/explore">View All <ChevronRight /></StyledNavLink>
 						</Navbar>
 					</NavWrapper>
 					<Suspense fallback={
