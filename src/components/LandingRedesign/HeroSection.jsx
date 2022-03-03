@@ -12,6 +12,7 @@ import { Suspense } from "react";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { NavLink } from "react-router-dom";
 import ChevronRight from "@static/svg/ChevronRight";
+import Footer from "./Footer";
 
 const ExploreContainer = styled.div`
 	margin: 4rem auto;
@@ -25,8 +26,7 @@ const Wrapper = styled.div`
 
 	${respondTo.md`
 		height: 90vh;
-		grid-template-rows: none;
-		grid-template-columns: none;
+		display: block;
 		padding: 0 2rem;
 	`}
 `
@@ -186,13 +186,12 @@ const HeroSection = () => {
 							<StyledNavLink to="/explore">View All <ChevronRight /></StyledNavLink>
 						</Navbar>
 					</NavWrapper>
-					<Suspense fallback={
-						<Loader />
-					}>
+					<Suspense fallback={<Loader />}>
 						<Explore />
 					</Suspense>
 				</ExploreContainer>
 			</Wrapper>
+			<Footer />
 		</>
 	)
 }

@@ -4,6 +4,10 @@ const constants = {
 	APP_ABOUT: "%APP_NAME% aims to build a new creative economy — a world where creators can use the Reef blockchain to value their work in entirely new ways, and build stronger connections with their supporters.",
 	APP_WEBSITE: "https://sqwid.app",
 	APP_SCAN_BASE_URL: "https://reefscan.com",
+	SOCIAL: {
+		TWITTER_HANDLE: "sqwid-app",
+		GITHUB_HANDLE: "sqwid-app",
+	},
 	STATE_TYPES: [
 		"Available",
 		"Sale",

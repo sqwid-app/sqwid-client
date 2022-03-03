@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
-import { Init } from "@utils/connect";
 import AccountSelect from "./AccountSelect";
 import { LazyMotion, domAnimation } from "framer-motion";
 import AuthContext from "@contexts/Auth/AuthContext";
 import Loading from "@elements/Default/Loading";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import InfoBtn from "./InfoBtn";
+import AccountSelectContext from "@contexts/AccountSelect/AccountSelectContext";
 
 const Btn = styled(BtnBaseAnimated)`
 	display: flex;
@@ -29,23 +29,20 @@ const AnimBtn = ({ children, onClick }) => (
 )
 
 const SignInBtn = () => {
-	const [isSelectionActive, setIsSelectionActive] = useState(false)
-	const [currentAccounts, setCurrentAccounts] = useState(null);
+	const {
+		isSelectionActive,
+		setIsSelectionActive,
+		currentAccounts,
+		handleInit,
+	} = useContext(AccountSelectContext)
 	const [username, setUsername] = useState("")
 	const { loading, auth } = useContext(AuthContext);
-	const handleClick = () => {
-		(async () => {
-			let accs = await Init();
-			setCurrentAccounts(accs);
-		})();
-		setIsSelectionActive(!isSelectionActive)
-	}
 	useEffect(() => {
 		auth && setUsername(auth.meta.name)
 	}, [auth])
 	return (
 		<LazyMotion features={domAnimation}>
-			<AnimBtn onClick={handleClick}>
+			<AnimBtn onClick={handleInit}>
 				{loading ? (
 					<Loading navbar />
 				) : (

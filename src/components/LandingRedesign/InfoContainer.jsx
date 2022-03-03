@@ -1,9 +1,12 @@
+import AccountSelectContext from "@contexts/AccountSelect/AccountSelectContext";
+import AuthContext from "@contexts/Auth/AuthContext";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import { respondTo } from "@styles/styledMediaQuery";
 import constants from "@utils/constants";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import { domAnimation, LazyMotion } from "framer-motion";
-import React from "react";
+import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
 
 const bgGradientAnimation = keyframes`
@@ -47,7 +50,7 @@ const Wrapper = styled.div`
 		width: 25rem;
 		-webkit-text-fill-color: transparent;
 		cursor: pointer;
-		animation: ${bgGradientAnimation} 10s ease infinite;
+		/* animation: ${bgGradientAnimation} 10s ease infinite; */
 		user-select: none;
 	}
 	h2{
@@ -58,15 +61,13 @@ const Wrapper = styled.div`
 		color: var(--app-container-text-primary-hover);
 	}
 	${respondTo.md`
+	    display: block;
 		padding-left: 0;
 		background: transparent;
 		h1{
-			width: 100%;
 			font-size: 3rem;
-			text-align:center;
 		}
 		h2{
-			text-align:justify;
 			margin-right:0;
 			width: 100%;
 		}
@@ -101,6 +102,9 @@ const outline = css`
 	); */
 	background: transparent;
 	color: var(--app-theme-text);
+	${respondTo.md`
+		display: none;
+	`}
 `
 
 const BtnContainer = styled.div`
@@ -153,9 +157,13 @@ const AnimBtn = ({ children, ...props }) => (
 )
 
 const InfoContainer = () => {
-	let about = constants.APP_ABOUT
+	const { handleInit } = useContext(AccountSelectContext)
+	const history = useHistory()
+	const { auth } = useContext(AuthContext);
 
 	const getImage = (dim) => `https://res.cloudinary.com/etjfo/image/upload/${dim}/v1646079322/sqwid/banner.png`
+
+	let about = constants.APP_ABOUT
 
 	const isTabletOrMobile = useIsTabletOrMobile();
 	const getMatches = (str) => {
@@ -175,43 +183,47 @@ const InfoContainer = () => {
 		about = about.replace(`%${match}%`, constants[match])
 	});
 
+	const handleClick = () => {
+		auth ? handleInit("/create") : history.push("/create")
+	}
+
 	return (
-		<Wrapper>
-			<ContentContainer>
-				<h1>{constants.APP_DESCRIPTION}</h1>
-				<h2>{about}</h2>
-				{/* <h2>{constants.APP_DESCRIPTION}</h2> */}
-				{!isTabletOrMobile && (
+		<>
+			<Wrapper>
+				<ContentContainer>
+					<h1>{constants.APP_DESCRIPTION}</h1>
+					<h2>{about}</h2>
+					{/* <h2>{constants.APP_DESCRIPTION}</h2> */}
 					<BtnContainer>
 						<LazyMotion features={domAnimation}>
 							<AnimBtn
 								href="/#explore"
 							>Dive In</AnimBtn>
 							<AnimBtn
+								onClick={handleClick}
 								outline
-								href="/create"
 							>Create</AnimBtn>
 						</LazyMotion>
 					</BtnContainer>
+				</ContentContainer>
+				{!isTabletOrMobile && (
+					<ImageContainer>
+						<Image
+							srcSet={`
+									${getImage("f_auto,q_70,w_256")} 256w,
+									${getImage("f_auto,q_70,w_512")} 512w,
+									${getImage("f_auto,q_70,w_768")} 768w,
+									${getImage("f_auto,q_70,w_1024")} 1024w,
+									${getImage("f_auto,q_70,w_1024")} 1280w,
+							`}
+							sizes="(min-width: 30em) 28em, 100vw"
+							src={`https://res.cloudinary.com/etjfo/image/upload/v1646079322/sqwid/banner.png`}
+							alt="banner"
+						/>
+					</ImageContainer>
 				)}
-			</ContentContainer>
-			{!isTabletOrMobile && (
-				<ImageContainer>
-					<Image
-						srcSet={`
-							 	${getImage("f_auto,q_70,w_256")} 256w,
-								${getImage("f_auto,q_70,w_512")} 512w,
-								${getImage("f_auto,q_70,w_768")} 768w,
-								${getImage("f_auto,q_70,w_1024")} 1024w,
-								${getImage("f_auto,q_70,w_1024")} 1280w,
-						`}
-						sizes="(min-width: 30em) 28em, 100vw"
-						src={`https://res.cloudinary.com/etjfo/image/upload/v1646079322/sqwid/banner.png`}
-						alt="banner"
-					/>
-				</ImageContainer>
-			)}
-		</Wrapper>
+			</Wrapper>
+		</>
 	)
 }
 

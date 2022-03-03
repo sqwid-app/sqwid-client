@@ -12,6 +12,8 @@ import constants from "@utils/constants";
 import SimpleBar from "simplebar-react";
 import "simplebar/src/simplebar.css";
 import { defaultNetwork } from "@constants/networks";
+import { useHistory } from "react-router-dom";
+import AccountSelectContext from "@contexts/AccountSelect/AccountSelectContext";
 
 const StyledSimpleBar = styled(SimpleBar)`
 	min-width:12rem;
@@ -201,6 +203,7 @@ const elemContains = (rect, x, y) => {
 }
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
+	const { redirect } = useContext(AccountSelectContext)
 	const [elemIsVisible, setElemIsVisible] = useState(isActive)
 	const initialNetwork = localStorage.getItem(`${constants.APP_NAME}__chosen_network`)
 	const [chosenNetwork, setChosenNetwork] = useState(initialNetwork || defaultNetwork)
@@ -219,6 +222,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 	const [alertIsVisible, setAlertIsVisible] = useState(alert.isActive)
 	const modalRef = useRef()
 	const alertRef = useRef()
+	const history = useHistory()
 	//eslint-disable-next-line
 	const [selectedAccount, setSelectedAccount] = useState(null);
 	const _onAccountChange = async (val) => {
@@ -239,6 +243,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 					// console.log ('evm account is claimed');
 					login({ auth: { ...account, evmAddress: acc } });
 					setIsActive(false);
+					redirect.length !== 0 && history.push(redirect)
 				}
 			})
 			.catch(err => {

@@ -14,6 +14,7 @@
 		var(--app-theme-value),
 		var(--app-theme-opacity)
 	);
+	--app-theme-primary-dark: rgba(var(--app-theme-value), 0.1);
 	--app-theme-primary-disabled: rgb(11, 77, 159);
 	--app-container-bg-primary: hsl(240, 10%, 16%);
 	--app-container-text-primary: rgb(120, 121, 135);
@@ -21,6 +22,8 @@
 	--app-container-bg-secondary: hsl(236deg 10% 23%);
 	--app-container-check: #0dbe00;
 	--app-modal-btn-primary: hsl(225, 14%, 9%);
+
+	--wave-start-opacity: 0.6;
 
 	--local-vignette: radial-gradient(transparent, rgba(0, 0, 0, 0.375));
 	// --local-vignette: linear-gradient(

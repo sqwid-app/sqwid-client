@@ -55,7 +55,7 @@ const LinkGroups = () => {
 	const { auth } = useContext(AuthContext)
 	const isLoggedIn = auth !== null
 	const routes = [{
-		name: "On Sale",
+		name: "Sale",
 		link: "/explore/sale"
 	}, {
 		name: "Auctions",

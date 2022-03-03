@@ -9,7 +9,7 @@ import { respondTo } from "@styles/styledMediaQuery";
 import constants from "@utils/constants";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import { useCycle } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Nav = styled.nav`
@@ -24,8 +24,20 @@ const Nav = styled.nav`
 	backdrop-filter: ${props => props.blur ? `blur(5px) brightness(0.75)` : `none`};
 	z-index: 50;
 	top:0;
-	border-bottom: ${props => props.blur ? `1px` : `0`} solid var(--app-container-bg-primary);
-	transition: backdrop-filter 0.2s ease, border-bottom 0.1s ease;
+	/* border-bottom: ${props => props.blur ? `1px` : `0`} solid var(--app-container-bg-primary); */
+	transition: backdrop-filter 0.2s ease;
+	&:after{
+		position: absolute;
+		content: "";
+		bottom:0;
+		left:0;
+		background: var(--app-container-bg-primary);
+		height: 1px;
+		width: 100%;
+		display: block;
+		opacity: ${props => props.blur ? `1` : `0`};
+		z-index:-1;
+	}
 	${respondTo.md`
 		padding: 1.25rem 1.5rem;
 	`}
@@ -62,7 +74,6 @@ const Navbar = React.memo(() => {
 	const [isAtTop, setIsAtTop] = useState(true)
 	const isTabletOrMobile = useIsTabletOrMobile();
 	const [isOpen, toggleOpen] = useCycle(false, true);
-	const logoRef = useRef();
 	const offsetLimit = 20;
 	useEffect(() => {
 		window.onscroll = () => {
@@ -73,7 +84,7 @@ const Navbar = React.memo(() => {
 	});
 	return (
 		<Nav blur={!isAtTop}>
-			<LogoContainer href="/" ref={logoRef} className="animate-icon">
+			<LogoContainer href="/" className="animate-icon">
 				<LogoIcon />
 				<span>{constants.APP_NAME}</span>
 			</LogoContainer>
