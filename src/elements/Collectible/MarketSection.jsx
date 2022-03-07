@@ -638,15 +638,18 @@ const Config2 = () => {
 const Config3 = () => {
 	// state-0 / not owned
 	const [showBuyModal, setShowBuyModal] = useState(false);
+	const { auth } = useContext(AuthContext);
 	return (
 		<BottomContainer>
 			<RightContainer>
 				<CurrentPrice />
 			</RightContainer>
-			<AnimBtn onClick={() => setShowBuyModal(!showBuyModal)}>
-				Buy
-			</AnimBtn>
-			<BuyModal isActive={showBuyModal} setIsActive={setShowBuyModal} />
+			{ auth && (
+				<AnimBtn onClick={() => setShowBuyModal(!showBuyModal)}>
+					Buy
+				</AnimBtn>
+			 ) }
+			 <BuyModal isActive={showBuyModal} setIsActive={setShowBuyModal} />
 		</BottomContainer>
 	);
 };
@@ -657,6 +660,7 @@ const Config4 = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState("Unlist");
 	const { collectibleInfo } = useContext(CollectibleContext);
+	const { auth } = useContext(AuthContext);
 	const handleClick = async () => {
 		setButtonText(<Loading />);
 		setIsLoading(true);
@@ -674,9 +678,11 @@ const Config4 = () => {
 			<RightContainer>
 				<CurrentPrice />
 			</RightContainer>
-			<AnimBtn disabled={isLoading} onClick={handleClick}>
-				{buttonText}
-			</AnimBtn>
+			{ auth && (
+				<AnimBtn disabled={isLoading} onClick={handleClick}>
+					{buttonText}
+				</AnimBtn>
+			) }
 		</BottomContainer>
 	);
 };
@@ -685,6 +691,7 @@ const Config5 = () => {
 	// state-2 / not owned / active / not highest bidder
 
 	const [showBidsModal, setShowBidsModal] = useState(false);
+	const { auth } = useContext(AuthContext);
 
 	return (
 		<BottomWrapper>
@@ -693,14 +700,16 @@ const Config5 = () => {
 				<MinimumBid />
 				<HighestBid />
 			</TopSection>
-			<BottomContainer parent={false}>
-				<RightContainer>
-					<MyAuctionBid />
-				</RightContainer>
-				<AnimBtn onClick={() => setShowBidsModal(!showBidsModal)}>
-					Bid
-				</AnimBtn>
-			</BottomContainer>
+			{ auth && (
+				<BottomContainer parent={false}>
+					<RightContainer>
+						<MyAuctionBid />
+					</RightContainer>
+					<AnimBtn onClick={() => setShowBidsModal(!showBidsModal)}>
+						Bid
+					</AnimBtn>
+				</BottomContainer>
+			) }
 			<BidsModal
 				isActive={showBidsModal}
 				setIsActive={setShowBidsModal}
@@ -712,6 +721,7 @@ const Config5 = () => {
 const Config6 = () => {
 	// state-2 / not owned / active / highest bidder
 	const [showBidsModal, setShowBidsModal] = useState(false);
+	const { auth } = useContext(AuthContext);
 
 	return (
 		<BottomWrapper>
@@ -720,14 +730,16 @@ const Config6 = () => {
 				<MinimumBid />
 				<HighestBid />
 			</TopSection>
-			<BottomContainer parent={false}>
-				<RightContainer>
-					<MyAuctionBid />
-				</RightContainer>
-				<AnimBtn onClick={() => setShowBidsModal(!showBidsModal)}>
-					Increase Bid
-				</AnimBtn>
-			</BottomContainer>
+			{ auth && (
+				<BottomContainer parent={false}>
+					<RightContainer>
+						<MyAuctionBid />
+					</RightContainer>
+					<AnimBtn onClick={() => setShowBidsModal(!showBidsModal)}>
+						Increase Bid
+					</AnimBtn>
+				</BottomContainer>
+			) }
 			<BidsModal
 				isActive={showBidsModal}
 				setIsActive={setShowBidsModal}
@@ -742,6 +754,7 @@ const Config7 = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState("Finalize");
 	const { collectibleInfo } = useContext(CollectibleContext);
+	const { auth } = useContext(AuthContext);
 	const handleClick = async () => {
 		setButtonText(<Loading />);
 		setIsLoading(true);
@@ -762,9 +775,11 @@ const Config7 = () => {
 				<HighestBid />
 			</TopSection>
 			<BottomContainer parent={false}>
-				<AnimBtn disabled={isLoading} onClick={handleClick}>
-					{buttonText}
-				</AnimBtn>
+				{ auth && (
+					<AnimBtn disabled={isLoading} onClick={handleClick}>
+						{buttonText}
+					</AnimBtn>
+				)}
 			</BottomContainer>
 		</BottomWrapper>
 	);
@@ -793,6 +808,7 @@ const Config9 = () => {
 const Config10 = () => {
 	// state-3 / not owned / active
 	const [showEnterRaffleModal, setShowEnterRaffleModal] = useState(false);
+	const { auth } = useContext(AuthContext);
 	return (
 		<BottomWrapper>
 			<TopSection>
@@ -808,13 +824,15 @@ const Config10 = () => {
 				</TopSectionContainer>
 			</TopSection>
 			<BottomContainer parent={false}>
-				<AnimBtn
-					onClick={() =>
-						setShowEnterRaffleModal(!showEnterRaffleModal)
-					}
-				>
-					Participate
-				</AnimBtn>
+				{ auth && (
+					<AnimBtn
+						onClick={() =>
+							setShowEnterRaffleModal(!showEnterRaffleModal)
+						}
+					>
+						Participate
+					</AnimBtn>
+				) }
 			</BottomContainer>
 			<EnterRaffleModal
 				isActive={showEnterRaffleModal}
@@ -831,6 +849,7 @@ const Config11 = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState("Finalize");
 	const { collectibleInfo } = useContext(CollectibleContext);
+	const { auth } = useContext(AuthContext);
 	const handleClick = async () => {
 		setButtonText(<Loading />);
 		setIsLoading(true);
@@ -858,9 +877,11 @@ const Config11 = () => {
 				</TopSectionContainer>
 			</TopSection>
 			<BottomContainer parent={false}>
-				<AnimBtn disabled={isLoading} onClick={handleClick}>
-					{buttonText}
-				</AnimBtn>
+				{ auth && (
+					<AnimBtn disabled={isLoading} onClick={handleClick}>
+						{buttonText}
+					</AnimBtn>
+				) }
 			</BottomContainer>
 		</BottomWrapper>
 	);
@@ -891,6 +912,7 @@ const Config14 = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState("Fund");
 	const { collectibleInfo } = useContext(CollectibleContext);
+	const { auth } = useContext(AuthContext);
 	const handleClick = async () => {
 		setButtonText(<Loading />);
 		setIsLoading(true);
@@ -916,9 +938,11 @@ const Config14 = () => {
 				<RightContainer>
 					<CurrentPrice />
 				</RightContainer>
-				<AnimBtn disabled={isLoading} onClick={handleClick}>
-					{buttonText}
-				</AnimBtn>
+				{ auth && (
+					<AnimBtn disabled={isLoading} onClick={handleClick}>
+						{buttonText}
+					</AnimBtn>
+				) }
 			</BottomContainer>
 		</BottomWrapper>
 	);
@@ -955,6 +979,7 @@ const Config17 = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState("Liquidate");
 	const { collectibleInfo } = useContext(CollectibleContext);
+	const { auth } = useContext(AuthContext);
 	const handleClick = async () => {
 		setButtonText(<Loading />);
 		setIsLoading(true);
@@ -977,9 +1002,11 @@ const Config17 = () => {
 				<RightContainer>
 					<CurrentPrice />
 				</RightContainer>
-				<AnimBtn disabled={isLoading} onClick={handleClick}>
-					{buttonText}
-				</AnimBtn>
+				{ auth && (
+					<AnimBtn disabled={isLoading} onClick={handleClick}>
+						{buttonText}
+					</AnimBtn>
+				) }
 			</BottomContainer>
 		</BottomWrapper>
 	);
@@ -991,6 +1018,7 @@ const Config18 = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState("Unlist");
 	const { collectibleInfo } = useContext(CollectibleContext);
+	const { auth } = useContext(AuthContext);
 	const handleClick = async () => {
 		setButtonText(<Loading />);
 		setIsLoading(true);
@@ -1013,9 +1041,11 @@ const Config18 = () => {
 				<RightContainer>
 					<CurrentPrice />
 				</RightContainer>
-				<AnimBtn disabled={isLoading} onClick={handleClick}>
-					{buttonText}
-				</AnimBtn>
+				{ auth && (
+					<AnimBtn disabled={isLoading} onClick={handleClick}>
+						{buttonText}
+					</AnimBtn>
+				) }
 			</BottomContainer>
 		</BottomWrapper>
 	);
@@ -1027,6 +1057,7 @@ const Config19 = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState("Repay");
 	const { collectibleInfo } = useContext(CollectibleContext);
+	const { auth } = useContext(AuthContext);
 	const handleClick = async () => {
 		setButtonText(<Loading />);
 		setIsLoading(true);
@@ -1054,9 +1085,11 @@ const Config19 = () => {
 				<RightContainer>
 					<CurrentPrice />
 				</RightContainer>
-				<AnimBtn disabled={isLoading} onClick={handleClick}>
-					{buttonText}
-				</AnimBtn>
+				{ auth && (
+					<AnimBtn disabled={isLoading} onClick={handleClick}>
+						{buttonText}
+					</AnimBtn>
+				) }
 			</BottomContainer>
 		</BottomWrapper>
 	);
