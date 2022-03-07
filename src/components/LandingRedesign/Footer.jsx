@@ -30,11 +30,11 @@ const Container = styled.div`
 	display: grid;
 	grid-template-columns: minmax(75%, 1fr) repeat(2, minmax(0, 1fr));
 	grid-template-rows: 1fr minmax(0, auto);
+	text-align: left;
 	${respondTo.md`
 		grid-template-rows: repeat(3, minmax(0, auto));
 		grid-template-columns: 1fr minmax(0, auto);
 		padding: 3rem;
-		text-align:left;
 		row-gap: 2rem;
 		padding-bottom: 4rem;
 	`}
