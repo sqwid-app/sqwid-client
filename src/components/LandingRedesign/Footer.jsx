@@ -33,7 +33,7 @@ const Container = styled.div`
 	${respondTo.md`
 		grid-template-rows: repeat(3, minmax(0, auto));
 		grid-template-columns: 1fr minmax(0, auto);
-		padding: 2rem;
+		padding: 3rem;
 		text-align:left;
 		row-gap: 2rem;
 	`}
@@ -100,6 +100,9 @@ const LinksContainer = styled.div`
 			text-underline-thickness: 0.1rem;
 		}
 	}
+	${respondTo.md`
+		padding: 0;
+	`}
 `;
 
 const BottomContainer = styled.div`
@@ -119,6 +122,9 @@ const Copyright = styled.p`
 	font-weight: 700;
 	font-size: 0.875rem;
 	color: var(--app-container-text-primary-hover);
+	${respondTo.md`
+		font-size: 0.75rem;
+	`}
 `;
 
 const IconsWrapper = styled.div`

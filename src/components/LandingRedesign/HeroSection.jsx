@@ -57,6 +57,11 @@ const MobileSection = styled.div`
 	align-items: center;
 	padding: 2rem;
 	gap: 2rem;
+	background: linear-gradient(
+		180deg,
+		transparent 50%,
+		var(--app-background) 100%
+	);
 	p {
 		color: var(--app-container-text-primary);
 		text-align: center;
