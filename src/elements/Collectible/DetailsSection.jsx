@@ -9,6 +9,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
 import { respondTo } from "@styles/styledMediaQuery";
+import { getContract } from "@utils/network";
 
 const Wrapper = styled.div``;
 
@@ -380,7 +381,10 @@ const MetadataSection = () => {
 };
 
 const ScanSection = () => {
-	const url = `${constants.APP_SCAN_BASE_URL}/`;
+	// https://reefscan.com/contract/0x5043dFAc2D67A381A6315ce9097F37954eCCCc2f
+	const url = `${constants.APP_SCAN_BASE_URL}/contract/${getContract(
+		"erc1155"
+	)}`;
 	return (
 		<HTMLLinkWrapper target="_blank" rel="noopener noreferrer" href={url}>
 			<ReefIcon />
