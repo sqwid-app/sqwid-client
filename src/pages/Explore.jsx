@@ -1,7 +1,9 @@
-import Wrapper from '@components/Default/Wrapper'
-import FullPageLoading from '@elements/Default/FullPageLoading'
-import React, { Suspense } from 'react'
-const HeroSection = React.lazy(() => import("@components/ExploreRedesign/HeroSection"))
+import Wrapper from "@components/Default/Wrapper";
+import FullPageLoading from "@elements/Default/FullPageLoading";
+import React, { Suspense } from "react";
+const HeroSection = React.lazy(() =>
+	import("@components/ExploreRedesign/HeroSection")
+);
 
 const Landing = () => {
 	return (
@@ -10,7 +12,7 @@ const Landing = () => {
 				<HeroSection />
 			</Wrapper>
 		</Suspense>
-	)
-}
+	);
+};
 
-export default Landing
+export default Landing;

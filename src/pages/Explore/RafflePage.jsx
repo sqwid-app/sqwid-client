@@ -5,7 +5,9 @@ import styled from "styled-components";
 // import RecentlyListed from "./RecentlyListed";
 // import RecentlyListedPaginated from "@components/ExploreRedesign/RecentlyListedPaginated";
 import PaginatedCards from "@elements/Explore/Cards/Default/PaginatedCards";
-const RaffleCard = React.lazy(() => import("@elements/Explore/Cards/Raffle/RaffleCard"));
+const RaffleCard = React.lazy(() =>
+	import("@elements/Explore/Cards/Raffle/RaffleCard")
+);
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -21,27 +23,29 @@ const Wrapper = styled.div`
 			padding-left: 3rem;
 		}
 	`}
-`
+`;
 
 const Container = styled.div`
 	width: 100%;
-`
+`;
 
 const Header = styled.h1`
 	font-weight: 900;
-`
+`;
 
 const RafflePage = () => {
 	return (
 		<>
 			<Wrapper>
 				<Container>
-					<Header>Raffles <span className="emoji">🎲</span></Header>
+					<Header>
+						Raffles <span className="emoji">🎲</span>
+					</Header>
 					<PaginatedCards Card={RaffleCard} state={3} />
 				</Container>
 			</Wrapper>
 		</>
-	)
-}
+	);
+};
 
-export default RafflePage
+export default RafflePage;

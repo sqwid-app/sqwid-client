@@ -26,12 +26,7 @@
 	--wave-start-opacity: 0.6;
 
 	--local-vignette: radial-gradient(transparent, rgba(0, 0, 0, 0.375));
-	// --local-vignette: linear-gradient(
-	// 	90deg,
-	// 	rgba(0, 0, 0, 0.375) 0%,
-	// 	transparent 50%,
-	// 	rgba(0, 0, 0, 0.375) 100%
-	// );
+	--local-vignette-sm: radial-gradient(transparent, rgba(0, 0, 0, 0.25));
 	--local-dot-pattern: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAIklEQVRIiWMYBaNgFIwCKoP9L/+7j4bpKBgFo2DIAQYGBgDwnwLvd3/wDQAAAABJRU5ErkJggg==);
 	--local-gradient: linear-gradient(
 		calc(90deg + var(--img-angle)),
@@ -40,6 +35,8 @@
 	);
 
 	--app-banner-bg: var(--local-vignette), var(--local-dot-pattern),
+		var(--local-gradient);
+	--app-banner-bg-sm: var(--local-vignette-sm), var(--local-dot-pattern),
 		var(--local-gradient);
 	--font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana,
 		sans-serif;
@@ -124,4 +121,8 @@ code {
 	padding: 0.25rem;
 	border-radius: 0.375rem;
 	font-weight: 500;
+}
+
+footer {
+	width: 100%;
 }

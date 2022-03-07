@@ -8,10 +8,10 @@ const Wrapper = styled.div`
 	position: relative;
 	padding: 0.5rem 0;
 	width: 100%;
-	flex:1;
+	flex: 1;
 	${respondTo.md`
 		margin: 0;
 	`}
-`
+`;
 
-export default Wrapper
+export default Wrapper;

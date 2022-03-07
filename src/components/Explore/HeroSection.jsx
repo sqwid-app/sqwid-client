@@ -20,29 +20,35 @@ const Wrapper = styled.div`
 			padding-left: 3rem;
 		}
 	`}
-`
+`;
 
 const LoadingContainer = styled.div`
 	height: 70vh;
 	width: 100%;
 	display: grid;
-	place-items:center;
-`
+	place-items: center;
+`;
 
 const HeroSection = () => {
 	const [hotBids, setHotBids] = useState([]);
 	const [recentlyListed, setRecentlyListed] = useState([]);
-	const [isLoading, setIsLoading] = useState(true)
+	const [isLoading, setIsLoading] = useState(true);
 	useEffect(() => {
 		const fetchData = async () => {
 			const items = await fetchMarketplaceItems();
-			setHotBids(items.sort((a, b) => Number(b.highestBid) - Number(a.highestBid)).slice(0, 3));
-			setRecentlyListed(items.sort((itemA, itemB) => {
-				return Number(itemB.id) - Number(itemA.id);
-			}));
+			setHotBids(
+				items
+					.sort((a, b) => Number(b.highestBid) - Number(a.highestBid))
+					.slice(0, 3)
+			);
+			setRecentlyListed(
+				items.sort((itemA, itemB) => {
+					return Number(itemB.id) - Number(itemA.id);
+				})
+			);
 
 			setIsLoading(false);
-		}
+		};
 		fetchData();
 	}, []);
 
@@ -59,7 +65,7 @@ const HeroSection = () => {
 				</Wrapper>
 			)}
 		</>
-	)
-}
+	);
+};
 
-export default HeroSection
+export default HeroSection;

@@ -7,24 +7,24 @@ import SalePage from "@pages/Explore/SalePage";
 const pages = [
 	{
 		path: "",
-		component: <MainPage />
+		component: <MainPage />,
 	},
 	{
 		path: "/auctions",
-		component: <AuctionPage />
+		component: <AuctionPage />,
 	},
 	{
 		path: "/sale",
-		component: <SalePage />
+		component: <SalePage />,
 	},
 	{
 		path: "/raffles",
-		component: <RafflePage />
+		component: <RafflePage />,
 	},
 	{
 		path: "/loans",
-		component: <LoanPage />
+		component: <LoanPage />,
 	},
-]
+];
 
 export default pages;

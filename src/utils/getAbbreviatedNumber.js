@@ -1,5 +1,5 @@
-export const getAbbreviatedNumber = (number) =>
-	Intl.NumberFormat('en-US', {
+export const getAbbreviatedNumber = number =>
+	Intl.NumberFormat("en-US", {
 		notation: "compact",
-		maximumFractionDigits: 1
+		maximumFractionDigits: 1,
 	}).format(Number(number));

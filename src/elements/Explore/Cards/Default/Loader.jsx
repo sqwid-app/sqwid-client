@@ -1,5 +1,5 @@
-import FadeLoaderIcon from "@static/svg/FadeLoader"
-import styled from "styled-components"
+import FadeLoaderIcon from "@static/svg/FadeLoader";
+import styled from "styled-components";
 
 const LoaderContainer = styled.div`
 	height: 100%;
@@ -19,12 +19,16 @@ const LoaderContainer = styled.div`
 		height: 1rem;
 		width: 1rem;
 	}
-`
+`;
 
 const Loader = () => {
 	return (
-		<LoaderContainer><p><span>Loading</span> <FadeLoaderIcon /></p></LoaderContainer>
-	)
-}
+		<LoaderContainer>
+			<p>
+				<span>Loading</span> <FadeLoaderIcon />
+			</p>
+		</LoaderContainer>
+	);
+};
 
-export default Loader
+export default Loader;

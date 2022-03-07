@@ -16,12 +16,12 @@ const Wrapper = styled(m.div)`
 	border-radius: 0.375rem;
 	/* overflow:hidden; */
 	min-width: 16rem;
-	aspect-ratio: calc(2/3);
+	aspect-ratio: calc(2 / 3);
 	cursor: pointer;
 	user-select: none;
 	text-decoration: none;
 	color: var(--app-text);
-`
+`;
 
 const LinkWrapper = styled(Link)`
 	position: absolute;
@@ -29,37 +29,56 @@ const LinkWrapper = styled(Link)`
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index:0;
-`
+	z-index: 0;
+`;
 
 const DeadlineContainer = styled.div`
-	position:absolute;
+	position: absolute;
 	z-index: 3;
-	top:0;
-	left:50%;
+	top: 0;
+	left: 50%;
 	margin-top: 0.5rem;
-	transform:translateX(-50%);
-`
+	transform: translateX(-50%);
+`;
 
 const LoanCard = ({ data, isLoading }) => {
-	const lenderExists = Number(data.loan?.lender?.address) !== 0
-	const formattedDeadline = data.loan && format(new Date(data.loan?.deadline * 1000), "EEEE, LLLL d, uuuu h:mm a")
+	const lenderExists = Number(data.loan?.lender?.address) !== 0;
+	const formattedDeadline =
+		data.loan &&
+		format(
+			new Date(data.loan?.deadline * 1000),
+			"EEEE, LLLL d, uuuu h:mm a"
+		);
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper
 				whileTap={{
 					x: 0,
 					y: 0,
-					scale: 0.99
+					scale: 0.99,
 				}}
 			>
-				{lenderExists && <DeadlineContainer title={`Deadline: ${formattedDeadline}`}><Deadline loan time={data.loan?.deadline} /></DeadlineContainer>}
-				<CardMedia to={`/collectible/${data.positionId}`} meta={data.meta} deadline={data.loan?.deadline} />
-				<LinkWrapper to={`/collectible/${data.positionId}`}></LinkWrapper>
-				{isLoading ? <Loader /> : (<CardInfo data={data} lenderExists={lenderExists} />)}
+				{lenderExists && (
+					<DeadlineContainer title={`Deadline: ${formattedDeadline}`}>
+						<Deadline loan time={data.loan?.deadline} />
+					</DeadlineContainer>
+				)}
+				<CardMedia
+					to={`/collectible/${data.positionId}`}
+					meta={data.meta}
+					deadline={data.loan?.deadline}
+				/>
+				<LinkWrapper
+					to={`/collectible/${data.positionId}`}
+				></LinkWrapper>
+				{isLoading ? (
+					<Loader />
+				) : (
+					<CardInfo data={data} lenderExists={lenderExists} />
+				)}
 			</Wrapper>
 		</LazyMotion>
-	)
-}
+	);
+};
 
-export default LoanCard
+export default LoanCard;

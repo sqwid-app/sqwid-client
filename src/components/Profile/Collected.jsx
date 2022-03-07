@@ -5,7 +5,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router";
 import { Suspense } from "react";
 import styled from "styled-components";
-import axios from 'axios';
+import axios from "axios";
 import Wrapper from "@elements/ProfileRedesign/Wrapper";
 import bread from "@utils/bread";
 import LoadingIcon from "@static/svg/LoadingIcon";
@@ -15,26 +15,28 @@ const LoadingContainer = styled.div`
 	width: 100%;
 	height: 100%;
 	display: grid;
-	place-items:center;
-`
+	place-items: center;
+`;
 const Collected = () => {
 	const { auth } = useContext(AuthContext);
-	const { id } = useParams()
+	const { id } = useParams();
 	const [items, setItems] = useState([]);
-	const [isLoading, setIsLoading] = useState(true)
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		let addressToCheck = id || auth?.evmAddress;
-		axios(`${getBackend()}/get/r/marketplace/fetchMarketItems/owner/${addressToCheck}`)
+		axios(
+			`${getBackend()}/get/r/marketplace/fetchMarketItems/owner/${addressToCheck}`
+		)
 			.then(result => {
 				setItems(result.data);
 			})
 			.catch(err => {
-				bread(err.response.data.error)
+				bread(err.response.data.error);
 			})
 			.finally(() => {
-				setIsLoading(false)
-			})
+				setIsLoading(false);
+			});
 	}, [auth, auth?.evmAddress, id]);
 	return (
 		<Wrapper>
@@ -48,11 +50,7 @@ const Collected = () => {
 						<CardSectionContainer>
 							<Suspense>
 								{items.map((item, index) => (
-									<Card
-										key={index}
-										data={item}
-										collections
-									/>
+									<Card key={index} data={item} collections />
 								))}
 							</Suspense>
 						</CardSectionContainer>
@@ -60,7 +58,7 @@ const Collected = () => {
 				</>
 			)}
 		</Wrapper>
-	)
-}
+	);
+};
 
-export default Collected
+export default Collected;

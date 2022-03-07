@@ -6,11 +6,11 @@ const ProfilePicture = styled.img`
 	min-width: 8rem;
 	height: 8rem;
 	width: 8rem;
-	border: 10px solid #FFFFFF;
+	border: 10px solid #ffffff;
 	border-radius: 1000rem;
 	${respondTo.md`
 		background: var(--app-background);
 	`}
-`
+`;
 
-export default ProfilePicture
+export default ProfilePicture;

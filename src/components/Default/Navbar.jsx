@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Nav = styled.nav`
-	position:fixed;
+	position: fixed;
 	width: 100%;
 	display: flex;
 	align-items: center;
@@ -21,27 +21,29 @@ const Nav = styled.nav`
 	font-weight: 700;
 	font-size: 1.25rem;
 	padding: 2.5rem 3.75rem;
-	backdrop-filter: ${props => props.blur ? `blur(5px) brightness(0.75)` : `none`};
+	backdrop-filter: ${props =>
+		props.blur ? `blur(5px) brightness(0.75)` : `none`};
 	z-index: 50;
-	top:0;
-	/* border-bottom: ${props => props.blur ? `1px` : `0`} solid var(--app-container-bg-primary); */
+	top: 0;
+	/* border-bottom: ${props =>
+		props.blur ? `1px` : `0`} solid var(--app-container-bg-primary); */
 	transition: backdrop-filter 0.2s ease;
-	&:after{
+	&:after {
 		position: absolute;
 		content: "";
-		bottom:0;
-		left:0;
+		bottom: 0;
+		left: 0;
 		background: var(--app-container-bg-primary);
 		height: 1px;
 		width: 100%;
 		display: block;
-		opacity: ${props => props.blur ? `1` : `0`};
-		z-index:-1;
+		opacity: ${props => (props.blur ? `1` : `0`)};
+		z-index: -1;
 	}
 	${respondTo.md`
 		padding: 1.25rem 1.5rem;
 	`}
-`
+`;
 
 const LogoContainer = styled.a`
 	cursor: pointer;
@@ -52,34 +54,35 @@ const LogoContainer = styled.a`
 	font-weight: 900;
 	text-decoration: none;
 	color: var(--app-text);
-	span, svg{
-		vertical-align:middle;
+	span,
+	svg {
+		vertical-align: middle;
 	}
-	span{
+	span {
 		padding-left: 0.5rem;
 	}
 	${respondTo.md`
 		font-size: 1.5rem;
 	`}
-`
+`;
 
 const ContentContainer = styled.div`
 	display: grid;
-	place-items:center;
+	place-items: center;
 	grid-auto-flow: column;
 	gap: 1rem;
-`
+`;
 
 const Navbar = React.memo(() => {
-	const [isAtTop, setIsAtTop] = useState(true)
+	const [isAtTop, setIsAtTop] = useState(true);
 	const isTabletOrMobile = useIsTabletOrMobile();
 	const [isOpen, toggleOpen] = useCycle(false, true);
 	const offsetLimit = 20;
 	useEffect(() => {
 		window.onscroll = () => {
 			isAtTop === true && setIsAtTop(false);
-			(window.pageYOffset <= offsetLimit) && setIsAtTop(true);
-		}
+			window.pageYOffset <= offsetLimit && setIsAtTop(true);
+		};
 		return () => (window.onscroll = null);
 	});
 	return (
@@ -104,7 +107,7 @@ const Navbar = React.memo(() => {
 				)}
 			</ContentContainer>
 		</Nav>
-	)
-})
+	);
+});
 
-export default Navbar
+export default Navbar;

@@ -1,22 +1,35 @@
-import axios from 'axios';
-import { ethers } from 'ethers';
-import marketplaceContractABI from '../constants/contracts/SqwidMarketplace';
-import utilityContractABI from '../constants/contracts/SqwidUtility';
-import { Interact } from './connect';
-import constants from './constants';
+import axios from "axios";
+import { ethers } from "ethers";
+import marketplaceContractABI from "../constants/contracts/SqwidMarketplace";
+import utilityContractABI from "../constants/contracts/SqwidUtility";
+import { Interact } from "./connect";
+import constants from "./constants";
 
-import { isMarketplaceApproved, approveMarketplace } from './marketplaceApproval';
-import { getBackend, getContract } from './network';
+import {
+	isMarketplaceApproved,
+	approveMarketplace,
+} from "./marketplaceApproval";
+import { getBackend, getContract } from "./network";
 
-const marketplaceContract = (signerOrProvider) => new ethers.Contract(getContract('marketplace'), marketplaceContractABI, signerOrProvider);
-const utilityContract = (signerOrProvider) => new ethers.Contract(getContract('utility'), utilityContractABI, signerOrProvider);
+const marketplaceContract = signerOrProvider =>
+	new ethers.Contract(
+		getContract("marketplace"),
+		marketplaceContractABI,
+		signerOrProvider
+	);
+const utilityContract = signerOrProvider =>
+	new ethers.Contract(
+		getContract("utility"),
+		utilityContractABI,
+		signerOrProvider
+	);
 
 const checkAndApproveMarketplace = async () => {
 	const approved = await isMarketplaceApproved();
 	if (!approved) {
 		await approveMarketplace();
 	}
-}
+};
 
 // returns all marketplace items
 // const fetchMarketplaceItems = async () => {
@@ -39,9 +52,11 @@ const fetchMarketplaceItems = async () => {
 };
 
 // returns collection info
-const fetchCollectionInfo = async (id) => {
+const fetchCollectionInfo = async id => {
 	try {
-		const res = await axios(`${getBackend()}/get/marketplace/collection/${id}`);
+		const res = await axios(
+			`${getBackend()}/get/marketplace/collection/${id}`
+		);
 		const { data } = res;
 		if (data.error) {
 			return [];
@@ -49,14 +64,18 @@ const fetchCollectionInfo = async (id) => {
 		return data;
 	} catch (error) {
 		return {
-			"error": true,
-		}
+			error: true,
+		};
 	}
 };
 
 // returns the state-wise items for a user
 const fetchUserItems = async (address, state = -1, pageNumber = 1) => {
-	const res = await axios(`${getBackend()}/get/marketplace/by-owner/${address}${state >= 0 ? `/${state}` : ""}?perPage=${constants.EXPLORE_PAGINATION_LIMIT}&page=${pageNumber}`);
+	const res = await axios(
+		`${getBackend()}/get/marketplace/by-owner/${address}${
+			state >= 0 ? `/${state}` : ""
+		}?perPage=${constants.EXPLORE_PAGINATION_LIMIT}&page=${pageNumber}`
+	);
 	const { data } = res;
 	if (data.error) {
 		return [];
@@ -66,7 +85,11 @@ const fetchUserItems = async (address, state = -1, pageNumber = 1) => {
 
 // returns collection-wise items
 const fetchCollectionItems = async (address, state = -1, pageNumber = 1) => {
-	const res = await axios(`${getBackend()}/get/marketplace/by-collection/${address}${state >= 0 ? `/${state}` : ""}?perPage=${constants.EXPLORE_PAGINATION_LIMIT}&page=${pageNumber}`);
+	const res = await axios(
+		`${getBackend()}/get/marketplace/by-collection/${address}${
+			state >= 0 ? `/${state}` : ""
+		}?perPage=${constants.EXPLORE_PAGINATION_LIMIT}&page=${pageNumber}`
+	);
 	const { data } = res;
 	if (data.error) {
 		return [];
@@ -76,7 +99,11 @@ const fetchCollectionItems = async (address, state = -1, pageNumber = 1) => {
 
 // returns the state-wise items
 const fetchStateItems = async (state, pageNumber = 1) => {
-	const res = await axios(`${getBackend()}/get/marketplace/all/${state}?perPage=${constants.EXPLORE_PAGINATION_LIMIT}&page=${pageNumber}`);
+	const res = await axios(
+		`${getBackend()}/get/marketplace/all/${state}?perPage=${
+			constants.EXPLORE_PAGINATION_LIMIT
+		}&page=${pageNumber}`
+	);
 	const { data } = res;
 	if (data.error) {
 		return [];
@@ -84,76 +111,102 @@ const fetchStateItems = async (state, pageNumber = 1) => {
 	return data;
 };
 
-const unlistPositionOnSale = async (positionId) => {
+const unlistPositionOnSale = async positionId => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.unlistPositionOnSale(positionId);
+		const tx = await marketplaceContractInstance.unlistPositionOnSale(
+			positionId
+		);
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
 const putItemOnSale = async (itemId, copies, price) => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.putItemOnSale(itemId, copies, ethers.utils.parseEther(price));
+		const tx = await marketplaceContractInstance.putItemOnSale(
+			itemId,
+			copies,
+			ethers.utils.parseEther(price)
+		);
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
-
-const createItemLoan = async (itemId, loanAmount, feeAmount, tokenAmount, duration) => {
+const createItemLoan = async (
+	itemId,
+	loanAmount,
+	feeAmount,
+	tokenAmount,
+	duration
+) => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.createItemLoan(itemId, ethers.utils.parseEther(loanAmount), ethers.utils.parseEther(feeAmount), tokenAmount, duration);
+		const tx = await marketplaceContractInstance.createItemLoan(
+			itemId,
+			ethers.utils.parseEther(loanAmount),
+			ethers.utils.parseEther(feeAmount),
+			tokenAmount,
+			duration
+		);
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
 const createItemAuction = async (itemId, tokenAmount, duration, minBid) => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.createItemAuction(itemId, tokenAmount, duration, ethers.utils.parseEther(minBid));
+		const tx = await marketplaceContractInstance.createItemAuction(
+			itemId,
+			tokenAmount,
+			duration,
+			ethers.utils.parseEther(minBid)
+		);
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
 const createItemRaffle = async (itemId, tokenAmount, duration) => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.createItemRaffle(itemId, tokenAmount, duration);
+		const tx = await marketplaceContractInstance.createItemRaffle(
+			itemId,
+			tokenAmount,
+			duration
+		);
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
 const enterRaffle = async (itemId, amount) => {
 	await checkAndApproveMarketplace();
@@ -169,7 +222,7 @@ const enterRaffle = async (itemId, amount) => {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
 const createBid = async (itemId, amount) => {
 	await checkAndApproveMarketplace();
@@ -185,51 +238,57 @@ const createBid = async (itemId, amount) => {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
 const createSale = async (positionId, tokenAmount, price) => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.createSale(positionId, tokenAmount, {
-			value: ethers.utils.parseEther((Number(tokenAmount) * Number(price)).toString()),
-		});
+		const tx = await marketplaceContractInstance.createSale(
+			positionId,
+			tokenAmount,
+			{
+				value: ethers.utils.parseEther(
+					(Number(tokenAmount) * Number(price)).toString()
+				),
+			}
+		);
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
-const endAuction = async (positionId) => {
+const endAuction = async positionId => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.endAuction (positionId);
+		const tx = await marketplaceContractInstance.endAuction(positionId);
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
-const endRaffle = async (positionId) => {
+const endRaffle = async positionId => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.endRaffle (positionId);
+		const tx = await marketplaceContractInstance.endRaffle(positionId);
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
 const fundLoan = async (positionId, amount) => {
 	await checkAndApproveMarketplace();
@@ -237,7 +296,7 @@ const fundLoan = async (positionId, amount) => {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.fundLoan(positionId, {
-			value: ethers.utils.parseEther(amount.toString ()),
+			value: ethers.utils.parseEther(amount.toString()),
 		});
 		const receipt = await tx.wait();
 		return receipt;
@@ -247,8 +306,7 @@ const fundLoan = async (positionId, amount) => {
 	}
 };
 
-
-const liquidateLoan = async (positionId) => {
+const liquidateLoan = async positionId => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
@@ -260,15 +318,15 @@ const liquidateLoan = async (positionId) => {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
 const repayLoan = async (positionId, amount) => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.repayLoan (positionId, {
-			value: ethers.utils.parseEther(amount.toString ()),
+		const tx = await marketplaceContractInstance.repayLoan(positionId, {
+			value: ethers.utils.parseEther(amount.toString()),
 		});
 		const receipt = await tx.wait();
 		return receipt;
@@ -276,14 +334,16 @@ const repayLoan = async (positionId, amount) => {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
-const unlistLoanProposal = async (positionId) => {
+const unlistLoanProposal = async positionId => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.unlistLoanProposal (positionId);
+		const tx = await marketplaceContractInstance.unlistLoanProposal(
+			positionId
+		);
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
@@ -292,47 +352,54 @@ const unlistLoanProposal = async (positionId) => {
 	}
 };
 
-
-export const fetchRaffleEntries = async (positionId) => {
+export const fetchRaffleEntries = async positionId => {
 	try {
 		const { signer } = await Interact();
 		const utilityContractInstance = utilityContract(signer);
-		const entries = await utilityContractInstance.fetchRaffleEntries(positionId);
+		const entries = await utilityContractInstance.fetchRaffleEntries(
+			positionId
+		);
 		return entries;
 	} catch (error) {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
-export const fetchAuctionBids = async (positionId) => {
+export const fetchAuctionBids = async positionId => {
 	try {
 		const { signer } = await Interact();
 		const utilityContractInstance = utilityContract(signer);
-		const entries = await utilityContractInstance.fetchAuctionBids(positionId);
+		const entries = await utilityContractInstance.fetchAuctionBids(
+			positionId
+		);
 		return entries;
 	} catch (error) {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
 // --- old stuff ---
 
 // returns a certain marketplace item
-const fetchMarketplaceItem = async (itemId) => {
-	const res = await axios(`${process.env.REACT_APP_API_URL}/get/r/marketplace/position/${itemId}`);
+const fetchMarketplaceItem = async itemId => {
+	const res = await axios(
+		`${process.env.REACT_APP_API_URL}/get/r/marketplace/position/${itemId}`
+	);
 	const { data } = res;
 	if (data.error) {
 		return null;
 	}
-	data.media.cover = data.media.cover.replace(' ', '%20');
-	data.media.url = data.media.url.replace(' ', '%20');
+	data.media.cover = data.media.cover.replace(" ", "%20");
+	data.media.url = data.media.url.replace(" ", "%20");
 	return data;
 };
 
-const marketplaceItemExists = async (itemId) => {
-	const res = await axios(`${process.env.REACT_APP_API_URL}/get/r/marketplace/itemExists/${itemId}`);
+const marketplaceItemExists = async itemId => {
+	const res = await axios(
+		`${process.env.REACT_APP_API_URL}/get/r/marketplace/itemExists/${itemId}`
+	);
 	const { data } = res;
 	if (data.error) {
 		return false;
@@ -354,7 +421,7 @@ const putOnSale = async (itemId, price) => {
 };
 
 // removes an item from sale (owner / seller only)
-const removeFromSale = async (itemId) => {
+const removeFromSale = async itemId => {
 	const { signer } = await Interact();
 	const marketplaceContractInstance = marketplaceContract(signer);
 	const tx = await marketplaceContractInstance.removeFromSale(itemId);
@@ -439,5 +506,5 @@ export {
 	buyNow,
 	addBid,
 	cancelBid,
-	acceptBid
-}
+	acceptBid,
+};

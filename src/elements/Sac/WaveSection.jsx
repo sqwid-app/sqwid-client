@@ -16,28 +16,29 @@ const ContentContainer = styled.div`
 	${respondTo.md`
 		padding: 0.5rem 0;
 	`}
-`
+`;
 
 const Base = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	h3, p{
+	h3,
+	p {
 		font-size: 1.25rem;
 	}
-	p{
+	p {
 		display: flex;
 		align-items: center;
-		span{
+		span {
 			vertical-align: middle;
 		}
 	}
-`
+`;
 
-const AccumulatedCollateral = styled(Base)``
+const AccumulatedCollateral = styled(Base)``;
 
-const TotalSellers = styled(Base)``
+const TotalSellers = styled(Base)``;
 
 const WaveSection = () => {
 	const { sacDetails } = useContext(SacContext);
@@ -45,7 +46,10 @@ const WaveSection = () => {
 		<Container>
 			<Heading>Wave #{sacDetails.wave}</Heading>
 			<ContentContainer>
-				<ProgressBar percent={sacDetails.percent} date={sacDetails.date} />
+				<ProgressBar
+					percent={sacDetails.percent}
+					date={sacDetails.date}
+				/>
 				<AccumulatedCollateral>
 					<h3>Accumulated Collateral</h3>
 					<p>
@@ -55,13 +59,11 @@ const WaveSection = () => {
 				</AccumulatedCollateral>
 				<TotalSellers>
 					<h3>Total Sellers</h3>
-					<p>
-						{sacDetails.totalSellers}
-					</p>
+					<p>{sacDetails.totalSellers}</p>
 				</TotalSellers>
 			</ContentContainer>
 		</Container>
-	)
-}
+	);
+};
 
-export default WaveSection
+export default WaveSection;

@@ -9,7 +9,7 @@ const Info = () => {
 			<Background />
 			<ProfileCard />
 		</Wrapper>
-	)
-}
+	);
+};
 
-export default Info
+export default Info;

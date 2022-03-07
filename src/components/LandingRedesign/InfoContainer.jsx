@@ -22,27 +22,32 @@ const bgGradientAnimation = keyframes`
 		background-size: 300%;
 		background-position: 0%;
 	}
-`
+`;
 
 const Wrapper = styled.div`
 	position: relative;
-	height:40rem;
+	height: 40rem;
 	width: 100%;
 	background: var(--app-banner-bg);
 	background-repeat: repeat;
 	display: flex;
-	align-items:center;
+	align-items: center;
 	justify-content: space-around;
 	line-height: 1.125;
 	gap: 2rem;
 	min-height: 100%;
 	text-align: left;
 	overflow: hidden;
-	h1{
+	h1 {
 		line-height: 1;
 		font-weight: 900;
 		font-size: 4rem;
-		background: -webkit-linear-gradient(0deg,var(--app-text) 0%, #619feb 50%, var(--app-text) 100%);
+		background: -webkit-linear-gradient(
+			0deg,
+			var(--app-text) 0%,
+			#619feb 50%,
+			var(--app-text) 100%
+		);
 		background-size: 300%;
 		background-repeat: no-repeat;
 		background-clip: text;
@@ -53,26 +58,28 @@ const Wrapper = styled.div`
 		/* animation: ${bgGradientAnimation} 10s ease infinite; */
 		user-select: none;
 	}
-	h2{
-		margin-top:2rem;
+	h2 {
+		margin-top: 2rem;
 		font-weight: 500;
 		font-size: 1.125rem;
 		width: 25rem;
 		color: var(--app-container-text-primary-hover);
 	}
 	${respondTo.md`
-	    display: block;
+	    display: grid;
 		padding-left: 0;
-		background: transparent;
+		background: var(--app-banner-bg-sm);
 		h1{
-			font-size: 3rem;
+			width: 100%;
+			font-size: 3.5rem;
 		}
 		h2{
+			font-size: 1.125rem;
 			margin-right:0;
 			width: 100%;
 		}
 	`}
-`
+`;
 
 const Btn = styled(BtnBaseAnimated)`
 	display: flex;
@@ -82,20 +89,17 @@ const Btn = styled(BtnBaseAnimated)`
 	padding: 0 1.5rem;
 	border-radius: 1000rem;
 	height: 3.5rem;
-	z-index:2;
+	z-index: 2;
 	text-decoration: none;
-	width:90%;
-	justify-content:center;
+	width: 90%;
+	justify-content: center;
 	${props => props.outline && outline}
-`
+`;
 
 const outline = css`
 	--app-theme-opacity: 0.75;
 	--app-theme-text: rgb(191, 215, 245);
-	border: solid 0.2rem rgba(
-		var(--app-theme-value),
-		var(--app-theme-opacity)
-	);
+	border: solid 0.2rem rgba(var(--app-theme-value), var(--app-theme-opacity));
 	/* background: rgba(
 		var(--app-theme-value),
 		calc(var(--app-theme-opacity) / 2)
@@ -105,16 +109,16 @@ const outline = css`
 	${respondTo.md`
 		display: none;
 	`}
-`
+`;
 
 const BtnContainer = styled.div`
 	display: flex;
-	align-items:center;
-	justify-content:center;
+	align-items: center;
+	justify-content: center;
 	width: 100%;
 	margin-top: 3rem;
 	gap: 1rem;
-`
+`;
 
 const float = keyframes`
 	0%{
@@ -126,48 +130,53 @@ const float = keyframes`
 	100%{
 		transform: translateY(0);
 	}
-`
+`;
 
 const Image = styled.img`
 	height: 100%;
 	animation: ${float} 5s cubic-bezier(0.37, 0, 0.63, 1) infinite;
-`
+`;
 
 const ImageContainer = styled.div`
 	max-height: 100%;
 	height: 100%;
 	transform: scale(1.25) rotate(var(--img-angle));
-`
+`;
 
 const ContentContainer = styled.div`
-
-`
+	${respondTo.md`
+		margin: 0 2rem;
+	`}
+`;
 
 const AnimBtn = ({ children, ...props }) => (
 	<Btn
 		whileTap={{
-			scale: 0.97
+			scale: 0.97,
 		}}
 		whileHover={{
 			y: -5,
-			x: 0
+			x: 0,
 		}}
 		{...props}
-	>{children}</Btn>
-)
+	>
+		{children}
+	</Btn>
+);
 
 const InfoContainer = () => {
-	const { handleInit } = useContext(AccountSelectContext)
-	const history = useHistory()
+	const { handleInit } = useContext(AccountSelectContext);
+	const history = useHistory();
 	const { auth } = useContext(AuthContext);
 
-	const getImage = (dim) => `https://res.cloudinary.com/etjfo/image/upload/${dim}/v1646079322/sqwid/banner.png`
+	const getImage = dim =>
+		`https://res.cloudinary.com/etjfo/image/upload/${dim}/v1646079322/sqwid/banner.png`;
 
-	let about = constants.APP_ABOUT
+	let about = constants.APP_ABOUT;
 
 	const isTabletOrMobile = useIsTabletOrMobile();
-	const getMatches = (str) => {
-		let res = []
+	const getMatches = str => {
+		let res = [];
 		const regex = /%([a-zA-Z0-9-_]+)%/g;
 		let m;
 		while ((m = regex.exec(str)) !== null) {
@@ -177,15 +186,15 @@ const InfoContainer = () => {
 			res.push(m[1]);
 		}
 		return res;
-	}
+	};
 
 	getMatches(about).forEach(match => {
-		about = about.replace(`%${match}%`, constants[match])
+		about = about.replace(`%${match}%`, constants[match]);
 	});
 
 	const handleClick = () => {
-		auth ? handleInit("/create") : history.push("/create")
-	}
+		auth ? handleInit("/create") : history.push("/create");
+	};
 
 	return (
 		<>
@@ -196,13 +205,10 @@ const InfoContainer = () => {
 					{/* <h2>{constants.APP_DESCRIPTION}</h2> */}
 					<BtnContainer>
 						<LazyMotion features={domAnimation}>
-							<AnimBtn
-								href="/#explore"
-							>Dive In</AnimBtn>
-							<AnimBtn
-								onClick={handleClick}
-								outline
-							>Create</AnimBtn>
+							<AnimBtn href="/#explore">Dive In</AnimBtn>
+							<AnimBtn onClick={handleClick} outline>
+								Create
+							</AnimBtn>
 						</LazyMotion>
 					</BtnContainer>
 				</ContentContainer>
@@ -224,7 +230,7 @@ const InfoContainer = () => {
 				)}
 			</Wrapper>
 		</>
-	)
-}
+	);
+};
 
-export default InfoContainer
+export default InfoContainer;

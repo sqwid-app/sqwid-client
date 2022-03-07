@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { LazyMotion, domAnimation, m } from "framer-motion"
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import PropertiesModal from "./PropertiesModal";
 
-const Container = styled.div``
+const Container = styled.div``;
 
 const Title = styled.h1`
 	font-size: 1.125rem;
 	font-weight: 900;
 	margin-bottom: 0.75rem;
-`
+`;
 
 const ChooseBtn = styled(m.a)`
 	display: flex;
 	align-items: center;
-	justify-content:center;
+	justify-content: center;
 	font-family: var(--font-family);
 	font-size: 1rem;
 	font-weight: 700;
@@ -24,11 +24,11 @@ const ChooseBtn = styled(m.a)`
 	color: var(--app-container-text-primary);
 	outline: none;
 	cursor: pointer;
-	user-select:none;
-`
+	user-select: none;
+`;
 
 const PropertiesSection = () => {
-	const [showModal, setShowModal] = useState(false)
+	const [showModal, setShowModal] = useState(false);
 	return (
 		<Container>
 			<Title>Properties</Title>
@@ -37,17 +37,19 @@ const PropertiesSection = () => {
 					whileHover={{
 						y: -2,
 						x: 0,
-						scale: 1.01
+						scale: 1.01,
 					}}
 					whileTap={{
-						scale: 0.99
+						scale: 0.99,
 					}}
 					onClick={() => setShowModal(true)}
-				>Add properties</ChooseBtn>
+				>
+					Add properties
+				</ChooseBtn>
 			</LazyMotion>
 			<PropertiesModal isActive={showModal} setIsActive={setShowModal} />
 		</Container>
-	)
-}
+	);
+};
 
-export default PropertiesSection
+export default PropertiesSection;

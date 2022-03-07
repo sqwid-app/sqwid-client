@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const HeroSection = () => {
-	return (
-		<div>
-			kek
-		</div>
-	)
-}
+	return <div>kek</div>;
+};
 
-export default HeroSection
+export default HeroSection;

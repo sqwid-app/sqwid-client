@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -10,12 +10,12 @@ import {
 	Filler,
 	defaults,
 	LineController,
-} from 'chart.js';
-import { Chart } from 'react-chartjs-2';
-import ZoomPlugin from 'chartjs-plugin-zoom';
+} from "chart.js";
+import { Chart } from "react-chartjs-2";
+import ZoomPlugin from "chartjs-plugin-zoom";
 
 const Utils = {
-	id: 'utils',
+	id: "utils",
 	beforeInit: function (chart) {
 		const originalFit = chart.legend.fit;
 		chart.legend.fit = function fit() {
@@ -41,25 +41,25 @@ const DetailsChart = () => {
 	const chartRef = useRef();
 
 	const labels = [
-		'January',
-		'February',
-		'March',
-		'April',
-		'May',
-		'June',
-		'July',
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
 	];
 
 	const randomNumberInRange = (min, max) =>
 		Math.floor(Math.random() * (max - min + 1)) + min;
 
-	const getRandomData = (options) =>
+	const getRandomData = options =>
 		Array(options.size)
 			.fill(0)
 			.map(() => randomNumberInRange(options.min, options.max));
 
-	const accentColor = '13, 104, 216';
-	const borderColor = '120, 121, 135';
+	const accentColor = "13, 104, 216";
+	const borderColor = "120, 121, 135";
 
 	const options = {
 		responsive: true,
@@ -81,17 +81,17 @@ const DetailsChart = () => {
 					x: 12,
 					y: 16,
 				},
-				backgroundColor: 'hsla(240, 10%, 16%,0.9)',
+				backgroundColor: "hsla(240, 10%, 16%,0.9)",
 				borderColor: `rgb(${borderColor})`,
 				borderWidth: 2,
 				boxPadding: 8,
-				bodyColor: 'hsl(240, 6%, 75%)',
+				bodyColor: "hsl(240, 6%, 75%)",
 			},
 			legend: {
-				position: 'top',
-				align: 'end',
+				position: "top",
+				align: "end",
 				labels: {
-					pointStyle: 'circle',
+					pointStyle: "circle",
 					usePointStyle: true,
 					boxWidth: 8,
 				},
@@ -107,7 +107,7 @@ const DetailsChart = () => {
 					drag: {
 						enabled: true,
 					},
-					mode: 'x',
+					mode: "x",
 				},
 			},
 		},
@@ -119,7 +119,7 @@ const DetailsChart = () => {
 	});
 
 	useEffect(() => {
-		defaults.animation.easing = 'easeOutQuart';
+		defaults.animation.easing = "easeOutQuart";
 		defaults.animation.duration = 750;
 		defaults.font.family = `"Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif`;
 		defaults.font.size = 16;
@@ -128,11 +128,11 @@ const DetailsChart = () => {
 		defaults.scale.grid.borderWidth = 4;
 		defaults.scale.grid.borderDash = [6];
 		defaults.scale.grid.color = `rgba(${borderColor},0.125)`;
-		defaults.elements.line.fill = 'start';
+		defaults.elements.line.fill = "start";
 		defaults.elements.line.tension = 0.5;
-		defaults.elements.line.borderJoinStyle = 'round';
+		defaults.elements.line.borderJoinStyle = "round";
 		defaults.elements.line.borderColor = `rgba(${accentColor}, 1)`;
-		defaults.elements.point.borderColor = 'rgba(255,255,255,1)';
+		defaults.elements.point.borderColor = "rgba(255,255,255,1)";
 		defaults.elements.point.radius = 6;
 		defaults.elements.point.hoverRadius = 6;
 		defaults.elements.point.hitRadius = 18;
@@ -147,7 +147,7 @@ const DetailsChart = () => {
 				const originalStroke = ctx.stroke;
 				ctx.stroke = function () {
 					ctx.save();
-					ctx.shadowColor = 'rgba(0,0,0,1)';
+					ctx.shadowColor = "rgba(0,0,0,1)";
 					ctx.shadowBlur = 18;
 					ctx.shadowOffsetX = 0;
 					ctx.shadowOffsetY = 6;
@@ -159,7 +159,7 @@ const DetailsChart = () => {
 			}
 		}
 
-		ShadowLine.id = 'ShadowLine';
+		ShadowLine.id = "ShadowLine";
 		ShadowLine.defaults = LineController.defaults;
 
 		ChartJS.register(ShadowLine);
@@ -185,7 +185,7 @@ const DetailsChart = () => {
 				{
 					backgroundColor: gradient,
 					pointBackgroundColor: `rgba(${accentColor}, 1)`,
-					label: 'Price',
+					label: "Price",
 					data: getRandomData({
 						size: labels.length,
 						min: 0,

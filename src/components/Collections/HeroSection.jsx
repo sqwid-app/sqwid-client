@@ -3,7 +3,7 @@ import { respondTo } from "@styles/styledMediaQuery";
 // import { getAvatarFromId } from "@utils/getAvatarFromId";
 import React, { Suspense, useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from 'axios';
+import axios from "axios";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { Link } from "react-router-dom";
 import { getBackend } from "@utils/network";
@@ -18,14 +18,14 @@ const Wrapper = styled.div`
 	${respondTo.md`
 		padding: 0 2rem;
 	`}
-`
+`;
 
 const Header = styled.h1`
 	display: flex;
 	align-items: center;
 	gap: 1rem;
 	font-weight: 900;
-`
+`;
 
 const HeaderContainer = styled.div`
 	width: 100%;
@@ -36,27 +36,27 @@ const HeaderContainer = styled.div`
 		flex-direction: column;
 		gap: 0.5rem;
 	`}
-`
+`;
 
 const CollectionsLogo = styled.div`
-	position:relative;
+	position: relative;
 	height: 2rem;
 	width: 2rem;
 	border-radius: 1000rem;
 	border: 3px solid var(--app-text);
 	background-color: var(--app-background);
-	background-image: url('${props => props.url && props.url}');
+	background-image: url("${props => props.url && props.url}");
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
 	cursor: pointer;
-`
+`;
 
 const CreatorLogo = styled(CollectionsLogo)`
 	height: 1.5rem;
 	width: 1.5rem;
 	border: 0.125rem solid var(--app-text);
-`
+`;
 
 const Creator = styled(Link)`
 	display: flex;
@@ -66,30 +66,32 @@ const Creator = styled(Link)`
 	cursor: pointer;
 	text-decoration: none;
 	color: var(--app-text);
-`
+`;
 const LoadingContainer = styled.div`
 	height: 70vh;
 	width: 100%;
 	display: grid;
-	place-items:center;
-`
+	place-items: center;
+`;
 
 const NoItems = styled.div`
 	text-align: center;
 	font-size: 1.5rem;
-`
+`;
 
 const HeroSection = ({ id }) => {
 	const [collectionsInfo, setCollectionsInfo] = useState({});
-	const [isLoading, setIsLoading] = useState(true)
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const result = await axios(`${getBackend()}/get/r/marketplace/fetchMarketItems/collection/${id}`);
+			const result = await axios(
+				`${getBackend()}/get/r/marketplace/fetchMarketItems/collection/${id}`
+			);
 			let items = result.data;
 			setCollectionsInfo(items);
 			setIsLoading(false);
-		}
+		};
 		fetchData();
 	}, [id]);
 
@@ -103,39 +105,30 @@ const HeroSection = ({ id }) => {
 				<Wrapper>
 					<HeaderContainer>
 						<Header>
-							<CollectionsLogo
-								url={collectionsInfo.thumb}
-							/>
+							<CollectionsLogo url={collectionsInfo.thumb} />
 							{collectionsInfo.name}
 						</Header>
-						<Creator
-							to={`/profile/${collectionsInfo.creator.id}`}
-						>
+						<Creator to={`/profile/${collectionsInfo.creator.id}`}>
 							by
-							<CreatorLogo
-								url={collectionsInfo.creator.thumb}
-							/>
+							<CreatorLogo url={collectionsInfo.creator.thumb} />
 							{collectionsInfo.creator.name}
 						</Creator>
 					</HeaderContainer>
 					{collectionsInfo.content.length === 0 ? (
 						<NoItems>No items in this collection 💀</NoItems>
-					) : <CardSectionContainer>
-						<Suspense>
-							{collectionsInfo.content.map((item, index) => (
-								<Card
-									key={index}
-									data={item}
-									collections
-								/>
-							))}
-						</Suspense>
-					</CardSectionContainer>
-					}
+					) : (
+						<CardSectionContainer>
+							<Suspense>
+								{collectionsInfo.content.map((item, index) => (
+									<Card key={index} data={item} collections />
+								))}
+							</Suspense>
+						</CardSectionContainer>
+					)}
 				</Wrapper>
 			)}
 		</>
-	)
-}
+	);
+};
 
-export default HeroSection
+export default HeroSection;

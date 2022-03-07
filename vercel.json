@@ -1,10 +1,14 @@
 {
-	"rewrites": [{
-		"source": "/:path*",
-		"has": [{
-			"type": "host",
-			"value": "testnet.sqwid.app"
-		}],
-		"destination": "/testnet/:path*"
-	}]
+	"rewrites": [
+		{
+			"source": "/:path*",
+			"has": [
+				{
+					"type": "host",
+					"value": "testnet.sqwid.app"
+				}
+			],
+			"destination": "/testnet/:path*"
+		}
+	]
 }

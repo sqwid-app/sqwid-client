@@ -12,12 +12,12 @@ const Wrapper = styled(m(Link))`
 	border-radius: 0.375rem;
 	/* overflow:hidden; */
 	min-width: 16rem;
-	aspect-ratio: calc(2/3);
+	aspect-ratio: calc(2 / 3);
 	cursor: pointer;
 	user-select: none;
 	text-decoration: none;
 	color: var(--app-text);
-`
+`;
 
 const Card = ({ data }) => {
 	return (
@@ -26,7 +26,7 @@ const Card = ({ data }) => {
 				whileTap={{
 					x: 0,
 					y: 0,
-					scale: 0.99
+					scale: 0.99,
 				}}
 				to={`/collectible/${data.id}`}
 			>
@@ -34,7 +34,7 @@ const Card = ({ data }) => {
 				<CardInfo data={data} />
 			</Wrapper>
 		</LazyMotion>
-	)
-}
+	);
+};
 
-export default Card
+export default Card;

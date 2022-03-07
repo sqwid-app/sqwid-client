@@ -10,13 +10,13 @@ import OwnedNFTSection from "@elements/Profile/OwnedNFTSection";
 const Section = styled.section`
 	min-height: 90vh;
 	max-width: 100vw;
-`
+`;
 
 const Cont = styled.div`
 	display: flex;
 	position: absolute;
 	bottom: 0;
-	z-index:1;
+	z-index: 1;
 	width: 100%;
 	${respondTo.md`
 		position: static;
@@ -25,7 +25,7 @@ const Cont = styled.div`
 		align-items:center;
 		padding-top: 8rem;
 	`}
-`
+`;
 
 const ProfileSection = () => {
 	return (
@@ -33,15 +33,15 @@ const ProfileSection = () => {
 			<EditDetailsProvider>
 				<Section>
 					<Cont>
-						<ProfileCard/>
-						<CollectionsSection/>
+						<ProfileCard />
+						<CollectionsSection />
 					</Cont>
-					<Background/>
+					<Background />
 				</Section>
-				<OwnedNFTSection/>
+				<OwnedNFTSection />
 			</EditDetailsProvider>
 		</>
-	)
-}
+	);
+};
 
-export default ProfileSection
+export default ProfileSection;

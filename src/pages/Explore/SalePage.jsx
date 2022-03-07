@@ -5,7 +5,9 @@ import styled from "styled-components";
 // import RecentlyListed from "./RecentlyListed";
 // import RecentlyListedPaginated from "@components/ExploreRedesign/RecentlyListedPaginated";
 import PaginatedCards from "@elements/Explore/Cards/Default/PaginatedCards";
-const SalesCard = React.lazy(() => import("@elements/Explore/Cards/Sales/SalesCard"));
+const SalesCard = React.lazy(() =>
+	import("@elements/Explore/Cards/Sales/SalesCard")
+);
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -21,27 +23,29 @@ const Wrapper = styled.div`
 			padding-left: 3rem;
 		}
 	`}
-`
+`;
 
 const Container = styled.div`
 	width: 100%;
-`
+`;
 
 const Header = styled.h1`
 	font-weight: 900;
-`
+`;
 
 const SalePage = () => {
 	return (
 		<>
 			<Wrapper>
 				<Container>
-					<Header>Sales <span className="emoji">📃</span></Header>
+					<Header>
+						Sales <span className="emoji">📃</span>
+					</Header>
 					<PaginatedCards Card={SalesCard} state={1} />
 				</Container>
 			</Wrapper>
 		</>
-	)
-}
+	);
+};
 
-export default SalePage
+export default SalePage;

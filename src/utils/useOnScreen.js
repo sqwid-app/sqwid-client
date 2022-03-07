@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from "react";
 
-const useOnScreen = (ref) => {
+const useOnScreen = ref => {
 	const [isOnScreen, setIsOnScreen] = useState(false);
 	const observerRef = useRef(null);
 
@@ -11,7 +11,7 @@ const useOnScreen = (ref) => {
 			return;
 		}
 		observerRef.current.observe(composeBox);
-	}
+	};
 
 	useEffect(() => {
 		observerRef.current = new IntersectionObserver(([entry]) =>
@@ -20,13 +20,12 @@ const useOnScreen = (ref) => {
 	}, []);
 
 	useEffect(() => {
-		addObserverIfDesiredNodeAvailable()
+		addObserverIfDesiredNodeAvailable();
 		return () => observerRef.current.disconnect();
 		//eslint-disable-next-line
 	}, [ref]);
 
 	return isOnScreen;
-}
-
+};
 
 export default useOnScreen;

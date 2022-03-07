@@ -82,6 +82,7 @@
 	"devDependencies": {
 		"@babel/preset-react": "^7.16.7",
 		"craco-alias": "^3.0.1",
+		"prettier": "^2.5.1",
 		"standard-version": "^9.3.2"
 	}
 }

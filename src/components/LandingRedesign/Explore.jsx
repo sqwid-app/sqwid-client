@@ -23,16 +23,19 @@ const Container = styled.div`
 			padding-left: 3rem;
 		}
 	`}
-`
+`;
 
 const Wrapper = styled.div`
 	padding: 0 12rem;
-`
+	${respondTo.md`
+		padding: 0;
+	`}
+`;
 
 const Section = styled.section`
 	width: 100%;
 	margin: 4rem 0;
-`
+`;
 
 const Explore = () => {
 	const [isLoading, setIsLoading] = useState(true);
@@ -40,8 +43,8 @@ const Explore = () => {
 	const [auctions, setAuctions] = useState([]);
 	const [raffles, setRaffles] = useState([]);
 	const [loans, setLoans] = useState([]);
-	const containerRef = useRef()
-	const isVisible = useOnScreen(containerRef)
+	const containerRef = useRef();
+	const isVisible = useOnScreen(containerRef);
 
 	const fetchData = async () => {
 		// console.log("sending request")
@@ -51,12 +54,12 @@ const Explore = () => {
 		setRaffles(raffle);
 		setLoans(loan);
 		setIsLoading(false);
-	}
+	};
 
 	useEffect(() => {
-		isVisible && (onSale.length === 0) && fetchData();
+		isVisible && onSale.length === 0 && fetchData();
 		//eslint-disable-next-line
-	}, [isVisible])
+	}, [isVisible]);
 
 	return (
 		<Section id="explore">
@@ -73,7 +76,7 @@ const Explore = () => {
 				</Container>
 			</Wrapper>
 		</Section>
-	)
-}
+	);
+};
 
 export default Explore;

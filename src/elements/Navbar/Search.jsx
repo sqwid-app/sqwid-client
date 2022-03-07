@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const SearchContainer = styled.div`
 	position: relative;
-	& input{
+	& input {
 		font-family: var(--font-family);
 		font-size: 1rem;
 		font-weight: 600;
@@ -17,47 +17,47 @@ const SearchContainer = styled.div`
 		border: none;
 		max-height: 2.5rem;
 		min-width: 20rem;
-		&:placeholder{
+		&:placeholder {
 			color: var(--app-container-text-primary);
 		}
 	}
-`
+`;
 
 const LogoContainer = styled.div`
 	display: grid;
-	place-items:center;
+	place-items: center;
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
 	padding-left: 0.75rem;
 	color: var(--app-container-text-primary);
-`
+`;
 
 const Search = () => {
-	const [searchText, setSearchText] = useState("")
-	const [selected, setSelected] = useState(false)
-	const handleChange = (e) => setSearchText(e.target.value);
-	const handleSubmit= (e) => {
-		if (e.key === "Enter" && searchText.length){
+	const [searchText, setSearchText] = useState("");
+	const [selected, setSelected] = useState(false);
+	const handleChange = e => setSearchText(e.target.value);
+	const handleSubmit = e => {
+		if (e.key === "Enter" && searchText.length) {
 			// console.log(searchText)
 		}
-	}
+	};
 	return (
 		<SearchContainer>
 			<LogoContainer>
-				<SearchIcon selected={selected}/>
+				<SearchIcon selected={selected} />
 			</LogoContainer>
 			<input
 				type="text"
 				value={searchText}
 				onChange={handleChange}
 				onKeyDown={handleSubmit}
-				onFocus={()=>setSelected(true)}
-				onBlur={()=>setSelected(false)}
+				onFocus={() => setSelected(true)}
+				onBlur={() => setSelected(false)}
 				placeholder={`Collection, item or user...`}
 			></input>
 		</SearchContainer>
-	)
-}
+	);
+};
 
-export default Search
+export default Search;

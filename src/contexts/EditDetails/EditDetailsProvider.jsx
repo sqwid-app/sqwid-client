@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import EditDetailsContext from "./EditDetailsContext";
 import { initialState } from "./initialState";
 
-const EditDetailsProvider = (props) => {
-	const [info, setInfo] = useState(initialState)
+const EditDetailsProvider = props => {
+	const [info, setInfo] = useState(initialState);
 
 	return (
 		<EditDetailsContext.Provider
@@ -12,7 +12,7 @@ const EditDetailsProvider = (props) => {
 				setInfo,
 			}}
 		>
-		{props.children}
+			{props.children}
 		</EditDetailsContext.Provider>
 	);
 };

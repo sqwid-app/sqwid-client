@@ -2,7 +2,7 @@ import { ToastContainer, cssTransition } from "react-toastify";
 
 const Transition = cssTransition({
 	enter: "swipeUpwards",
-	exit: "swipeDownwards"
+	exit: "swipeDownwards",
 });
 
 const BreadContainer = () => (
@@ -19,6 +19,6 @@ const BreadContainer = () => (
 		draggable
 		pauseOnHover
 	/>
-)
+);
 
-export default BreadContainer
+export default BreadContainer;

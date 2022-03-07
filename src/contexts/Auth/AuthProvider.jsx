@@ -4,17 +4,17 @@ import AuthContext from "./AuthContext";
 import { initialState } from "./initialState";
 import { reducer } from "./reducer";
 
-const AuthProvider = (props) => {
+const AuthProvider = props => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const [loading, setLoading] = useState(false);
 
-	const login = (authData) => {
+	const login = authData => {
 		dispatch({
 			type: "LOGIN",
 			payload: authData,
 		});
-		localStorage.setItem("auth", JSON.stringify(authData))
-	}
+		localStorage.setItem("auth", JSON.stringify(authData));
+	};
 
 	const logout = () => {
 		localStorage.removeItem("tokens");
@@ -25,7 +25,6 @@ const AuthProvider = (props) => {
 		});
 	};
 
-
 	return (
 		<AuthContext.Provider
 			value={{
@@ -34,8 +33,9 @@ const AuthProvider = (props) => {
 				loading: loading,
 				login,
 				logout,
-				setLoading
-			}}>
+				setLoading,
+			}}
+		>
 			{props.children}
 		</AuthContext.Provider>
 	);

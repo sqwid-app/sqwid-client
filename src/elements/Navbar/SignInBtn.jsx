@@ -16,17 +16,19 @@ const Btn = styled(BtnBaseAnimated)`
 	padding: 0 1.25rem;
 	border-radius: 1000rem;
 	height: 2.5rem;
-	z-index:2;
-`
+	z-index: 2;
+`;
 
 const AnimBtn = ({ children, onClick }) => (
 	<Btn
 		whileTap={{
-			scale: 0.97
+			scale: 0.97,
 		}}
 		onClick={onClick}
-	>{children}</Btn>
-)
+	>
+		{children}
+	</Btn>
+);
 
 const SignInBtn = () => {
 	const {
@@ -34,27 +36,29 @@ const SignInBtn = () => {
 		setIsSelectionActive,
 		currentAccounts,
 		handleInit,
-	} = useContext(AccountSelectContext)
-	const [username, setUsername] = useState("")
+	} = useContext(AccountSelectContext);
+	const [username, setUsername] = useState("");
 	const { loading, auth } = useContext(AuthContext);
 	useEffect(() => {
-		auth && setUsername(auth.meta.name)
-	}, [auth])
+		auth && setUsername(auth.meta.name);
+	}, [auth]);
 	return (
 		<LazyMotion features={domAnimation}>
 			<AnimBtn onClick={handleInit}>
 				{loading ? (
 					<Loading navbar />
 				) : (
-					<>
-						{username.length ? username : `Connect`}
-					</>
+					<>{username.length ? username : `Connect`}</>
 				)}
 			</AnimBtn>
 			<InfoBtn />
-			<AccountSelect isActive={isSelectionActive} setIsActive={setIsSelectionActive} accounts={currentAccounts} />
+			<AccountSelect
+				isActive={isSelectionActive}
+				setIsActive={setIsSelectionActive}
+				accounts={currentAccounts}
+			/>
 		</LazyMotion>
-	)
-}
+	);
+};
 
-export default SignInBtn
+export default SignInBtn;

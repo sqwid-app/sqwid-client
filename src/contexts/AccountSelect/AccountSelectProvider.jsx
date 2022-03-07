@@ -3,10 +3,10 @@ import AccountSelectContext from "./AccountSelectContext";
 import { initialState } from "./initialState";
 import { Init } from "@utils/connect";
 
-const AccountSelectProvider = (props) => {
-	const [isSelectionActive, setIsSelectionActive] = useState(initialState)
+const AccountSelectProvider = props => {
+	const [isSelectionActive, setIsSelectionActive] = useState(initialState);
 
-	const [redirect, setRedirect] = useState("")
+	const [redirect, setRedirect] = useState("");
 
 	const [currentAccounts, setCurrentAccounts] = useState(null);
 	const handleInit = (path = "") => {
@@ -14,9 +14,9 @@ const AccountSelectProvider = (props) => {
 			let accs = await Init();
 			setCurrentAccounts(accs);
 		})();
-		setIsSelectionActive(!isSelectionActive)
-		setRedirect(path)
-	}
+		setIsSelectionActive(!isSelectionActive);
+		setRedirect(path);
+	};
 
 	return (
 		<AccountSelectContext.Provider

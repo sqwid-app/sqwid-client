@@ -24,14 +24,14 @@ const Wrapper = styled.div`
 			padding-left: 3rem;
 		}
 	`}
-`
+`;
 
 const LoadingContainer = styled.div`
 	height: 70vh;
 	width: 100%;
 	display: grid;
-	place-items:center;
-`
+	place-items: center;
+`;
 
 const MainPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
@@ -48,7 +48,7 @@ const MainPage = () => {
 			setLoans(items.loan);
 
 			setIsLoading(false);
-		}
+		};
 		fetchData();
 	}, []);
 	return (
@@ -66,7 +66,7 @@ const MainPage = () => {
 				</Wrapper>
 			)}
 		</>
-	)
-}
+	);
+};
 
 export default MainPage;
