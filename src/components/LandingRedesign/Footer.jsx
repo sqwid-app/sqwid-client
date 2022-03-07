@@ -36,6 +36,7 @@ const Container = styled.div`
 		padding: 3rem;
 		text-align:left;
 		row-gap: 2rem;
+		padding-bottom: 4rem;
 	`}
 `;
 
