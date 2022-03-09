@@ -1,40 +1,36 @@
 import FileContext from "@contexts/File/FileContext";
 import React, { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { LazyMotion, domAnimation } from "framer-motion";
-import { createCollectible } from "@utils/createCollectible";
-import { BtnBaseAnimated } from "@elements/Default/BtnBase";
-import Loading from "@elements/Default/Loading";
 import UploadCover from "./UploadCover";
-import { useHistory } from "react-router";
-import bread from "@utils/bread";
+import { LazyMotion, domAnimation } from "framer-motion";
+import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 
 const border = css`
 	border: 0.125rem solid var(--app-container-text-primary);
-	border-radius: 0.5rem;
+	border-radius: 1rem;
 `;
 
 const Title = styled.h1`
 	font-size: 1.125rem;
 	font-weight: 900;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
 `;
 
 const PreviewContainer = styled.div`
 	min-height: 50%;
-	max-height: 75%;
+	max-height: 100%;
 	margin-top: 0.5rem;
 	user-select: none;
 `;
 
-const noPreview = css`
-	display: grid;
-	place-items: center;
-`;
-
 const FilePreview = styled.div`
 	${props => !props.fileType && border};
-	${noPreview}
 	overflow: hidden;
+	display: grid;
+	place-items: center;
 	padding: 0;
 
 	max-width: 100%;
@@ -44,17 +40,17 @@ const FilePreview = styled.div`
 	img {
 		max-width: 100%;
 		max-height: 20rem;
-		margin: 0 auto;
 		display: block;
 		${border}
+		border-radius: 0.5rem;
 	}
 	video {
 		max-width: 100%;
 		max-height: 16rem;
-		margin: 0 auto;
 		display: block;
 		object-fit: cover;
 		${border}
+		border-radius: 0.5rem;
 	}
 	audio {
 		max-width: 100%;
@@ -71,30 +67,10 @@ const FilePreview = styled.div`
 	}
 `;
 
-const Btn = styled(BtnBaseAnimated)`
-	width: 75%;
-	display: grid;
-	place-items: center;
-	font-family: var(--font-family);
-	font-size: 1rem;
-	font-weight: 700;
-	padding: 0.75rem 1.25rem;
-	border-radius: 1000rem;
-	background: var(--app-theme-primary);
-	color: var(--app-text);
-	outline: none;
-	border: none;
-	cursor: pointer;
-	user-select: none;
-	transition: background 0.2s ease;
-	&[disabled] {
-		background: var(--app-theme-primary-disabled);
-		pointer-events: none;
-	}
-`;
-
 const Group = styled.div`
-	height: 100%;
+	/* height: 100%; */
+	width: 100%;
+	min-height: 10rem;
 `;
 
 const Wrapper = styled.div`
@@ -104,10 +80,29 @@ const Wrapper = styled.div`
 	gap: 1rem;
 `;
 
-const AnimBtn = ({ children, onClick, disabled }) => (
+const Btn = styled(BtnBaseAnimated)`
+	--btn-base: 347, 76%;
+	background: transparent;
+	background: hsl(var(--btn-base), 50%);
+	color: hsl(var(--btn-base), 97%);
+	border-radius: 1000rem;
+	font-size: 0.875rem;
+	font-weight: 800;
+	padding: 0.25rem 0.75rem;
+	text-align: center;
+	margin: 1rem 0;
+	cursor: pointer;
+`;
+
+const ClearMediaButton = ({ children, onClick, disabled }) => (
 	<Btn
+		whileHover={{
+			y: -5,
+			x: 0,
+			scale: 1.02,
+		}}
 		whileTap={{
-			scale: 0.97,
+			scale: 0.99,
 		}}
 		onClick={onClick}
 		disabled={disabled}
@@ -116,14 +111,26 @@ const AnimBtn = ({ children, onClick, disabled }) => (
 	</Btn>
 );
 
+const ClearMedia = () => {
+	const { fileData, setFileData } = useContext(FileContext);
+	const handleClick = () => {
+		setFileData({
+			...fileData,
+			file: null,
+		});
+	};
+	return (
+		<LazyMotion features={domAnimation}>
+			<ClearMediaButton onClick={handleClick}>Clear</ClearMediaButton>
+		</LazyMotion>
+	);
+};
+
 const PreviewSection = () => {
 	const { files, fileData } = useContext(FileContext);
 	const [fileURL, setFileURL] = useState("");
 	const [title, setTitle] = useState("");
 	const [fileType, setFileType] = useState("");
-	const [buttonText, setButtonText] = useState("Create Item");
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const history = useHistory();
 
 	useEffect(() => {
 		if (fileData.file) {
@@ -137,6 +144,9 @@ const PreviewSection = () => {
 			}
 
 			setFileURL(window.URL.createObjectURL(fileData.file));
+		} else {
+			setFileType("");
+			setFileURL("");
 		}
 		//eslint-disable-next-line
 	}, [fileData.file]);
@@ -145,68 +155,53 @@ const PreviewSection = () => {
 		setTitle(files.name);
 	}, [files.name]);
 
-	const handleClick = () => {
-		localStorage.removeItem("properties");
-		setButtonText(<Loading />);
-		setIsSubmitting(true);
-		if (fileData.file && files.name.length) {
-			// let id = 0;
-
-			createCollectible({ ...files, ...fileData })
-				.then(res => {
-					history.push(`/collectible/${res}`);
-				})
-				.catch(err => {
-					bread(err.response.data.error);
-				});
-
-			// .finally(()=>{
-			// 	setTimeout(() => {
-			// 	}, 250);
-			// })
-		} else {
-			setButtonText("Create Item");
-		}
-	};
-
 	return (
-		<Wrapper>
-			<Group>
-				<Title>Preview</Title>
-				<PreviewContainer>
-					{!fileURL.length ? (
-						<FilePreview>
-							<p>
-								Your preview will appear here once you upload a
-								file
-							</p>
-						</FilePreview>
-					) : (
-						<FilePreview
-							fileType={fileType}
-							gradient={["video", "image"].includes(fileType)}
-						>
-							{fileType === "image" ? (
-								<img src={fileURL} alt={title} />
-							) : fileType === "video" ? (
-								<video controls src={fileURL} alt={title} />
-							) : fileType === "audio" ? (
-								<audio controls src={fileURL} alt={title} />
-							) : null}
-						</FilePreview>
-					)}
-				</PreviewContainer>
-				{["audio"].includes(fileType) && <UploadCover />}
-			</Group>
-			<LazyMotion features={domAnimation}>
-				<AnimBtn
-					disabled={isSubmitting ? true : false}
-					onClick={handleClick}
-				>
-					{buttonText}
-				</AnimBtn>
-			</LazyMotion>
-		</Wrapper>
+		<>
+			{fileData.file !== null && (
+				<Wrapper>
+					<Group>
+						<Title>
+							Preview
+							<ClearMedia />
+						</Title>
+						<PreviewContainer>
+							{!fileURL.length ? (
+								<FilePreview>
+									<p>
+										Your preview will appear here once you
+										upload a file
+									</p>
+								</FilePreview>
+							) : (
+								<FilePreview
+									fileType={fileType}
+									gradient={["video", "image"].includes(
+										fileType
+									)}
+								>
+									{fileType === "image" ? (
+										<img src={fileURL} alt={title} />
+									) : fileType === "video" ? (
+										<video
+											controls
+											src={fileURL}
+											alt={title}
+										/>
+									) : fileType === "audio" ? (
+										<audio
+											controls
+											src={fileURL}
+											alt={title}
+										/>
+									) : null}
+								</FilePreview>
+							)}
+						</PreviewContainer>
+						{["audio"].includes(fileType) && <UploadCover />}
+					</Group>
+				</Wrapper>
+			)}
+		</>
 	);
 };
 

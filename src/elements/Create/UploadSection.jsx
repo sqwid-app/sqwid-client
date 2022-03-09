@@ -1,4 +1,5 @@
-import React from "react";
+import FileContext from "@contexts/File/FileContext";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import CustomDropzone from "./CustomDropzone";
 
@@ -10,11 +11,16 @@ const Title = styled.h1`
 `;
 
 const UploadSection = () => {
+	const { fileData } = useContext(FileContext);
 	return (
-		<Container>
-			<Title>Upload File</Title>
-			<CustomDropzone />
-		</Container>
+		<>
+			{fileData.file === null && (
+				<Container>
+					<Title>Upload File</Title>
+					<CustomDropzone />
+				</Container>
+			)}
+		</>
 	);
 };
 

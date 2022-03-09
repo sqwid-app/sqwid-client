@@ -496,7 +496,7 @@ const WarningText = ({ isBlurred, setIsBlurred }) => {
 	);
 };
 
-const NFTContent = () => {
+const NFTContentSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext);
 	const [isBlurred, setIsBlurred] = useState(!collectibleInfo.approved);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -553,4 +553,8 @@ const NFTContent = () => {
 	);
 };
 
-export default React.memo(NFTContent);
+const NFTContent = React.memo(() => {
+	return <NFTContentSection />;
+});
+
+export default NFTContent;

@@ -15,10 +15,11 @@ import WrapSection from "./WrapSection";
 //eslint-disable-next-line
 import UnwrapSection from "./UnwrapSection";
 import useActiveTabs from "@utils/useActiveTabs";
+import { CreateButton } from "@elements/Create/CreateButton";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
-	height: calc(100vh - 10rem);
+	height: calc(100vh - 20rem);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -60,6 +61,9 @@ const Group = styled.div`
 
 const RightContainer = styled(LeftContainer)``;
 
+const ExtraSection = styled(LeftContainer)``;
+
+//eslint-disable-next-line
 const MainPage = () => {
 	return (
 		<MainSection>
@@ -80,6 +84,33 @@ const MainPage = () => {
 				<PropertiesSection />
 			</RightContainer>
 			<PreviewSection />
+		</MainSection>
+	);
+};
+
+const MainPageRedesign = () => {
+	return (
+		<MainSection>
+			<LeftContainer>
+				<Group>
+					<UploadContainer>
+						<UploadSection />
+					</UploadContainer>
+					<PreviewSection />
+				</Group>
+				<Changes />
+			</LeftContainer>
+			<RightContainer>
+				<TitleSection />
+				<DescriptionSection />
+				<RoyaltySection />
+				<CopiesSection />
+			</RightContainer>
+			<ExtraSection>
+				<CollectionSection />
+				<PropertiesSection />
+				<CreateButton />
+			</ExtraSection>
 		</MainSection>
 	);
 };
@@ -130,7 +161,7 @@ const HeroSection = () => {
 			name: "Create",
 			isActive: true,
 			title: "Create a Collectible",
-			component: <MainPage />,
+			component: <MainPageRedesign />,
 		},
 		// {
 		// 	name: "Wrap",
