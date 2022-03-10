@@ -55,8 +55,8 @@ const LinkGroups = () => {
 	const isLoggedIn = auth !== null;
 	const routes = [
 		{
-			name: "Sale",
-			link: "/explore/sale",
+			name: "Sales",
+			link: "/explore/sales",
 		},
 		{
 			name: "Auctions",

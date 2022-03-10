@@ -9,7 +9,6 @@ import {
 import LoadingIcon from "@static/svg/LoadingIcon";
 import constants from "@utils/constants";
 import useOnScreen from "@utils/useOnScreen";
-import FadeLoaderIcon from "@static/svg/FadeLoader";
 const LoadingContainer = styled.div`
 	height: 70vh;
 	width: 100%;
@@ -36,7 +35,6 @@ const LoadMoreContainer = styled.div`
 	align-items: center;
 	gap: 0.5rem;
 	color: var(--app-container-text-primary);
-	margin: 1rem 0;
 	span {
 		font-weight: 900;
 	}
@@ -126,8 +124,7 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 					style={{ visibility: isLoading ? "hidden" : "visible" }}
 					ref={loaderRef}
 				>
-					<span>🌊 the tide is rising</span>{" "}
-					<FadeLoaderIcon size={24} />
+					<span>🌊 the tide is rising</span> <LoadingIcon size={24} />
 				</LoadMoreContainer>
 			) : null}
 		</>

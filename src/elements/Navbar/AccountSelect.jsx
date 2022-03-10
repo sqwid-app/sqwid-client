@@ -205,22 +205,17 @@ const elemContains = (rect, x, y) => {
 		: false;
 };
 
-const AccountSelect = ({ isActive, setIsActive, accounts }) => {
-	const { redirect } = useContext(AccountSelectContext);
-	const [elemIsVisible, setElemIsVisible] = useState(isActive);
+const NetworkSwitchButton = () => {
+	const [networkButtonText, setNetworkButtonText] = useState(
+		<FadeLoaderIcon />
+	);
 	const initialNetwork = localStorage.getItem(
 		`${constants.APP_NAME}__chosen_network`
 	);
 	const [chosenNetwork, setChosenNetwork] = useState(
 		initialNetwork || defaultNetwork
 	);
-	const initialClaimButtonText = "I Accept";
-	const [claimButtonText, setClaimButtonText] = useState(
-		initialClaimButtonText
-	);
-	const [networkButtonText, setNetworkButtonText] = useState(
-		<FadeLoaderIcon />
-	);
+
 	useEffect(() => {
 		!initialNetwork &&
 			localStorage.setItem(
@@ -229,6 +224,51 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 			);
 		//eslint-disable-next-line
 	}, []);
+	useEffect(() => {
+		setNetworkButtonText(
+			chosenNetwork === "reef_testnet" ? "Testnet" : "Mainnet"
+		);
+	}, [chosenNetwork]);
+
+	const handleNetworkChange = () => {
+		let newNetwork =
+			chosenNetwork === "reef_testnet" ? "reef_mainnet" : "reef_testnet";
+		localStorage.setItem(
+			`${constants.APP_NAME}__chosen_network`,
+			newNetwork
+		);
+		setChosenNetwork(newNetwork);
+		window.location.reload();
+	};
+
+	return (
+		<Button
+			whileHover={{
+				y: -5,
+				x: 0,
+				scale: 1.02,
+			}}
+			whileTap={{
+				scale: 0.99,
+			}}
+			network
+			title="Switch Network"
+			onClick={handleNetworkChange}
+		>
+			{networkButtonText}
+		</Button>
+	);
+};
+
+const AccountSelect = ({ isActive, setIsActive, accounts }) => {
+	const { redirect } = useContext(AccountSelectContext);
+	const [elemIsVisible, setElemIsVisible] = useState(isActive);
+
+	const initialClaimButtonText = "I Accept";
+	const [claimButtonText, setClaimButtonText] = useState(
+		initialClaimButtonText
+	);
+
 	const [signer, setSigner] = useState("");
 	const { auth, login, logout, setLoading } = useContext(AuthContext);
 	const [alert, setAlert] = useState({
@@ -287,12 +327,6 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 			setAlertIsVisible(alert.isActive);
 		}
 	}, [alert.isActive]);
-
-	useEffect(() => {
-		setNetworkButtonText(
-			chosenNetwork === "reef_testnet" ? "Testnet" : "Mainnet"
-		);
-	}, [chosenNetwork]);
 
 	const handleClickOutside = e => {
 		let rect = modalRef?.current?.getBoundingClientRect();
@@ -373,65 +407,14 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 						{!auth && (
 							<>
 								<DividerHorizontal />
-								<Button
-									whileHover={{
-										y: -5,
-										x: 0,
-										scale: 1.02,
-									}}
-									whileTap={{
-										scale: 0.99,
-									}}
-									network
-									title="Switch Network"
-									onClick={() => {
-										let newNetwork =
-											chosenNetwork === "reef_testnet"
-												? "reef_mainnet"
-												: "reef_testnet";
-										localStorage.setItem(
-											`${constants.APP_NAME}__chosen_network`,
-											newNetwork
-										);
-										setChosenNetwork(newNetwork);
-										window.location.reload();
-									}}
-								>
-									{networkButtonText}
-								</Button>
+								<NetworkSwitchButton />
 							</>
 						)}
 						{auth && (
 							<>
 								<DividerHorizontal />
 								<ButtonsContainer>
-									<Button
-										whileHover={{
-											y: -5,
-											x: 0,
-											scale: 1.02,
-										}}
-										whileTap={{
-											scale: 0.99,
-										}}
-										network
-										title="Switch Network"
-										onClick={() => {
-											let newNetwork =
-												chosenNetwork === "reef_testnet"
-													? "reef_mainnet"
-													: "reef_testnet";
-											localStorage.setItem(
-												`${constants.APP_NAME}__chosen_network`,
-												newNetwork
-											);
-											setChosenNetwork(newNetwork);
-											logout();
-											window.location.reload();
-										}}
-									>
-										{networkButtonText}
-									</Button>
+									<NetworkSwitchButton />
 									<Button
 										whileHover={{
 											y: -5,

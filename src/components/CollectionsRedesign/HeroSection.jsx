@@ -32,6 +32,12 @@ const Header = styled.h1`
 	align-items: center;
 	gap: 1rem;
 	font-weight: 900;
+	span {
+		max-width: 20rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 	${respondTo.md`
 		span{
 			font-size: 1.25rem;
@@ -79,7 +85,7 @@ const CollectionsLogo = styled.div`
 const CreatorLogo = styled(CollectionsLogo)`
 	height: 1.5rem;
 	width: 1.5rem;
-	border: 0.125rem solid var(--app-text);
+	border: 0.125rem solid var(--app-container-text-primary-hover);
 `;
 
 const Creator = styled(Link)`
@@ -89,7 +95,13 @@ const Creator = styled(Link)`
 	font-weight: 800;
 	cursor: pointer;
 	text-decoration: none;
-	color: var(--app-text);
+	color: var(--app-container-text-primary-hover);
+	span {
+		max-width: 10rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 	${respondTo.md`
 		font-size: 1rem;
 		color: var(--app-container-text-primary-hover);
@@ -249,7 +261,7 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 								<CreatorLogo
 									url={collectionInfo.creator.thumb}
 								/>
-								{collectionInfo.creator.name}
+								<span>{collectionInfo.creator.name}</span>
 							</Creator>
 						</HeaderContainer>
 						<NavContainer>

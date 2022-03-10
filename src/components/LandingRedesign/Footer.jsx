@@ -231,7 +231,7 @@ const FooterContent = () => {
 	const navLinks = [
 		{
 			name: "Sale",
-			link: "/explore/sale",
+			link: "/explore/sales",
 		},
 		{
 			name: "Auctions",

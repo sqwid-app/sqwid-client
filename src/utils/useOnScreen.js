@@ -25,7 +25,7 @@ const useOnScreen = ref => {
 		//eslint-disable-next-line
 	}, [ref]);
 
-	return isOnScreen;
+	return { isVisible: isOnScreen, setIsVisible: setIsOnScreen };
 };
 
 export default useOnScreen;

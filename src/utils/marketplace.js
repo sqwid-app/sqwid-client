@@ -70,11 +70,12 @@ const fetchCollectionInfo = async id => {
 };
 
 // returns the state-wise items for a user
-const fetchUserItems = async (address, state = -1, pageNumber = 1) => {
+const fetchUserItems = async (address, state = -1, startFrom) => {
+	let limit = constants.EXPLORE_PAGINATION_LIMIT;
 	const res = await axios(
 		`${getBackend()}/get/marketplace/by-owner/${address}${
 			state >= 0 ? `/${state}` : ""
-		}?perPage=${constants.EXPLORE_PAGINATION_LIMIT}&page=${pageNumber}`
+		}?limit=${limit}&startFrom=${startFrom}`
 	);
 	const { data } = res;
 	if (data.error) {
@@ -84,11 +85,12 @@ const fetchUserItems = async (address, state = -1, pageNumber = 1) => {
 };
 
 // returns collection-wise items
-const fetchCollectionItems = async (address, state = -1, pageNumber = 1) => {
+const fetchCollectionItems = async (address, state = -1, startFrom) => {
+	let limit = constants.EXPLORE_PAGINATION_LIMIT;
 	const res = await axios(
 		`${getBackend()}/get/marketplace/by-collection/${address}${
 			state >= 0 ? `/${state}` : ""
-		}?perPage=${constants.EXPLORE_PAGINATION_LIMIT}&page=${pageNumber}`
+		}?limit=${limit}&startFrom=${startFrom}`
 	);
 	const { data } = res;
 	if (data.error) {
@@ -98,11 +100,10 @@ const fetchCollectionItems = async (address, state = -1, pageNumber = 1) => {
 };
 
 // returns the state-wise items
-const fetchStateItems = async (state, pageNumber = 1) => {
+const fetchStateItems = async (state, startFrom) => {
+	let limit = constants.EXPLORE_PAGINATION_LIMIT;
 	const res = await axios(
-		`${getBackend()}/get/marketplace/all/${state}?perPage=${
-			constants.EXPLORE_PAGINATION_LIMIT
-		}&page=${pageNumber}`
+		`${getBackend()}/get/marketplace/all/${state}?limit=${limit}&startFrom=${startFrom}`
 	);
 	const { data } = res;
 	if (data.error) {

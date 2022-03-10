@@ -14,7 +14,7 @@ const pages = [
 		component: <AuctionPage />,
 	},
 	{
-		path: "/sale",
+		path: "/sales",
 		component: <SalePage />,
 	},
 	{

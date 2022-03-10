@@ -44,7 +44,7 @@ const Explore = () => {
 	const [raffles, setRaffles] = useState([]);
 	const [loans, setLoans] = useState([]);
 	const containerRef = useRef();
-	const isVisible = useOnScreen(containerRef);
+	const { isVisible } = useOnScreen(containerRef);
 
 	const fetchData = async () => {
 		// console.log("sending request")
