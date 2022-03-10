@@ -218,6 +218,7 @@ const elemContains = (rect, x, y) => {
 };
 
 const NetworkSwitchButton = () => {
+	const { auth, logout } = useContext(AuthContext);
 	const options = [
 		{
 			value: "reef_testnet",
@@ -252,6 +253,7 @@ const NetworkSwitchButton = () => {
 			newNetwork
 		);
 		setChosenNetwork(newNetwork);
+		auth && logout();
 		window.location.reload();
 	};
 
