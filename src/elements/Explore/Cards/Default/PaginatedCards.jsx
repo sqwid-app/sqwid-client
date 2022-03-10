@@ -181,7 +181,7 @@ const PaginatedCards = ({ Card, state, profile, collection }) => {
 				</LoadingContainer>
 			) : (
 				<>
-					{stateItems.items.length === 0 ? (
+					{stateItems?.items?.length === 0 ? (
 						<EmptySection state={state} />
 					) : (
 						<>

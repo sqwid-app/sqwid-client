@@ -6,11 +6,8 @@ import constants from "@utils/constants";
 import getIPFSURL from "@utils/getIPFSURL";
 import { LazyMotion, m, domAnimation } from "framer-motion";
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
 import { respondTo } from "@styles/styledMediaQuery";
-import { getContract } from "@utils/network";
-
 const Wrapper = styled.div``;
 
 const Container = styled.div`
@@ -40,26 +37,6 @@ const StatusContainer = styled.div`
 	flex-direction: column;
 	gap: 0.5rem;
 	color: var(--app-container-text-primary-hover);
-`;
-
-const LinkWrapper = styled(Link)`
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	text-decoration: none;
-	color: inherit;
-	transition: color 0.2s ease;
-	&:hover {
-		color: var(--app-text);
-	}
-	svg {
-		width: 1.5rem;
-		height: 1.5rem;
-	}
-	span {
-		font-size: 1.25rem;
-		font-weight: 800;
-	}
 `;
 
 const HTMLLinkWrapper = styled.a`
@@ -364,9 +341,10 @@ const ReportBtn = () => {
 };
 
 const MetadataSection = () => {
-	const url = "/";
+	const { collectibleInfo } = useContext(CollectibleContext);
+	const url = getIPFSURL(collectibleInfo?.meta?.uri);
 	return (
-		<LinkWrapper to={url}>
+		<HTMLLinkWrapper target="_blank" rel="noopener noreferrer" href={url}>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
@@ -376,15 +354,14 @@ const MetadataSection = () => {
 				<path d="M20 10c0 2.168-3.663 4-8 4s-8-1.832-8-4v3c0 2.168 3.663 4 8 4s8-1.832 8-4v-3z"></path>
 			</svg>
 			<span>Metadata</span>
-		</LinkWrapper>
+		</HTMLLinkWrapper>
 	);
 };
 
 const ScanSection = () => {
 	// https://reefscan.com/contract/0x5043dFAc2D67A381A6315ce9097F37954eCCCc2f
-	const url = `${constants.APP_SCAN_BASE_URL}/contract/${getContract(
-		"erc1155"
-	)}`;
+	const { collectibleInfo } = useContext(CollectibleContext);
+	const url = `${constants.APP_SCAN_BASE_URL}/contract/${collectibleInfo?.meta?.tokenContract}`;
 	return (
 		<HTMLLinkWrapper target="_blank" rel="noopener noreferrer" href={url}>
 			<ReefIcon />
