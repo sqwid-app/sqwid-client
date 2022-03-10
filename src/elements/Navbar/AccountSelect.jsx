@@ -14,6 +14,8 @@ import "simplebar/src/simplebar.css";
 import { defaultNetwork } from "@constants/networks";
 import { useHistory } from "react-router-dom";
 import AccountSelectContext from "@contexts/AccountSelect/AccountSelectContext";
+import Select from "react-select";
+import { styles } from "@styles/reactSelectStyles";
 
 const StyledSimpleBar = styled(SimpleBar)`
 	min-width: 12rem;
@@ -193,7 +195,17 @@ const Content = styled.p`
 const ButtonsContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 1rem;
+	gap: 0.75rem;
+`;
+
+const StyledSelect = styled(Select)`
+	--app-theme-opacity: 0.25;
+	--app-theme-text: rgb(211 231 255);
+	--app-theme-text-transparent: rgba(211, 231, 255, var(--app-theme-opacity));
+	position: relative;
+	font-size: 1rem;
+	z-index: 3;
+	height: 100%;
 `;
 
 const elemContains = (rect, x, y) => {
@@ -206,9 +218,17 @@ const elemContains = (rect, x, y) => {
 };
 
 const NetworkSwitchButton = () => {
-	const [networkButtonText, setNetworkButtonText] = useState(
-		<FadeLoaderIcon />
-	);
+	const options = [
+		{
+			value: "reef_testnet",
+			label: "Testnet",
+		},
+		{
+			value: "reef_mainnet",
+			label: "Mainnet",
+		},
+	];
+
 	const initialNetwork = localStorage.getItem(
 		`${constants.APP_NAME}__chosen_network`
 	);
@@ -224,15 +244,9 @@ const NetworkSwitchButton = () => {
 			);
 		//eslint-disable-next-line
 	}, []);
-	useEffect(() => {
-		setNetworkButtonText(
-			chosenNetwork === "reef_testnet" ? "Testnet" : "Mainnet"
-		);
-	}, [chosenNetwork]);
 
-	const handleNetworkChange = () => {
-		let newNetwork =
-			chosenNetwork === "reef_testnet" ? "reef_mainnet" : "reef_testnet";
+	const handleNetworkChange = e => {
+		let newNetwork = e?.value;
 		localStorage.setItem(
 			`${constants.APP_NAME}__chosen_network`,
 			newNetwork
@@ -241,22 +255,46 @@ const NetworkSwitchButton = () => {
 		window.location.reload();
 	};
 
+	const modifiedStyles = {
+		...styles,
+		control: (base, state) => ({
+			...base,
+			boxShadow: state.isFocused ? 0 : 0,
+			border: "solid 0.15rem var(--app-theme-primary)",
+			background:
+				"rgba(var(--app-theme-value), var(--app-theme-opacity))",
+			color: "var(--app-theme-text)",
+			borderRadius: "0.5rem",
+			height: "100%",
+			"&:hover": {
+				boxShadow: 0,
+			},
+		}),
+		indicatorSeparator: base => ({
+			...base,
+			background: "var(--app-theme-text-transparent)",
+		}),
+		dropdownIndicator: (base, state) => ({
+			...base,
+			color:
+				state.isSelected || state.isFocused
+					? "var(--app-text)"
+					: "var(--app-theme-text)",
+			"&:hover": {
+				color: "var(--app-text)",
+			},
+		}),
+	};
+
 	return (
-		<Button
-			whileHover={{
-				y: -5,
-				x: 0,
-				scale: 1.02,
-			}}
-			whileTap={{
-				scale: 0.99,
-			}}
-			network
-			title="Switch Network"
-			onClick={handleNetworkChange}
-		>
-			{networkButtonText}
-		</Button>
+		<StyledSelect
+			options={options}
+			value={options.find(option => option.value === chosenNetwork)}
+			styles={modifiedStyles}
+			isSearchable={false}
+			placeholder="Select Route"
+			onChange={handleNetworkChange}
+		/>
 	);
 };
 
