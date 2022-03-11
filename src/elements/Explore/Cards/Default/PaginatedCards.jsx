@@ -1,4 +1,10 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, {
+	Suspense,
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import styled from "styled-components";
 import CardSectionContainer from "@elements/Default/CardSectionContainer";
 import {
@@ -83,6 +89,7 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 		setStartFrom(items.pagination.lowest - 1);
 		setIsFetching(false);
 		return;
+		//eslint-disable-next-line
 	};
 
 	useEffect(() => {
@@ -93,7 +100,7 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 		};
 		getItems();
 		// eslint-disable-next-line
-	}, [stateItems.length, isVisible, isFetching]);
+	}, [stateItems.length, isVisible]);
 	return (
 		<>
 			{isLoading ? (
