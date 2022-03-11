@@ -71,7 +71,7 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 			: collection
 			? await fetchCollectionItems(collection, state, startFrom)
 			: await fetchStateItems(state, startFrom);
-		if (!items.items) {
+		if (items.items.length !== 0) {
 			setIsLoading(false);
 			setIsCardLoading(false);
 			setIsFinished(true);

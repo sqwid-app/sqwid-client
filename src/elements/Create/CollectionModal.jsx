@@ -58,7 +58,7 @@ const BackDrop = styled.div`
 	overflow: hidden;
 	display: grid;
 	place-items: center;
-	z-index: 15;
+	z-index: 60;
 `;
 
 const Modal = styled.div`
