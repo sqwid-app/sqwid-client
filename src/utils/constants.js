@@ -29,7 +29,7 @@ const constants = {
 		"image/png",
 		// "video/mp4",
 	],
-	EXPLORE_PAGINATION_LIMIT: 8,
+	EXPLORE_PAGINATION_LIMIT: 12,
 };
 
 export default constants;
