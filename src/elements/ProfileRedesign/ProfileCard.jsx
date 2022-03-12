@@ -12,10 +12,10 @@ import Changes from "@elements/ProfileRedesign/Changes";
 import EditDetailsContext from "@contexts/EditDetails/EditDetailsContext";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { respondTo } from "@styles/styledMediaQuery";
-import bread, { wipBread } from "@utils/bread";
-import { BtnBaseAnimated } from "@elements/Default/BtnBase";
-import { domAnimation, LazyMotion } from "framer-motion";
-import MetadataContainer from "./MetadataContainer";
+import bread from "@utils/bread";
+// import { BtnBaseAnimated } from "@elements/Default/BtnBase";
+// import { domAnimation, LazyMotion } from "framer-motion";
+// import MetadataContainer from "./MetadataContainer";
 import { getBackend } from "@utils/network";
 
 const Card = styled.div`
@@ -242,27 +242,27 @@ const HeaderSection = styled.div`
 	${containerEntryAnim}
 `;
 
-const Btn = styled(BtnBaseAnimated)`
-	width: 10rem;
-	display: grid;
-	place-items: center;
-	font-family: var(--font-family);
-	font-size: 1rem;
-	font-weight: 700;
-	padding: 0.75rem 1.25rem;
-	border-radius: 1000rem;
-	background: var(--app-theme-primary);
-	color: var(--app-text);
-	outline: none;
-	border: none;
-	cursor: pointer;
-	user-select: none;
-	transition: background 0.2s ease;
-	&[disabled] {
-		background: var(--app-theme-primary-disabled);
-		pointer-events: none;
-	}
-`;
+// const Btn = styled(BtnBaseAnimated)`
+// 	width: 10rem;
+// 	display: grid;
+// 	place-items: center;
+// 	font-family: var(--font-family);
+// 	font-size: 1rem;
+// 	font-weight: 700;
+// 	padding: 0.75rem 1.25rem;
+// 	border-radius: 1000rem;
+// 	background: var(--app-theme-primary);
+// 	color: var(--app-text);
+// 	outline: none;
+// 	border: none;
+// 	cursor: pointer;
+// 	user-select: none;
+// 	transition: background 0.2s ease;
+// 	&[disabled] {
+// 		background: var(--app-theme-primary-disabled);
+// 		pointer-events: none;
+// 	}
+// `;
 
 const EditDetailsContainer = styled.label`
 	color: var(--app-container-text-primary);

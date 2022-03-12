@@ -16,6 +16,7 @@ import { useHistory } from "react-router-dom";
 import AccountSelectContext from "@contexts/AccountSelect/AccountSelectContext";
 import Select from "react-select";
 import { styles } from "@styles/reactSelectStyles";
+import useEscape from "@utils/useEscape";
 
 const StyledSimpleBar = styled(SimpleBar)`
 	min-width: 12rem;
@@ -383,6 +384,15 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 			setLoading(false);
 		}
 	};
+
+	useEscape(() => {
+		setAlert({
+			...alert,
+			isActive: false,
+		});
+		setIsActive(false);
+		setLoading(false);
+	});
 
 	return (
 		<LazyMotion features={domAnimation}>
