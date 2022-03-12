@@ -553,15 +553,16 @@ const ProfileCard = () => {
 								)}
 							</Description>
 						</ContentContainer>
+
 						<AdditionalDetailsContainer>
-							<LazyMotion features={domAnimation}>
+							{/* <LazyMotion features={domAnimation}>
 								<Btn onClick={() => wipBread()}>Follow</Btn>
 							</LazyMotion>
 							<MetadataContainer
 								followers={0}
 								collections={0}
 								nfts={0}
-							/>
+							/> */}
 							{isOwnAccount && (
 								<EditDetailsContainer
 									onClick={() => setEditIsActive(true)}
