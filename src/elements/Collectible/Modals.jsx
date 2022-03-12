@@ -23,12 +23,12 @@ import {
 } from "@utils/marketplace";
 //eslint-disable-next-line
 import bread from "@utils/bread";
-import { Link } from "react-router-dom";
 import AlertIcon from "@static/svg/AlertIcon";
 import { useHistory } from "react-router-dom";
 import intervalToFormattedDuration from "@utils/intervalToFormattedDuration";
 import { minutesToMilliseconds } from "date-fns";
 import AuthContext from "@contexts/Auth/AuthContext";
+import constants from "@utils/constants";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -177,7 +177,7 @@ const InfoElements = styled.p`
 	}
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.a`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -186,6 +186,7 @@ const StyledLink = styled(Link)`
 	font-size: 1rem;
 	color: var(--app-container-text-primary);
 	transition: color 0.2s ease;
+	cursor: pointer;
 	svg {
 		height: 1rem;
 		width: 1rem;
@@ -207,8 +208,11 @@ const InfoSection = ({ fee, link }) => {
 				Service Fees: <span>{fee}%</span>
 			</InfoElements>
 			<InfoElements>
-				<StyledLink to={link} target="_blank" rel="noopener noreferrer">
-					{" "}
+				<StyledLink
+					href={constants.DOCUMENTATION[link]}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
 					Need more info?
 					<AlertIcon />
 				</StyledLink>
@@ -465,7 +469,7 @@ export const CreateAuctionModal = props => {
 							: "(Duration will appear here once you start typing)"}
 					</span>
 				</InputWrapper>
-				<InfoSection link="/blog/auctions" fee={props.fee} />
+				<InfoSection link="auctions" fee={props.fee} />
 				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					{buttonText}
 				</AnimBtn>
@@ -560,7 +564,7 @@ export const PutOnSaleModal = props => {
 						placeholder={`Number of copies for sale`}
 					/>
 				</InputWrapper>
-				<InfoSection link="/blog/sale" fee={props.fee} />
+				<InfoSection link="sale" fee={props.fee} />
 				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					{buttonText}
 				</AnimBtn>
@@ -689,7 +693,7 @@ export const LendModal = props => {
 							: "(Duration will appear here once you start typing)"}
 					</span>
 				</InputWrapper>
-				<InfoSection link="/blog/loan" fee={props.fee} />
+				<InfoSection link="loan" fee={props.fee} />
 				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					{buttonText}
 				</AnimBtn>
@@ -786,7 +790,7 @@ export const RaffleModal = props => {
 							: "(Duration will appear here once you start typing)"}
 					</span>
 				</InputWrapper>
-				<InfoSection link="/blog/raffle" fee={props.fee} />
+				<InfoSection link="raffle" fee={props.fee} />
 				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					{buttonText}
 				</AnimBtn>

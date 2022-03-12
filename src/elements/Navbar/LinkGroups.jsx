@@ -2,6 +2,7 @@ import AuthContext from "@contexts/Auth/AuthContext";
 //eslint-disable-next-line
 import Dropdown from "@elements/Default/Dropdown";
 import { respondTo } from "@styles/styledMediaQuery";
+import constants from "@utils/constants";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
@@ -136,6 +137,16 @@ const LinkGroups = () => {
 					>
 						Privacy Policy
 					</NavLink>
+					<a
+						href={constants.DOCUMENTATION.base}
+						target="_blank"
+						rel="noopener noreferrer"
+						exact
+						className="nav-links"
+						activeClassName="nav-selected"
+					>
+						Documentation
+					</a>
 				</InfoContainer>
 			)}
 		</LinkContainer>

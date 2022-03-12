@@ -29,6 +29,14 @@ const constants = {
 		"image/png",
 		// "video/mp4",
 	],
+	DOCUMENTATION: {
+		base: "https://github.com/sqwid-app/sqwid-docs",
+		sale: "https://github.com/sqwid-app/sqwid-docs/blob/main/market_interaction/regular_sale.md",
+		auction:
+			"https://github.com/sqwid-app/sqwid-docs/blob/main/market_interaction/auction.md",
+		raffle: "https://github.com/sqwid-app/sqwid-docs/blob/main/market_interaction/raffle.md",
+		loan: "https://github.com/sqwid-app/sqwid-docs/blob/main/market_interaction/loan.md",
+	},
 	EXPLORE_PAGINATION_LIMIT: 12,
 };
 
