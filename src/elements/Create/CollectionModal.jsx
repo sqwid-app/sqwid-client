@@ -78,6 +78,10 @@ const Modal = styled.div`
 const Title = styled.h1`
 	font-size: 1rem;
 	margin-bottom: 0.25rem;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 `;
 
 const InputContainer = styled.input`
@@ -252,12 +256,53 @@ const LoadingContainer = styled.div`
 	height: 6rem;
 `;
 
+const BtnClear = styled(BtnBaseAnimated)`
+	--btn-base: 347, 76%;
+	background: transparent;
+	background: hsl(var(--btn-base), 50%);
+	color: hsl(var(--btn-base), 97%);
+	border-radius: 1000rem;
+	font-size: 0.875rem;
+	font-weight: 800;
+	padding: 0.25rem 0.75rem;
+	text-align: center;
+	cursor: pointer;
+`;
+
 const elemContains = (rect, x, y) => {
 	return (
 		rect.x <= x &&
 		x <= rect.x + rect.width &&
 		rect.y <= y &&
 		y <= rect.y + rect.height
+	);
+};
+
+const ClearMediaButton = ({ children, onClick, disabled }) => (
+	<BtnClear
+		whileHover={{
+			y: -5,
+			x: 0,
+			scale: 1.02,
+		}}
+		whileTap={{
+			scale: 0.99,
+		}}
+		onClick={onClick}
+		disabled={disabled}
+	>
+		{children}
+	</BtnClear>
+);
+
+const ClearMedia = ({ clear }) => {
+	const handleClick = () => {
+		clear();
+	};
+	return (
+		<LazyMotion features={domAnimation}>
+			<ClearMediaButton onClick={handleClick}>Clear</ClearMediaButton>
+		</LazyMotion>
 	);
 };
 
@@ -323,7 +368,20 @@ const New = ({ isActive, setIsActive }) => {
 					}
 					placeholder={`e.g "Pics of my heckin doggo"`}
 				/>
-				<Title>Cover Image</Title>
+				<Title>
+					Cover Image
+					{fileURL.length ? (
+						<ClearMedia
+							clear={() => {
+								setFileURL("");
+								setInfo({
+									...info,
+									file: null,
+								});
+							}}
+						/>
+					) : null}
+				</Title>
 				{!fileURL.length ? (
 					<CustomDropzoneModal modal info={info} setInfo={setInfo} />
 				) : (
