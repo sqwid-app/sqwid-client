@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+	useContext,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
 import styled, { css, keyframes } from "styled-components";
 import { Connect } from "@utils/connect";
 import { LazyMotion, domAnimation, m } from "framer-motion";
@@ -404,6 +410,11 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		setIsActive(false);
 		setLoading(false);
 	};
+
+	useLayoutEffect(() => {
+		setIsActive(false);
+		//eslint-disable-next-line
+	}, []);
 
 	const handleClickOutside = e => {
 		let rect = modalRef?.current?.getBoundingClientRect();

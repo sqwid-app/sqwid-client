@@ -11,6 +11,7 @@ import FadeLoaderIcon from "@static/svg/FadeLoader";
 import constants from "@utils/constants";
 import bread from "@utils/bread";
 import { truncateAddress } from "@utils/textUtils";
+import { m, LazyMotion, domAnimation } from "framer-motion";
 
 const BasicDetailsContainer = styled.div`
 	display: flex;
@@ -18,7 +19,7 @@ const BasicDetailsContainer = styled.div`
 	/* justify-content: center; */
 	gap: 1rem;
 	padding: 0.5rem 0;
-	cursor: pointer;
+	padding-bottom: 0;
 	border-radius: 0.5rem;
 	color: var(--app-text);
 	text-decoration: none;
@@ -31,16 +32,15 @@ const NotStyledLink = styled(Link)`
 `;
 
 const ProfilePicture = styled.div`
-	height: 3rem;
-	width: 3rem;
+	height: 4rem;
+	width: 4rem;
 	border-radius: 1000rem;
-	outline: 0.125rem solid white;
+	outline: 0.2rem solid white;
 	background-color: var(--app-background);
 	background-image: url("${props => props.url && props.url}");
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	cursor: pointer;
 `;
 
 const ProfileDetails = styled.div`
@@ -79,6 +79,20 @@ const BalanceWrapper = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	/* padding: 0 1rem; */
+`;
+
+const Button = styled(NotStyledLink)`
+	margin-left: auto;
+	font-size: 0.875rem;
+	background: var(--app-container-bg-secondary);
+	color: var(--app-container-text-primary-hover);
+	padding: 0.25rem 0.75rem;
+	border-radius: 0.375rem;
+`;
+
+const ButtonContainer = styled(m.div)`
+	padding: 0.375rem 0;
+	width: 100%;
 `;
 
 const Balance = () => {
@@ -147,19 +161,29 @@ const ProfileElement = () => {
 	return (
 		<>
 			<BasicDetailsContainer>
-				<NotStyledLink to="/profile">
+				<div>
 					<ProfilePicture url={getAvatarFromId(auth.address)} />
-				</NotStyledLink>
+				</div>
 				<ProfileDetails>
-					<NotStyledLink to="/profile">
+					<div>
 						<ProfileName title={username}>{username}</ProfileName>
-					</NotStyledLink>
+					</div>
 					<ProfileAddress
 						// onClick={copyAddress}
 						title={auth.evmAddress}
 					>
 						{truncateAddress(auth.evmAddress, 6)}
 					</ProfileAddress>
+					<LazyMotion features={domAnimation}>
+						<ButtonContainer
+							whileHover={{
+								y: -2.5,
+								x: 0,
+							}}
+						>
+							<Button to="/profile">View Profile</Button>
+						</ButtonContainer>
+					</LazyMotion>
 				</ProfileDetails>
 			</BasicDetailsContainer>
 			<DividerHorizontal />

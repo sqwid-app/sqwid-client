@@ -1,4 +1,10 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, {
+	Suspense,
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import styled from "styled-components";
 import CardSectionContainer from "@elements/Default/CardSectionContainer";
 import {
@@ -64,7 +70,7 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 	const [isFetching, setIsFetching] = useState(false);
 	const [isFinished, setIsFinished] = useState(false);
 
-	const fetchData = async () => {
+	const fetchData = useCallback(async () => {
 		setIsFetching(true);
 		const items = profile
 			? await fetchUserItems(profile, state, startFrom)
@@ -85,7 +91,7 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 		setIsFetching(false);
 		return;
 		//eslint-disable-next-line
-	};
+	}, []);
 
 	useEffect(() => {
 		const getItems = async () => {
@@ -96,6 +102,7 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 		getItems();
 		// eslint-disable-next-line
 	}, [stateItems.length, isVisible]);
+
 	return (
 		<>
 			{isLoading ? (
