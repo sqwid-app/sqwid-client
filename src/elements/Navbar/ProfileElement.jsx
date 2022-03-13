@@ -11,6 +11,7 @@ import FadeLoaderIcon from "@static/svg/FadeLoader";
 import constants from "@utils/constants";
 import bread from "@utils/bread";
 import { truncateAddress } from "@utils/textUtils";
+import { m, LazyMotion, domAnimation } from "framer-motion";
 
 const BasicDetailsContainer = styled.div`
 	display: flex;
@@ -90,8 +91,8 @@ const Button = styled(NotStyledLink)`
 	border-radius: 0.375rem;
 `;
 
-const ButtonContainer = styled.div`
-	margin-top: 0.25rem;
+const ButtonContainer = styled(m.div)`
+	padding: 0.5rem 0;
 	width: 100%;
 `;
 
@@ -174,9 +175,16 @@ const ProfileElement = () => {
 					>
 						{truncateAddress(auth.evmAddress, 6)}
 					</ProfileAddress>
-					<ButtonContainer>
-						<Button to="/profile">View Profile</Button>
-					</ButtonContainer>
+					<LazyMotion features={domAnimation}>
+						<ButtonContainer
+							whileHover={{
+								y: -2.5,
+								x: 0,
+							}}
+						>
+							<Button to="/profile">View Profile</Button>
+						</ButtonContainer>
+					</LazyMotion>
 				</ProfileDetails>
 			</BasicDetailsContainer>
 			<DividerHorizontal />
