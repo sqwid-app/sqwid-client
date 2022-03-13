@@ -504,6 +504,8 @@ const ProfileCard = () => {
 		}
 		//eslint-disable-next-line
 	}, [info, editIsActive]);
+
+	//eslint-disable-next-line
 	const copyAddress = () => {
 		navigator.clipboard.writeText(userData.address).then(() => {
 			setTooltipVisible(true);
@@ -539,9 +541,11 @@ const ProfileCard = () => {
 										{truncateAddress(userData.address, 6)}
 									</Address>
 								</label>
-								{window.isSecureContext && (
-									<CopyIcon onClick={copyAddress} />
-								)}
+								{/* {window.isSecureContext && (
+									<CopyIcon
+										onClick={copyAddress}
+									/>
+								)} */}
 								<Tooltip
 									style={{ display: "none" }}
 									ref={tooltipRef}
