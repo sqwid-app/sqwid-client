@@ -18,6 +18,7 @@ import bread from "@utils/bread";
 // import MetadataContainer from "./MetadataContainer";
 import { getBackend } from "@utils/network";
 import constants from "@utils/constants";
+import FadeLoaderIcon from "@static/svg/FadeLoader";
 
 const Card = styled.div`
 	display: flex;
@@ -429,7 +430,7 @@ const DescriptionEditSection = ({ description, setSync }) => {
 				/>
 				{isLoading && (
 					<LoadingContainer>
-						<Loading bg="#1b1c23" />
+						<FadeLoaderIcon />
 					</LoadingContainer>
 				)}
 			</InputWrapper>
@@ -455,7 +456,7 @@ const ProfileCard = () => {
 	const [tooltipVisible, setTooltipVisible] = useState(false);
 	const [isOwnAccount, setIsOwnAccount] = useState(false);
 	const [editIsActive, setEditIsActive] = useState(false);
-	const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
 	const { info } = useContext(EditDetailsContext);
 	const { id } = useParams();
 	const { auth } = useContext(AuthContext);
@@ -467,40 +468,42 @@ const ProfileCard = () => {
 	};
 	const [userData, setUserData] = useState(initialState);
 	useEffect(() => {
-		let address = id ? id : auth.address;
-		axios
-			.get(`${getBackend()}/get/user/${address}`)
-			.then(({ data }) => {
-				if (id) {
-					setUserData({
-						...userData,
-						name: data.displayName,
-						description: data.bio,
-						address: id,
-						avatar: getAvatarFromId(id),
-					});
-				} else if (auth) {
-					setUserData({
-						...userData,
-						address: auth.evmAddress,
-						name: data.displayName,
-						avatar: getAvatarFromId(auth.address),
-						description: data.bio,
-					});
-				}
-			})
-			.catch(err => {
-				bread(err.response.data.error);
-			})
-			.finally(() => {
-				setIsLoading(false);
-			});
-		id
-			? (id === auth?.address || id === auth?.evmAddress) &&
-			  setIsOwnAccount(true)
-			: setIsOwnAccount(true);
+		if (!editIsActive) {
+			let address = id ? id : auth.address;
+			axios
+				.get(`${getBackend()}/get/user/${address}`)
+				.then(({ data }) => {
+					if (id) {
+						setUserData({
+							...userData,
+							name: data.displayName,
+							description: data.bio,
+							address: id,
+							avatar: getAvatarFromId(id),
+						});
+					} else if (auth) {
+						setUserData({
+							...userData,
+							address: auth.evmAddress,
+							name: data.displayName,
+							avatar: getAvatarFromId(auth.address),
+							description: data.bio,
+						});
+					}
+				})
+				.catch(err => {
+					bread(err.response.data.error);
+				})
+				.finally(() => {
+					setIsLoading(false);
+				});
+			id
+				? (id === auth?.address || id === auth?.evmAddress) &&
+				  setIsOwnAccount(true)
+				: setIsOwnAccount(true);
+		}
 		//eslint-disable-next-line
-	}, [info]);
+	}, [info, editIsActive]);
 	const copyAddress = () => {
 		navigator.clipboard.writeText(userData.address).then(() => {
 			setTooltipVisible(true);
