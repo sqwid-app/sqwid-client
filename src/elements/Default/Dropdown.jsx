@@ -59,7 +59,7 @@ export const DropdownHelp = ({ options, isVisible }) => {
 		<Wrapper type={`help`} className="dropdown-content">
 			<DropdownContainer>
 				{options.map(option => (
-					<>
+					<React.Fragment key={option.name}>
 						{option.external ? (
 							<a
 								href={option.link}
@@ -69,11 +69,9 @@ export const DropdownHelp = ({ options, isVisible }) => {
 								{option.name}
 							</a>
 						) : (
-							<Option key={option.name} to={option.link}>
-								{option.name}
-							</Option>
+							<Option to={option.link}>{option.name}</Option>
 						)}
-					</>
+					</React.Fragment>
 				))}
 			</DropdownContainer>
 		</Wrapper>

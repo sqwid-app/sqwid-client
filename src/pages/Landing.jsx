@@ -1,11 +1,10 @@
 import Wrapper from "@components/Default/Wrapper";
-import React, { useContext } from "react";
+import React from "react";
 import HeroSection from "@components/LandingRedesign/HeroSection";
-import AuthContext from "@contexts/Auth/AuthContext";
+import useCheckJWT from "@utils/useCheckJWT";
 
 const Landing = () => {
-	const { token } = useContext(AuthContext);
-	console.log(token);
+	useCheckJWT();
 	return (
 		<Wrapper landing>
 			<HeroSection />

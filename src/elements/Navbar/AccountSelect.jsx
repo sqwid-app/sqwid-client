@@ -114,10 +114,8 @@ const Modal = styled.div`
 	flex-direction: column;
 	gap: 0.5rem;
 	.close-btn {
-		--btn-base: 347, 76%;
-		background: transparent;
-		background: hsl(var(--btn-base), 50%);
-		color: hsl(var(--btn-base), 97%);
+		background: var(--app-container-bg-secondary);
+		color: var(--app-container-text-primary-hover);
 		position: absolute;
 		top: 0.675rem;
 		right: 0.675rem;
@@ -130,7 +128,7 @@ const Modal = styled.div`
 		svg {
 			width: 1.25rem;
 			height: 1.25rem;
-			stroke: hsl(var(--btn-base), 97%);
+			stroke: var(--app-container-text-primary-hover);
 			stoke-width: 0.125rem;
 		}
 		opacity: 0;
