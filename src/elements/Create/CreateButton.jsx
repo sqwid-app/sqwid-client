@@ -66,7 +66,12 @@ export const CreateButton = () => {
 
 			createCollectible({ ...files, ...fileData })
 				.then(res => {
-					history.push(`/collectible/${res}`);
+					if (!res.error) history.push(`/collectible/${res}`);
+					else {
+						// eslint-disable-next-line
+						console.log (res.error);
+						bread("Error creating collectible");
+					}
 				})
 				.catch(err => {
 					bread(err.response.data.error);

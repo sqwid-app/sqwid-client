@@ -196,8 +196,7 @@ const createCollectible = async files => {
 		);
 		return positionId;
 	} catch (err) {
-		// console.log (err);
-		return null;
+		return { error: err };
 	}
 };
 
