@@ -11,7 +11,7 @@ import constants from "@utils/constants";
 import useOnScreen from "@utils/useOnScreen";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
 const LoadingContainer = styled.div`
-	height: 70vh;
+	height: 65vh;
 	width: 100%;
 	display: grid;
 	place-items: center;
@@ -71,7 +71,7 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 			: collection
 			? await fetchCollectionItems(collection, state, startFrom)
 			: await fetchStateItems(state, startFrom);
-		
+
 		if (items?.items?.length === 0) {
 			setIsLoading(false);
 			setIsCardLoading(false);
