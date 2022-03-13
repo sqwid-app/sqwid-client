@@ -31,8 +31,8 @@ const NotStyledLink = styled(Link)`
 `;
 
 const ProfilePicture = styled.div`
-	height: 3rem;
-	width: 3rem;
+	height: 4rem;
+	width: 4rem;
 	border-radius: 1000rem;
 	outline: 0.125rem solid white;
 	background-color: var(--app-background);
@@ -79,6 +79,20 @@ const BalanceWrapper = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	/* padding: 0 1rem; */
+`;
+
+const Button = styled(NotStyledLink)`
+	margin-left: auto;
+	font-size: 0.875rem;
+	background: var(--app-container-bg-secondary);
+	color: var(--app-container-text-primary-hover);
+	padding: 0.25rem 0.75rem;
+	border-radius: 0.375rem;
+`;
+
+const ButtonContainer = styled.div`
+	margin-top: 0.25rem;
+	width: 100%;
 `;
 
 const Balance = () => {
@@ -147,19 +161,22 @@ const ProfileElement = () => {
 	return (
 		<>
 			<BasicDetailsContainer>
-				<NotStyledLink to="/profile">
+				<div>
 					<ProfilePicture url={getAvatarFromId(auth.address)} />
-				</NotStyledLink>
+				</div>
 				<ProfileDetails>
-					<NotStyledLink to="/profile">
+					<div>
 						<ProfileName title={username}>{username}</ProfileName>
-					</NotStyledLink>
+					</div>
 					<ProfileAddress
 						// onClick={copyAddress}
 						title={auth.evmAddress}
 					>
 						{truncateAddress(auth.evmAddress, 6)}
 					</ProfileAddress>
+					<ButtonContainer>
+						<Button to="/profile">View Profile</Button>
+					</ButtonContainer>
 				</ProfileDetails>
 			</BasicDetailsContainer>
 			<DividerHorizontal />
