@@ -7,6 +7,7 @@ export const networks = {
 			utility: "0x74d9c321Ec73F717c53788d70357fB146B25f5C4",
 		},
 		backend: "https://testnet-api.sqwid.app",
+		// backend: "http://localhost:8080",
 	},
 	reef_mainnet: {
 		rpc: "wss://rpc.reefscan.com/ws",
