@@ -17,6 +17,7 @@ import bread from "@utils/bread";
 // import { domAnimation, LazyMotion } from "framer-motion";
 // import MetadataContainer from "./MetadataContainer";
 import { getBackend } from "@utils/network";
+import constants from "@utils/constants";
 
 const Card = styled.div`
 	display: flex;
@@ -507,6 +508,7 @@ const ProfileCard = () => {
 				setTooltipVisible(false);
 			}, 1000);
 		});
+		bread(constants.COPY_WARNING);
 	};
 	useEffect(() => {
 		if (tooltipVisible) tooltipRef.current.style.display = "block";

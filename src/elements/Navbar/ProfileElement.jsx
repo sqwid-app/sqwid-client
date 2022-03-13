@@ -10,11 +10,12 @@ import { numberSeparator } from "@utils/numberSeparator";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
 import constants from "@utils/constants";
 import bread from "@utils/bread";
+import { truncateAddress } from "@utils/textUtils";
 
 const BasicDetailsContainer = styled.div`
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	/* justify-content: center; */
 	gap: 1rem;
 	padding: 0.5rem 0;
 	cursor: pointer;
@@ -117,15 +118,27 @@ const ProfileElement = () => {
 	const copyAddress = () => {
 		navigator.clipboard.writeText(auth.evmAddress).then(() => {
 			bread(
-				<p
-					style={{
-						lineHeight: "1",
-						fontWeight: "900",
-						color: "var(--app-container-text-primary-hover)",
-					}}
-				>
-					Copied address to clipboard!
-				</p>
+				<>
+					<p
+						style={{
+							lineHeight: "1",
+							fontWeight: "900",
+							color: "var(--app-container-text-primary-hover)",
+						}}
+					>
+						Copied address to clipboard!
+					</p>
+					<p
+						style={{
+							fontWeight: "500",
+							color: "var(--app-container-text-primary-hover)",
+							fontSize: "0.875rem",
+							lineHeight: "1",
+						}}
+					>
+						{constants.COPY_WARNING}
+					</p>
+				</>
 			);
 		});
 	};
@@ -143,7 +156,7 @@ const ProfileElement = () => {
 						onClick={copyAddress}
 						title={auth.evmAddress}
 					>
-						{auth.evmAddress}
+						{truncateAddress(auth.evmAddress, 6)}
 					</ProfileAddress>
 				</ProfileDetails>
 			</BasicDetailsContainer>
