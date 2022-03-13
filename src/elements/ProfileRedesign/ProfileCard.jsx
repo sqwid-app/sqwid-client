@@ -1,5 +1,6 @@
 import ProfilePicture from "@components/Profile/ProfilePicture";
 import AuthContext from "@contexts/Auth/AuthContext";
+//eslint-disable-next-line
 import CopyIcon from "@static/svg/CopyIcon";
 import EditIcon from "@static/svg/EditIcon";
 import { clamp, truncateAddress } from "@utils/textUtils";
