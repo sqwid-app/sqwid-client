@@ -29,7 +29,13 @@ const AuthProvider = props => {
 		<AuthContext.Provider
 			value={{
 				auth: state.auth,
-				token: state.token,
+				token:
+					typeof state.token === "string"
+						? JSON.parse(state.token) &&
+						  JSON.parse(state.token).find(
+								user => user.address === state.auth.address
+						  )?.token
+						: null,
 				loading: loading,
 				login,
 				logout,

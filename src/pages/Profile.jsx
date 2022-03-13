@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { respondTo } from "@styles/styledMediaQuery";
 import Navbar from "@components/Default/Navbar";
 import Container from "@elements/Default/Container";
+import useCheckJWT from "@utils/useCheckJWT";
 
 const MarginDiv = styled.div`
 	margin-top: 6rem;
@@ -31,6 +32,7 @@ const Profile = () => {
 	const { auth } = useContext(AuthContext);
 	const { id } = useParams();
 	const { pathname } = useLocation();
+	useCheckJWT(id);
 	return (
 		<>
 			{id || auth ? (

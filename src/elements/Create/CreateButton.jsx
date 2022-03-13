@@ -18,7 +18,8 @@ const BtnContainer = styled.div`
 
 const Btn = styled(BtnBaseAnimated)`
 	height: 3rem;
-	width: 75%;
+	width: 50%;
+	min-width: fit-content;
 	display: grid;
 	place-items: center;
 	font-family: var(--font-family);

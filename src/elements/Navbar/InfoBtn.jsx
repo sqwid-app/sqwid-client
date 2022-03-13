@@ -1,5 +1,6 @@
 import { DropdownHelp } from "@elements/Default/Dropdown";
 import AlertIcon from "@static/svg/AlertIcon";
+import constants from "@utils/constants";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -42,10 +43,17 @@ const InfoBtn = () => {
 						{
 							name: "Terms of Service",
 							link: "/terms-of-service",
+							external: false,
 						},
 						{
 							name: "Privacy Policy",
 							link: "/privacy-policy",
+							external: false,
+						},
+						{
+							name: "Documentation",
+							link: constants.DOCUMENTATION.base,
+							external: true,
 						},
 					]}
 				/>

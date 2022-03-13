@@ -1,5 +1,6 @@
 import HeroSection from "@components/Create/HeroSection";
 import Navbar from "@components/Default/Navbar";
+import useCheckJWT from "@utils/useCheckJWT";
 import React from "react";
 import { Prompt } from "react-router-dom";
 import styled from "styled-components";
@@ -25,6 +26,7 @@ const Wrapper = ({ children }) => {
 };
 
 const Create = () => {
+	useCheckJWT();
 	return (
 		<Wrapper>
 			<HeroSection />

@@ -16,6 +16,7 @@ import { useHistory } from "react-router-dom";
 import AccountSelectContext from "@contexts/AccountSelect/AccountSelectContext";
 import Select from "react-select";
 import { styles } from "@styles/reactSelectStyles";
+import useEscape from "@utils/useEscape";
 
 const StyledSimpleBar = styled(SimpleBar)`
 	min-width: 12rem;
@@ -112,6 +113,33 @@ const Modal = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+	.close-btn {
+		background: var(--app-container-bg-secondary);
+		color: var(--app-container-text-primary-hover);
+		position: absolute;
+		top: 0.675rem;
+		right: 0.675rem;
+		padding: 0.125rem;
+		border-radius: 1000rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		svg {
+			width: 1.25rem;
+			height: 1.25rem;
+			stroke: var(--app-container-text-primary-hover);
+			stoke-width: 0.125rem;
+		}
+		opacity: 0;
+		display: none;
+	}
+	&:hover {
+		.close-btn {
+			opacity: 1;
+			display: flex;
+		}
+	}
 	p {
 		line-height: 1;
 		font-size: 1.5rem;
@@ -368,6 +396,15 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 		}
 	}, [alert.isActive]);
 
+	const closeModal = () => {
+		setAlert({
+			...alert,
+			isActive: false,
+		});
+		setIsActive(false);
+		setLoading(false);
+	};
+
 	const handleClickOutside = e => {
 		let rect = modalRef?.current?.getBoundingClientRect();
 		let rect2 = alertRef?.current?.getBoundingClientRect();
@@ -375,14 +412,13 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 			!elemContains(rect, e.clientX, e.clientY) &&
 			!elemContains(rect2, e.clientX, e.clientY)
 		) {
-			setAlert({
-				...alert,
-				isActive: false,
-			});
-			setIsActive(false);
-			setLoading(false);
+			closeModal();
 		}
 	};
+
+	useEscape(() => {
+		closeModal();
+	});
 
 	return (
 		<LazyMotion features={domAnimation}>
@@ -393,6 +429,16 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 					onTouchStart={handleClickOutside}
 				>
 					<Modal remove={!isActive} ref={modalRef}>
+						<span className="close-btn" onClick={closeModal}>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="currentColor"
+								viewBox="0 0 24 24"
+							>
+								<path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
+							</svg>
+						</span>
+
 						{auth && <ProfileElement />}
 						<Title>Choose an{auth && "other"} account</Title>
 						<StyledSimpleBar style={{ maxHeight: 300 }}>
