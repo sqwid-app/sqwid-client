@@ -19,7 +19,6 @@ const BasicDetailsContainer = styled.div`
 	/* justify-content: center; */
 	gap: 1rem;
 	padding: 0.5rem 0;
-	cursor: pointer;
 	border-radius: 0.5rem;
 	color: var(--app-text);
 	text-decoration: none;
@@ -35,13 +34,12 @@ const ProfilePicture = styled.div`
 	height: 4rem;
 	width: 4rem;
 	border-radius: 1000rem;
-	outline: 0.125rem solid white;
+	outline: 0.2rem solid white;
 	background-color: var(--app-background);
 	background-image: url("${props => props.url && props.url}");
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	cursor: pointer;
 `;
 
 const ProfileDetails = styled.div`
@@ -92,7 +90,7 @@ const Button = styled(NotStyledLink)`
 `;
 
 const ButtonContainer = styled(m.div)`
-	padding: 0.5rem 0;
+	padding: 0.375rem 0;
 	width: 100%;
 `;
 
