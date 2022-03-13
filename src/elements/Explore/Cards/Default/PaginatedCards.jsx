@@ -10,8 +10,8 @@ import LoadingIcon from "@static/svg/LoadingIcon";
 import constants from "@utils/constants";
 import useOnScreen from "@utils/useOnScreen";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
+
 const LoadingContainer = styled.div`
-	height: 65vh;
 	width: 100%;
 	display: grid;
 	place-items: center;
