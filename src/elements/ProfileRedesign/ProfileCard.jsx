@@ -1,5 +1,6 @@
 import ProfilePicture from "@components/Profile/ProfilePicture";
 import AuthContext from "@contexts/Auth/AuthContext";
+//eslint-disable-next-line
 import CopyIcon from "@static/svg/CopyIcon";
 import EditIcon from "@static/svg/EditIcon";
 import { clamp, truncateAddress } from "@utils/textUtils";
@@ -504,6 +505,8 @@ const ProfileCard = () => {
 		}
 		//eslint-disable-next-line
 	}, [info, editIsActive]);
+
+	//eslint-disable-next-line
 	const copyAddress = () => {
 		navigator.clipboard.writeText(userData.address).then(() => {
 			setTooltipVisible(true);
@@ -539,9 +542,11 @@ const ProfileCard = () => {
 										{truncateAddress(userData.address, 6)}
 									</Address>
 								</label>
-								{window.isSecureContext && (
-									<CopyIcon onClick={copyAddress} />
-								)}
+								{/* {window.isSecureContext && (
+									<CopyIcon
+										onClick={copyAddress}
+									/>
+								)} */}
 								<Tooltip
 									style={{ display: "none" }}
 									ref={tooltipRef}

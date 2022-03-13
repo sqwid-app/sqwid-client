@@ -115,6 +115,8 @@ const ProfileElement = () => {
 	useEffect(() => {
 		auth && setUsername(auth.meta.name);
 	}, [auth]);
+
+	//eslint-disable-next-line
 	const copyAddress = () => {
 		navigator.clipboard.writeText(auth.evmAddress).then(() => {
 			bread(
@@ -153,7 +155,7 @@ const ProfileElement = () => {
 						<ProfileName title={username}>{username}</ProfileName>
 					</NotStyledLink>
 					<ProfileAddress
-						onClick={copyAddress}
+						// onClick={copyAddress}
 						title={auth.evmAddress}
 					>
 						{truncateAddress(auth.evmAddress, 6)}
