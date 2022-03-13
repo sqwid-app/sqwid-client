@@ -19,6 +19,7 @@ const BasicDetailsContainer = styled.div`
 	/* justify-content: center; */
 	gap: 1rem;
 	padding: 0.5rem 0;
+	padding-bottom: 0;
 	border-radius: 0.5rem;
 	color: var(--app-text);
 	text-decoration: none;
