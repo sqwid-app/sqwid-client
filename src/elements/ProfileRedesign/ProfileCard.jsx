@@ -20,6 +20,7 @@ import bread from "@utils/bread";
 import { getBackend } from "@utils/network";
 import constants from "@utils/constants";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
+import shortenIfAddress from "@utils/shortenIfAddress";
 
 const Card = styled.div`
 	display: flex;
@@ -534,7 +535,9 @@ const ProfileCard = () => {
 						<ProfilePicture src={userData.avatar} />
 						<ContentContainer>
 							<Name>
-								{info.name.length ? info.name : userData.name}
+								{info.name.length
+									? shortenIfAddress(info.name)
+									: shortenIfAddress(userData.name)}
 							</Name>
 							<AddressContainer>
 								<label title={userData.address}>
