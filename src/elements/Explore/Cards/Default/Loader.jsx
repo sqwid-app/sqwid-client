@@ -6,7 +6,7 @@ const LoaderContainer = styled.div`
 	width: 100%;
 	display: grid;
 	place-items: center;
-	border-top: solid 0.125rem var(--app-container-bg-primary);
+	border-top: solid 0.1rem var(--app-container-bg-primary);
 	p {
 		display: flex;
 		align-items: center;
