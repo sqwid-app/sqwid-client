@@ -37,7 +37,7 @@ const constants = {
 		raffle: "https://github.com/sqwid-app/sqwid-docs/blob/main/market_interaction/raffle.md",
 		loan: "https://github.com/sqwid-app/sqwid-docs/blob/main/market_interaction/loan.md",
 	},
-	EXPLORE_PAGINATION_LIMIT: 4,
+	EXPLORE_PAGINATION_LIMIT: 12,
 	COPY_WARNING: "Use this address only on the Reef Chain",
 };
 

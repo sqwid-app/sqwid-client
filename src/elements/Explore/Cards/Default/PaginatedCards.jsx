@@ -66,9 +66,10 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [isCardLoading, setIsCardLoading] = useState(true);
 	const [stateItems, setStateItems] = useState([]);
-	const { isVisible } = useOnScreen(loaderRef);
 	const [isFetching, setIsFetching] = useState(false);
 	const [isFinished, setIsFinished] = useState(false);
+	const { isVisible } = useOnScreen(loaderRef);
+	// const [isFirstLoad, setIsFirstLoad] = useState(true);
 
 	const fetchData = useCallback(async () => {
 		setIsFetching(true);
@@ -78,17 +79,26 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 			? await fetchCollectionItems(collection, state, startFrom)
 			: await fetchStateItems(state, startFrom);
 		
+		// console.log (!items.items || items?.items?.length === 0);
 		if (!items.items || items?.items?.length === 0) {
 			setIsLoading(false);
 			setIsCardLoading(false);
 			setIsFinished(true);
+			setIsFetching(false);
 			return;
 		}
 		setStateItems([...stateItems, ...items?.items]);
+		if (items.items.length < constants.EXPLORE_PAGINATION_LIMIT) {
+			setIsLoading(false);
+			setIsCardLoading(false);
+			setIsFinished(true);
+			setIsFetching(false);
+			return;
+		}
 		setIsLoading(false);
 		setIsCardLoading(false);
 		setStartFrom(items.pagination.lowest - 1);
-		setIsFetching(false);
+		setIsFetching (false);
 		return;
 		//eslint-disable-next-line
 	}, [startFrom]);
@@ -101,7 +111,7 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 		};
 		getItems();
 		// eslint-disable-next-line
-	}, [stateItems.length, isVisible, isFetching]);
+	}, [isVisible]);
 
 	return (
 		<>
@@ -110,13 +120,13 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 					<LoadingIcon size={64} />
 				</LoadingContainer>
 			) : (
-				<>
+				<Suspense fallback = {<></>}>
 					{stateItems?.length === 0 ? (
 						<EmptySection state={state} />
 					) : (
 						<>
 							<CardSectionContainer>
-								<Suspense>
+								<>
 									{stateItems.map((item, index) => (
 										<Card
 											key={index}
@@ -124,11 +134,11 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 											isLoading={isCardLoading}
 										/>
 									))}
-								</Suspense>
+								</>
 							</CardSectionContainer>
 						</>
 					)}
-				</>
+				</Suspense>
 			)}
 			{!isFinished ? (
 				<LoadMoreContainer
