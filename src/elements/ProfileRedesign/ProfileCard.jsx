@@ -21,6 +21,10 @@ import { getBackend } from "@utils/network";
 import constants from "@utils/constants";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
 import shortenIfAddress from "@utils/shortenIfAddress";
+import { numberSeparator } from "@utils/numberSeparator";
+import { BtnBaseAnimated } from "@elements/Default/BtnBase";
+import { LazyMotion, domAnimation } from "framer-motion";
+import ReefIcon from "@static/svg/ReefIcon";
 
 const Card = styled.div`
 	display: flex;
@@ -297,6 +301,89 @@ const HeaderContainer = styled.div`
 		z-index:5;
 	`}
 `;
+
+const WithdrawAmount = styled.p`
+	font-weight: 900;
+	font-size: 1.375rem;
+	display: flex;
+	align-items: center;
+`;
+
+const WithdrawAmountUSD = styled.p`
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--app-container-text-primary);
+`;
+
+const WithdrawContainer = styled.div`
+	border-radius: 0.675rem;
+	padding: 1.25rem 1rem;
+	border: 0.125rem solid var(--app-container-bg-primary);
+	background: var(--app-container-bg-primary);
+`;
+
+const Btn = styled(BtnBaseAnimated)`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1rem;
+	font-weight: 700;
+	padding: 0 1.25rem;
+	border-radius: 1000rem;
+	height: 2.5rem;
+	min-width: 6rem;
+	z-index: 2;
+	margin-top: 1rem;
+`;
+
+const WithdrawHeading = styled.h3`
+	color: var(--app-container-text-primary-hover);
+	font-size: 1rem;
+	font-weight: 900;
+	line-height: 1;
+	margin-bottom: 0.5rem;
+`;
+
+const AnimBtn = ({ children, ...props }) => (
+	<Btn
+		whileTap={{
+			scale: 0.97,
+		}}
+		whileHover={{
+			y: -5,
+			x: 0,
+			scale: 1.02,
+		}}
+		{...props}
+	>
+		{children}
+	</Btn>
+);
+
+const Withdraw = () => {
+	const price = 10000;
+	const usdPrice = 69420;
+
+	return (
+		<>
+			{price > 0 ? (
+				<WithdrawContainer>
+					<WithdrawHeading>Available to Withdraw</WithdrawHeading>
+					<WithdrawAmount>
+						<ReefIcon size={22} />{" "}
+						{numberSeparator(Math.trunc(price).toString())}
+					</WithdrawAmount>
+					<WithdrawAmountUSD>
+						(${numberSeparator(usdPrice.toString())})
+					</WithdrawAmountUSD>
+					<LazyMotion features={domAnimation}>
+						<AnimBtn>Withdraw</AnimBtn>
+					</LazyMotion>
+				</WithdrawContainer>
+			) : null}
+		</>
+	);
+};
 
 const NameEditSection = ({ name, setSync }) => {
 	const { info, setInfo } = useContext(EditDetailsContext);
@@ -577,15 +664,18 @@ const ProfileCard = () => {
 								nfts={0}
 							/> */}
 							{isOwnAccount && (
-								<EditDetailsContainer
-									onClick={() => setEditIsActive(true)}
-									title={`${
-										!editIsActive ? `Enter` : `Exit`
-									} Edit Mode`}
-								>
-									<span>Edit Profile Details</span>
-									<EditIcon />
-								</EditDetailsContainer>
+								<>
+									<EditDetailsContainer
+										onClick={() => setEditIsActive(true)}
+										title={`${
+											!editIsActive ? `Enter` : `Exit`
+										} Edit Mode`}
+									>
+										<span>Edit Profile Details</span>
+										<EditIcon />
+									</EditDetailsContainer>
+									<Withdraw />
+								</>
 							)}
 						</AdditionalDetailsContainer>
 					</Container>

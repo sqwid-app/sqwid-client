@@ -69,7 +69,6 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 	const [isFetching, setIsFetching] = useState(false);
 	const [isFinished, setIsFinished] = useState(false);
 	const { isVisible } = useOnScreen(loaderRef);
-	// const [isFirstLoad, setIsFirstLoad] = useState(true);
 
 	const fetchData = useCallback(async () => {
 		setIsFetching(true);
@@ -79,7 +78,6 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 			? await fetchCollectionItems(collection, state, startFrom)
 			: await fetchStateItems(state, startFrom);
 		
-		// console.log (!items.items || items?.items?.length === 0);
 		if (!items.items || items?.items?.length === 0) {
 			setIsLoading(false);
 			setIsCardLoading(false);
