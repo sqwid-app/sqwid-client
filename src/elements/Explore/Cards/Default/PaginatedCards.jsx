@@ -91,7 +91,7 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 		setIsFetching(false);
 		return;
 		//eslint-disable-next-line
-	}, []);
+	}, [startFrom]);
 
 	useEffect(() => {
 		const getItems = async () => {
@@ -101,7 +101,7 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 		};
 		getItems();
 		// eslint-disable-next-line
-	}, [stateItems.length, isVisible]);
+	}, [stateItems.length, isVisible, isFetching]);
 
 	return (
 		<>
