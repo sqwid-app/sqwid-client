@@ -14,6 +14,7 @@ import Select from "react-select";
 import { styles } from "@styles/reactSelectStyles";
 import { getCloudflareURL } from "@utils/getIPFSURL";
 import useActiveTabs from "@utils/useActiveTabs";
+import shortenIfAddress from "@utils/shortenIfAddress";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -261,7 +262,11 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 								<CreatorLogo
 									url={collectionInfo.creator.thumb}
 								/>
-								<span>{collectionInfo.creator.name}</span>
+								<span>
+									{shortenIfAddress(
+										collectionInfo.creator.name
+									)}
+								</span>
 							</Creator>
 						</HeaderContainer>
 						<NavContainer>

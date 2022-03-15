@@ -325,7 +325,7 @@ const CurrentPrice = () => {
 			<ReefIcon />
 			<p>
 				<label title={numberSeparator(price.toString())}>
-					{numberSeparator(price.toString())}
+					{numberSeparator(Math.trunc(price).toString())}
 				</label>
 				<span>(${usdPrice})</span>
 			</p>
@@ -644,12 +644,12 @@ const Config3 = () => {
 			<RightContainer>
 				<CurrentPrice />
 			</RightContainer>
-			{ auth && (
+			{auth && (
 				<AnimBtn onClick={() => setShowBuyModal(!showBuyModal)}>
 					Buy
 				</AnimBtn>
-			 ) }
-			 <BuyModal isActive={showBuyModal} setIsActive={setShowBuyModal} />
+			)}
+			<BuyModal isActive={showBuyModal} setIsActive={setShowBuyModal} />
 		</BottomContainer>
 	);
 };
@@ -678,11 +678,11 @@ const Config4 = () => {
 			<RightContainer>
 				<CurrentPrice />
 			</RightContainer>
-			{ auth && (
+			{auth && (
 				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					{buttonText}
 				</AnimBtn>
-			) }
+			)}
 		</BottomContainer>
 	);
 };
@@ -700,7 +700,7 @@ const Config5 = () => {
 				<MinimumBid />
 				<HighestBid />
 			</TopSection>
-			{ auth && (
+			{auth && (
 				<BottomContainer parent={false}>
 					<RightContainer>
 						<MyAuctionBid />
@@ -709,7 +709,7 @@ const Config5 = () => {
 						Bid
 					</AnimBtn>
 				</BottomContainer>
-			) }
+			)}
 			<BidsModal
 				isActive={showBidsModal}
 				setIsActive={setShowBidsModal}
@@ -730,7 +730,7 @@ const Config6 = () => {
 				<MinimumBid />
 				<HighestBid />
 			</TopSection>
-			{ auth && (
+			{auth && (
 				<BottomContainer parent={false}>
 					<RightContainer>
 						<MyAuctionBid />
@@ -739,7 +739,7 @@ const Config6 = () => {
 						Increase Bid
 					</AnimBtn>
 				</BottomContainer>
-			) }
+			)}
 			<BidsModal
 				isActive={showBidsModal}
 				setIsActive={setShowBidsModal}
@@ -775,7 +775,7 @@ const Config7 = () => {
 				<HighestBid />
 			</TopSection>
 			<BottomContainer parent={false}>
-				{ auth && (
+				{auth && (
 					<AnimBtn disabled={isLoading} onClick={handleClick}>
 						{buttonText}
 					</AnimBtn>
@@ -824,7 +824,7 @@ const Config10 = () => {
 				</TopSectionContainer>
 			</TopSection>
 			<BottomContainer parent={false}>
-				{ auth && (
+				{auth && (
 					<AnimBtn
 						onClick={() =>
 							setShowEnterRaffleModal(!showEnterRaffleModal)
@@ -832,7 +832,7 @@ const Config10 = () => {
 					>
 						Participate
 					</AnimBtn>
-				) }
+				)}
 			</BottomContainer>
 			<EnterRaffleModal
 				isActive={showEnterRaffleModal}
@@ -877,11 +877,11 @@ const Config11 = () => {
 				</TopSectionContainer>
 			</TopSection>
 			<BottomContainer parent={false}>
-				{ auth && (
+				{auth && (
 					<AnimBtn disabled={isLoading} onClick={handleClick}>
 						{buttonText}
 					</AnimBtn>
-				) }
+				)}
 			</BottomContainer>
 		</BottomWrapper>
 	);
@@ -938,11 +938,11 @@ const Config14 = () => {
 				<RightContainer>
 					<CurrentPrice />
 				</RightContainer>
-				{ auth && (
+				{auth && (
 					<AnimBtn disabled={isLoading} onClick={handleClick}>
 						{buttonText}
 					</AnimBtn>
-				) }
+				)}
 			</BottomContainer>
 		</BottomWrapper>
 	);
@@ -1002,11 +1002,11 @@ const Config17 = () => {
 				<RightContainer>
 					<CurrentPrice />
 				</RightContainer>
-				{ auth && (
+				{auth && (
 					<AnimBtn disabled={isLoading} onClick={handleClick}>
 						{buttonText}
 					</AnimBtn>
-				) }
+				)}
 			</BottomContainer>
 		</BottomWrapper>
 	);
@@ -1041,11 +1041,11 @@ const Config18 = () => {
 				<RightContainer>
 					<CurrentPrice />
 				</RightContainer>
-				{ auth && (
+				{auth && (
 					<AnimBtn disabled={isLoading} onClick={handleClick}>
 						{buttonText}
 					</AnimBtn>
-				) }
+				)}
 			</BottomContainer>
 		</BottomWrapper>
 	);
@@ -1085,11 +1085,11 @@ const Config19 = () => {
 				<RightContainer>
 					<CurrentPrice />
 				</RightContainer>
-				{ auth && (
+				{auth && (
 					<AnimBtn disabled={isLoading} onClick={handleClick}>
 						{buttonText}
 					</AnimBtn>
-				) }
+				)}
 			</BottomContainer>
 		</BottomWrapper>
 	);

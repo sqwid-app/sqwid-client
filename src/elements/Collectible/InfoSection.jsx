@@ -4,6 +4,7 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { respondTo } from "@styles/styledMediaQuery";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { getCloudflareURL } from "@utils/getIPFSURL";
+import shortenIfAddress from "@utils/shortenIfAddress";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -138,7 +139,9 @@ const InfoSection = () => {
 						<NotStyledLink
 							to={`/profile/${collectibleInfo.creator.address}`}
 						>
-							<div>{collectibleInfo.creator.name}</div>
+							<div>
+								{shortenIfAddress(collectibleInfo.creator.name)}
+							</div>
 							{/* <span> ({collectibleInfo.royalty}% royalty)</span> */}
 						</NotStyledLink>
 					</Content>
@@ -170,7 +173,11 @@ const InfoSection = () => {
 							<NotStyledLink
 								to={`/profile/${collectibleInfo.owner.address}`}
 							>
-								<div>{collectibleInfo.owner.name}</div>
+								<div>
+									{shortenIfAddress(
+										collectibleInfo.owner.name
+									)}
+								</div>
 							</NotStyledLink>
 							{/*
 								add this back when we have a way to get the owner's quantity
