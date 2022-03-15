@@ -479,6 +479,24 @@ const acceptBid = async (itemId, bidId) => {
 	return receipt;
 };
 
+// returns the available balance for withdrawing
+const getWithdrawableBalance = async () => {
+	const address = JSON.parse (localStorage.getItem ('auth'))?.auth?.evmAddress;
+	const { signer } = await Interact();
+	const marketplaceContractInstance = marketplaceContract(signer);
+	const balance = await marketplaceContractInstance.addressBalance(address);
+	return balance.toNumber ();
+};
+
+// withdraw available balance
+const withdrawBalance = async () => {
+	const { signer } = await Interact();
+	const marketplaceContractInstance = marketplaceContract(signer);
+	const tx = await marketplaceContractInstance.withdraw();
+	const receipt = await tx.wait();
+	return receipt;
+};
+
 export {
 	unlistLoanProposal,
 	repayLoan,
@@ -499,6 +517,8 @@ export {
 	fetchUserItems,
 	fetchCollectionItems,
 	fetchCollectionInfo,
+	getWithdrawableBalance,
+	withdrawBalance,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,
