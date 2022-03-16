@@ -8,7 +8,6 @@ import { LazyMotion, m, domAnimation } from "framer-motion";
 import React, { useContext } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { respondTo } from "@styles/styledMediaQuery";
-import FadeLoaderIcon from "@static/svg/FadeLoader";
 import { fetchRoyalties } from "@utils/marketplace";
 const Wrapper = styled.div``;
 

@@ -1,13 +1,11 @@
 //eslint-disable-next-line
 import AuthContext from "@contexts/Auth/AuthContext";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
-import FadeLoaderIcon from "@static/svg/FadeLoader";
 import { respondTo } from "@styles/styledMediaQuery";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { getCloudflareURL } from "@utils/getIPFSURL";
-import { fetchRoyalties } from "@utils/marketplace";
 import shortenIfAddress from "@utils/shortenIfAddress";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
