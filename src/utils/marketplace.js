@@ -2,6 +2,7 @@ import axios from "axios";
 import { ethers } from "ethers";
 import marketplaceContractABI from "../constants/contracts/SqwidMarketplace";
 import utilityContractABI from "../constants/contracts/SqwidUtility";
+import collectibleContractABI from "../constants/contracts/SqwidERC1155";
 import { Interact } from "./connect";
 import constants from "./constants";
 
@@ -21,6 +22,12 @@ const utilityContract = signerOrProvider =>
 	new ethers.Contract(
 		getContract("utility"),
 		utilityContractABI,
+		signerOrProvider
+	);
+const collectibleContract = signerOrProvider =>
+	new ethers.Contract(
+		getContract("erc1155"),
+		collectibleContractABI,
 		signerOrProvider
 	);
 
@@ -497,6 +504,16 @@ const withdrawBalance = async () => {
 	return receipt;
 };
 
+const fetchRoyalties = async (tokenId) => {
+	const { provider } = await Interact();
+	const collectibleContractInstance = collectibleContract(provider);
+	const royalties = await collectibleContractInstance.royaltyInfo (tokenId, 100)
+	return { 
+		receiver: royalties.receiver,
+		amount: royalties.royaltyAmount.toNumber (),
+	};
+}
+
 export {
 	unlistLoanProposal,
 	repayLoan,
@@ -519,6 +536,7 @@ export {
 	fetchCollectionInfo,
 	getWithdrawableBalance,
 	withdrawBalance,
+	fetchRoyalties,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,
