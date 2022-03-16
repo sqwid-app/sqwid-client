@@ -96,20 +96,12 @@ const ButtonContainer = styled(m.div)`
 `;
 
 const Balance = () => {
-	const [balance, setBalance] = useState(
-		localStorage.getItem(
-			`${constants.APP_NAME.toLowerCase()}__balance`
-		) || <FadeLoaderIcon />
-	);
+	const [balance, setBalance] = useState(<FadeLoaderIcon />);
 	useEffect(() => {
 		const fetchBalance = async () => {
 			const bal = await getBalance();
 			const balNum = Number(bal) / 10 ** 18;
 			setBalance(numberSeparator(balNum.toFixed(2).toString()));
-			localStorage.setItem(
-				`${constants.APP_NAME.toLowerCase()}__balance`,
-				numberSeparator(balNum.toFixed(2).toString())
-			);
 		};
 		fetchBalance();
 	}, []);

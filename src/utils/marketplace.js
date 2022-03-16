@@ -488,11 +488,11 @@ const acceptBid = async (itemId, bidId) => {
 
 // returns the available balance for withdrawing
 const getWithdrawableBalance = async () => {
-	const address = JSON.parse (localStorage.getItem ('auth'))?.auth?.evmAddress;
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth?.evmAddress;
 	const { signer } = await Interact();
 	const marketplaceContractInstance = marketplaceContract(signer);
 	const balance = await marketplaceContractInstance.addressBalance(address);
-	return balance.toNumber ();
+	return balance.toNumber();
 };
 
 // withdraw available balance
@@ -504,15 +504,18 @@ const withdrawBalance = async () => {
 	return receipt;
 };
 
-const fetchRoyalties = async (tokenId) => {
+const fetchRoyalties = async tokenId => {
 	const { provider } = await Interact();
 	const collectibleContractInstance = collectibleContract(provider);
-	const royalties = await collectibleContractInstance.royaltyInfo (tokenId, 100)
-	return { 
+	const royalties = await collectibleContractInstance.royaltyInfo(
+		tokenId,
+		100
+	);
+	return {
 		receiver: royalties.receiver,
-		amount: royalties.royaltyAmount.toNumber (),
+		amount: royalties.royaltyAmount.toNumber(),
 	};
-}
+};
 
 export {
 	unlistLoanProposal,

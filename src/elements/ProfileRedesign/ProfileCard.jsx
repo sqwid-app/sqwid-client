@@ -671,7 +671,9 @@ const ProfileCard = () => {
 			{!editIsActive ? (
 				!isLoading ? (
 					<Container>
-						<ProfilePicture src={userData.avatar} />
+						<ProfilePicture
+							src={userData.avatar ? userData.avatar : null}
+						/>
 						<ContentContainer>
 							<Name>
 								{info.name.length
