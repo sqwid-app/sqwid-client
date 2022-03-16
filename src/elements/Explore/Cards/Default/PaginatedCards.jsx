@@ -1,4 +1,10 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, {
+	Suspense,
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import styled from "styled-components";
 import CardSectionContainer from "@elements/Default/CardSectionContainer";
 import {
@@ -6,72 +12,142 @@ import {
 	fetchStateItems,
 	fetchUserItems,
 } from "@utils/marketplace";
+import LoadingIcon from "@static/svg/LoadingIcon";
 import constants from "@utils/constants";
-import InfiniteScroll from "react-infinite-scroller";
-import LoaderCard from "./LoaderCard";
+import useOnScreen from "@utils/useOnScreen";
+import FadeLoaderIcon from "@static/svg/FadeLoader";
 
-const CardWrapper = styled.div`
+const LoadingContainer = styled.div`
 	width: 100%;
+	display: grid;
+	place-items: center;
+`;
+const EmptySectionContainer = styled.div`
+	width: 100%;
+	height: 100%;
+	display: grid;
+	place-items: center;
+`;
+const EmptySectionText = styled.h2`
+	font-weight: 900;
+	color: var(--app-container-text-primary);
+	text-align: center;
+	font-size: 1.25rem;
 `;
 
+const LoadMoreContainer = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5rem;
+	color: var(--app-container-text-primary);
+	margin: 1rem 0;
+	span {
+		font-weight: 900;
+	}
+`;
+
+const EmptySection = ({ state }) => {
+	return (
+		<EmptySectionContainer>
+			{state >= 0 && (
+				<EmptySectionText>
+					{constants.STATE_EMPTY_MESSAGE_MAP[state]}
+				</EmptySectionText>
+			)}
+		</EmptySectionContainer>
+	);
+};
+
 const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
+	const loaderRef = useRef();
 	const [startFrom, setStartFrom] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isCardLoading, setIsCardLoading] = useState(true);
 	const [stateItems, setStateItems] = useState([]);
-	const [hasMore, setHasMore] = useState(true);
-	const containerRef = useRef();
+	const [isFetching, setIsFetching] = useState(false);
+	const [isFinished, setIsFinished] = useState(false);
+	const { isVisible } = useOnScreen(loaderRef);
 
-	const fetchData = () => {
+	const fetchData = useCallback(async () => {
+		setIsFetching(true);
 		const items = profile
-			? fetchUserItems(profile, state, startFrom)
+			? await fetchUserItems(profile, state, startFrom)
 			: collection
-			? fetchCollectionItems(collection, state, startFrom)
-			: fetchStateItems(state, startFrom);
-		items.then(value => {
-			if (!value.items || value?.items?.length === 0) {
-				console.log("oopsie");
-				setHasMore(false);
-			} else {
-				console.log("i am here");
-				setIsLoading(false);
-				setStateItems([...stateItems, ...value?.items]);
-				setStartFrom(value.pagination.lowest - 1);
-			}
-		});
-	};
+			? await fetchCollectionItems(collection, state, startFrom)
+			: await fetchStateItems(state, startFrom);
+
+		if (!items.items || items?.items?.length === 0) {
+			setIsLoading(false);
+			setIsCardLoading(false);
+			setIsFinished(true);
+			setIsFetching(false);
+			return;
+		}
+		setStateItems([...stateItems, ...items?.items]);
+		if (items.items.length < constants.EXPLORE_PAGINATION_LIMIT) {
+			setIsLoading(false);
+			setIsCardLoading(false);
+			setIsFinished(true);
+			setIsFetching(false);
+			return;
+		}
+		setIsLoading(false);
+		setIsCardLoading(false);
+		setStartFrom(items.pagination.lowest - 1);
+		setIsFetching(false);
+		return;
+		//eslint-disable-next-line
+	}, [startFrom]);
 
 	useEffect(() => {
-		console.log(stateItems);
-	}, [stateItems]);
+		const getItems = async () => {
+			if (isVisible && !isFetching) {
+				await fetchData();
+			}
+		};
+		getItems();
+		// eslint-disable-next-line
+	}, [isVisible]);
 
 	return (
-		<CardWrapper>
-			<InfiniteScroll
-				pageStart={0}
-				element={CardSectionContainer}
-				loadMore={fetchData}
-				hasMore={hasMore}
-				threshold={500}
-				loader={Array.from(
-					{
-						length:
-							constants.EXPLORE_PAGINATION_LIMIT -
-							(stateItems.length %
-								constants.EXPLORE_PAGINATION_LIMIT),
-					},
-					(_, index) => (
-						<LoaderCard className={index} key={index} />
-					)
-				)}
-				getScrollParent={() => containerRef}
-			>
-				<Suspense>
-					{stateItems.map((item, index) => (
-						<Card key={index} data={item} isLoading={isLoading} />
-					))}
+		<>
+			{isLoading ? (
+				<LoadingContainer>
+					<LoadingIcon size={64} />
+				</LoadingContainer>
+			) : (
+				<Suspense fallback={<></>}>
+					{stateItems?.length === 0 ? (
+						<EmptySection state={state} />
+					) : (
+						<>
+							<CardSectionContainer>
+								<>
+									{stateItems.map((item, index) => (
+										<Card
+											key={index}
+											data={item}
+											isLoading={isCardLoading}
+										/>
+									))}
+								</>
+							</CardSectionContainer>
+						</>
+					)}
 				</Suspense>
-			</InfiniteScroll>
-		</CardWrapper>
+			)}
+			{!isFinished ? (
+				<LoadMoreContainer
+					style={{ visibility: isLoading ? "hidden" : "visible" }}
+					ref={loaderRef}
+				>
+					<span>🌊 the tide is rising</span>{" "}
+					<FadeLoaderIcon size={24} />
+				</LoadMoreContainer>
+			) : null}
+		</>
 	);
 };
 
