@@ -17,9 +17,7 @@ export const getBalance = async () => {
 	const res = await axios(`${getBackend()}/get/marketplace/balance`, {
 		headers: {
 			Authorization: `Bearer ${jwt.token}`,
-			},
-		}
-	);
-	console.log (Number (res.data.balance));
-	return res.error ? 0 : Number (res.data.balance);
+		},
+	});
+	return res.error ? 0 : Number(res.data.balance);
 };

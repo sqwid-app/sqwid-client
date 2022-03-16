@@ -142,6 +142,9 @@ const InfoSection = () => {
 							<div>
 								{shortenIfAddress(collectibleInfo.creator.name)}
 							</div>
+							<span>
+								({collectibleInfo.creator.royalty}% royalty)
+							</span>
 						</NotStyledLink>
 					</Content>
 				</CreatorSection>

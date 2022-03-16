@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import AuthContext from "@contexts/Auth/AuthContext";
 import ReefIcon from "@static/svg/ReefIcon";
@@ -8,7 +8,6 @@ import { LazyMotion, m, domAnimation } from "framer-motion";
 import React, { useContext } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { respondTo } from "@styles/styledMediaQuery";
-import { fetchRoyalties } from "@utils/marketplace";
 const Wrapper = styled.div``;
 
 const Container = styled.div`
@@ -386,31 +385,6 @@ const IPFSSection = () => {
 	);
 };
 
-const RoyaltySection = () => {
-	const [royalty, setRoyalty] = useState();
-	const { collectibleInfo } = useContext(CollectibleContext);
-
-	const getRoyalty = useCallback(async () => {
-		const { amount } = await fetchRoyalties(collectibleInfo.tokenId);
-		setRoyalty(amount);
-		//eslint-disable-next-line
-	}, [collectibleInfo]);
-
-	useEffect(() => {
-		getRoyalty();
-		//eslint-disable-next-line
-	}, []);
-	return (
-		<StatusWrapper>
-			<span>Royalty</span>
-			<StatusDisplay variant={"royalty"}>
-				<span className="dot">•</span>{" "}
-				{royalty != null ? <>{royalty}%</> : <>Loading</>}
-			</StatusDisplay>
-		</StatusWrapper>
-	);
-};
-
 const DetailsSection = () => {
 	return (
 		<LazyMotion features={domAnimation}>
@@ -423,7 +397,6 @@ const DetailsSection = () => {
 					</LinksContainer>
 					<StatusContainer>
 						<StatusSection />
-						<RoyaltySection />
 					</StatusContainer>
 				</Container>
 				<BottomContainer>
