@@ -23,8 +23,10 @@ import FadeLoaderIcon from "@static/svg/FadeLoader";
 import shortenIfAddress from "@utils/shortenIfAddress";
 import { numberSeparator } from "@utils/numberSeparator";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
-import { LazyMotion, domAnimation } from "framer-motion";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import ReefIcon from "@static/svg/ReefIcon";
+import { getWithdrawableBalance, withdrawBalance } from "@utils/marketplace";
+import { convertREEFtoUSD } from "@utils/convertREEFtoUSD";
 
 const Card = styled.div`
 	display: flex;
@@ -307,6 +309,12 @@ const WithdrawAmount = styled.p`
 	font-size: 1.375rem;
 	display: flex;
 	align-items: center;
+	span {
+		max-width: 20rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 `;
 
 const WithdrawAmountUSD = styled.p`
@@ -315,11 +323,18 @@ const WithdrawAmountUSD = styled.p`
 	color: var(--app-container-text-primary);
 `;
 
-const WithdrawContainer = styled.div`
+const WithdrawContainer = styled(m.div)`
 	border-radius: 0.675rem;
 	padding: 1.25rem 1rem;
 	border: 0.125rem solid var(--app-container-bg-primary);
 	background: var(--app-container-bg-primary);
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+		rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+	p,
+	h3 {
+		cursor: normal;
+		user-select: none;
+	}
 `;
 
 const Btn = styled(BtnBaseAnimated)`
@@ -361,25 +376,62 @@ const AnimBtn = ({ children, ...props }) => (
 );
 
 const Withdraw = () => {
-	const price = 10000;
-	const usdPrice = 69420;
+	const [price, setPrice] = useState();
+	const [usdPrice, setUsdPrice] = useState();
+	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		const fetchPrice = async () => {
+			const availableBalance = await getWithdrawableBalance();
+			// const availableBalance = 1000;
+			const usd = await convertREEFtoUSD(availableBalance);
+			setPrice(availableBalance);
+			setUsdPrice(usd.toFixed(2));
+		};
+		fetchPrice();
+	}, []);
+
+	const handleWithdraw = async () => {
+		setLoading(true);
+		try {
+			await withdrawBalance();
+		} catch (err) {
+			if (err.message.includes("No Reef to be claimed")) {
+				bread("Not enough REEF to withdraw");
+			}
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	return (
 		<>
-			{price > 0 ? (
-				<WithdrawContainer>
-					<WithdrawHeading>Available to Withdraw</WithdrawHeading>
-					<WithdrawAmount>
-						<ReefIcon size={22} />{" "}
-						{numberSeparator(Math.trunc(price).toString())}
-					</WithdrawAmount>
-					<WithdrawAmountUSD>
-						(${numberSeparator(usdPrice.toString())})
-					</WithdrawAmountUSD>
-					<LazyMotion features={domAnimation}>
-						<AnimBtn>Withdraw</AnimBtn>
-					</LazyMotion>
-				</WithdrawContainer>
+			{price && usdPrice && price > 0 ? (
+				<LazyMotion features={domAnimation}>
+					<WithdrawContainer
+						whileHover={{
+							y: -5,
+						}}
+					>
+						<WithdrawHeading>Available to Withdraw</WithdrawHeading>
+						<WithdrawAmount>
+							<ReefIcon size={22} />{" "}
+							<span
+								title={numberSeparator(
+									Math.trunc(price).toString()
+								)}
+							>
+								{numberSeparator(Math.trunc(price))}
+							</span>
+						</WithdrawAmount>
+						<WithdrawAmountUSD>
+							(${numberSeparator(usdPrice)})
+						</WithdrawAmountUSD>
+						<AnimBtn onClick={handleWithdraw}>
+							{loading ? <FadeLoaderIcon /> : `Withdraw`}
+						</AnimBtn>
+					</WithdrawContainer>
+				</LazyMotion>
 			) : null}
 		</>
 	);
