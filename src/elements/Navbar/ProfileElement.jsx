@@ -100,8 +100,8 @@ const Balance = () => {
 	useEffect(() => {
 		const fetchBalance = async () => {
 			const bal = await getBalance();
-			const balNum = Number(bal) / 10 ** 18;
-			setBalance(numberSeparator(balNum.toFixed(2).toString()));
+			// const balNum = Number(bal) / 10 ** 18;
+			setBalance(numberSeparator(bal.toFixed(2).toString()));
 		};
 		fetchBalance();
 	}, []);

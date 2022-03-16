@@ -487,12 +487,32 @@ const acceptBid = async (itemId, bidId) => {
 };
 
 // returns the available balance for withdrawing
-const getWithdrawableBalance = async () => {
+// eslint-disable-next-line
+const getWithdrawableBalanceProvider = async () => {
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth?.evmAddress;
 	const { signer } = await Interact();
 	const marketplaceContractInstance = marketplaceContract(signer);
 	const balance = await marketplaceContractInstance.addressBalance(address);
 	return balance.toNumber();
+};
+const getWithdrawableBalance = async () => {
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	//eslint-disable-next-line
+	let jwt = address
+		? JSON.parse(localStorage.getItem("tokens")).find(
+				token => token.address === address
+		  )
+		: null;
+	if (!jwt) return 0;
+	const res = await axios (`${getBackend()}/get/marketplace/withdrawable`, {
+		headers: {
+			Authorization: `Bearer ${jwt.token}`,
+			},
+		}
+	);
+	const { data } = res;
+	if (data.error) return '0.00';
+	return data.balance;
 };
 
 // withdraw available balance

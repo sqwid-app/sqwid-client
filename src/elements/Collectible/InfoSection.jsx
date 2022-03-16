@@ -119,7 +119,7 @@ const InfoSection = () => {
 	//eslint-disable-next-line
 	const { ownerID } = useParams();
 	const { collectibleInfo } = useContext(CollectibleContext);
-
+	// use collectibleInfo.creator.royalty (0-100)
 	// Do stuff to handle change uhhh idk lmao
 	//
 	// useEffect(() => {
