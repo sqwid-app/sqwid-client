@@ -385,7 +385,7 @@ const Withdraw = () => {
 			const availableBalance = await getWithdrawableBalance();
 			// const availableBalance = 1000;
 			const usd = await convertREEFtoUSD(availableBalance);
-			setPrice(Number (availableBalance));
+			setPrice(Number(availableBalance));
 			setUsdPrice(usd.toFixed(2));
 		};
 		fetchPrice();
@@ -406,7 +406,7 @@ const Withdraw = () => {
 
 	return (
 		<>
-			{price && ((usdPrice ?? price) > 0) ? (
+			{price != null && usdPrice != null && price > 0 ? (
 				<LazyMotion features={domAnimation}>
 					<WithdrawContainer
 						whileHover={{

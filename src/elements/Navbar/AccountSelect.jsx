@@ -116,6 +116,7 @@ const Modal = styled.div`
 	border-radius: 0.5rem;
 	z-index: 100;
 	min-width: 14rem;
+	max-width: 20rem;
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
@@ -146,7 +147,7 @@ const Modal = styled.div`
 			display: flex;
 		}
 	}
-	p {
+	.account-name {
 		line-height: 1;
 		font-size: 1.5rem;
 		user-select: none;
@@ -466,6 +467,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 												.map((account, index) => {
 													return (
 														<m.p
+															className="account-name"
 															whileHover={{
 																y: -2.5,
 																x: 0,

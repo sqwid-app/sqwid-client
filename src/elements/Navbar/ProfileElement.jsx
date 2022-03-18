@@ -12,6 +12,8 @@ import constants from "@utils/constants";
 import bread from "@utils/bread";
 import { truncateAddress } from "@utils/textUtils";
 import { m, LazyMotion, domAnimation } from "framer-motion";
+import { getWithdrawableBalance, withdrawBalance } from "@utils/marketplace";
+import { convertREEFtoUSD } from "@utils/convertREEFtoUSD";
 
 const BasicDetailsContainer = styled.div`
 	display: flex;
@@ -95,6 +97,66 @@ const ButtonContainer = styled(m.div)`
 	width: 100%;
 `;
 
+const WithdrawWrapper = styled(m.div)`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	cursor: pointer;
+	background: var(--app-container-bg-secondary);
+	padding: 0.75rem 1rem;
+	border-radius: 0.5rem;
+	font-size: 0.875rem;
+	box-shadow: 0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	h4 {
+		color: var(--app-container-text-primary-hover);
+		font-size: 1rem;
+	}
+`;
+
+const WithdrawAmount = styled.p`
+	font-weight: 900;
+	font-size: 1rem;
+	display: flex;
+	align-items: center;
+	box-shadow: none !important;
+	span {
+		max-width: 20rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+`;
+
+const WithdrawAmountUSD = styled.p`
+	/* align-self: flex-end;*/
+	padding-left: 0.25rem;
+	box-shadow: none !important;
+	font-weight: 500;
+	color: var(--app-container-text-primary);
+`;
+
+const WithdrawContainer = styled(BalanceContainer)`
+	/* flex-direction: column; */
+	display: flex;
+	align-self: flex-end;
+	margin-top: 0.5rem;
+	flex-wrap: wrap;
+`;
+
+const LoaderContainer = styled.div`
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
+const WithdrawContent = styled.div`
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+`;
+
 const Balance = () => {
 	const [balance, setBalance] = useState(<FadeLoaderIcon />);
 	useEffect(() => {
@@ -112,6 +174,80 @@ const Balance = () => {
 				<ReefIcon /> <span>{balance}</span>
 			</BalanceContainer>
 		</BalanceWrapper>
+	);
+};
+
+const Withdraw = () => {
+	const [price, setPrice] = useState();
+	const [usdPrice, setUsdPrice] = useState();
+	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		const fetchPrice = async () => {
+			const availableBalance = await getWithdrawableBalance();
+			// const availableBalance = 1000;
+			const usd = await convertREEFtoUSD(availableBalance);
+			setPrice(Number(availableBalance));
+			setUsdPrice(usd.toFixed(2));
+		};
+		fetchPrice();
+	}, []);
+
+	const handleWithdraw = async () => {
+		setLoading(true);
+		try {
+			await withdrawBalance();
+		} catch (err) {
+			if (err.message.includes("No Reef to be claimed")) {
+				bread("Not enough REEF to withdraw");
+			}
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	return (
+		<>
+			{price != null && usdPrice != null && price > 0 ? (
+				<>
+					<DividerHorizontal />
+					<WithdrawWrapper
+						whileHover={{
+							scale: 1.05,
+						}}
+						whileTap={{
+							scale: 0.99,
+						}}
+						onClick={handleWithdraw}
+					>
+						{loading ? (
+							<LoaderContainer>
+								<FadeLoaderIcon />
+							</LoaderContainer>
+						) : (
+							<WithdrawContent>
+								<h4>Available to withdraw</h4>
+								<WithdrawContainer>
+									<WithdrawAmount>
+										<ReefIcon size={20} />{" "}
+										<span
+											title={numberSeparator(
+												Math.trunc(price).toString()
+											)}
+										>
+											{numberSeparator(Math.trunc(price))}
+										</span>
+									</WithdrawAmount>
+									<WithdrawAmountUSD>
+										(${numberSeparator(usdPrice)})
+									</WithdrawAmountUSD>
+								</WithdrawContainer>
+							</WithdrawContent>
+						)}
+					</WithdrawWrapper>
+				</>
+			) : null}
+		</>
 	);
 };
 
@@ -180,6 +316,7 @@ const ProfileElement = () => {
 			</BasicDetailsContainer>
 			<DividerHorizontal />
 			<Balance />
+			<Withdraw />
 			<DividerHorizontal />
 		</>
 	);
