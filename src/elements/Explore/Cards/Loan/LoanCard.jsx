@@ -42,6 +42,7 @@ const DeadlineContainer = styled.div`
 `;
 
 const LoanCard = ({ data, isLoading }) => {
+	// loan cards
 	const lenderExists = Number(data.loan?.lender?.address) !== 0;
 	const formattedDeadline =
 		data.loan &&
