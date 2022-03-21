@@ -53,7 +53,7 @@ const fetchMarketplaceItems = async () => {
 	const res = await axios(`${getBackend()}/get/marketplace/summary`);
 	const { data } = res;
 	if (data.error) {
-		return [];
+		return { sale: [], auction: [], raffle: [], loan: [] };
 	}
 	return data;
 };
