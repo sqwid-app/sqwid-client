@@ -202,6 +202,8 @@ const Withdraw = () => {
 				bread("Not enough REEF to withdraw");
 			}
 		} finally {
+			setPrice(0);
+			setUsdPrice(0);
 			setLoading(false);
 		}
 	};
