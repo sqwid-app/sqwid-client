@@ -197,6 +197,8 @@ const Withdraw = () => {
 		setLoading(true);
 		try {
 			await withdrawBalance();
+			setPrice(0);
+			setUsdPrice(0);
 		} catch (err) {
 			if (err.message.includes("No Reef to be claimed")) {
 				bread("Not enough REEF to withdraw");
