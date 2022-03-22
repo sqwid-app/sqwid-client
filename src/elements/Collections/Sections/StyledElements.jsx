@@ -1,5 +1,5 @@
-import { respondTo } from "@styles/styledMediaQuery"
-import styled from "styled-components"
+import { respondTo } from "@styles/styledMediaQuery";
+import styled from "styled-components";
 
 export const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
-	h1{
+	h1 {
 		font-size: 1.25rem;
 	}
 	${respondTo.md`
@@ -20,9 +20,9 @@ export const Wrapper = styled.div`
 			padding-left: 3rem;
 		}
 	`}
-`
+`;
 
 export const Container = styled.div`
 	width: 100%;
 	height: 100%;
-`
+`;

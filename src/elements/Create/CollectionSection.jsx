@@ -1,29 +1,29 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { LazyMotion, domAnimation, m } from "framer-motion"
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import CollectionModal from "./CollectionModal";
 import FileContext from "@contexts/File/FileContext";
 
-const Container = styled.div``
+const Container = styled.div``;
 
 const Title = styled.h1`
 	font-size: 1.125rem;
 	font-weight: 900;
-	margin-bottom:0.75rem;
-`
+	margin-bottom: 0.75rem;
+`;
 
 const ButtonsContainer = styled.div`
 	width: 100%;
 	display: grid;
-	align-items:center;
+	align-items: center;
 	grid-template-columns: 1fr auto;
 	gap: 1rem;
-`
+`;
 
 const ChooseBtn = styled(m.a)`
 	display: flex;
 	align-items: center;
-	justify-content:center;
+	justify-content: center;
 	font-family: var(--font-family);
 	font-size: 1rem;
 	font-weight: 700;
@@ -33,11 +33,11 @@ const ChooseBtn = styled(m.a)`
 	color: var(--app-container-text-primary);
 	outline: none;
 	cursor: pointer;
-	user-select:none;
+	user-select: none;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-`
+`;
 
 const NewBtn = styled(m.a)`
 	display: grid;
@@ -52,8 +52,8 @@ const NewBtn = styled(m.a)`
 	cursor: pointer;
 	height: 2rem;
 	width: 2rem;
-	user-select:none;
-`
+	user-select: none;
+`;
 
 const ButtonText = styled.span`
 	max-width: 10rem;
@@ -61,11 +61,14 @@ const ButtonText = styled.span`
 	white-space: nowrap;
 	display: block;
 	text-overflow: ellipsis;
-`
+`;
 
 const CollectionSection = () => {
-	const [isCollectionActive, setIsCollectionActive] = useState({ status: false, type: "" })
-	const { files } = useContext(FileContext)
+	const [isCollectionActive, setIsCollectionActive] = useState({
+		status: false,
+		type: "",
+	});
+	const { files } = useContext(FileContext);
 	return (
 		<Container>
 			<Title>Collection</Title>
@@ -75,29 +78,47 @@ const CollectionSection = () => {
 						whileHover={{
 							y: -2,
 							x: 0,
-							scale: 1.01
+							scale: 1.01,
 						}}
 						whileTap={{
-							scale: 0.99
+							scale: 0.99,
 						}}
-						onClick={() => setIsCollectionActive({ status: true, type: "choose" })}
-					><ButtonText>{`${files.collectionName.length ? files.collectionName : `Choose from existing`}`}</ButtonText></ChooseBtn>
+						onClick={() =>
+							setIsCollectionActive({
+								status: true,
+								type: "choose",
+							})
+						}
+					>
+						<ButtonText>{`${
+							files.collectionName.length
+								? files.collectionName
+								: `Choose from existing`
+						}`}</ButtonText>
+					</ChooseBtn>
 					<NewBtn
 						whileHover={{
 							y: -2,
 							x: 0,
-							scale: 1.01
+							scale: 1.01,
 						}}
 						whileTap={{
-							scale: 0.98
+							scale: 0.98,
 						}}
-						onClick={() => setIsCollectionActive({ status: true, type: "new" })}
-					>+</NewBtn>
+						onClick={() =>
+							setIsCollectionActive({ status: true, type: "new" })
+						}
+					>
+						+
+					</NewBtn>
 				</LazyMotion>
 			</ButtonsContainer>
-			<CollectionModal isActive={isCollectionActive} setIsActive={setIsCollectionActive} />
+			<CollectionModal
+				isActive={isCollectionActive}
+				setIsActive={setIsCollectionActive}
+			/>
 		</Container>
-	)
-}
+	);
+};
 
-export default CollectionSection
+export default CollectionSection;

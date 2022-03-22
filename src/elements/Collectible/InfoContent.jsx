@@ -6,12 +6,12 @@ import InfoContainer from "./InfoContainer";
 // import MarketSection from "./MarketSection";
 
 const Container = styled.div`
-	flex:1;
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	padding: 0.5rem 0;
 	gap: 1rem;
-`
+`;
 
 const InfoContent = () => {
 	return (
@@ -21,7 +21,7 @@ const InfoContent = () => {
 			{/* <TransactionSection/> */}
 			{/* <MarketSection /> */}
 		</Container>
-	)
-}
+	);
+};
 
-export default InfoContent
+export default InfoContent;

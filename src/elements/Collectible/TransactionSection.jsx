@@ -14,11 +14,11 @@ import bread from "@utils/bread";
 
 const Container = styled.div`
 	display: flex;
-	align-items:center;
+	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	margin-top:auto;
-`
+	margin-top: auto;
+`;
 
 const Btn = styled(BtnBaseAnimated)`
 	display: flex;
@@ -30,153 +30,168 @@ const Btn = styled(BtnBaseAnimated)`
 	border-radius: 1000rem;
 	height: 2.5rem;
 	min-width: 6rem;
-	z-index:2;
-`
+	z-index: 2;
+`;
 
 const AnimBtn = ({ children, ...props }) => (
 	<Btn
 		whileTap={{
-			scale:0.97
+			scale: 0.97,
 		}}
 		whileHover={{
 			y: -5,
 			x: 0,
-			scale:1.02
+			scale: 1.02,
 		}}
 		{...props}
-	>{children}</Btn>
-)
+	>
+		{children}
+	</Btn>
+);
 
 const Price = styled.p`
 	font-weight: 900;
 	font-size: 1.5rem;
 	display: flex;
-	align-items:flex-end;
-	label{
-		vertical-align:middle;
+	align-items: flex-end;
+	label {
+		vertical-align: middle;
 		max-width: 20rem;
 		overflow: hidden;
-		text-overflow:ellipsis;
+		text-overflow: ellipsis;
 		word-wrap: nowrap;
 	}
-	span{
-		vertical-align:middle;
+	span {
+		vertical-align: middle;
 		font-weight: 500;
 		padding-left: 0.5rem;
 		font-size: 1rem;
 		color: var(--app-container-text-primary);
 	}
-`
+`;
 
 const HighestBidSection = styled.p`
 	font-weight: 500;
 	font-size: 1.125rem;
 	display: flex;
-	align-items:center;
+	align-items: center;
 	color: var(--app-container-text-primary-hover);
 	label {
 		display: flex;
-		align-items:center;
+		align-items: center;
 		justify-content: center;
 		padding-left: 0.375rem;
 		font-weight: 900;
 		color: white;
 		max-width: 10rem;
 		overflow: hidden;
-		text-overflow:ellipsis;
+		text-overflow: ellipsis;
 		word-wrap: nowrap;
 	}
-`
+`;
 
-const PriceInfoContainer = styled.div``
+const PriceInfoContainer = styled.div``;
 
 const BtnContainer = styled.div`
 	display: flex;
 	align-items: center;
-	justify-content:center;
+	justify-content: center;
 	gap: 0.5rem;
-`
+`;
 
 const CurrentPrice = () => {
-	const { collectibleInfo } = useContext(CollectibleContext)
-	const [usdPrice, setUsdPrice] = useState(collectibleInfo.priceInUSD.toFixed(2));
+	const { collectibleInfo } = useContext(CollectibleContext);
+	const [usdPrice, setUsdPrice] = useState(
+		collectibleInfo.priceInUSD.toFixed(2)
+	);
 	useEffect(() => {
 		setUsdPrice(collectibleInfo.priceInUSD.toFixed(2));
-	//eslint-disable-next-line
-	},[collectibleInfo.price])
+		//eslint-disable-next-line
+	}, [collectibleInfo.price]);
 	return (
 		<Price>
-			<ReefIcon/><p><label title={numberSeparator(collectibleInfo.price)}>{numberSeparator(collectibleInfo.price)}</label>
-			<span>(${usdPrice})</span></p>
+			<ReefIcon />
+			<p>
+				<label title={numberSeparator(collectibleInfo.price)}>
+					{numberSeparator(collectibleInfo.price)}
+				</label>
+				<span>(${usdPrice})</span>
+			</p>
 		</Price>
-	)
-}
-
-
+	);
+};
 
 const HighestBid = () => {
-	const { collectibleInfo } = useContext(CollectibleContext)
+	const { collectibleInfo } = useContext(CollectibleContext);
 	return (
 		<HighestBidSection>
-			{collectibleInfo.highestBid!=="0"&&(
+			{collectibleInfo.highestBid !== "0" && (
 				<>
-					Highest Bid: <label title={numberSeparator(collectibleInfo.highestBid)}><ReefIcon centered size={24}/> {numberSeparator(collectibleInfo.highestBid)}</label>
+					Highest Bid:{" "}
+					<label title={numberSeparator(collectibleInfo.highestBid)}>
+						<ReefIcon centered size={24} />{" "}
+						{numberSeparator(collectibleInfo.highestBid)}
+					</label>
 				</>
 			)}
 		</HighestBidSection>
-	)
-}
+	);
+};
 
 const Bid = () => {
-	const [showModal, setShowModal] = useState(false)
-	const { collectibleInfo } = useContext (CollectibleContext)
+	const [showModal, setShowModal] = useState(false);
+	const { collectibleInfo } = useContext(CollectibleContext);
 	return (
 		<>
-		<AnimBtn onClick={()=>setShowModal(!showModal)}>
-			Bid
-		</AnimBtn>
-		<BidsModal itemInfo = {{
-				itemId: collectibleInfo.itemId,
-				price: collectibleInfo.price,
-				maxAmount: collectibleInfo.owners.current.quantity.owns
-			}} itemId = { collectibleInfo.itemId } isActive={showModal} setIsActive={setShowModal}
-		/>
+			<AnimBtn onClick={() => setShowModal(!showModal)}>Bid</AnimBtn>
+			<BidsModal
+				itemInfo={{
+					itemId: collectibleInfo.itemId,
+					price: collectibleInfo.price,
+					maxAmount: collectibleInfo.owners.current.quantity.owns,
+				}}
+				itemId={collectibleInfo.itemId}
+				isActive={showModal}
+				setIsActive={setShowModal}
+			/>
 		</>
-	)
-}
+	);
+};
 
 const StopSale = () => {
-	const { collectibleInfo, setCollectibleInfo } = useContext (CollectibleContext)
+	const { collectibleInfo, setCollectibleInfo } =
+		useContext(CollectibleContext);
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState("Stop Sale");
 	const handleClick = () => {
 		// console.log("stop sale")
 		setIsLoading(true);
-		setButtonText(<Loading/>);
-		removeFromSale (collectibleInfo.itemId).then (res => {
-			// console.log (res);
-			setCollectibleInfo ({
-				...collectibleInfo,
-				isOnSale: false
+		setButtonText(<Loading />);
+		removeFromSale(collectibleInfo.itemId)
+			.then(res => {
+				// console.log (res);
+				setCollectibleInfo({
+					...collectibleInfo,
+					isOnSale: false,
+				});
 			})
-
-		}).catch (err => {
-			bread(err.response.data.error)
-		});
-	}
+			.catch(err => {
+				bread(err.response.data.error);
+			});
+	};
 	return (
-		<AnimBtn disabled = {isLoading} onClick = { handleClick }>
+		<AnimBtn disabled={isLoading} onClick={handleClick}>
 			{buttonText}
 		</AnimBtn>
-	)
-}
+	);
+};
 
 const Transfer = () => {
-	const [showModal, setShowModal] = useState(false)
-	const { collectibleInfo } = useContext(CollectibleContext)
+	const [showModal, setShowModal] = useState(false);
+	const { collectibleInfo } = useContext(CollectibleContext);
 	return (
 		<>
-			{collectibleInfo.owners.current.quantity.owns>1&&(
+			{collectibleInfo.owners.current.quantity.owns > 1 && (
 				<>
 					<AnimBtn onClick={() => setShowModal(!showModal)}>
 						Transfer Ownership
@@ -184,94 +199,110 @@ const Transfer = () => {
 					<TransferModal
 						itemInfo={{
 							itemId: collectibleInfo.itemId,
-							maxAmount: collectibleInfo.owners.current.quantity.owns
-						}} itemId={collectibleInfo.itemId} isActive={showModal} setIsActive={setShowModal}
+							maxAmount:
+								collectibleInfo.owners.current.quantity.owns,
+						}}
+						itemId={collectibleInfo.itemId}
+						isActive={showModal}
+						setIsActive={setShowModal}
 					/>
 				</>
 			)}
 		</>
-	)
-}
+	);
+};
 
 const BuyNow = () => {
-	const [showModal, setShowModal] = useState(false)
-	const { collectibleInfo } = useContext (CollectibleContext)
+	const [showModal, setShowModal] = useState(false);
+	const { collectibleInfo } = useContext(CollectibleContext);
 	return (
 		<>
-			<AnimBtn onClick={()=>setShowModal(!showModal)}>
-				Buy Now
-			</AnimBtn>
-			<BuyModal itemInfo = {{
-				itemId: collectibleInfo.itemId,
-				price: collectibleInfo.price,
-				maxAmount: collectibleInfo.owners.current.quantity.owns
-			}} isActive={showModal} setIsActive={setShowModal}/>
+			<AnimBtn onClick={() => setShowModal(!showModal)}>Buy Now</AnimBtn>
+			<BuyModal
+				itemInfo={{
+					itemId: collectibleInfo.itemId,
+					price: collectibleInfo.price,
+					maxAmount: collectibleInfo.owners.current.quantity.owns,
+				}}
+				isActive={showModal}
+				setIsActive={setShowModal}
+			/>
 		</>
-	)
-}
+	);
+};
 
 const PutOnSale = () => {
-	const [showModal, setShowModal] = useState(false)
-	const { collectibleInfo } = useContext (CollectibleContext)
+	const [showModal, setShowModal] = useState(false);
+	const { collectibleInfo } = useContext(CollectibleContext);
 	return (
 		<>
-			<AnimBtn onClick={()=>setShowModal(!showModal)}>
+			<AnimBtn onClick={() => setShowModal(!showModal)}>
 				Put on Sale
 			</AnimBtn>
-			<PutOnSaleModal itemId = { collectibleInfo.itemId } isActive={showModal} setIsActive={setShowModal}/>
+			<PutOnSaleModal
+				itemId={collectibleInfo.itemId}
+				isActive={showModal}
+				setIsActive={setShowModal}
+			/>
 		</>
-	)
-}
+	);
+};
 
 const Sale = () => {
 	//eslint-disable-next-line
-	const { auth } = useContext(AuthContext)
-	const { collectibleInfo } = useContext(CollectibleContext)
-	const isOwner =  auth?collectibleInfo.owners.current.id===auth.evmAddress:null
+	const { auth } = useContext(AuthContext);
+	const { collectibleInfo } = useContext(CollectibleContext);
+	const isOwner = auth
+		? collectibleInfo.owners.current.id === auth.evmAddress
+		: null;
 	// let isOwner = false;
 	// const isOwner =  auth?collectibleInfo.owners.some((item)=>item.id === auth.address):null
 	return (
 		<>
 			<PriceInfoContainer>
-				<CurrentPrice/>
-				<HighestBid/>
+				<CurrentPrice />
+				<HighestBid />
 			</PriceInfoContainer>
-			{auth&&(isOwner?(
-				<BtnContainer>
-					<StopSale/>
-					<Transfer/>
-				</BtnContainer>
-			):(
-				<BtnContainer>
-					<BuyNow/>
-					<Bid/>
-				</BtnContainer>
-			))}
+			{auth &&
+				(isOwner ? (
+					<BtnContainer>
+						<StopSale />
+						<Transfer />
+					</BtnContainer>
+				) : (
+					<BtnContainer>
+						<BuyNow />
+						<Bid />
+					</BtnContainer>
+				))}
 		</>
-	)
-}
+	);
+};
 
 const NoSale = () => {
-	const { auth } = useContext(AuthContext)
-	const { collectibleInfo } = useContext(CollectibleContext)
-	const isOwner =  auth?collectibleInfo.owners.current.id===auth.evmAddress:null
+	const { auth } = useContext(AuthContext);
+	const { collectibleInfo } = useContext(CollectibleContext);
+	const isOwner = auth
+		? collectibleInfo.owners.current.id === auth.evmAddress
+		: null;
 	return (
 		<>
-			<HighestBid/>
-			{auth&&(isOwner?(
-				<BtnContainer>
-					<PutOnSale/>
-					<Transfer/>
-				</BtnContainer>
-			):(
-				<Bid/>
-			))}
+			<HighestBid />
+			{auth &&
+				(isOwner ? (
+					<BtnContainer>
+						<PutOnSale />
+						<Transfer />
+					</BtnContainer>
+				) : (
+					<Bid />
+				))}
 		</>
-	)
-}
+	);
+};
 
 const TransactionSection = () => {
-	const { collectibleInfo } = useContext(CollectibleContext)
+	const { collectibleInfo } = useContext(CollectibleContext);
 
 	/*
 		if owner and on sale: show current price and STOP SALE btn
@@ -282,10 +313,10 @@ const TransactionSection = () => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Container>
-				{collectibleInfo.isOnSale?(<Sale/>):(<NoSale/>)}
+				{collectibleInfo.isOnSale ? <Sale /> : <NoSale />}
 			</Container>
 		</LazyMotion>
-	)
-}
+	);
+};
 
-export default TransactionSection
+export default TransactionSection;

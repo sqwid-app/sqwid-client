@@ -4,6 +4,7 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { respondTo } from "@styles/styledMediaQuery";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { getCloudflareURL } from "@utils/getIPFSURL";
+import shortenIfAddress from "@utils/shortenIfAddress";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -19,7 +20,7 @@ const Group = styled.div`
 		align-items:flex-start;
 		gap: 1rem;
 	`}
-`
+`;
 
 const Logo = styled.div`
 	height: 2rem;
@@ -27,94 +28,96 @@ const Logo = styled.div`
 	border-radius: 1000rem;
 	border: 0.1rem solid var(--app-text);
 	background-image: url("${props => props.url && props.url}");
-	background-size:cover;
-	background-repeat:no-repeat;
+	background-size: cover;
+	background-repeat: no-repeat;
 	background-position: center;
-`
+`;
 
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
-`
+`;
 
 const GroupContainer = styled(Container)`
 	gap: 1rem;
 	justify-content: center;
-`
+`;
 
 const Heading = styled.h3`
 	font-weight: 900;
 	color: var(--app-container-text-primary-hover);
 	font-size: 1rem;
 	margin-bottom: 0.375rem;
-	${props => props.align === "right" && css`
-		text-align: right;
-	`}
+	${props =>
+		props.align === "right" &&
+		css`
+			text-align: right;
+		`}
 	${respondTo.md`
 		text-align: left;
 	`}
-`
+`;
 
 const Content = styled.div`
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
-	p{
+	p {
 		font-weight: 700;
 		font-size: 1rem;
 		color: var(--app-container-text-primary);
 	}
-	h6{
+	h6 {
 		color: inherit;
 		font-weight: 800;
 		font-size: 0.75rem;
 	}
-	span{
+	span {
 		font-weight: 700;
 		font-size: 1rem;
 		color: var(--app-container-text-primary);
 	}
-`
+`;
 
 const NotStyledLink = styled(Link)`
 	text-decoration: none;
 	color: inherit;
 	font-weight: 900;
 	font-size: 1.125rem;
-	div{
+	div {
 		max-width: 20rem;
-		text-overflow:ellipsis;
+		text-overflow: ellipsis;
 		overflow: hidden;
-		white-space:nowrap;
+		white-space: nowrap;
 		font-style: normal;
 		${respondTo.md`
 			max-width: 5rem;
 		`}
 	}
-`
+`;
 
 const TextGroup = styled.div`
 	display: block;
-	p{
+	p {
 		display: inline-block;
 		vertical-align: baseline;
 		line-height: normal;
 		padding-left: 0.5rem;
 	}
-`
+`;
 
-const CreatorSection = styled.div``
+const CreatorSection = styled.div``;
 
-const CollectionSection = styled.div``
+const CollectionSection = styled.div``;
 
-const OwnerSection = styled.div``
+const OwnerSection = styled.div``;
 
 const InfoSection = () => {
 	//eslint-disable-next-line
-	const { ownerID } = useParams()
-	const { collectibleInfo } = useContext(CollectibleContext)
-
+	const { ownerID } = useParams();
+	const { collectibleInfo } = useContext(CollectibleContext);
+	// use collectibleInfo.creator.royalty (0-100)
 	// Do stuff to handle change uhhh idk lmao
 	//
 	// useEffect(() => {
@@ -129,18 +132,35 @@ const InfoSection = () => {
 					<Heading>Creator</Heading>
 					<Content>
 						<Logo
-							url={getAvatarFromId(collectibleInfo.creator.address)}
+							url={getAvatarFromId(
+								collectibleInfo.creator.address
+							)}
 						/>
-						<NotStyledLink to={`/profile/${collectibleInfo.creator.address}`}><div>{collectibleInfo.creator.name}</div>
-							{/* <span> ({collectibleInfo.royalty}% royalty)</span> */}
+						<NotStyledLink
+							to={`/profile/${collectibleInfo.creator.address}`}
+						>
+							<div>
+								{shortenIfAddress(collectibleInfo.creator.name)}
+							</div>
+							<span>
+								({collectibleInfo.creator.royalty}% royalty)
+							</span>
 						</NotStyledLink>
 					</Content>
 				</CreatorSection>
 				<CollectionSection>
 					<Heading align="right">Collection</Heading>
 					<Content>
-						<Logo url={getCloudflareURL(collectibleInfo.collection.image)} />
-						<NotStyledLink to={`/collections/${collectibleInfo.collection.id}`}>{collectibleInfo.collection.name}</NotStyledLink>
+						<Logo
+							url={getCloudflareURL(
+								collectibleInfo.collection.image
+							)}
+						/>
+						<NotStyledLink
+							to={`/collections/${collectibleInfo.collection.id}`}
+						>
+							{collectibleInfo.collection.name}
+						</NotStyledLink>
 					</Content>
 				</CollectionSection>
 			</Group>
@@ -152,7 +172,15 @@ const InfoSection = () => {
 							url={getAvatarFromId(collectibleInfo.owner.address)}
 						/>
 						<TextGroup>
-							<NotStyledLink to={`/profile/${collectibleInfo.owner.address}`}><div>{collectibleInfo.owner.name}</div></NotStyledLink>
+							<NotStyledLink
+								to={`/profile/${collectibleInfo.owner.address}`}
+							>
+								<div>
+									{shortenIfAddress(
+										collectibleInfo.owner.name
+									)}
+								</div>
+							</NotStyledLink>
 							{/*
 								add this back when we have a way to get the owner's quantity
 							*/}
@@ -165,7 +193,7 @@ const InfoSection = () => {
 				</OwnerSection>
 			</Group>
 		</GroupContainer>
-	)
-}
+	);
+};
 
-export default InfoSection
+export default InfoSection;

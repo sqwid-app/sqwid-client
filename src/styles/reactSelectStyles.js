@@ -7,7 +7,7 @@ export const styles = {
 		color: "var(--app-text)",
 		"&:hover": {
 			boxShadow: 0,
-		}
+		},
 	}),
 	menu: base => ({
 		...base,
@@ -16,30 +16,36 @@ export const styles = {
 	}),
 	placeholder: base => ({
 		...base,
-		color: "var(--app-text)"
+		color: "var(--app-text)",
 	}),
 	input: base => ({
 		...base,
-		color: "var(--app-text)"
+		color: "var(--app-text)",
 	}),
 	singleValue: base => ({
 		...base,
-		color: "var(--app-text)"
+		color: "var(--app-text)",
 	}),
 	dropdownIndicator: (base, state) => ({
 		...base,
-		color: (state.isSelected || state.isFocused) ? "var(--app-text)" : "var(--app-container-text-primary-hover)",
+		color:
+			state.isSelected || state.isFocused
+				? "var(--app-text)"
+				: "var(--app-container-text-primary-hover)",
 		"&:hover": {
-			color: "var(--app-text)"
-		}
+			color: "var(--app-text)",
+		},
 	}),
 	option: (base, state) => ({
 		...base,
 		color: "var(app-text)",
-		backgroundColor: state.isSelected ? "var(--app-container-bg-secondary)" : "inherit",
+		backgroundColor: state.isSelected
+			? "var(--app-container-bg-secondary)"
+			: "inherit",
 		"&:active": {
-			backgroundColor: state.isSelected ? "var(--app-theme-primary)" : "var(--app-container-text-primary)"
-		}
-
-	})
-}
+			backgroundColor: state.isSelected
+				? "var(--app-theme-primary)"
+				: "var(--app-container-text-primary)",
+		},
+	}),
+};

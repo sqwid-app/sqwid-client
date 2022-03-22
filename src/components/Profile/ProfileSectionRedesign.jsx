@@ -1,5 +1,5 @@
 import EditDetailsProvider from "@contexts/EditDetails/EditDetailsProvider";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import Collections from "./Collections";
@@ -13,6 +13,7 @@ import OnSaleSection from "@elements/ProfileRedesign/Sections/OnSaleSection";
 import AuctionSection from "@elements/ProfileRedesign/Sections/AuctionSection";
 import RaffleSection from "@elements/ProfileRedesign/Sections/RaffleSection";
 import LoanSection from "@elements/ProfileRedesign/Sections/LoanSection";
+import useActiveTabs from "@utils/useActiveTabs";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -24,119 +25,164 @@ const Section = styled.section`
 		padding: 0 2rem;
 		text-align: center;
 	`}
-`
+`;
 
 const Title = styled.div`
 	font-size: 1.8rem;
 	font-weight: 900;
-	align-self:flex-start;
-`
+	align-self: flex-start;
+`;
 
 const Navbar = styled.nav`
-	display:flex;
-	gap:0.5rem;
+	display: flex;
+	gap: 0.5rem;
 	border-bottom: 0.1rem solid var(--app-container-bg-primary);
 	border-radius: 0.1rem;
 	margin-bottom: 0.5rem;
-	user-select:none;
-`
+	user-select: none;
+`;
 
 const HeaderSection = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
-`
+`;
 
 const NavContent = styled.p`
-	position:relative;
+	position: relative;
 	padding: 0.1rem 0.5rem;
 	font-weight: 900;
-	color: ${props => props.active ? `inherit` : `var(--app-container-text-primary)`};
+	color: ${props =>
+		props.active ? `inherit` : `var(--app-container-text-primary)`};
 	cursor: pointer;
-	text-decoration:none;
+	text-decoration: none;
 	transition: all 0.2s ease;
-	&:before{
+	&:before {
 		content: "";
 		height: 100%;
 		width: 100%;
-		left:0;
+		left: 0;
 		top: 0;
 		position: absolute;
 		border-bottom: 0.1rem solid var(--app-text);
 		border-radius: 0.1rem;
 		opacity: 0;
-		opacity: ${props => props.active ? `1` : `0`};
+		opacity: ${props => (props.active ? `1` : `0`)};
 		transition: opacity 0.1s ease;
 	}
-`
+`;
 
 const StyledSelect = styled(Select)`
 	min-width: 8rem;
 	z-index: 6;
 	position: relative;
-`
+`;
 
 const ProfileSection = () => {
-	const [navRoutes, setNavRoutes] = useState([{
-		name: "Info",
-		isActive: true,
-		title: "Profile",
-		component: <Info />
-	}, {
-		name: "Collections",
-		isActive: false,
-		title: "Collections",
-		component: <Collections />
-	}, {
-		name: "Available",
-		isActive: false,
-		title: <>Available <span className="emoji">🐋</span></>,
-		component: <AvailableSection />
-	}, {
-		name: "On Sale",
-		isActive: false,
-		title: <>On Sale <span className="emoji">📃</span></>,
-		component: <OnSaleSection />
-	}, {
-		name: "Auctions",
-		isActive: false,
-		title: <>Auctions <span className="emoji">⌛</span></>,
-		component: <AuctionSection />
-	}, {
-		name: "Raffles",
-		isActive: false,
-		title: <>Raffles <span className="emoji">🎲</span></>,
-		component: <RaffleSection />
-	}, {
-		name: "Loans",
-		isActive: false,
-		title: <>Loans <span className="emoji">🏦</span></>,
-		component: <LoanSection />
-	}])
+	const [navRoutes, setNavRoutes] = useState([
+		{
+			name: "Info",
+			isActive: true,
+			title: "Profile",
+			component: <Info />,
+		},
+		{
+			name: "Collections",
+			isActive: false,
+			title: "Collections",
+			component: <Collections />,
+		},
+		{
+			name: "Available",
+			isActive: false,
+			title: (
+				<>
+					Available <span className="emoji">🐋</span>
+				</>
+			),
+			component: <AvailableSection />,
+		},
+		{
+			name: "On Sale",
+			isActive: false,
+			title: (
+				<>
+					On Sale <span className="emoji">📃</span>
+				</>
+			),
+			component: <OnSaleSection />,
+		},
+		{
+			name: "Auctions",
+			isActive: false,
+			title: (
+				<>
+					Auctions <span className="emoji">⌛</span>
+				</>
+			),
+			component: <AuctionSection />,
+		},
+		{
+			name: "Raffles",
+			isActive: false,
+			title: (
+				<>
+					Raffles <span className="emoji">🎲</span>
+				</>
+			),
+			component: <RaffleSection />,
+		},
+		{
+			name: "Loans",
+			isActive: false,
+			title: (
+				<>
+					Loans <span className="emoji">🏦</span>
+				</>
+			),
+			component: <LoanSection />,
+		},
+	]);
+
+	const replacer = useActiveTabs({ navRoutes, setNavRoutes });
+
 	const options = navRoutes.map(route => ({
 		label: route.name,
 		value: route,
-	}))
+	}));
+
+	const activeElement = navRoutes.find(item => item.isActive);
+	const [defaultValue, setDefaultValue] = useState({
+		label: activeElement.name,
+		value: activeElement,
+	});
+
+	useEffect(() => {
+		const activeElement = navRoutes.find(item => item.isActive);
+		setDefaultValue({
+			label: activeElement.name,
+			value: activeElement,
+		});
+	}, [navRoutes]);
+
 	const isTabletOrMobile = useIsTabletOrMobile();
 	return (
 		<>
 			<EditDetailsProvider>
 				<Section>
 					<HeaderSection>
-						<Title>{navRoutes.find(item => item.isActive).title}</Title>
+						<Title>
+							{navRoutes.find(item => item.isActive).title}
+						</Title>
 						{isTabletOrMobile ? (
 							<StyledSelect
 								options={options}
 								styles={styles}
 								isSearchable={false}
-								defaultValue={options[0]}
+								value={defaultValue}
 								placeholder="Select Route"
 								onChange={({ value: item }) => {
-									if (!item.isActive) {
-										let newVal = [...navRoutes.map(a => ({ ...a, isActive: false }))]
-										newVal.find(e => e.name === item.name).isActive = true
-										setNavRoutes(newVal)
-									}
+									replacer(item.name);
 								}}
 							/>
 						) : (
@@ -147,24 +193,20 @@ const ProfileSection = () => {
 										active={item.isActive}
 										disabled={item.isActive}
 										onClick={() => {
-											if (!item.isActive) {
-												let newVal = [...navRoutes.map(a => ({ ...a, isActive: false }))]
-												newVal[index].isActive = true
-												setNavRoutes(newVal)
-											}
+											replacer(item.name);
 										}}
-									>{item.name}</NavContent>
+									>
+										{item.name}
+									</NavContent>
 								))}
 							</Navbar>
 						)}
 					</HeaderSection>
-					<>
-						{navRoutes.find(item => item.isActive).component}
-					</>
+					<>{navRoutes.find(item => item.isActive).component}</>
 				</Section>
 			</EditDetailsProvider>
 		</>
-	)
-}
+	);
+};
 
-export default ProfileSection
+export default ProfileSection;

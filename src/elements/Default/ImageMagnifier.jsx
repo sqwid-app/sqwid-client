@@ -10,19 +10,20 @@ const MagnifyingGlass = styled.div`
 	background-color: var(--app-background);
 	background-image: url("${props => props.src}");
 	background-repeat: no-repeat;
-	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-`
+	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+		0 4px 6px -4px rgb(0 0 0 / 0.1);
+`;
 
 const Container = styled.div`
 	position: relative;
 	width: 100%;
 	height: 100%;
-`
+`;
 const Image = styled.img`
 	height: ${props => props.height};
 	width: ${props => props.height};
-	cursor: ${props => props.isCursorShown ? `default` : `none`};
-`
+	cursor: ${props => (props.isCursorShown ? `default` : `none`)};
+`;
 
 const ImageMagnifier = ({
 	src,
@@ -31,20 +32,19 @@ const ImageMagnifier = ({
 	alt = "picture",
 	magnifierHeight = 250,
 	magnifierWidth = 250,
-	zoomLevel = 2.5
+	zoomLevel = 2.5,
 }) => {
 	const [[imgWidth, imgHeight], setSize] = useState([0, 0]);
 	const [showMagnifier, setShowMagnifier] = useState(false);
 	const [[x, y], setXY] = useState([0, 0]);
 	const handleEnter = e => {
-		e.preventDefault()
+		e.preventDefault();
 		const elem = e.currentTarget;
 		const { width, height } = elem.getBoundingClientRect();
 		setSize([width, height]);
 		setShowMagnifier(true);
-	}
-	const handleMove = (e) => {
-
+	};
+	const handleMove = e => {
 		const elem = e.currentTarget;
 		const { top, left } = elem.getBoundingClientRect();
 
@@ -55,11 +55,11 @@ const ImageMagnifier = ({
 		const y = e.clientY - top;
 
 		setXY([x, y]);
-	}
+	};
 	const handleLeave = e => {
-		e.preventDefault()
+		e.preventDefault();
 		setShowMagnifier(false);
-	}
+	};
 	return (
 		<Container>
 			<Image
@@ -83,13 +83,19 @@ const ImageMagnifier = ({
 					width: `${magnifierWidth}px`,
 					top: `${y - magnifierHeight / 2}px`,
 					left: `${x - magnifierWidth / 2}px`,
-					backgroundSize: `${imgWidth * zoomLevel}px ${imgHeight * zoomLevel}px`,
-					backgroundPositionX: `${-x * zoomLevel + magnifierWidth / 2}px`,
-					backgroundPositionY: `${-y * zoomLevel + magnifierHeight / 2}px`,
+					backgroundSize: `${imgWidth * zoomLevel}px ${
+						imgHeight * zoomLevel
+					}px`,
+					backgroundPositionX: `${
+						-x * zoomLevel + magnifierWidth / 2
+					}px`,
+					backgroundPositionY: `${
+						-y * zoomLevel + magnifierHeight / 2
+					}px`,
 				}}
 			></MagnifyingGlass>
 		</Container>
 	);
-}
+};
 
 export default ImageMagnifier;

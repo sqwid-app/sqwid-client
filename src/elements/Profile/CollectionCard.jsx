@@ -1,13 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import { LazyMotion, domAnimation, m } from "framer-motion"
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const CollectionCardContainer = styled(m(Link))`
 	display: flex;
 	cursor: pointer;
-	user-select:none;
-	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%,rgba(0, 0, 0, 0.5) 65%, rgba(0, 0, 0, 0.75) 100%), url('${props => props.src && props.src}');
+	user-select: none;
+	background-image: linear-gradient(
+			180deg,
+			rgba(0, 0, 0, 0) 0%,
+			rgba(0, 0, 0, 0.5) 65%,
+			rgba(0, 0, 0, 0.75) 100%
+		),
+		url("${props => props.src && props.src}");
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -18,7 +24,7 @@ const CollectionCardContainer = styled(m(Link))`
 	width: 16rem;
 	overflow: hidden;
 	text-decoration: none;
-	div{
+	div {
 		align-self: flex-end;
 		font-size: 1.5rem;
 		font-weight: 900;
@@ -30,7 +36,7 @@ const CollectionCardContainer = styled(m(Link))`
 		white-space: nowrap;
 		text-overflow: ellipsis;
 	}
-`
+`;
 
 const CollectionCard = ({ src, title, link }) => {
 	return (
@@ -43,10 +49,10 @@ const CollectionCard = ({ src, title, link }) => {
 				whileHover={{
 					y: -10,
 					x: 0,
-					scale: 1.02
+					scale: 1.02,
 				}}
 				whileTap={{
-					scale: 0.99
+					scale: 0.99,
 				}}
 				transition={{
 					type: "tween",
@@ -56,7 +62,7 @@ const CollectionCard = ({ src, title, link }) => {
 				<div>{title}</div>
 			</CollectionCardContainer>
 		</LazyMotion>
-	)
-}
+	);
+};
 
-export default React.memo(CollectionCard)
+export default React.memo(CollectionCard);

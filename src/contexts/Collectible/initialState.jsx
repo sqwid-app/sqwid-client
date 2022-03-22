@@ -39,17 +39,17 @@ export const initialState = {
 		created: "",
 		name: "",
 		owner: "",
-		id: ""
+		id: "",
 	},
 	creator: {
 		address: "",
 		avatar: "",
-		name: ""
+		name: "",
 	},
 	owner: {
 		address: "",
 		avatar: "",
-		name: ""
+		name: "",
 	},
 	amount: "",
 	sale: null,
@@ -65,6 +65,6 @@ export const initialState = {
 		attributes: [],
 		mimetype: "",
 		media: "",
-		name: ""
-	}
-}
+		name: "",
+	},
+};

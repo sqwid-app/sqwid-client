@@ -7,7 +7,7 @@ const StatsSection = () => {
 		<Container>
 			<Heading>Stats</Heading>
 		</Container>
-	)
-}
+	);
+};
 
-export default StatsSection
+export default StatsSection;

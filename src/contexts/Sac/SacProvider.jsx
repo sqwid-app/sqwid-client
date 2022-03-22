@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import SacContext from "./SacContext";
 import { initialState } from "./initialState";
 
-const SacProvider = (props) => {
-	const [sacDetails, setSacDetails] = useState(initialState)
+const SacProvider = props => {
+	const [sacDetails, setSacDetails] = useState(initialState);
 
 	return (
 		<SacContext.Provider

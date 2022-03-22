@@ -5,35 +5,35 @@ import InfoContainer from "./InfoContainer";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import { LazyMotion, domAnimation } from "framer-motion";
-import Wave from 'react-wavify'
+import Wave from "react-wavify";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
 	// padding-right:0;
 	height: 65vh;
 	display: grid;
-	place-items:center;
-	text-align:center;
+	place-items: center;
+	text-align: center;
 	${respondTo.md`
 		height: 90vh;
 		grid-template-rows: none;
 		grid-template-columns: none;
 		padding: 0 2rem;
 	`}
-`
+`;
 
 const WaveContainer = styled.div`
 	position: absolute;
-    bottom: 0;
+	bottom: 0;
 	left: 0;
-    width: 100%;
+	width: 100%;
 	& > div {
 		display: flex !important;
-		& > svg{
+		& > svg {
 			align-self: flex-end;
 		}
 	}
-`
+`;
 
 const MobileSection = styled.div`
 	display: flex;
@@ -41,11 +41,11 @@ const MobileSection = styled.div`
 	align-items: center;
 	justify-content: center;
 	gap: 2rem;
-	p{
+	p {
 		color: var(--app-container-text-primary);
-		text-align:center;
+		text-align: center;
 	}
-`
+`;
 
 const Btn = styled(BtnBaseAnimated)`
 	display: flex;
@@ -55,20 +55,22 @@ const Btn = styled(BtnBaseAnimated)`
 	padding: 0 1.5rem;
 	border-radius: 1000rem;
 	height: 3.5rem;
-	z-index:2;
+	z-index: 2;
 	text-decoration: none;
-	width:90%;
-	justify-content:center;
-`
+	width: 90%;
+	justify-content: center;
+`;
 
 const AnimBtn = ({ children, ...props }) => (
 	<Btn
 		whileTap={{
-			scale:0.97
+			scale: 0.97,
 		}}
 		{...props}
-	>{children}</Btn>
-)
+	>
+		{children}
+	</Btn>
+);
 
 const MobileContainer = () => {
 	return (
@@ -78,47 +80,61 @@ const MobileContainer = () => {
 			</LazyMotion>
 			<p>For the best user experience, switch to a desktop browser</p>
 		</MobileSection>
-	)
-}
+	);
+};
 
 const HeroSection = () => {
 	const isTabletOrMobile = useIsTabletOrMobile();
 	return (
 		<>
-		<Wrapper>
-			<InfoContainer/>
-			{isTabletOrMobile?(
-				<MobileContainer/>
-			):(
-				<WaveContainer>
-					<Wave
-						fill="url(#gradient)"
-						paused={false}
-						options={{
-							height: 30,
-							amplitude: 50,
-							speed: 0.25,
-							points: 3
-						}}
-					>
-						<defs>
-							<linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-							<stop offset="0%" style={{
-								stopColor:"var(--app-theme-primary)",
-								stopOpacity:"1"
-							}}/>
-							<stop offset="100%" style={{
-								stopColor:"var(--app-theme-primary-transparent)",
-								stopOpacity:"1"
-							}}/>
-							</linearGradient>
-						</defs>
-					</Wave>
-				</WaveContainer>
-			)}
-		</Wrapper>
+			<Wrapper>
+				<InfoContainer />
+				{isTabletOrMobile ? (
+					<MobileContainer />
+				) : (
+					<WaveContainer>
+						<Wave
+							fill="url(#gradient)"
+							paused={false}
+							options={{
+								height: 30,
+								amplitude: 50,
+								speed: 0.25,
+								points: 3,
+							}}
+						>
+							<defs>
+								<linearGradient
+									id="gradient"
+									x1="0%"
+									y1="0%"
+									x2="0%"
+									y2="100%"
+								>
+									<stop
+										offset="0%"
+										style={{
+											stopColor:
+												"var(--app-theme-primary)",
+											stopOpacity: "1",
+										}}
+									/>
+									<stop
+										offset="100%"
+										style={{
+											stopColor:
+												"var(--app-theme-primary-transparent)",
+											stopOpacity: "1",
+										}}
+									/>
+								</linearGradient>
+							</defs>
+						</Wave>
+					</WaveContainer>
+				)}
+			</Wrapper>
 		</>
-	)
-}
+	);
+};
 
-export default HeroSection
+export default HeroSection;

@@ -11,7 +11,7 @@ const swipeLeft = keyframes`
 		transform: translateX(0);
 		opacity: 1;
 	}
-`
+`;
 
 const swipeRight = keyframes`
 	0% {
@@ -22,42 +22,41 @@ const swipeRight = keyframes`
 		transform: translateX(100%);
 		opacity: 0;
 	}
-`
+`;
 
 const modalEntryAnim = css`
 	animation: ${swipeLeft} 0.2s var(--easing) forwards;
-`
+`;
 
 const modalExitAnim = css`
 	animation: ${swipeRight} 0.2s ease forwards;
-`
+`;
 
 const Wrapper = styled.div`
 	position: absolute;
 	height: 100vh;
 	width: 100%;
-	top:0;
+	top: 0;
 	background: var(--app-container-bg-primary);
 	font-family: var(--font-family);
 	padding-top: 6rem;
 	padding-left: 2rem;
 	color: var(--app-text);
-	z-index:-1;
-	${props => !props.remove ? modalEntryAnim : modalExitAnim};
-`
+	z-index: -1;
+	${props => (!props.remove ? modalEntryAnim : modalExitAnim)};
+`;
 
 const Navigation = ({ isOpen }) => {
-	const [isVisible, setIsVisible] = useState(false)
+	const [isVisible, setIsVisible] = useState(false);
 	useEffect(() => {
 		if (isOpen === false) {
 			setTimeout(() => {
 				setIsVisible(false);
 			}, 200);
-		}
-		else {
+		} else {
 			setIsVisible(isOpen);
 		}
-	}, [isOpen])
+	}, [isOpen]);
 	return (
 		<>
 			{isVisible && (
@@ -66,7 +65,7 @@ const Navigation = ({ isOpen }) => {
 				</Wrapper>
 			)}
 		</>
-	)
-}
+	);
+};
 
-export default Navigation
+export default Navigation;

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import CollectibleContext from "./CollectibleContext";
 import { initialState } from "./initialState";
 
-const CollectibleProvider = (props) => {
-	const [collectibleInfo, setCollectibleInfo] = useState(initialState)
+const CollectibleProvider = props => {
+	const [collectibleInfo, setCollectibleInfo] = useState(initialState);
 
 	return (
 		<CollectibleContext.Provider
@@ -12,7 +12,7 @@ const CollectibleProvider = (props) => {
 				setCollectibleInfo,
 			}}
 		>
-		{props.children}
+			{props.children}
 		</CollectibleContext.Provider>
 	);
 };

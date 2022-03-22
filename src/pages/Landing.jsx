@@ -1,13 +1,15 @@
-import Wrapper from '@components/Default/Wrapper'
-import React from 'react'
-import HeroSection  from "@components/Landing/HeroSection"
+import Wrapper from "@components/Default/Wrapper";
+import React from "react";
+import HeroSection from "@components/LandingRedesign/HeroSection";
+import useCheckJWT from "@utils/useCheckJWT";
 
 const Landing = () => {
+	useCheckJWT();
 	return (
 		<Wrapper landing>
-			<HeroSection/>
+			<HeroSection />
 		</Wrapper>
-	)
-}
+	);
+};
 
-export default Landing
+export default Landing;

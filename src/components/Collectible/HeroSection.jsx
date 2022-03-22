@@ -5,8 +5,15 @@ import LoadingIcon from "@static/svg/LoadingIcon";
 import { respondTo } from "@styles/styledMediaQuery";
 import bread from "@utils/bread";
 import constants from "@utils/constants";
-//eslint-disable-next-line
-import { fetchMarketplaceItem, fetchRaffleEntries, marketplaceItemExists } from "@utils/marketplace";
+
+import {
+	//eslint-disable-next-line
+	fetchMarketplaceItem,
+	//eslint-disable-next-line
+	fetchRaffleEntries,
+	//eslint-disable-next-line
+	marketplaceItemExists,
+} from "@utils/marketplace";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -30,24 +37,25 @@ const Wrapper = styled.div`
 		min-height: 85vh;
 		height: auto;
 	`}
-`
+`;
 
 const LoadingContainer = styled.div`
 	height: 70vh;
 	width: 100%;
 	display: grid;
-	place-items:center;
-`
-
+	place-items: center;
+`;
 
 const MetaTags = () => {
 	const { collectibleInfo } = useContext(CollectibleContext);
 	// console.log(collectibleInfo)
-	const stateInfo = useStateInfo()
-	const emoji = stateInfo ? constants.STATE_EMOJI_MAP[stateInfo?.type] : null
-	const title = `${emoji ? `${emoji} | ` : ""}${collectibleInfo.meta.name} | ${constants.APP_NAME}`
-	const description = collectibleInfo.meta.description
-	const image = collectibleInfo.meta.image
+	const stateInfo = useStateInfo();
+	const emoji = stateInfo ? constants.STATE_EMOJI_MAP[stateInfo?.type] : null;
+	const title = `${emoji ? `${emoji} | ` : ""}${
+		collectibleInfo.meta.name
+	} | ${constants.APP_NAME}`;
+	const description = collectibleInfo.meta.description;
+	const image = collectibleInfo.meta.image;
 	return (
 		<Helmet>
 			<title>{title}</title>
@@ -66,61 +74,74 @@ const MetaTags = () => {
 			<meta property="twitter:description" content={description} />
 			<meta property="twitter:image" content={image} />
 		</Helmet>
-	)
-}
-
+	);
+};
 
 const HeroSection = () => {
-	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
-	const [isLoading, setIsLoading] = useState(true)
+	const { collectibleInfo, setCollectibleInfo } =
+		useContext(CollectibleContext);
+	const [isLoading, setIsLoading] = useState(true);
 	const { addr } = useParams();
 
 	useEffect(() => {
 		// Axios request goes here ebin...
 		// eslint-disable-next-line
 		const getDataOld = async () => {
-			const { data } = await axios.get(`${getBackend()}/get/marketplace/position/${addr}`)
+			const { data } = await axios.get(
+				`${getBackend()}/get/marketplace/position/${addr}`
+			);
 			if (data && !data.error) {
 				let conversionRate = null;
 				try {
-					let res = await axios('https://api.coingecko.com/api/v3/simple/price?ids=reef-finance&vs_currencies=usd');
-					let price = res.data['reef-finance'].usd;
+					let res = await axios(
+						"https://api.coingecko.com/api/v3/simple/price?ids=reef-finance&vs_currencies=usd"
+					);
+					let price = res.data["reef-finance"].usd;
 					conversionRate = Number(price);
 				} catch (err) {
-					bread(err.response.data.error)
+					bread(err.response.data.error);
 				}
 				setCollectibleInfo({
 					...data,
 					conversionRate,
-					isValidCollectible: true
+					isValidCollectible: true,
 				});
-				setIsLoading(false)
-			}
-			else {
+				setIsLoading(false);
+			} else {
 				setCollectibleInfo({
 					...collectibleInfo,
 					isValidCollectible: false,
-				})
+				});
 			}
-		}
+		};
 
 		const getData = async () => {
-			const collectiblePromise = axios.get(`${getBackend()}/get/marketplace/position/${addr}`);
-			const pricePromise = axios('https://api.coingecko.com/api/v3/simple/price?ids=reef-finance&vs_currencies=usd');
+			const collectiblePromise = axios.get(
+				`${getBackend()}/get/marketplace/position/${addr}`
+			);
+			const pricePromise = axios(
+				"https://api.coingecko.com/api/v3/simple/price?ids=reef-finance&vs_currencies=usd"
+			);
 			try {
-				const [collectible, price] = await Promise.all([collectiblePromise, pricePromise]);
-				if (collectible.data && collectible.data.error) setCollectibleInfo({
-					...collectibleInfo,
-					isValidCollectible: false,
-				});
+				const [collectible, price] = await Promise.all([
+					collectiblePromise,
+					pricePromise,
+				]);
+				if (collectible.data && collectible.data.error)
+					setCollectibleInfo({
+						...collectibleInfo,
+						isValidCollectible: false,
+					});
 				else {
-					let conversionRate = price.data ? price.data['reef-finance'].usd : 0;
+					let conversionRate = price.data
+						? price.data["reef-finance"].usd
+						: 0;
 					setCollectibleInfo({
 						...collectible.data,
 						conversionRate,
-						isValidCollectible: true
+						isValidCollectible: true,
 					});
-					setIsLoading(false)
+					setIsLoading(false);
 				}
 			} catch (err) {
 				bread(err);
@@ -129,11 +150,11 @@ const HeroSection = () => {
 					isValidCollectible: false,
 				});
 			}
-		}
+		};
 
 		getData();
 		//eslint-disable-next-line
-	}, [])
+	}, []);
 	return (
 		<>
 			{isLoading ? (
@@ -148,7 +169,7 @@ const HeroSection = () => {
 				</Wrapper>
 			)}
 		</>
-	)
-}
+	);
+};
 
-export default HeroSection
+export default HeroSection;

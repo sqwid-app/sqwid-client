@@ -1,17 +1,26 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const SVG = styled.svg`
 	background: transparent;
 	fill: currentColor;
-`
+`;
 
 const ReefIcon = ({ size, centered }) => {
 	const dimension = size ? size : `36`;
 	return (
-		<SVG xmlns="http://www.w3.org/2000/svg" width={dimension} height={dimension} viewBox={`${centered?`0`:`100`} 0 800 800`}>
-			<g transform="translate(0.000000,800.000000) scale(0.100000,-0.100000)" stroke="none">
-				<path d="M3540 6450 c-285 -21 -585 -90 -860 -197 -517 -202 -960 -565 -1145
+		<SVG
+			xmlns="http://www.w3.org/2000/svg"
+			width={dimension}
+			height={dimension}
+			viewBox={`${centered ? `0` : `100`} 0 800 800`}
+		>
+			<g
+				transform="translate(0.000000,800.000000) scale(0.100000,-0.100000)"
+				stroke="none"
+			>
+				<path
+					d="M3540 6450 c-285 -21 -585 -90 -860 -197 -517 -202 -960 -565 -1145
 				-938 -69 -141 -89 -214 -89 -335 0 -77 5 -105 24 -148 29 -67 96 -127 163
 				-147 65 -19 189 -19 254 0 122 36 236 162 384 424 178 316 305 467 499 598
 				122 82 372 177 546 207 226 39 552 39 742 0 280 -58 507 -214 597 -410 56
@@ -27,12 +36,15 @@ const ReefIcon = ({ size, centered }) => {
 				-97 -108 -222 -203 -368 -278 -201 -103 -343 -136 -572 -129 -129 3 -135 4
 				-195 37 -211 114 -438 492 -559 930 -44 162 -44 168 4 176 75 13 264 66 369
 				104 628 226 1130 625 1356 1076 117 233 157 429 137 676 -17 209 -68 372 -171
-				544 -292 486 -955 751 -1739 695z"/>
-				<path d="M6185 2260 c-156 -52 -259 -191 -259 -350 0 -113 63 -203 177 -256
-				257 -117 562 198 451 466 -19 45 -78 106 -129 132 -58 30 -163 34 -240 8z"/>
+				544 -292 486 -955 751 -1739 695z"
+				/>
+				<path
+					d="M6185 2260 c-156 -52 -259 -191 -259 -350 0 -113 63 -203 177 -256
+				257 -117 562 198 451 466 -19 45 -78 106 -129 132 -58 30 -163 34 -240 8z"
+				/>
 			</g>
 		</SVG>
-	)
-}
+	);
+};
 
-export default ReefIcon
+export default ReefIcon;

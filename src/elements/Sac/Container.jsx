@@ -5,6 +5,6 @@ const Container = styled.div`
 	padding: 1.25rem;
 	font-size: 1.25rem;
 	border-radius: 0.5rem;
-`
+`;
 
-export default Container
+export default Container;

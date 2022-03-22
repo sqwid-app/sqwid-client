@@ -1,4 +1,4 @@
 export const initialState = {
-	name:"",
-	description:""
-}
+	name: "",
+	description: "",
+};

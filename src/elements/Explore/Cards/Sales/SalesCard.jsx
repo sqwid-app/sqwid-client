@@ -14,13 +14,12 @@ const Wrapper = styled(m.div)`
 	border-radius: 0.375rem;
 	/* overflow:hidden; */
 	min-width: 16rem;
-	aspect-ratio: calc(2/3);
+	aspect-ratio: calc(2 / 3);
 	cursor: pointer;
 	user-select: none;
 	text-decoration: none;
 	color: var(--app-text);
-`
-
+`;
 
 const LinkWrapper = styled(Link)`
 	position: absolute;
@@ -28,8 +27,8 @@ const LinkWrapper = styled(Link)`
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index:0;
-`
+	z-index: 0;
+`;
 
 const SalesCard = ({ data, isLoading }) => {
 	return (
@@ -38,15 +37,24 @@ const SalesCard = ({ data, isLoading }) => {
 				whileTap={{
 					x: 0,
 					y: 0,
-					scale: 0.99
+					scale: 0.99,
 				}}
 			>
-				<LinkWrapper to={`/collectible/${data.positionId}`}></LinkWrapper>
-				<CardMedia to={`/collectible/${data.positionId}`} meta={data.meta} />
-				{isLoading ? <Loader /> : (<CardInfo data={data} isLoading={isLoading} />)}
+				<LinkWrapper
+					to={`/collectible/${data.positionId}`}
+				></LinkWrapper>
+				<CardMedia
+					to={`/collectible/${data.positionId}`}
+					meta={data.meta}
+				/>
+				{isLoading ? (
+					<Loader />
+				) : (
+					<CardInfo data={data} isLoading={isLoading} />
+				)}
 			</Wrapper>
 		</LazyMotion>
-	)
-}
+	);
+};
 
-export default SalesCard
+export default SalesCard;

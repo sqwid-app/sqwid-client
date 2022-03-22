@@ -1,9 +1,13 @@
 import { Provider, Signer } from "@reef-defi/evm-provider";
 // import { WsProvider } from "@polkadot/rpc-provider";
-import { WsProvider } from '@polkadot/api';
+import { WsProvider } from "@polkadot/api";
 // import { options } from "@reef-defi/api";
-import { web3Accounts, web3Enable, web3FromSource } from "@reef-defi/extension-dapp";
-import { stringToHex } from '@reef-defi/util';
+import {
+	web3Accounts,
+	web3Enable,
+	web3FromSource,
+} from "@reef-defi/extension-dapp";
+import { stringToHex } from "@reef-defi/util";
 import axios from "axios";
 import { getBackend, getRPC } from "./network";
 // const WS_URL = 'wss://rpc-testnet.reefscan.com/ws';
@@ -11,11 +15,11 @@ import { getBackend, getRPC } from "./network";
 let provider;
 
 const Init = async () => {
-	await web3Enable('Sqwid');
+	await web3Enable("Sqwid");
 	return await web3Accounts();
-}
+};
 
-const Connect = async (account) => {
+const Connect = async account => {
 	const injector = await web3FromSource(account.meta.source);
 
 	const signRaw = injector?.signer?.signRaw;
@@ -26,41 +30,42 @@ const Connect = async (account) => {
 		if (!(await signer.isClaimed())) {
 			return {
 				evmClaimed: false,
-				signer
-			}
+				signer,
+			};
 		}
-		let res = await axios.get(`${getBackend()}/nonce?address=${account.address}`);
+		let res = await axios.get(
+			`${getBackend()}/nonce?address=${account.address}`
+		);
 		let { nonce } = res.data;
 
 		const sres = await signRaw({
 			address: account.address,
 			data: stringToHex(nonce),
-			type: 'bytes'
+			type: "bytes",
 		});
 
 		const { signature } = sres;
 		try {
 			res = await axios(`${getBackend()}/auth`, {
-				method: 'POST',
+				method: "POST",
 				headers: {
-					'Content-Type': 'application/json'
+					"Content-Type": "application/json",
 				},
 				data: JSON.stringify({
 					address: account.address,
 					signature: signature,
 					evmAddress: await signer.getAddress(),
-				})
+				}),
 			});
-		}
-		catch (err) {
+		} catch (err) {
 			// handle err like a normal person 👍
 		}
 
 		let json = res.data;
 
-		if (json.status === 'success') {
-			localStorage.removeItem('collections');
-			let jwts = localStorage.getItem('tokens');
+		if (json.status === "success") {
+			localStorage.removeItem("collections");
+			let jwts = localStorage.getItem("tokens");
 			jwts = jwts ? JSON.parse(jwts) : [];
 
 			let item = jwts.find(jwt => jwt.address === account.address);
@@ -70,50 +75,52 @@ const Connect = async (account) => {
 				jwts.push({
 					name: account.meta.name,
 					address: account.address,
-					token: json.token
+					token: json.token,
 				});
 			}
 
-			localStorage.setItem('tokens', JSON.stringify(jwts));
+			localStorage.setItem("tokens", JSON.stringify(jwts));
 
 			return {
 				evmClaimed: await signer.isClaimed(),
-				signer
-			}
+				signer,
+			};
 		}
 	}
-}
+};
 
 const Interact = async (address = null) => {
-	if (!address) address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
-	const allInjected = await web3Enable('Sqwid');
+	if (!address)
+		address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	const allInjected = await web3Enable("Sqwid");
 	const injected = allInjected[0].signer;
-	if (!provider) provider = new Provider({
-		provider: new WsProvider(getRPC()),
-		types: {
-			AccountInfo: 'AccountInfoWithTripleRefCount'
-		}
-	});
+	if (!provider)
+		provider = new Provider({
+			provider: new WsProvider(getRPC()),
+			types: {
+				AccountInfo: "AccountInfoWithTripleRefCount",
+			},
+		});
 	await provider.api.isReady;
 
 	const signer = new Signer(provider, address, injected);
 
 	return {
 		signer,
-		provider
-	}
-}
+		provider,
+	};
+};
 
 const GetProvider = async () => {
-	if (!provider) provider = new Provider({
-		provider: new WsProvider(getRPC()),
-		types: {
-			AccountInfo: 'AccountInfoWithTripleRefCount'
-		}
-	});
+	if (!provider)
+		provider = new Provider({
+			provider: new WsProvider(getRPC()),
+			types: {
+				AccountInfo: "AccountInfoWithTripleRefCount",
+			},
+		});
 	await provider.api.isReady;
 	return provider;
-}
-
+};
 
 export { Connect, Init, Interact, GetProvider };

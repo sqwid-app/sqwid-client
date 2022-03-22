@@ -13,7 +13,7 @@ const swipeDownwards = keyframes`
 		transform: translate(0,0);
 		opacity: 1;
 	}
-`
+`;
 
 const swipeUpwards = keyframes`
 	0% {
@@ -24,23 +24,25 @@ const swipeUpwards = keyframes`
 		transform: translate(0,-50%);
 		opacity: 0;
 	}
-`
+`;
 
 const modalEntryAnim = css`
-	animation: ${swipeDownwards} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-`
+	animation: ${swipeDownwards} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55)
+		forwards;
+`;
 
 const modalExitAnim = css`
-	animation: ${swipeUpwards} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-`
+	animation: ${swipeUpwards} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55)
+		forwards;
+`;
 
 const TopBannerContainer = styled.div`
-	position:fixed;
-	top:0;
-	left:0;
+	position: fixed;
+	top: 0;
+	left: 0;
 	display: flex;
-	align-items:center;
-	justify-content:center;
+	align-items: center;
+	justify-content: center;
 	width: 100%;
 	gap: 0.5rem;
 	height: 2rem;
@@ -48,39 +50,40 @@ const TopBannerContainer = styled.div`
 	font-size: 1rem;
 	background: var(--app-theme-primary);
 	z-index: 100;
-	${props => !props.remove ? modalEntryAnim : modalExitAnim};
+	${props => (!props.remove ? modalEntryAnim : modalExitAnim)};
 	${respondTo.md`
 		top:auto;
 		bottom: 0;
 		height: 3rem;
 	`}
-`
+`;
 
 const CancelContainer = styled.div`
 	cursor: pointer;
 	display: grid;
-	place-items:center;
+	place-items: center;
 	padding: 0.5rem 0.25rem;
-`
+`;
 
 const TopBanner = () => {
-	const initialState = JSON.parse(localStorage.getItem("isWarningVisible"))
-	const [isWarningVisible, setIsWarningVisible] = useState(initialState !== null ? initialState : true)
-	const [elemIsVisible, setElemIsVisible] = useState(isWarningVisible)
+	const initialState = JSON.parse(localStorage.getItem("isWarningVisible"));
+	const [isWarningVisible, setIsWarningVisible] = useState(
+		initialState !== null ? initialState : true
+	);
+	const [elemIsVisible, setElemIsVisible] = useState(isWarningVisible);
 	useEffect(() => {
 		if (isWarningVisible === false) {
 			setTimeout(() => {
 				setElemIsVisible(isWarningVisible);
 			}, 200);
-		}
-		else {
+		} else {
 			setElemIsVisible(isWarningVisible);
 		}
-	}, [isWarningVisible])
+	}, [isWarningVisible]);
 	const handleCancel = () => {
-		setIsWarningVisible(false)
-		localStorage.setItem("isWarningVisible", false)
-	}
+		setIsWarningVisible(false);
+		localStorage.setItem("isWarningVisible", false);
+	};
 	return (
 		<>
 			{elemIsVisible && (
@@ -89,9 +92,10 @@ const TopBanner = () => {
 					<CancelContainer onClick={handleCancel}>
 						<CancelIcon />
 					</CancelContainer>
-				</TopBannerContainer>)}
+				</TopBannerContainer>
+			)}
 		</>
-	)
-}
+	);
+};
 
-export default TopBanner
+export default TopBanner;

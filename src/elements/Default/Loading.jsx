@@ -4,18 +4,18 @@ import styled, { css } from "styled-components";
 
 const padded = css`
 	padding: 2rem;
-`
+`;
 
 const LoadingContainer = styled.div`
-	${props=>props.navbar&&padded}
-`
+	${props => props.navbar && padded}
+`;
 
 const Loading = ({ navbar }) => {
 	return (
 		<LoadingContainer navbar={navbar}>
-			<LoadingIcon size="20"/>
+			<LoadingIcon size="20" />
 		</LoadingContainer>
-	)
-}
+	);
+};
 
-export default Loading
+export default Loading;
