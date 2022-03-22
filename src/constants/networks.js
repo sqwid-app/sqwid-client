@@ -12,9 +12,9 @@ export const networks = {
 	reef_mainnet: {
 		rpc: "wss://rpc.reefscan.com/ws",
 		contracts: {
-			marketplace: "0xe124E8bD72Df842189e6E0762558191f267E5E9d",
-			erc1155: "0x5728847Ca5d2466dE6AcD33597D874f480acdAdB",
-			utility: "0x52CD9d5B4A9a3610Bd87668B5158B7d7259CA430",
+			marketplace: "0xe3f2740452A860c6441456aDF86D6d0be715ae82",
+			erc1155: "0xa1957161Ee6Cb6D86Ae7A9cE12A30C40Dc9F1B68",
+			utility: "0xffb12A5f69AFBD58Dc49b4AE9044D8F20D131733",
 		},
 		backend: "https://mainnet-api.sqwid.app",
 	},
