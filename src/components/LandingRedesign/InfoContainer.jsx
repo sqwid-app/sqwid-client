@@ -54,7 +54,6 @@ const Wrapper = styled.div`
 		-webkit-background-clip: text;
 		width: 25rem;
 		-webkit-text-fill-color: transparent;
-		cursor: pointer;
 		/* animation: ${bgGradientAnimation} 10s ease infinite; */
 		user-select: none;
 	}

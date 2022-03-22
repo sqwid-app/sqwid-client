@@ -40,9 +40,7 @@ const LoansSection = ({ items }) => {
 	return (
 		<Container>
 			<HeaderSection>
-				<Header>
-					Loans <span className="emoji">🏦</span>
-				</Header>
+				<Header>Loans</Header>
 				<StyledNavLink to="/explore/loans">
 					View All <ChevronRight />
 				</StyledNavLink>

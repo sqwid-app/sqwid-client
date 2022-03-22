@@ -11,6 +11,7 @@ import LoadingIcon from "@static/svg/LoadingIcon";
 import { NavLink } from "react-router-dom";
 import ChevronRight from "@static/svg/ChevronRight";
 import Footer from "./Footer";
+import DottedHeading from "@elements/Default/DottedHeading";
 
 const ExploreContainer = styled.div`
 	margin: 4rem auto;
@@ -63,7 +64,7 @@ const MobileSection = styled.div`
 		var(--app-background) 100%
 	);
 	p {
-		color: var(--app-container-text-primary);
+		color: var(--app-container-text-primary-hover);
 		text-align: center;
 	}
 `;
@@ -102,39 +103,6 @@ const Navbar = styled.nav`
 	}
 `;
 
-const Heading = styled.h1`
-	line-height: 1;
-	position: relative;
-	margin: 0.1rem 0.5rem;
-	font-size: 3rem;
-	font-weight: 900;
-	color: ${props =>
-		props.active ? `inherit` : `var(--app-container-text-primary)`};
-	text-decoration: none;
-	display: block;
-	text-decoration: none;
-	color: inherit;
-	font-weight: 900;
-	text-align: left;
-	width: fit-content;
-	transition: color 0.1s, transform 0.1s;
-	padding: 0.2rem;
-	text-shadow: -0.2rem 0.1rem 0 var(--app-theme-primary);
-	&:before {
-		content: "";
-		height: 100%;
-		width: 100%;
-		background-image: radial-gradient(
-			hsla(240, 6%, 75%, 0.5) 0.75px,
-			transparent 0.75px
-		);
-		background-size: calc(10 * 0.75px) calc(10 * 0.75px);
-		z-index: -1;
-		position: absolute;
-		transform: translate(-1rem, 1rem);
-	}
-`;
-
 const StyledNavLink = styled(NavLink)`
 	position: absolute;
 	right: 0;
@@ -170,7 +138,7 @@ const HeroSection = () => {
 				<ExploreContainer>
 					<NavWrapper>
 						<Navbar>
-							<Heading>Explore</Heading>
+							<DottedHeading>Explore</DottedHeading>
 							<StyledNavLink to="/explore">
 								View All <ChevronRight />
 							</StyledNavLink>

@@ -132,9 +132,7 @@ const PaginatedItems = ({ itemsPerPage, items }) => {
 const RecentlyListedPaginated = ({ items }) => {
 	return (
 		<Container>
-			<Header>
-				Recently Listed <span className="emoji">📃</span>
-			</Header>
+			<Header>Recently Listed</Header>
 			<PaginatedItems itemsPerPage={8} items={items} />
 		</Container>
 	);

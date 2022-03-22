@@ -19,10 +19,10 @@ const constants = {
 	],
 	STATE_TYPES_KEYS: ["sale", "auction", "raffle", "loan"],
 	STATE_EMOJI_MAP: {
-		sale: "💰",
-		auction: "⌛",
-		raffle: "🎲",
-		loan: "🏦",
+		sale: "",
+		auction: "",
+		raffle: "",
+		loan: "",
 	},
 	CREATE_ACCEPTED_MIMETYPES: [
 		"image/jpeg",

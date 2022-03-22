@@ -95,51 +95,31 @@ const ProfileSection = () => {
 		{
 			name: "Available",
 			isActive: false,
-			title: (
-				<>
-					Available <span className="emoji">🐋</span>
-				</>
-			),
+			title: <>Available</>,
 			component: <AvailableSection />,
 		},
 		{
 			name: "On Sale",
 			isActive: false,
-			title: (
-				<>
-					On Sale <span className="emoji">📃</span>
-				</>
-			),
+			title: <>On Sale</>,
 			component: <OnSaleSection />,
 		},
 		{
 			name: "Auctions",
 			isActive: false,
-			title: (
-				<>
-					Auctions <span className="emoji">⌛</span>
-				</>
-			),
+			title: <>Auctions</>,
 			component: <AuctionSection />,
 		},
 		{
 			name: "Raffles",
 			isActive: false,
-			title: (
-				<>
-					Raffles <span className="emoji">🎲</span>
-				</>
-			),
+			title: <>Raffles</>,
 			component: <RaffleSection />,
 		},
 		{
 			name: "Loans",
 			isActive: false,
-			title: (
-				<>
-					Loans <span className="emoji">🏦</span>
-				</>
-			),
+			title: <>Loans</>,
 			component: <LoanSection />,
 		},
 	]);

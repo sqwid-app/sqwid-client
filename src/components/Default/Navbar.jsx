@@ -9,7 +9,7 @@ import { respondTo } from "@styles/styledMediaQuery";
 import constants from "@utils/constants";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import { useCycle } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Nav = styled.nav`
@@ -20,14 +20,14 @@ const Nav = styled.nav`
 	justify-content: space-between;
 	font-weight: 700;
 	font-size: 1.25rem;
-	padding: 2.5rem 3.75rem;
+	padding: ${props => (props.blur ? `1.25rem 1.5rem` : `2.5rem 3.75rem`)};
 	backdrop-filter: ${props =>
-		props.blur ? `blur(5px) brightness(0.75)` : `none`};
+		props.blur ? `blur(5px) brightness(0.375) saturate(0.25)` : `none`};
 	z-index: 50;
 	top: 0;
 	/* border-bottom: ${props =>
 		props.blur ? `1px` : `0`} solid var(--app-container-bg-primary); */
-	transition: backdrop-filter 0.2s ease;
+	transition: backdrop-filter 0.2s ease, padding 0.2s ease;
 	&:after {
 		position: absolute;
 		content: "";
@@ -78,13 +78,19 @@ const Navbar = React.memo(() => {
 	const isTabletOrMobile = useIsTabletOrMobile();
 	const [isOpen, toggleOpen] = useCycle(false, true);
 	const offsetLimit = 20;
-	useEffect(() => {
-		window.onscroll = () => {
+	const checkIsAtTop = useCallback(
+		() => {
 			isAtTop === true && setIsAtTop(false);
 			window.pageYOffset <= offsetLimit && setIsAtTop(true);
-		};
-		return () => (window.onscroll = null);
-	});
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[]
+	);
+	useEffect(() => {
+		window.addEventListener("scroll", checkIsAtTop);
+		return () => window.removeEventListener("scroll", checkIsAtTop);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isAtTop]);
 	return (
 		<Nav blur={!isAtTop}>
 			<LogoContainer href="/" className="animate-icon">
