@@ -20,14 +20,14 @@ const Nav = styled.nav`
 	justify-content: space-between;
 	font-weight: 700;
 	font-size: 1.25rem;
-	padding: ${props => (props.blur ? `1.25rem 1.5rem` : `2.5rem 3.75rem`)};
+	padding: 2.5rem 3.75rem;
 	backdrop-filter: ${props =>
-		props.blur ? `blur(5px) brightness(0.375) saturate(0.25)` : `none`};
+		props.blur ? `blur(5px) brightness(0.75)` : `none`};
 	z-index: 50;
 	top: 0;
 	/* border-bottom: ${props =>
 		props.blur ? `1px` : `0`} solid var(--app-container-bg-primary); */
-	transition: backdrop-filter 0.2s ease, padding 0.2s ease;
+	transition: backdrop-filter 0.2s ease;
 	&:after {
 		position: absolute;
 		content: "";

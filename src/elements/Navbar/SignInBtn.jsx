@@ -11,11 +11,13 @@ import AccountSelectContext from "@contexts/AccountSelect/AccountSelectContext";
 const Btn = styled(BtnBaseAnimated)`
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	font-size: 1rem;
 	font-weight: 700;
 	padding: 0 1.25rem;
 	border-radius: 1000rem;
 	height: 2.5rem;
+	min-width: 8rem;
 	z-index: 2;
 `;
 
