@@ -44,8 +44,8 @@ const FooterWrapper = styled.footer``;
 
 const LogoWrapper = styled.div`
 	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+	/* flex-direction: column; */
+	/* justify-content: space-between; */
 	${respondTo.md`
 		grid-column: 1 / -1;
 	`}
@@ -150,6 +150,36 @@ const IconsWrapper = styled.div`
 		line-height: 1;
 		text-decoration: none;
 		color: inherit;
+	}
+`;
+
+//eslint-disable-next-line
+const QuoteContainer = styled.div`
+	margin: 0 auto;
+	max-width: 20rem;
+	font-size: 1.25rem;
+	font-weight: 900;
+	color: var(--app-container-text-primary-hover);
+	line-height: 1.2;
+	&:before {
+		content: open-quote;
+		padding: 0 0.1rem;
+		display: inline;
+		height: 0;
+		line-height: 0;
+		position: relative;
+		color: var(--app-container-text-primary);
+		font-size: 1.5rem;
+	}
+	&:after {
+		content: close-quote;
+		padding: 0 0.1rem;
+		display: inline;
+		height: 0;
+		line-height: 0;
+		position: relative;
+		color: var(--app-container-text-primary);
+		font-size: 1.5rem;
 	}
 `;
 
