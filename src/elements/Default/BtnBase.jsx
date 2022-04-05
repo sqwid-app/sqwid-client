@@ -12,11 +12,11 @@ const baseStyles = css`
 	background-image: linear-gradient(
 		110deg,
 		var(--app-theme-primary) 0%,
-		var(--app-theme-secondary) 55%,
+		var(--app-theme-secondary) 50%,
 		var(--app-theme-primary) 100%
 	);
 	background-size: 200%;
-	transition: background-position 0.2s ease 0.1s;
+	transition: background-position 0.4s ease 0.1s;
 	&[disabled] {
 		background: var(--app-theme-primary-disabled);
 		pointer-events: none;

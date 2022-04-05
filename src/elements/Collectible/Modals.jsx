@@ -226,11 +226,11 @@ const AnimBtn = ({ children, ...props }) => (
 		whileTap={{
 			scale: 0.97,
 		}}
-		whileHover={{
-			y: -5,
-			x: 0,
-			scale: 1.02,
-		}}
+		// whileHover={{
+		// 	y: -5,
+		// 	x: 0,
+		// 	scale: 1.02,
+		// }}
 		{...props}
 	>
 		{children}
