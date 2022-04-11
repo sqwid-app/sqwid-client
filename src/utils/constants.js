@@ -53,6 +53,7 @@ const constants = {
 		"I wanted freedom, open air and adventure. I found it on the sea - Alain Gerbeault",
 		"Humanity is like an ocean; if a few drops of the ocean are dirty, the ocean does not become dirty - Mahatma Gandhi",
 	],
+	DEFAULT_CONTRACT_STORAGE_LIMIT: 2000
 };
 
 export default constants;

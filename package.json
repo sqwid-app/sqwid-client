@@ -12,7 +12,7 @@
 		"@polkadot/types-known": "^7.8.1",
 		"@polkadot/util": "^8.4.1",
 		"@reef-defi/api": "^1.0.3",
-		"@reef-defi/evm-provider": "^1.0.4",
+		"@reef-defi/evm-provider": "1.0.6",
 		"@reef-defi/extension-dapp": "^0.41.4",
 		"@testing-library/jest-dom": "^5.11.4",
 		"@testing-library/react": "^11.1.0",
