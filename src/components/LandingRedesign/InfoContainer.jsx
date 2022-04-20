@@ -54,7 +54,6 @@ const Wrapper = styled.div`
 		-webkit-background-clip: text;
 		width: 25rem;
 		-webkit-text-fill-color: transparent;
-		cursor: pointer;
 		/* animation: ${bgGradientAnimation} 10s ease infinite; */
 		user-select: none;
 	}
@@ -154,10 +153,10 @@ const AnimBtn = ({ children, ...props }) => (
 		whileTap={{
 			scale: 0.97,
 		}}
-		whileHover={{
-			y: -5,
-			x: 0,
-		}}
+		// whileHover={{
+		// 	y: -5,
+		// 	x: 0,
+		// }}
 		{...props}
 	>
 		{children}

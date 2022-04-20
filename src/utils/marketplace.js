@@ -125,7 +125,8 @@ const unlistPositionOnSale = async positionId => {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.unlistPositionOnSale(
-			positionId
+			positionId,
+			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -143,7 +144,8 @@ const putItemOnSale = async (itemId, copies, price) => {
 		const tx = await marketplaceContractInstance.putItemOnSale(
 			itemId,
 			copies,
-			ethers.utils.parseEther(price)
+			ethers.utils.parseEther(price),
+			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -169,7 +171,8 @@ const createItemLoan = async (
 			ethers.utils.parseEther(loanAmount),
 			ethers.utils.parseEther(feeAmount),
 			tokenAmount,
-			duration
+			duration,
+			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -188,7 +191,8 @@ const createItemAuction = async (itemId, tokenAmount, duration, minBid) => {
 			itemId,
 			tokenAmount,
 			duration,
-			ethers.utils.parseEther(minBid)
+			ethers.utils.parseEther(minBid),
+			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -206,7 +210,8 @@ const createItemRaffle = async (itemId, tokenAmount, duration) => {
 		const tx = await marketplaceContractInstance.createItemRaffle(
 			itemId,
 			tokenAmount,
-			duration
+			duration,
+			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -223,6 +228,7 @@ const enterRaffle = async (itemId, amount) => {
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.enterRaffle(itemId, {
 			value: ethers.utils.parseEther(amount),
+			customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
 		});
 		const receipt = await tx.wait();
 		return receipt;
@@ -239,6 +245,7 @@ const createBid = async (itemId, amount) => {
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.createBid(itemId, {
 			value: ethers.utils.parseEther(amount),
+			customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
 		});
 		const receipt = await tx.wait();
 		return receipt;
@@ -260,6 +267,7 @@ const createSale = async (positionId, tokenAmount, price) => {
 				value: ethers.utils.parseEther(
 					(Number(tokenAmount) * Number(price)).toString()
 				),
+				customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
 			}
 		);
 		const receipt = await tx.wait();
@@ -275,7 +283,7 @@ const endAuction = async positionId => {
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.endAuction(positionId);
+		const tx = await marketplaceContractInstance.endAuction(positionId, { customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } });
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
@@ -289,7 +297,7 @@ const endRaffle = async positionId => {
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.endRaffle(positionId);
+		const tx = await marketplaceContractInstance.endRaffle(positionId, { customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } });
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
@@ -305,6 +313,7 @@ const fundLoan = async (positionId, amount) => {
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.fundLoan(positionId, {
 			value: ethers.utils.parseEther(amount.toString()),
+			customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
 		});
 		const receipt = await tx.wait();
 		return receipt;
@@ -319,7 +328,7 @@ const liquidateLoan = async positionId => {
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.liquidateLoan(positionId);
+		const tx = await marketplaceContractInstance.liquidateLoan(positionId, { customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } });
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
@@ -335,6 +344,7 @@ const repayLoan = async (positionId, amount) => {
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.repayLoan(positionId, {
 			value: ethers.utils.parseEther(amount.toString()),
+			customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
 		});
 		const receipt = await tx.wait();
 		return receipt;
@@ -350,7 +360,8 @@ const unlistLoanProposal = async positionId => {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.unlistLoanProposal(
-			positionId
+			positionId,
+			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -485,6 +496,8 @@ const acceptBid = async (itemId, bidId) => {
 	const receipt = await tx.wait();
 	return receipt;
 };
+
+// --- / old stuff ---
 
 // returns the available balance for withdrawing
 // eslint-disable-next-line

@@ -148,9 +148,7 @@ const RecentlyListedPaginated = () => {
 				</LoadingContainer>
 			) : (
 				<Container>
-					<Header>
-						Sales <span className="emoji">📃</span>
-					</Header>
+					<Header>Sales</Header>
 					<CardSectionContainer>
 						<Suspense>
 							<Items

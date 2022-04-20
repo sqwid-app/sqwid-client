@@ -5,6 +5,7 @@ import styled from "styled-components";
 // import RecentlyListed from "./RecentlyListed";
 // import RecentlyListedPaginated from "@components/ExploreRedesign/RecentlyListedPaginated";
 import PaginatedCards from "@elements/Explore/Cards/Default/PaginatedCards";
+import DottedHeading from "@elements/Default/DottedHeading";
 const SalesCard = React.lazy(() =>
 	import("@elements/Explore/Cards/Sales/SalesCard")
 );
@@ -29,18 +30,12 @@ const Container = styled.div`
 	width: 100%;
 `;
 
-const Header = styled.h1`
-	font-weight: 900;
-`;
-
 const SalePage = () => {
 	return (
 		<>
 			<Wrapper>
 				<Container>
-					<Header>
-						Sales <span className="emoji">📃</span>
-					</Header>
+					<DottedHeading size="2.5rem">Sales</DottedHeading>
 					<PaginatedCards Card={SalesCard} state={1} />
 				</Container>
 			</Wrapper>

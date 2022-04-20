@@ -40,9 +40,7 @@ const RaffleSection = ({ items }) => {
 	return (
 		<Container>
 			<HeaderSection>
-				<Header>
-					Raffles <span className="emoji">🎲</span>
-				</Header>
+				<Header>Raffles</Header>
 				<StyledNavLink to="/explore/raffles">
 					View All <ChevronRight />
 				</StyledNavLink>
