@@ -135,6 +135,9 @@ const createCollectible = async files => {
 		filesToUpload.map(file => uploadFile(file))
 	);
 
+	uploaded[0] = 'ipfs://' + uploaded[0];
+	if (uploaded[1]) uploaded[1] = 'ipfs://' + uploaded[1];
+
 	let data = {
 		name,
 		description, // eslint-disable-next-line
@@ -145,6 +148,7 @@ const createCollectible = async files => {
 	};
 
 	let meta = await uploadFile(JSON.stringify(data));
+	meta = 'ipfs://' + meta;
 
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 	//eslint-disable-next-line
@@ -174,6 +178,7 @@ const createCollectible = async files => {
 			to,
 			royalty
 		);
+
 		// eslint-disable-next-line
 		const receipt = await nft.wait();
 		// eslint-disable-next-line
