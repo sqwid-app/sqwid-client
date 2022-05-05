@@ -122,11 +122,11 @@ const Btn = styled(BtnBaseAnimated)`
 
 const AnimBtn = ({ children, onClick, disabled }) => (
 	<Btn
-		whileHover={{
-			y: -5,
-			x: 0,
-			scale: 1.02,
-		}}
+		// whileHover={{
+		// 	y: -5,
+		// 	x: 0,
+		// 	scale: 1.02,
+		// }}
 		whileTap={{
 			scale: 0.99,
 		}}

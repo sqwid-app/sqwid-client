@@ -27,7 +27,6 @@ const Btn = styled(BtnBaseAnimated)`
 	font-weight: 700;
 	padding: 0.75rem 1.25rem;
 	border-radius: 1000rem;
-	background: var(--app-theme-primary);
 	color: var(--app-text);
 	outline: none;
 	border: none;
@@ -69,7 +68,7 @@ export const CreateButton = () => {
 					if (!res.error) history.push(`/collectible/${res}`);
 					else {
 						// eslint-disable-next-line
-						console.log (res.error);
+						console.log(res.error);
 						bread("Error creating collectible");
 					}
 				})

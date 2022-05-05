@@ -2,6 +2,7 @@ import { respondTo } from "@styles/styledMediaQuery";
 import React from "react";
 import styled from "styled-components";
 import PaginatedCards from "@elements/Explore/Cards/Default/PaginatedCards";
+import DottedHeading from "@elements/Default/DottedHeading";
 const LoanCard = React.lazy(() =>
 	import("@elements/Explore/Cards/Loan/LoanCard")
 );
@@ -26,18 +27,12 @@ const Container = styled.div`
 	width: 100%;
 `;
 
-const Header = styled.h1`
-	font-weight: 900;
-`;
-
 const LoanPage = () => {
 	return (
 		<>
 			<Wrapper>
 				<Container>
-					<Header>
-						Loans <span className="emoji">🏦</span>
-					</Header>
+					<DottedHeading size="2.5rem">Loans</DottedHeading>
 					<PaginatedCards Card={LoanCard} state={4} />
 				</Container>
 			</Wrapper>

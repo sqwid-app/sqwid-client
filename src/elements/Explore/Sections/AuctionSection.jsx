@@ -40,9 +40,7 @@ const AuctionSection = ({ items }) => {
 	return (
 		<Container>
 			<HeaderSection>
-				<Header>
-					Auctions <span className="emoji">⌛</span>
-				</Header>
+				<Header>Auctions</Header>
 				<StyledNavLink to="/explore/auctions">
 					View All <ChevronRight />
 				</StyledNavLink>

@@ -13,9 +13,7 @@ const Header = styled.h1`
 const RecentlyListed = ({ items }) => {
 	return (
 		<Container>
-			<Header>
-				Recently Listed <span className="emoji">📃</span>
-			</Header>
+			<Header>Recently Listed</Header>
 			<CardSectionContainer>
 				<Suspense>
 					{items.map((item, index) => (
