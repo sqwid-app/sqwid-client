@@ -1,7 +1,7 @@
 import { networks, defaultNetwork } from "constants/networks";
 import constants from "./constants";
 
-const getCurrentNetwork = () => {
+export const getCurrentNetwork = () => {
 	return (
 		localStorage.getItem(`${constants.APP_NAME}__chosen_network`) ||
 		defaultNetwork
