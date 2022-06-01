@@ -2,6 +2,7 @@ export const initialState = {
 	files: {
 		name: "",
 		description: "",
+		royaltyRecipient: "",
 		royalty: "",
 		copies: "",
 		properties: "",

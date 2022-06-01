@@ -60,7 +60,11 @@ export const CreateButton = () => {
 		localStorage.removeItem("properties");
 		setButtonText(<FadeLoaderIcon />);
 		setIsSubmitting(true);
-		if (fileData.file && files.name.length) {
+		if (
+			fileData.file &&
+			files.name.length &&
+			!(files.royaltyRecipient && !Number(files.royalty))
+		) {
 			// let id = 0;
 
 			createCollectible({ ...files, ...fileData })

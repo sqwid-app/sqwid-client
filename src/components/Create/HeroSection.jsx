@@ -16,6 +16,7 @@ import WrapSection from "./WrapSection";
 import UnwrapSection from "./UnwrapSection";
 import useActiveTabs from "@utils/useActiveTabs";
 import { CreateButton } from "@elements/Create/CreateButton";
+import RoyaltyReceiverSection from "@elements/Create/RoyaltyReceiverSection";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -78,6 +79,7 @@ const MainPage = () => {
 				<Changes />
 			</LeftContainer>
 			<RightContainer>
+				<RoyaltyReceiverSection />
 				<RoyaltySection />
 				<CopiesSection />
 				<CollectionSection />
@@ -103,6 +105,7 @@ const MainPageRedesign = () => {
 			<RightContainer>
 				<TitleSection />
 				<DescriptionSection />
+				<RoyaltyReceiverSection />
 				<RoyaltySection />
 				<CopiesSection />
 			</RightContainer>
