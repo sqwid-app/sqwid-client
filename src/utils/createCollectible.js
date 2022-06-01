@@ -135,8 +135,8 @@ const createCollectible = async files => {
 		filesToUpload.map(file => uploadFile(file))
 	);
 
-	uploaded[0] = 'ipfs://' + uploaded[0];
-	if (uploaded[1]) uploaded[1] = 'ipfs://' + uploaded[1];
+	uploaded[0] = "ipfs://" + uploaded[0];
+	if (uploaded[1]) uploaded[1] = "ipfs://" + uploaded[1];
 
 	let data = {
 		name,
@@ -148,7 +148,7 @@ const createCollectible = async files => {
 	};
 
 	let meta = await uploadFile(JSON.stringify(data));
-	meta = 'ipfs://' + meta;
+	meta = "ipfs://" + meta;
 
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 	//eslint-disable-next-line
@@ -159,7 +159,10 @@ const createCollectible = async files => {
 		: null;
 
 	let { signer } = await Interact(address);
-	const to = await signer.getAddress();
+	const to =
+		files.royaltyRecipient && files.royaltyRecipient !== ""
+			? files.royaltyRecipient
+			: await signer.getAddress();
 	let contract = new ethers.Contract(
 		getContract("marketplace"),
 		contractABI,

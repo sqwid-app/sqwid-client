@@ -70,12 +70,12 @@ const RoyaltySection = () => {
 	};
 	return (
 		<Container>
-			<Title>Royalties</Title>
+			<Title>Royalties value</Title>
 			<InputWrapper>
 				<InputContainer
 					value={files.royalty}
 					onChange={handleInput}
-					placeholder={`10`}
+					placeholder={`e.g 10`}
 					type="number"
 					min="0"
 					max="50"
