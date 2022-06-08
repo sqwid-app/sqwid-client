@@ -58,6 +58,15 @@ const fetchMarketplaceItems = async () => {
 	return data;
 };
 
+const fetchFeaturedItems = async () => {
+	const res = await axios(`${getBackend()}/get/marketplace/featured`);
+	const { data } = res;
+	if (data.error) {
+		return [];
+	}
+	return data.featured;
+}
+
 // returns collection info
 const fetchCollectionInfo = async id => {
 	try {
@@ -573,6 +582,7 @@ export {
 	getWithdrawableBalance,
 	withdrawBalance,
 	fetchRoyalties,
+	fetchFeaturedItems,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,
