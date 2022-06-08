@@ -5,6 +5,8 @@
 	"private": true,
 	"dependencies": {
 		"@craco/craco": "^6.4.3",
+		"@dnd-kit/core": "^6.0.3",
+		"@dnd-kit/sortable": "^7.0.0",
 		"@open-wc/webpack-import-meta-loader": "^0.4.7",
 		"@polkadot/api": "^7.8.1",
 		"@polkadot/rpc-core": "^7.8.1",

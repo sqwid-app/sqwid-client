@@ -29,6 +29,8 @@ import intervalToFormattedDuration from "@utils/intervalToFormattedDuration";
 import { minutesToMilliseconds } from "date-fns";
 import AuthContext from "@contexts/Auth/AuthContext";
 import constants from "@utils/constants";
+import axios from "axios";
+import { getBackend } from "@utils/network";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -350,6 +352,50 @@ export const TransferModal = props => {
 				</InputWrapper>
 				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					Transfer
+				</AnimBtn>
+			</Group>
+		</ModalContainer>
+	);
+};
+
+// move to a different file later
+export const AddFeaturedModal = props => {
+	const [positionId, setPositionId] = useState("");
+	const initialButtonText = "Submit";
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	
+	const handleClick = async () => {
+		if (!isLoading && Number(positionId) >= 1) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			const res = await axios.get (`${getBackend ()}/get/marketplace/position/${positionId}`);
+			setIsLoading (false);
+			setButtonText (initialButtonText);
+			setPositionId ("");
+			if (res.data.error) bread (res.data.error);
+			else {
+				props.setIsActive(false);
+				props.addItemInfo(res.data);
+			}
+		} else {
+			setIsLoading(false);
+			setButtonText(initialButtonText);
+		}
+	};
+	return (
+		<ModalContainer {...props}>
+			<Title>Add NFT</Title>
+			<Group>
+				<InputTitle>Position ID</InputTitle>
+				<InputContainer
+					type="number"
+					value={positionId}
+					onChange={e => setPositionId(e.target.value)}
+					placeholder={`Position ID`}
+				/>
+				<AnimBtn disabled={isLoading} onClick={handleClick}>
+					{buttonText}
 				</AnimBtn>
 			</Group>
 		</ModalContainer>

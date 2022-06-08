@@ -3,11 +3,11 @@ import { respondTo } from "@styles/styledMediaQuery";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 // import RecentlyListed from "./RecentlyListed";
-import { fetchFeaturedItems, fetchMarketplaceItems } from "@utils/marketplace";
-import OnSaleSection from "@elements/Explore/Sections/OnSaleSection";
-import AuctionSection from "@elements/Explore/Sections/AuctionSection";
-import RaffleSection from "@elements/Explore/Sections/RaffleSection";
-import LoansSection from "@elements/Explore/Sections/LoansSection";
+import { fetchFeaturedItems } from "@utils/marketplace";
+// import OnSaleSection from "@elements/Explore/Sections/OnSaleSection";
+// import AuctionSection from "@elements/Explore/Sections/AuctionSection";
+// import RaffleSection from "@elements/Explore/Sections/RaffleSection";
+// import LoansSection from "@elements/Explore/Sections/LoansSection";
 import FeaturedSection from "@elements/Explore/Sections/FeaturedSection";
 import useOnScreen from "@utils/useOnScreen";
 

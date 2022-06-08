@@ -16,6 +16,7 @@ const Create = React.lazy(() => import("@pages/Create"));
 const Landing = React.lazy(() => import("@pages/Landing"));
 const Profile = React.lazy(() => import("@pages/Profile"));
 const Lagoon = React.lazy(() => import("@pages/Lagoon"));
+const FeaturedDashboard = React.lazy(() => import("@pages/FeaturedDashboard"));
 const NotFound = React.lazy(() => import("@pages/NotFound"));
 
 const explorePaths = explorePages.map(item => item.path);
@@ -51,6 +52,7 @@ const Routes = () => {
 							<Collectible />
 						</CollectibleProvider>
 					</Route>
+					<Route path="/dashboard/featured" exact component={FeaturedDashboard} />
 					<Route component={NotFound} />
 				</Switch>
 				<BreadContainer />
