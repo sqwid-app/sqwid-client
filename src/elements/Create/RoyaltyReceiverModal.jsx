@@ -136,6 +136,7 @@ const RoyaltyReceiverModal = ({ isVisible, setIsVisible, selectedAddress }) => {
 
 			sendIframeMessage();
 		}
+		//eslint-disable-next-line
 	}, [selectedAddress]);
 
 	function sendIframeMessage() {
@@ -151,7 +152,7 @@ const RoyaltyReceiverModal = ({ isVisible, setIsVisible, selectedAddress }) => {
 	}
 
 	function onIframeError(error) {
-		console.log("iframe error", error);
+		// console.log("iframe error", error);
 		bread("Error loading Splitz page");
 		setElemIsVisible(false);
 		setIsVisible(false);
@@ -174,6 +175,7 @@ const RoyaltyReceiverModal = ({ isVisible, setIsVisible, selectedAddress }) => {
 							<CancelIcon />
 						</CancelIconContainer>
 						<iframe
+							title="splitz"
 							id="iframe"
 							src={splitzUrl}
 							height="620"
