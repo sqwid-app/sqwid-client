@@ -258,6 +258,7 @@ const FeaturedDashboard = () => {
 					'Content-Type': 'application/json'
 				}
 			})
+			bread ("Featured items saved");
 		} catch (error) {
 			bread (error.toString ());
 		}

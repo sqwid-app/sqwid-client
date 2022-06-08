@@ -6,8 +6,8 @@ export const networks = {
 			erc1155: "0xE3c13deC43Ad58F95f964Acd0461450AD0C35649",
 			utility: "0x08925246669D150d5D4597D756A3C788eae2834B",
 		},
-		// backend: "https://testnet-api.sqwid.app",
-		backend: "http://localhost:8080",
+		backend: "https://testnet-api.sqwid.app",
+		// backend: "http://localhost:8080",
 	},
 	reef_mainnet: {
 		rpc: "wss://rpc.reefscan.com/ws",
