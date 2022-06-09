@@ -25,10 +25,14 @@ import { AddFeaturedModal } from "@elements/Collectible/Modals";
 import axios from "axios";
 import { getBackend } from "@utils/network";
 import bread from "@utils/bread";
+import { respondTo } from "@styles/styledMediaQuery";
 
 const Container = styled.div`
 	width: 70%;
 	margin: 0 auto;
+	${respondTo.md`
+		width: 100%;
+	`}
 	ul {
 		list-style-position: inside;
 	}
@@ -109,6 +113,9 @@ const ItemIcon = styled.div`
 const ItemTitle = styled.div`
 	font-weight: 800;
 	width: 30rem;
+	${respondTo.md`
+		width: 100%;
+	`}
 `;
 
 const ItemPositionId = styled.div`
