@@ -99,6 +99,10 @@ html {
 	scroll-behavior: smooth;
 }
 
+body {
+	overflow-x: hidden;
+}
+
 html,
 body {
 	font-family: var(--font-family);
