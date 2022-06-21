@@ -3,11 +3,12 @@ import { respondTo } from "@styles/styledMediaQuery";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 // import RecentlyListed from "./RecentlyListed";
-import { fetchMarketplaceItems } from "@utils/marketplace";
-import OnSaleSection from "@elements/Explore/Sections/OnSaleSection";
-import AuctionSection from "@elements/Explore/Sections/AuctionSection";
-import RaffleSection from "@elements/Explore/Sections/RaffleSection";
-import LoansSection from "@elements/Explore/Sections/LoansSection";
+import { fetchFeaturedItems } from "@utils/marketplace";
+// import OnSaleSection from "@elements/Explore/Sections/OnSaleSection";
+// import AuctionSection from "@elements/Explore/Sections/AuctionSection";
+// import RaffleSection from "@elements/Explore/Sections/RaffleSection";
+// import LoansSection from "@elements/Explore/Sections/LoansSection";
+import FeaturedSection from "@elements/Explore/Sections/FeaturedSection";
 import useOnScreen from "@utils/useOnScreen";
 
 // changed the min height ot 20 instead of 70 to stop the quirky thing
@@ -36,28 +37,37 @@ const Section = styled.section`
 	width: 100%;
 	margin: 4rem 0;
 `;
+const EmptySectionText = styled.h2`
+	font-weight: 900;
+	color: var(--app-container-text-primary);
+	text-align: center;
+	font-size: 1.25rem;
+`;
 
 const Explore = () => {
 	const [isLoading, setIsLoading] = useState(true);
-	const [onSale, setOnSale] = useState([]);
-	const [auctions, setAuctions] = useState([]);
-	const [raffles, setRaffles] = useState([]);
-	const [loans, setLoans] = useState([]);
+	// const [onSale, setOnSale] = useState([]);
+	// const [auctions, setAuctions] = useState([]);
+	// const [raffles, setRaffles] = useState([]);
+	// const [loans, setLoans] = useState([]);
+	const [featured, setFeatured] = useState([]);
 	const containerRef = useRef();
 	const { isVisible } = useOnScreen(containerRef);
 
 	const fetchData = async () => {
 		// console.log("sending request")
-		const { sale, auction, raffle, loan } = await fetchMarketplaceItems();
-		setOnSale(sale);
-		setAuctions(auction);
-		setRaffles(raffle);
-		setLoans(loan);
+		// const { sale, auction, raffle, loan } = await fetchMarketplaceItems();
+		// setOnSale(sale);
+		// setAuctions(auction);
+		// setRaffles(raffle);
+		// setLoans(loan);
+		const featured = await fetchFeaturedItems ();
+		setFeatured (featured);
 		setIsLoading(false);
 	};
 
 	useEffect(() => {
-		isVisible && onSale.length === 0 && fetchData();
+		isVisible && featured.length === 0 && fetchData();
 		//eslint-disable-next-line
 	}, [isVisible]);
 
@@ -67,10 +77,17 @@ const Explore = () => {
 				<Container id="explore" ref={containerRef}>
 					{!isLoading && (
 						<>
-							<OnSaleSection items={onSale} />
+							{
+								featured.length ? (
+									<FeaturedSection items={featured} />
+								) : (
+									<EmptySectionText>There are no featured items currently 🙂</EmptySectionText>
+								)
+							}
+							{/* <OnSaleSection items={onSale} />
 							<AuctionSection items={auctions} />
 							<RaffleSection items={raffles} />
-							<LoansSection items={loans} />
+							<LoansSection items={loans} /> */}
 						</>
 					)}
 				</Container>

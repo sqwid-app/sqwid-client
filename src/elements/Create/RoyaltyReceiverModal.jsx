@@ -5,6 +5,7 @@ import { LazyMotion, domAnimation } from "framer-motion";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { getCurrentNetwork } from "@utils/network";
 import bread from "@utils/bread";
+import CancelIcon from "@static/svg/CancelIcon";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -36,6 +37,19 @@ const modalEntryAnim = css`
 const modalExitAnim = css`
 	animation: ${swipeUpwards} 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55)
 		forwards;
+`;
+
+const CancelIconContainer = styled.div`
+	position: absolute;
+	right: -20px;
+	top: -20px;
+	svg.cancel-icon {
+		height: 2rem;
+		width: 2rem;
+	}
+	&:hover {
+		cursor: pointer;
+	}
 `;
 
 const BackDrop = styled.div`
@@ -81,15 +95,6 @@ const LoadingContainer = styled.div`
 	height: 6rem;
 `;
 
-const elemContains = (rect, x, y) => {
-	return (
-		rect.x <= x &&
-		x <= rect.x + rect.width &&
-		rect.y <= y &&
-		y <= rect.y + rect.height
-	);
-};
-
 const RoyaltyReceiverModal = ({ isVisible, setIsVisible, selectedAddress }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isVisible);
 	const [isLoading, setIsLoading] = useState(true);
@@ -110,13 +115,10 @@ const RoyaltyReceiverModal = ({ isVisible, setIsVisible, selectedAddress }) => {
 			? "https://splitz-dapp.web.app/testnet/create"
 			: "https://splitz-dapp.web.app/create";
 
-	const handleClickOutside = e => {
-		let rect = modalRef.current.getBoundingClientRect();
-		if (!elemContains(rect, e.clientX, e.clientY)) {
-			setElemIsVisible(false);
-			setIsVisible(false);
-			setIsLoading(true);
-		}
+	const closeModal = () => {
+		setElemIsVisible(false);
+		setIsVisible(false);
+		setIsLoading(true);
 	};
 
 	useEffect(() => {
@@ -134,6 +136,7 @@ const RoyaltyReceiverModal = ({ isVisible, setIsVisible, selectedAddress }) => {
 
 			sendIframeMessage();
 		}
+		//eslint-disable-next-line
 	}, [selectedAddress]);
 
 	function sendIframeMessage() {
@@ -149,7 +152,7 @@ const RoyaltyReceiverModal = ({ isVisible, setIsVisible, selectedAddress }) => {
 	}
 
 	function onIframeError(error) {
-		console.log("iframe error", error);
+		// console.log("iframe error", error);
 		bread("Error loading Splitz page");
 		setElemIsVisible(false);
 		setIsVisible(false);
@@ -161,20 +164,25 @@ const RoyaltyReceiverModal = ({ isVisible, setIsVisible, selectedAddress }) => {
 	return (
 		<LazyMotion features={domAnimation}>
 			{elemIsVisible && (
-				<BackDrop remove={!elemIsVisible} onClick={handleClickOutside}>
+				<BackDrop remove={!elemIsVisible}>
 					<Modal remove={!elemIsVisible} ref={modalRef}>
 						<LoadingContainer
 							className={`${!isLoading ? "hidden" : ""}`}
 						>
 							<LoadingIcon size={64} />
 						</LoadingContainer>
+						<CancelIconContainer onClick={closeModal}>
+							<CancelIcon />
+						</CancelIconContainer>
 						<iframe
+							title="splitz"
 							id="iframe"
 							src={splitzUrl}
 							height="620"
 							width="100%"
 							onError={error => onIframeError(error)}
 							className={`${isLoading ? "hidden" : ""}`}
+							allow="clipboard-read; clipboard-write"
 						></iframe>
 					</Modal>
 				</BackDrop>

@@ -138,9 +138,9 @@ const HeroSection = () => {
 				<ExploreContainer>
 					<NavWrapper>
 						<Navbar>
-							<DottedHeading>Explore</DottedHeading>
+							<DottedHeading>Featured</DottedHeading>
 							<StyledNavLink to="/explore">
-								View All <ChevronRight />
+								Explore All <ChevronRight />
 							</StyledNavLink>
 						</Navbar>
 					</NavWrapper>

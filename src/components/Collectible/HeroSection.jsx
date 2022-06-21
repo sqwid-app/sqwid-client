@@ -120,7 +120,7 @@ const HeroSection = () => {
 				`${getBackend()}/get/marketplace/position/${addr}`
 			);
 			const pricePromise = axios(
-				"https://api.coingecko.com/api/v3/simple/price?ids=reef-finance&vs_currencies=usd"
+				"https://api.coingecko.com/api/v3/simple/price?ids=reef&vs_currencies=usd"
 			);
 			try {
 				const [collectible, price] = await Promise.all([
@@ -134,7 +134,7 @@ const HeroSection = () => {
 					});
 				else {
 					let conversionRate = price.data
-						? price.data["reef-finance"].usd
+						? price.data["reef"].usd
 						: 0;
 					setCollectibleInfo({
 						...collectible.data,
