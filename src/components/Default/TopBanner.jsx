@@ -66,7 +66,7 @@ const CancelContainer = styled.div`
 `;
 
 const TopBanner = () => {
-	const initialState = JSON.parse(localStorage.getItem("isWarningVisible"));
+	const initialState = JSON.parse(localStorage.getItem("betaWarningVisible"));
 	const [isWarningVisible, setIsWarningVisible] = useState(
 		initialState !== null ? initialState : true
 	);
@@ -82,7 +82,7 @@ const TopBanner = () => {
 	}, [isWarningVisible]);
 	const handleCancel = () => {
 		setIsWarningVisible(false);
-		localStorage.setItem("isWarningVisible", false);
+		localStorage.setItem("betaWarningVisible", false);
 	};
 	return (
 		<>
