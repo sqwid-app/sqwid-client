@@ -94,7 +94,7 @@ const HeroSection = () => {
 				let conversionRate = null;
 				try {
 					let res = await axios(
-						"https://api.coingecko.com/api/v3/simple/price?ids=reef-finance&vs_currencies=usd"
+						"https://api.coingecko.com/api/v3/simple/price?ids=reef&vs_currencies=usd"
 					);
 					let price = res.data["reef-finance"].usd;
 					conversionRate = Number(price);
@@ -151,7 +151,6 @@ const HeroSection = () => {
 				});
 			}
 		};
-
 		getData();
 		//eslint-disable-next-line
 	}, []);
