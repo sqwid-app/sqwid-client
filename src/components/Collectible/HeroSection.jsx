@@ -96,7 +96,7 @@ const HeroSection = () => {
 					let res = await axios(
 						"https://api.coingecko.com/api/v3/simple/price?ids=reef&vs_currencies=usd"
 					);
-					let price = res.data["reef-finance"].usd;
+					let price = res.data["reef"].usd;
 					conversionRate = Number(price);
 				} catch (err) {
 					bread(err.response.data.error);
