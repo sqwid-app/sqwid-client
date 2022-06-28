@@ -5,8 +5,11 @@ export const getCloudflareURL = url =>
 
 export const getDwebURL = url => `https://${getCIDv1(url)}.ipfs.dweb.link/`;
 
+// export const getInfuraURL = url =>
+// 	`https://${getCIDv1(url)}.ipfs.infura-ipfs.io/`;
+
 export const getInfuraURL = url =>
-	`https://${getCIDv1(url)}.ipfs.infura-ipfs.io/`;
+	`https://sqwid.infura-ipfs.io/ipfs/${getCIDv1(url)}`;
 
 const getIPFSURL = url => `https://ipfs.io/ipfs/${url.replace("ipfs://", "")}`;
 

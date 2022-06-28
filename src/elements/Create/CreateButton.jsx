@@ -77,7 +77,8 @@ export const CreateButton = () => {
 					}
 				})
 				.catch(err => {
-					bread(err.response.data.error);
+					// bread(err.response.data.error);
+					bread(err.toString ());
 				});
 
 			// .finally(()=>{

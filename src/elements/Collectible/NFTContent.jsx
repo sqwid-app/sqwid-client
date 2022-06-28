@@ -6,7 +6,7 @@ import { respondTo } from "@styles/styledMediaQuery";
 import Plyr from "@elements/Default/Plyr";
 import "@styles/plyr.css";
 import { CSSTransition } from "react-transition-group";
-import { getCloudflareURL, getDwebURL } from "@utils/getIPFSURL";
+import { getDwebURL, getInfuraURL } from "@utils/getIPFSURL";
 import ModalComponent from "./ModalComponent";
 import { LazyMotion, m, domAnimation } from "framer-motion";
 import { wipBread } from "@utils/bread";
@@ -425,7 +425,7 @@ const VideoContainer = ({ data, blur }) => {
 		<PlyrContainer blur={blur} audio={type === "audio"}>
 			<Content>
 				{type === "audio" && (
-					<PlyrCover src={getCloudflareURL(data.image)} />
+					<PlyrCover src={getInfuraURL(data.image)} />
 				)}
 				{<Plyr source={settings} options={options} />}
 			</Content>
@@ -526,13 +526,13 @@ const NFTContentSection = () => {
 						onClick={() => setModalIsOpen(true)}
 						isBlurred={isBlurred}
 						setIsBlurred={setIsBlurred}
-						src={getCloudflareURL(collectibleInfo.meta.media)}
+						src={getInfuraURL (collectibleInfo.meta.image)}
 					/>
 					<ModalComponent
 						modalIsOpen={modalIsOpen}
 						setModalIsOpen={setModalIsOpen}
 						details={{
-							image: getCloudflareURL(collectibleInfo.meta.media),
+							image: getInfuraURL(collectibleInfo.meta.media),
 							name: collectibleInfo.meta.name,
 						}}
 					/>

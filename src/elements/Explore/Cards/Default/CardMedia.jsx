@@ -2,7 +2,7 @@ import MusicIcon from "@static/svg/MusicIcon";
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import LoadingIcon from "@static/svg/LoadingIcon";
-import { getCloudflareURL, getDwebURL } from "@utils/getIPFSURL";
+import { getDwebURL, getInfuraURL } from "@utils/getIPFSURL";
 import { Link } from "react-router-dom";
 
 const audioOverlay = css`
@@ -235,7 +235,7 @@ const AudioCard = ({ image, isLoading }) => {
 
 const CardMedia = ({ meta, isLoading, to }) => {
 	//eslint-disable-next-line
-	const { image, media, mimetype } = meta;
+	const { image, media, thumbnail, mimetype } = meta;
 	return (
 		<>
 			{
@@ -244,7 +244,7 @@ const CardMedia = ({ meta, isLoading, to }) => {
 						<ImageCard
 							to={to}
 							isLoading={isLoading}
-							url={getCloudflareURL(media)}
+							url={getInfuraURL(thumbnail || media)}
 						/>
 					),
 					video: (
