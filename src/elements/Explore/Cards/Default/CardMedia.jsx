@@ -235,7 +235,7 @@ const AudioCard = ({ image, isLoading }) => {
 
 const CardMedia = ({ meta, isLoading, to }) => {
 	//eslint-disable-next-line
-	const { image, media, mimetype } = meta;
+	const { image, media, thumbnail, mimetype } = meta;
 	return (
 		<>
 			{
@@ -244,7 +244,7 @@ const CardMedia = ({ meta, isLoading, to }) => {
 						<ImageCard
 							to={to}
 							isLoading={isLoading}
-							url={getInfuraURL(media)}
+							url={getInfuraURL(thumbnail || media)}
 						/>
 					),
 					video: (
