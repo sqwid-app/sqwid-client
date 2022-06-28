@@ -2,8 +2,8 @@ export const networks = {
 	reef_testnet: {
 		rpc: "wss://rpc-testnet.reefscan.com/ws",
 		contracts: {
-			marketplace: "0xd3202Ee6077C7cc25eAea3aE11bec2cD731D19FC",
-			erc1155: "0xE3c13deC43Ad58F95f964Acd0461450AD0C35649",
+			marketplace: "0x0a3F2785dBBC5F022De511AAB8846388B78009fD",
+			erc1155: "0x1A511793FE92A62AF8bC41d65d8b94d4c2BD22c3",
 			utility: "0x08925246669D150d5D4597D756A3C788eae2834B",
 		},
 		backend: "https://testnet-api.sqwid.app",
