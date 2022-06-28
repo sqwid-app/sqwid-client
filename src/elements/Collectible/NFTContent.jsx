@@ -526,7 +526,7 @@ const NFTContentSection = () => {
 						onClick={() => setModalIsOpen(true)}
 						isBlurred={isBlurred}
 						setIsBlurred={setIsBlurred}
-						src={getInfuraURL (collectibleInfo.meta.media)}
+						src={getInfuraURL (collectibleInfo.meta.image)}
 					/>
 					<ModalComponent
 						modalIsOpen={modalIsOpen}
