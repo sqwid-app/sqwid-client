@@ -103,7 +103,7 @@ const CardHeaderIcons = ({ data }) => {
 					tooltip={`Creator: ${creator.name}`}
 				/>
 				<AnimatedIcons
-					to={`/collections/${collection.id}`}
+					to={collection.id !== 'ASwOXeRM5DfghnURP4g2' ? `/collections/${collection.id}` : '#'}
 					url={getCloudflareURL(collection.image)}
 					tooltip={`Collection: ${collection.name}`}
 				/>
