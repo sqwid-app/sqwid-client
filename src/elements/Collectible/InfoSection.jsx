@@ -157,7 +157,7 @@ const InfoSection = () => {
 							)}
 						/>
 						<NotStyledLink
-							to={`/collections/${collectibleInfo.collection.id}`}
+							to={collectibleInfo.collection.id !== 'ASwOXeRM5DfghnURP4g2' ? `/collections/${collectibleInfo.collection.id}` : '#'}
 						>
 							{collectibleInfo.collection.name}
 						</NotStyledLink>

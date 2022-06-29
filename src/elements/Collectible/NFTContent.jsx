@@ -6,7 +6,7 @@ import { respondTo } from "@styles/styledMediaQuery";
 import Plyr from "@elements/Default/Plyr";
 import "@styles/plyr.css";
 import { CSSTransition } from "react-transition-group";
-import { getDwebURL, getInfuraURL } from "@utils/getIPFSURL";
+import { getInfuraURL } from "@utils/getIPFSURL";
 import ModalComponent from "./ModalComponent";
 import { LazyMotion, m, domAnimation } from "framer-motion";
 import { wipBread } from "@utils/bread";
@@ -401,7 +401,7 @@ const VideoContainer = ({ data, blur }) => {
 			type: type,
 			sources: [
 				{
-					src: getDwebURL(data.media),
+					src: getInfuraURL(data.media),
 				},
 			],
 		}),
