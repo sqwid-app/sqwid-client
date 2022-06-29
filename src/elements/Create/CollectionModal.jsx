@@ -8,7 +8,7 @@ import { createCollection } from "@utils/createCollection";
 import Loading from "@elements/Default/Loading";
 import axios from "axios";
 import AuthContext from "@contexts/Auth/AuthContext";
-import { getCloudflareURL } from "@utils/getIPFSURL";
+import { getInfuraURL } from "@utils/getIPFSURL";
 import FileContext from "@contexts/File/FileContext";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import bread from "@utils/bread";
@@ -464,7 +464,7 @@ const Existing = ({ isActive, setIsActive }) => {
 								}}
 							>
 								<img
-									src={getCloudflareURL(item.data.image)}
+									src={getInfuraURL(item.data.image)}
 									alt={item.data.description}
 								/>
 								<p>{item.data.name}</p>
