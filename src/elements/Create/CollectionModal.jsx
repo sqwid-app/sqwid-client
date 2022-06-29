@@ -438,6 +438,10 @@ const Existing = ({ isActive, setIsActive }) => {
 		};
 		//eslint-disable-next-line
 	}, []);
+
+	const handleNewClick = () => {
+		setIsActive ({ status: true, type: "new" });
+	}
 	return (
 		<LazyMotion features={domAnimation}>
 			<Header>Choose Collection</Header>
@@ -448,7 +452,7 @@ const Existing = ({ isActive, setIsActive }) => {
 					</LoadingContainer>
 				) : (
 					<>
-						{collections.map(item => (
+						{collections.length ? collections.map(item => (
 							<CollectionContainer
 								key={item.id}
 								whileTap={{
@@ -469,7 +473,14 @@ const Existing = ({ isActive, setIsActive }) => {
 								/>
 								<p>{item.data.name}</p>
 							</CollectionContainer>
-						))}
+						)) : (
+							<AnimBtn
+								disabled={false}
+								onClick={handleNewClick}
+							>
+								Create new
+							</AnimBtn>
+						)}
 					</>
 				)}
 			</ExistingContainer>
