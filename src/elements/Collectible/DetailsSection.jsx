@@ -60,6 +60,21 @@ const HTMLLinkWrapper = styled.a`
 	}
 `;
 
+const TextWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	text-decoration: none;
+	color: inherit;
+	svg {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+	span {
+		font-size: 1.25rem;
+	}
+`;
+
 const StatusWrapper = styled.div`
 	display: flex;
 	align-items: center;
@@ -367,7 +382,7 @@ const ScanSection = () => {
 	return (
 		<HTMLLinkWrapper target="_blank" rel="noopener noreferrer" href={url}>
 			<ReefIcon />
-			<span>ReefScan</span>
+			<span>Token Contract</span>
 		</HTMLLinkWrapper>
 	);
 };
@@ -380,8 +395,32 @@ const IPFSSection = () => {
 			<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor">
 				<path d="M2.165 19.551c.186.28.499.449.835.449h15c.4 0 .762-.238.919-.606l3-7A.998.998 0 0 0 21 11h-1V8c0-1.103-.897-2-2-2h-6.655L8.789 4H4c-1.103 0-2 .897-2 2v13h.007a1 1 0 0 0 .158.551zM18 8v3H6c-.4 0-.762.238-.919.606L4 14.129V8h14z"></path>
 			</svg>
-			<span>IPFS</span>
+			<span>Media on IPFS</span>
 		</HTMLLinkWrapper>
+	);
+};
+
+const ItemIdSection = () => {
+	const { collectibleInfo } = useContext(CollectibleContext);
+	return (
+		<TextWrapper>
+			<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+				<path d="m21 7.702-8.5 4.62v9.678c1.567-.865 6.379-3.517 7.977-4.399.323-.177.523-.519.523-.891zm-9.5 4.619-8.5-4.722v9.006c0 .37.197.708.514.887 1.59.898 6.416 3.623 7.986 4.508zm-8.079-5.629 8.579 4.763 8.672-4.713s-6.631-3.738-8.186-4.614c-.151-.085-.319-.128-.486-.128-.168 0-.335.043-.486.128-1.555.876-8.093 4.564-8.093 4.564z"/>
+			</svg>
+			<span>{collectibleInfo.itemId}</span>
+		</TextWrapper>
+	);
+};
+
+const TokenIdSection = () => {
+	const { collectibleInfo } = useContext(CollectibleContext);
+	return (
+		<TextWrapper>
+			<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 26 26">
+				<path d="M22.548 9l.452-2h-5.364l1.364-6h-2l-1.364 6h-5l1.364-6h-2l-1.364 6h-6.184l-.452 2h6.182l-1.364 6h-5.36l-.458 2h5.364l-1.364 6h2l1.364-6h5l-1.364 6h2l1.364-6h6.185l.451-2h-6.182l1.364-6h5.366zm-8.73 6h-5l1.364-6h5l-1.364 6z"/>
+			</svg>
+			<span>{collectibleInfo.tokenId}</span>
+		</TextWrapper>
 	);
 };
 
@@ -394,6 +433,8 @@ const DetailsSection = () => {
 						<MetadataSection />
 						<ScanSection />
 						<IPFSSection />
+						<TokenIdSection />
+						<ItemIdSection />
 					</LinksContainer>
 					<StatusContainer>
 						<StatusSection />
