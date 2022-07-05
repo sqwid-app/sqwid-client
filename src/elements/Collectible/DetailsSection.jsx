@@ -8,6 +8,9 @@ import { LazyMotion, m, domAnimation } from "framer-motion";
 import React, { useContext } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { respondTo } from "@styles/styledMediaQuery";
+import { fetchCollectibleStats } from "@utils/marketplace";
+import { numberSeparator } from "@utils/numberSeparator";
+import LoadingIcon from "@static/svg/LoadingIcon";
 const Wrapper = styled.div``;
 
 const Container = styled.div`
@@ -28,6 +31,8 @@ const LinksContainer = styled.div`
 	flex-direction: column;
 	gap: 0.75rem;
 	color: var(--app-container-text-primary-hover);
+	flex: 1;
+	width: 100%;
 `;
 
 const StatusContainer = styled.div`
@@ -89,6 +94,21 @@ const StatusWrapper = styled.div`
 		font-size: 1.25rem;
 		font-weight: 800;
 	}
+`;
+
+const MiddleContainer = styled.div`
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1rem 0;
+	color: var(--app-container-text-primary-hover);
+	border-top: solid 0.1rem var(--app-container-bg-primary);
+	${respondTo.md`
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.75rem;
+	`}
 `;
 
 const BottomContainer = styled.div`
@@ -196,6 +216,45 @@ const entryAnim = css`
 const exitAnim = css`
 	animation: ${swipeUpwards} 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
 		forwards;
+`;
+
+const Price = styled.div`
+	font-weight: 900;
+	svg {
+		display: inline-block;
+		vertical-align: bottom;
+	}
+	margin: 0 auto;
+`;
+
+const StatContainer = styled.div`
+	width: 100%;
+	border-radius: 1rem;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-between;
+	flex: 1;
+	margin-top: .2rem;
+	margin-bottom: .2rem;
+	gap: 0.5rem;
+	text-decoration: none;
+	color: inherit;
+	svg {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+	span {
+		font-size: 1.25rem;
+	}
+`;
+
+const StatName = styled.div`
+	font-weight: 700;
+	font-size: 1.1rem;
+	// text-transform: capitalize;
+	color: var(--app-container-text-primary-hover);
+	flex: 1;
 `;
 
 const StatusSection = () => {
@@ -424,7 +483,35 @@ const TokenIdSection = () => {
 	);
 };
 
+const VolumeSection = () => {
+	const { collectibleInfo } = useContext(CollectibleContext);
+	return (
+		<StatContainer>
+			<StatName>Volume</StatName>
+			<Price>
+				<ReefIcon centered size={24} />{" "}
+				<span>{numberSeparator(collectibleInfo.stats?.volume || 0)}</span>
+			</Price>
+		</StatContainer>
+	);
+};
+
 const DetailsSection = () => {
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+
+	useEffect (() => {
+		const fetchData = async () => {
+			if (!collectibleInfo.stats) {
+				const data = await fetchCollectibleStats (collectibleInfo.itemId);
+				setCollectibleInfo ({
+					...collectibleInfo,
+					stats: data,
+				});
+			}
+		}
+		fetchData ();
+	}, [collectibleInfo.itemId]);
+
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
@@ -433,13 +520,56 @@ const DetailsSection = () => {
 						<MetadataSection />
 						<ScanSection />
 						<IPFSSection />
-						<TokenIdSection />
-						<ItemIdSection />
 					</LinksContainer>
 					<StatusContainer>
 						<StatusSection />
 					</StatusContainer>
 				</Container>
+				<MiddleContainer>
+					<LinksContainer>
+						<TokenIdSection />
+						<ItemIdSection />
+					</LinksContainer>
+				</MiddleContainer>
+				<MiddleContainer>
+					{collectibleInfo.stats ? (
+						<LinksContainer>
+							<StatContainer>
+								<StatName>Volume</StatName>
+								<Price>
+									<ReefIcon centered size={24} />{" "}
+									<span>{collectibleInfo.stats ? numberSeparator(collectibleInfo.stats?.volume || 0) : <LoadingIcon/>}</span>
+								</Price>
+							</StatContainer>
+							<StatContainer>
+								<StatName>Average Sale</StatName>
+								<Price>
+									<ReefIcon centered size={24} />{" "}
+									<span>{collectibleInfo.stats ? numberSeparator(collectibleInfo.stats?.average || 0) : <LoadingIcon/>}</span>
+								</Price>
+							</StatContainer>
+							<StatContainer>
+								<StatName>Last Sale</StatName>
+								<Price>
+									<ReefIcon centered size={24} />{" "}
+									<span>{collectibleInfo.stats ? numberSeparator(collectibleInfo.stats?.lastSale || 0) : <LoadingIcon/>}</span>
+								</Price>
+							</StatContainer>
+							<StatContainer>
+								<StatName># of owners</StatName>
+								<Price>
+									<span>{collectibleInfo.stats ? numberSeparator(collectibleInfo.stats?.owners || 0) : <LoadingIcon/>}</span>
+								</Price>
+							</StatContainer>
+							<StatContainer>
+								<StatName># of sales</StatName>
+								<Price>
+									<span>{collectibleInfo.stats ? numberSeparator(collectibleInfo.stats?.salesAmount || 0) : <LoadingIcon/>}</span>
+								</Price>
+							</StatContainer>
+						</LinksContainer>
+					) : <LoadingIcon/>}
+				</MiddleContainer>
 				<BottomContainer>
 					<ReportBtn />
 					<ShareBtn to="/" />

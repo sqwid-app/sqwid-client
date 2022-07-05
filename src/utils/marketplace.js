@@ -577,6 +577,23 @@ const fetchCollectionStats = async id => {
 	return data;
 }
 
+const fetchCollectibleStats = async id => {
+	const res = await axios(
+		`${getBackend()}/statswatch/collectible/${id}/all`
+	);
+	const { data } = res;
+	if (data.error) {
+		return {
+			volume: 0,
+			average: 0,
+			lastSale: 0,
+			salesAmount: 0,
+			owners: 0
+		};
+	}
+	return data;
+}
+
 export {
 	unlistLoanProposal,
 	repayLoan,
@@ -602,6 +619,7 @@ export {
 	fetchRoyalties,
 	fetchFeaturedItems,
 	fetchCollectionStats,
+	fetchCollectibleStats,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,

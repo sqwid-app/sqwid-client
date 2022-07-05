@@ -335,13 +335,6 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 								</Price>
 								<ContainerTitle># of Sales</ContainerTitle>
 							</StatContainer>
-							{/* <StatContainer>
-								<Price>
-									<ReefIcon centered size={24} />{" "}
-									<span>{numberSeparator(collectionInfo.stats.lastSale)}</span>
-								</Price>
-								<ContainerTitle>Last</ContainerTitle>
-							</StatContainer> */}
 							<StatContainer>
 								<Price>
 									<ReefIcon centered size={24} />{" "}
