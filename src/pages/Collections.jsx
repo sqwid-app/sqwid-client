@@ -1,6 +1,6 @@
 import Navbar from "@components/Default/Navbar";
 import FullPageLoading from "@elements/Default/FullPageLoading";
-import { fetchCollectionInfo } from "@utils/marketplace";
+import { fetchCollectionInfo, fetchCollectionStats } from "@utils/marketplace";
 import React, { Suspense, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
@@ -36,14 +36,27 @@ const Collections = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			if (id) {
-				const data = await fetchCollectionInfo(id);
-				if (!data?.error) {
+				// const data = await fetchCollectionInfo(id);
+				// if (!data?.error) {
+				// 	setCollection({
+				// 		...data,
+				// 		id: id,
+				// 	});
+				// } else {
+				// 	setCollection(null);
+				// }
+				// setIsLoading(false);
+
+				const [collectionData, collectionStats] = await Promise.all([
+					fetchCollectionInfo(id),
+					fetchCollectionStats(id)
+				]);
+				if (!collectionData?.error) {
 					setCollection({
-						...data,
+						...collectionData,
 						id: id,
+						stats: collectionStats
 					});
-				} else {
-					setCollection(null);
 				}
 				setIsLoading(false);
 			}

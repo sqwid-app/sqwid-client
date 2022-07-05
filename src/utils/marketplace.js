@@ -559,6 +559,22 @@ const fetchRoyalties = async tokenId => {
 	};
 };
 
+const fetchCollectionStats = async id => {
+	const res = await axios(
+		`${getBackend()}/statswatch/collection/${id}/all`
+	);
+	const { data } = res;
+	if (data.error) {
+		return {
+			volume: 0,
+			average: 0,
+			lastSale: 0,
+			salesAmount: 0
+		};
+	}
+	return data;
+}
+
 export {
 	unlistLoanProposal,
 	repayLoan,
@@ -583,6 +599,7 @@ export {
 	withdrawBalance,
 	fetchRoyalties,
 	fetchFeaturedItems,
+	fetchCollectionStats,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,

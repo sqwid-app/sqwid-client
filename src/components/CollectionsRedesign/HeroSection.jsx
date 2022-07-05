@@ -12,9 +12,11 @@ import RaffleSection from "@elements/Collections/Sections/RaffleSection";
 import LoanSection from "@elements/Collections/Sections/LoanSection";
 import Select from "react-select";
 import { styles } from "@styles/reactSelectStyles";
-import { getCloudflareURL } from "@utils/getIPFSURL";
+import { getInfuraURL } from "@utils/getIPFSURL";
 import useActiveTabs from "@utils/useActiveTabs";
 import shortenIfAddress from "@utils/shortenIfAddress";
+import ReefIcon from "@static/svg/ReefIcon";
+import { numberSeparator } from "@utils/numberSeparator";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -154,11 +156,79 @@ const NavContent = styled.p`
 	}
 `;
 
+const CollectionDescription = styled.div`
+	font-size: 1rem;
+	color: var(--app-container-text-primary-hover);
+	${respondTo.md`
+		font-size: 1rem;
+	`}
+	text-align: center;
+	width: 100%;
+	padding: 0.5rem 0rem;
+`;
+
 const NavContainer = styled.div`
 	${respondTo.md`
 		margin: 1rem 0;
 		margin-left: auto;
 	`}
+`;
+
+const StatsWrapper = styled.div`
+	display: flex;
+	align-items: end;
+	justify-content: space-evenly;
+	flex-direction: row;
+	gap: 0.5rem;
+	${respondTo.md`
+		flex-wrap: wrap;
+	`}
+	margin: 1rem;
+`;
+
+const StatContainer = styled.div`
+	width: 7em;
+	// min-width: ;
+	min-width: fit-content;
+	padding: 1rem;
+	border: 0.15rem dashed var(--app-container-bg-primary);
+	border-radius: 1rem;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-between;
+	gap: 0.1rem;
+	${respondTo.md`
+		flex-wrap: wrap;
+	`}
+	flex: 1;
+	margin-top: .2rem;
+	margin-bottom: .2rem;
+`;
+
+const ContainerTitle = styled.div`
+	background-color: var(--app-background);
+	padding: .2rem;
+	position: absolute;
+	border-radius: 1rem;
+	font-size: 1rem;
+	font-weight: 900;
+	color: var(--app-container-text-primary-hover);
+	${respondTo.md`
+		font-size: 1rem;
+	`}
+	margin-top: -3.5rem;
+	// margin-top: 3.5rem;
+	margin-left: -.75rem;
+`;
+
+const Price = styled.div`
+	font-weight: 900;
+	svg {
+		display: inline-block;
+		vertical-align: bottom;
+	}
+	margin: 0 auto;
 `;
 
 const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
@@ -231,7 +301,7 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 							<Header>
 								<CollectionsLogo
 									title={collectionInfo.name}
-									url={getCloudflareURL(collectionInfo.thumb)}
+									url={getInfuraURL (collectionInfo.thumb)}
 								/>
 								<span>{collectionInfo.name}</span>
 							</Header>
@@ -249,7 +319,50 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 								</span>
 							</Creator>
 						</HeaderContainer>
-						<NavContainer>
+						<StatsWrapper>
+							<StatContainer>
+								<Price>
+									<span>{numberSeparator(collectionInfo.stats.items)}</span>
+								</Price>
+								<ContainerTitle>Items</ContainerTitle>
+							</StatContainer>
+							<StatContainer>
+								<Price>
+									<span>{numberSeparator(collectionInfo.stats.owners)}</span>
+								</Price>
+								<ContainerTitle>Owners</ContainerTitle>
+							</StatContainer>
+							<StatContainer>
+								<Price>
+									<span>{numberSeparator(collectionInfo.stats.salesAmount)}</span>
+								</Price>
+								<ContainerTitle># of Sales</ContainerTitle>
+							</StatContainer>
+							{/* <StatContainer>
+								<Price>
+									<ReefIcon centered size={24} />{" "}
+									<span>{numberSeparator(collectionInfo.stats.lastSale)}</span>
+								</Price>
+								<ContainerTitle>Last</ContainerTitle>
+							</StatContainer> */}
+							<StatContainer>
+								<Price>
+									<ReefIcon centered size={24} />{" "}
+									<span>{numberSeparator(collectionInfo.stats.average)}</span>
+								</Price>
+								<ContainerTitle>Average</ContainerTitle>
+							</StatContainer>
+							<StatContainer>
+								<Price>
+									<ReefIcon centered size={24} />{" "}
+									<span>{numberSeparator(collectionInfo.stats.volume)}</span>
+								</Price>
+								<ContainerTitle>Volume</ContainerTitle>
+							</StatContainer>
+						</StatsWrapper>
+					</HeaderWrapper>
+					<CollectionDescription>{collectionInfo.description}</CollectionDescription>
+					<NavContainer>
 							{isTabletOrMobile ? (
 								<StyledSelect
 									options={options}
@@ -278,7 +391,6 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 								</Navbar>
 							)}
 						</NavContainer>
-					</HeaderWrapper>
 					<>{navRoutes.find(item => item.isActive).component}</>
 				</Section>
 			)}
