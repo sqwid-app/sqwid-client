@@ -569,7 +569,9 @@ const fetchCollectionStats = async id => {
 			volume: 0,
 			average: 0,
 			lastSale: 0,
-			salesAmount: 0
+			salesAmount: 0,
+			items: 0,
+			owners: 0
 		};
 	}
 	return data;
