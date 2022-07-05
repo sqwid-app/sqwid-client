@@ -159,10 +159,7 @@ const NavContent = styled.p`
 const CollectionDescription = styled.div`
 	font-size: 1rem;
 	color: var(--app-container-text-primary-hover);
-	${respondTo.md`
-		font-size: 1rem;
-	`}
-	text-align: center;
+	font-weight: 700;
 	width: 100%;
 	padding: 0.5rem 0rem;
 `;
