@@ -14,6 +14,8 @@ import AuctionSection from "@elements/ProfileRedesign/Sections/AuctionSection";
 import RaffleSection from "@elements/ProfileRedesign/Sections/RaffleSection";
 import LoanSection from "@elements/ProfileRedesign/Sections/LoanSection";
 import useActiveTabs from "@utils/useActiveTabs";
+import OngoingBidsSection from "@elements/ProfileRedesign/Sections/ActivitySection";
+import { useParams } from "react-router-dom";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -79,6 +81,8 @@ const StyledSelect = styled(Select)`
 `;
 
 const ProfileSection = () => {
+	const { id } = useParams();
+	
 	const [navRoutes, setNavRoutes] = useState([
 		{
 			name: "Info",
@@ -121,8 +125,10 @@ const ProfileSection = () => {
 			isActive: false,
 			title: <>Loans</>,
 			component: <LoanSection />,
-		},
+		}
 	]);
+
+	
 
 	const replacer = useActiveTabs({ navRoutes, setNavRoutes });
 
@@ -144,6 +150,21 @@ const ProfileSection = () => {
 			value: activeElement,
 		});
 	}, [navRoutes]);
+
+	useEffect(() => {
+		if (!id) {
+			setNavRoutes ([
+				...navRoutes,
+				{
+					name: "Activity",
+					isActive: false,
+					title: <>Activity</>,
+					component: <OngoingBidsSection />
+				}
+			]);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [id]);
 
 	const isTabletOrMobile = useIsTabletOrMobile();
 	return (

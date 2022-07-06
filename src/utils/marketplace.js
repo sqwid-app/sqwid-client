@@ -611,8 +611,27 @@ const fetchCollectibleSaleHistory = async id => {
 			sales: []
 		};
 	}
-
 }
+
+const fetchOngoingBids = async () => {
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	//eslint-disable-next-line
+	let jwt = address
+		? JSON.parse(localStorage.getItem("tokens")).find(
+				token => token.address === address
+		  )
+		: null;
+	if (!jwt) return 0;
+	const res = await axios (`${getBackend()}/get/marketplace/bids`, {
+		headers: {
+			Authorization: `Bearer ${jwt.token}`,
+			},
+		}
+	);
+	const { data } = res;
+	if (data.error) return [];
+	return data;
+};
 
 export {
 	unlistLoanProposal,
@@ -641,6 +660,7 @@ export {
 	fetchCollectionStats,
 	fetchCollectibleStats,
 	fetchCollectibleSaleHistory,
+	fetchOngoingBids,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,
