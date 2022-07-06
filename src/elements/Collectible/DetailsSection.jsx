@@ -252,7 +252,6 @@ const StatContainer = styled.div`
 const StatName = styled.div`
 	font-weight: 700;
 	font-size: 1.1rem;
-	// text-transform: capitalize;
 	color: var(--app-container-text-primary-hover);
 	flex: 1;
 `;
@@ -483,18 +482,18 @@ const TokenIdSection = () => {
 	);
 };
 
-const VolumeSection = () => {
-	const { collectibleInfo } = useContext(CollectibleContext);
-	return (
-		<StatContainer>
-			<StatName>Volume</StatName>
-			<Price>
-				<ReefIcon centered size={24} />{" "}
-				<span>{numberSeparator(collectibleInfo.stats?.volume || 0)}</span>
-			</Price>
-		</StatContainer>
-	);
-};
+// const VolumeSection = () => {
+// 	const { collectibleInfo } = useContext(CollectibleContext);
+// 	return (
+// 		<StatContainer>
+// 			<StatName>Volume</StatName>
+// 			<Price>
+// 				<ReefIcon centered size={24} />{" "}
+// 				<span>{numberSeparator(collectibleInfo.stats?.volume || 0)}</span>
+// 			</Price>
+// 		</StatContainer>
+// 	);
+// };
 
 const DetailsSection = () => {
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
@@ -510,6 +509,7 @@ const DetailsSection = () => {
 			}
 		}
 		fetchData ();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [collectibleInfo.itemId]);
 
 	return (
@@ -542,14 +542,14 @@ const DetailsSection = () => {
 								</Price>
 							</StatContainer>
 							<StatContainer>
-								<StatName>Average Sale</StatName>
+								<StatName>Average sale</StatName>
 								<Price>
 									<ReefIcon centered size={24} />{" "}
 									<span>{collectibleInfo.stats ? numberSeparator(collectibleInfo.stats?.average || 0) : <LoadingIcon/>}</span>
 								</Price>
 							</StatContainer>
 							<StatContainer>
-								<StatName>Last Sale</StatName>
+								<StatName>Last sale</StatName>
 								<Price>
 									<ReefIcon centered size={24} />{" "}
 									<span>{collectibleInfo.stats ? numberSeparator(collectibleInfo.stats?.lastSale || 0) : <LoadingIcon/>}</span>

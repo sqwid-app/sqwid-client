@@ -560,11 +560,13 @@ const fetchRoyalties = async tokenId => {
 };
 
 const fetchCollectionStats = async id => {
-	const res = await axios(
-		`${getBackend()}/statswatch/collection/${id}/all`
-	);
-	const { data } = res;
-	if (data.error) {
+	try {
+		const res = await axios(
+			`${getBackend()}/statswatch/collection/${id}/all`
+		);
+		const { data } = res;
+		return data;
+	} catch (e) {
 		return {
 			volume: 0,
 			average: 0,
@@ -574,15 +576,19 @@ const fetchCollectionStats = async id => {
 			owners: 0
 		};
 	}
-	return data;
 }
 
 const fetchCollectibleStats = async id => {
-	const res = await axios(
-		`${getBackend()}/statswatch/collectible/${id}/all`
-	);
-	const { data } = res;
-	if (data.error) {
+	try {
+		const res = await axios(
+			`${getBackend()}/statswatch/collectible/${id}/all`
+		);
+		const { data } = res;
+		if (data.error) {
+			
+		}
+		return data;
+	} catch (e) {
 		return {
 			volume: 0,
 			average: 0,
@@ -591,7 +597,21 @@ const fetchCollectibleStats = async id => {
 			owners: 0
 		};
 	}
-	return data;
+}
+
+const fetchCollectibleSaleHistory = async id => {
+	try {
+		const res = await axios(
+			`${getBackend()}/statswatch/collectible/${id}/sale-history`
+		);
+		const { data } = res;
+		return data;
+	} catch (e) {
+		return {
+			sales: []
+		};
+	}
+
 }
 
 export {
@@ -620,6 +640,7 @@ export {
 	fetchFeaturedItems,
 	fetchCollectionStats,
 	fetchCollectibleStats,
+	fetchCollectibleSaleHistory,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,

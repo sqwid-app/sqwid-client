@@ -67,12 +67,12 @@ const InfoContainer = () => {
 				</>
 			),
 		},
-		// {
-		// 	name: "History",
-		// 	isActive: false,
-		// 	component: <HistorySection />
-		// 	// component: <>Work in progress ⚒🚧</>
-		// },
+		{
+			name: "History",
+			isActive: false,
+			component: <HistorySection />
+			// component: <>Work in progress ⚒🚧</>
+		},
 		{
 			name: "Details",
 			isActive: false,
