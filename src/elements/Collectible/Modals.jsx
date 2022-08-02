@@ -31,6 +31,7 @@ import AuthContext from "@contexts/Auth/AuthContext";
 import constants from "@utils/constants";
 import axios from "axios";
 import { getBackend } from "@utils/network";
+import { numberSeparator } from "@utils/numberSeparator";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -202,6 +203,7 @@ const ToastLink = styled.a`
 	text-decoration: none;
 	color: var(--app-theme-primary);
 `;
+
 
 const InfoSection = ({ fee, link }) => {
 	return (
@@ -482,7 +484,7 @@ export const CreateAuctionModal = props => {
 			<Title>Create Auction</Title>
 			<Group>
 				<InputWrapper>
-					<InputTitle>Minimum Bid</InputTitle>
+					<InputTitle>Minimum Bid <span>(${numberSeparator ((collectibleInfo.conversionRate * minBid).toFixed (2))})</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={minBid}
@@ -592,7 +594,7 @@ export const PutOnSaleModal = props => {
 			<Title>Put on sale</Title>
 			<Group>
 				<InputWrapper>
-					<InputTitle>Price</InputTitle>
+					<InputTitle>Price <span>(${numberSeparator ((collectibleInfo.conversionRate * price).toFixed (2))})</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={price}
@@ -703,14 +705,14 @@ export const LendModal = props => {
 			<Title>Create Loan Proposal</Title>
 			<Group>
 				<InputWrapper>
-					<InputTitle>Loan Amount</InputTitle>
+					<InputTitle>Loan Amount <span>(${numberSeparator ((collectibleInfo.conversionRate * amount).toFixed (2))})</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={amount}
 						onChange={e => setAmount(e.target.value)}
 						placeholder={`Amount to borrow (in Reef)`}
 					/>
-					<InputTitle>Payback Fee</InputTitle>
+					<InputTitle>Payback Fee <span>(${numberSeparator ((collectibleInfo.conversionRate * paybackFee).toFixed (2))})</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={paybackFee}
