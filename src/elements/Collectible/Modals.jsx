@@ -106,7 +106,7 @@ const InputTitle = styled.h1`
 			110deg,
 			var(--app-theme-primary) 0%,
 			var(--app-theme-secondary) 100%
-			);
+		);
 		color: var(--app-text) !important;
 		border-radius: 1rem;
 		padding: 0.1rem 0.5rem;
@@ -507,7 +507,7 @@ export const CreateAuctionModal = props => {
 						placeholder={`Minimum bid for the lot in REEF`}
 					/>
 					<InputTitle>Number of Copies
-					<span>max {collectibleInfo.amount}</span></InputTitle>
+					<span>{Number (copies)} / {collectibleInfo.amount}</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={copies}
@@ -615,7 +615,7 @@ export const PutOnSaleModal = props => {
 					/>
 					<InputTitle>
 						Number of Copies{" "}
-						<span>max {collectibleInfo.amount}</span>
+						<span>{Number (copies)} / {collectibleInfo.amount}</span>
 					</InputTitle>
 					<InputContainer
 						type="number"
@@ -732,7 +732,7 @@ export const LendModal = props => {
 						placeholder={`Amount to pay the lender as interest (in Reef)`}
 					/>
 					<InputTitle>Number of Copies
-					<span>max {collectibleInfo.amount}</span></InputTitle>
+					<span>{Number (copies)} / {collectibleInfo.amount}</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={copies}
@@ -835,7 +835,7 @@ export const RaffleModal = props => {
 			<Group>
 				<InputWrapper>
 					<InputTitle>Number of Copies
-					<span>max {collectibleInfo.amount}</span></InputTitle>
+					<span>{Number (copies)} / {collectibleInfo.amount}</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={copies}
@@ -1017,7 +1017,7 @@ export const BuyModal = props => {
 			setButtonText(
 				`Buy for ${
 					amount * (collectibleInfo.sale.price / 10 ** 18)
-				} Reef`
+				} Reef / $${((amount * (collectibleInfo.sale.price / 10 ** 18)) * collectibleInfo.conversionRate).toFixed (2)}`
 			);
 		} else {
 			setButtonText(initialButtonText);
@@ -1072,7 +1072,7 @@ export const BuyModal = props => {
 			<Title>Buy</Title>
 			<Group>
 				<InputTitle>
-					Number of copies <span>(max {collectibleInfo.amount})</span>
+					Number of copies <span>{Number (copies)} / {collectibleInfo.amount}</span>
 				</InputTitle>
 				<InputContainer
 					type="number"
