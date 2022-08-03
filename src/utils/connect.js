@@ -15,8 +15,12 @@ import { getBackend, getRPC } from "./network";
 let provider;
 
 const Init = async () => {
-	await web3Enable("Sqwid");
-	return await web3Accounts();
+	const extensions = await web3Enable("Sqwid");
+	const accs = await web3Accounts();
+	return {
+		errorCode: extensions.length === 0 ? 1 : (accs.length === 0 ? 2 : 0),
+		accounts: accs
+	}
 };
 
 const Connect = async account => {

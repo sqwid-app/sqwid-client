@@ -9,10 +9,15 @@ const AccountSelectProvider = props => {
 	const [redirect, setRedirect] = useState("");
 
 	const [currentAccounts, setCurrentAccounts] = useState(null);
+	const [errorCode, setErrorCode] = useState(0);
 	const handleInit = (path = "") => {
 		(async () => {
-			let accs = await Init();
-			setCurrentAccounts(accs);
+			let {
+				accounts,
+				errorCode
+			} = await Init();
+			setCurrentAccounts(accounts);
+			setErrorCode(errorCode);
 		})();
 		setIsSelectionActive(!isSelectionActive);
 		setRedirect(path);
@@ -26,6 +31,7 @@ const AccountSelectProvider = props => {
 				currentAccounts,
 				setCurrentAccounts,
 				handleInit,
+				errorCode,
 				redirect,
 			}}
 		>
