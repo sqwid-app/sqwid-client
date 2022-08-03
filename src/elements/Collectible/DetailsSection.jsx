@@ -3,7 +3,7 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import AuthContext from "@contexts/Auth/AuthContext";
 import ReefIcon from "@static/svg/ReefIcon";
 import constants from "@utils/constants";
-import getIPFSURL from "@utils/getIPFSURL";
+import { getInfuraURL } from "@utils/getIPFSURL";
 import { LazyMotion, m, domAnimation } from "framer-motion";
 import React, { useContext } from "react";
 import styled, { css, keyframes } from "styled-components";
@@ -77,6 +77,10 @@ const TextWrapper = styled.div`
 	}
 	span {
 		font-size: 1.25rem;
+	}
+	div {
+		flex: 1;
+		text-align: right;
 	}
 `;
 
@@ -417,7 +421,7 @@ const ReportBtn = () => {
 
 const MetadataSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext);
-	const url = getIPFSURL(collectibleInfo?.meta?.uri);
+	const url = getInfuraURL(collectibleInfo?.meta?.uri);
 	return (
 		<HTMLLinkWrapper target="_blank" rel="noopener noreferrer" href={url}>
 			<svg
@@ -447,7 +451,7 @@ const ScanSection = () => {
 
 const IPFSSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext);
-	const url = getIPFSURL(collectibleInfo?.meta?.media);
+	const url = getInfuraURL(collectibleInfo?.meta?.media);
 	return (
 		<HTMLLinkWrapper target="_blank" rel="noopener noreferrer" href={url}>
 			<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor">
@@ -466,6 +470,9 @@ const ItemIdSection = () => {
 				<path d="m21 7.702-8.5 4.62v9.678c1.567-.865 6.379-3.517 7.977-4.399.323-.177.523-.519.523-.891zm-9.5 4.619-8.5-4.722v9.006c0 .37.197.708.514.887 1.59.898 6.416 3.623 7.986 4.508zm-8.079-5.629 8.579 4.763 8.672-4.713s-6.631-3.738-8.186-4.614c-.151-.085-.319-.128-.486-.128-.168 0-.335.043-.486.128-1.555.876-8.093 4.564-8.093 4.564z"/>
 			</svg>
 			<span>{collectibleInfo.itemId}</span>
+			<div>
+				Marketplace Item ID
+			</div>
 		</TextWrapper>
 	);
 };
@@ -475,9 +482,27 @@ const TokenIdSection = () => {
 	return (
 		<TextWrapper>
 			<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 26 26">
-				<path d="M22.548 9l.452-2h-5.364l1.364-6h-2l-1.364 6h-5l1.364-6h-2l-1.364 6h-6.184l-.452 2h6.182l-1.364 6h-5.36l-.458 2h5.364l-1.364 6h2l1.364-6h5l-1.364 6h2l1.364-6h6.185l.451-2h-6.182l1.364-6h5.366zm-8.73 6h-5l1.364-6h5l-1.364 6z"/>
+				<path d="M11.574 3.712c.195-.323.662-.323.857 0l9.37 15.545c.2.333-.039.757-.429.757l-18.668-.006c-.385 0-.629-.422-.428-.758l9.298-15.538zm.429-2.483c-.76 0-1.521.37-1.966 1.111l-9.707 16.18c-.915 1.523.182 3.472 1.965 3.472h19.416c1.783 0 2.879-1.949 1.965-3.472l-9.707-16.18c-.446-.741-1.205-1.111-1.966-1.111z"/>
 			</svg>
 			<span>{collectibleInfo.tokenId}</span>
+			<div>
+				NFT Token ID
+			</div>
+		</TextWrapper>
+	);
+};
+
+const PositionIdSection = () => {
+	const { collectibleInfo } = useContext(CollectibleContext);
+	return (
+		<TextWrapper>
+			<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 26 26">
+				<path d="M22.548 9l.452-2h-5.364l1.364-6h-2l-1.364 6h-5l1.364-6h-2l-1.364 6h-6.184l-.452 2h6.182l-1.364 6h-5.36l-.458 2h5.364l-1.364 6h2l1.364-6h5l-1.364 6h2l1.364-6h6.185l.451-2h-6.182l1.364-6h5.366zm-8.73 6h-5l1.364-6h5l-1.364 6z"/>
+			</svg>
+			<span>{collectibleInfo.positionId}</span>
+			<div>
+				Marketplace Position ID
+			</div>
 		</TextWrapper>
 	);
 };
@@ -529,6 +554,7 @@ const DetailsSection = () => {
 					<LinksContainer>
 						<TokenIdSection />
 						<ItemIdSection />
+						<PositionIdSection />
 					</LinksContainer>
 				</MiddleContainer>
 				<MiddleContainer>
