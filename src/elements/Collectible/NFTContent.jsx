@@ -434,14 +434,20 @@ const HeartBtn = () => {
 	const [isHearted, setIsHearted] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+	const evmAddress = JSON.parse(localStorage.getItem("auth"))?.auth.evmAddress;
 	const handleHeartClick = () => {
 		setIsLoading(true);
 		if (isLoading) return;
 		heart (collectibleInfo.itemId).then (res => {
-			setCollectibleInfo ({
-				...collectibleInfo,
-				hearts: res.hearts
-			});
+			if (isHearted) {
+				const newHearts = collectibleInfo.hearts.filter(heart => heart.address !== evmAddress);
+				setCollectibleInfo({ ...collectibleInfo, hearts: newHearts });
+			} else {
+				setCollectibleInfo({ ...collectibleInfo, hearts: [...collectibleInfo.hearts, {
+					address: evmAddress,
+					name: res.name
+				}] });
+			}
 			setIsLoading (false);
 		}).catch (err => {
 			bread (err.toString ());
@@ -450,7 +456,7 @@ const HeartBtn = () => {
 	};
 
 	useEffect (() => {
-		if (collectibleInfo.hearts.includes (JSON.parse(localStorage.getItem("auth"))?.auth.evmAddress)) {
+		if (collectibleInfo.hearts?.find (h => h.address === JSON.parse(localStorage.getItem("auth"))?.auth.evmAddress)) {
 			setIsHearted (true);
 		} else {
 			setIsHearted (false);

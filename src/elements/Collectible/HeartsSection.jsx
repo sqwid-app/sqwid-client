@@ -12,11 +12,9 @@ const HeartContainer = styled.a`
     justify-content: left;
     flex-direction: row;
     padding: 0.5rem;
-    margin-top: .5rem;
-    border: .15rem dashed var(--app-container-bg-primary);
+    margin-top: .25rem;
     text-decoration: none;
     color: var(--app-container-text-primary);
-    border-radius: 0.5rem;
     width: 100%;
     gap: 0.5rem;
     transition: all 0.1s ease-in-out;
@@ -30,21 +28,38 @@ const AddressContainer = styled.div`
     white-space: nowrap;
     overflow: hidden;
 `;
+const NameContainer = styled.div`
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: var(--app-text);
+    font-size: 1.1rem;
+    font-weight: bold;
+`;
 const Logo = styled.div`
-	min-height: 2rem;
-	min-width: 2rem;
+	min-height: 2.5rem;
+	min-width: 2.5rem;
 	border-radius: 1000rem;
 	background-image: url("${props => props.url && props.url}");
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
 `;
+const TextContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    width: 100%;
+`;
 
 const Heart = ({ user }) => {
     return (
-        <HeartContainer href = {`/profile/${user}`} target="_blank">
-            <Logo url = {getAvatarFromId(user)}/>
-            <AddressContainer>{user}</AddressContainer>
+        <HeartContainer href = {`/profile/${user.address}`} target="_blank" title = {user.name}>
+            <Logo url = {getAvatarFromId(user.address)}/>
+            <TextContainer>
+                <NameContainer>{user.name}</NameContainer>
+                <AddressContainer>{user.address}</AddressContainer>
+            </TextContainer>
         </HeartContainer>
     );
 }
