@@ -1,12 +1,13 @@
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import PropertiesSection from "@elements/Collectible/PropertiesSection";
 import useActiveTabs from "@utils/useActiveTabs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import styled from "styled-components";
 //eslint-disable-next-line
 import BidsSection from "./BidsSection";
 import DetailsSection from "./DetailsSection";
+import HeartsSection from "./HeartsSection";
 //eslint-disable-next-line
 import HistorySection from "./HistorySection";
 import InfoSection from "./InfoSection";
@@ -29,12 +30,18 @@ const Navbar = styled.nav`
 	border-radius: 0.1rem;
 	margin-bottom: 0.5rem;
 	user-select: none;
-	div {
-		align-self: center;
-		font-size: 1.1rem;
-		font-weight: bold;
-		flex: 1;
-		text-align: right;
+	// div {
+	// 	align-self: center;
+	// 	font-size: 1.1rem;
+	// 	font-weight: bold;
+	// 	flex: 1;
+	// 	text-align: right;
+	// }
+	p {
+		&:last-of-type {
+			flex: 1;
+			text-align: right;
+		}
 	}
 `;
 
@@ -60,10 +67,12 @@ const NavContent = styled.p`
 		opacity: ${props => (props.active ? `1` : `0`)};
 		transition: opacity 0.1s ease;
 	}
-`;
+	`;
+	
+	const InfoContainer = () => {
+		/* PRERELEASE 🚧 */
+	const { collectibleInfo } = useContext (CollectibleContext);
 
-const InfoContainer = () => {
-	/* PRERELEASE 🚧 */
 	const [navRoutes, setNavRoutes] = useState([
 		{
 			name: "Info",
@@ -88,10 +97,24 @@ const InfoContainer = () => {
 			// component: <BidsSection />
 			component: <DetailsSection />,
 		},
+		{
+			name: `❤ ${collectibleInfo.hearts?.length || 0}`,
+			isActive: false,
+			component: <HeartsSection />
+		}
 	]);
 
+	useEffect (() => {
+		const newRoutes = Array.from (navRoutes);
+		newRoutes[newRoutes.length - 1] = {
+			...navRoutes[newRoutes.length - 1],
+			name: `❤ ${collectibleInfo.hearts?.length || 0}`,
+		};
+		setNavRoutes (newRoutes);
+		// eslint-disable-next-line
+	}, [collectibleInfo.hearts]);
+
 	const replacer = useActiveTabs({ navRoutes, setNavRoutes });
-	const { collectibleInfo } = useContext (CollectibleContext);
 
 	return (
 		<Container>
@@ -108,7 +131,7 @@ const InfoContainer = () => {
 						{navRoutes.length > 1 && item.name}
 					</NavContent>
 				))}
-				<div>❤ {collectibleInfo.hearts?.length || 0}</div>
+				{/* <div>❤ {collectibleInfo.hearts?.length || 0}</div> */}
 			</Navbar>
 			{navRoutes.find(item => item.isActive).component}
 		</Container>
