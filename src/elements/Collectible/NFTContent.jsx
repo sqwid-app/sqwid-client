@@ -9,10 +9,12 @@ import { CSSTransition } from "react-transition-group";
 import { getInfuraURL } from "@utils/getIPFSURL";
 import ModalComponent from "./ModalComponent";
 import { LazyMotion, m, domAnimation } from "framer-motion";
-import { wipBread } from "@utils/bread";
+// import { wipBread } from "@utils/bread";
 import constants from "@utils/constants";
 import { capitalize } from "@utils/textUtils";
 import LoadingIcon from "@static/svg/LoadingIcon";
+import { heart } from "@utils/heart";
+import bread from "@utils/bread";
 
 const Container = styled.div`
 	display: grid;
@@ -430,10 +432,30 @@ const ReportBtn = () => {
 
 const HeartBtn = () => {
 	const [isHearted, setIsHearted] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
 	const handleHeartClick = () => {
-		setIsHearted(!isHearted);
-		!isHearted && wipBread();
+		setIsLoading(true);
+		if (isLoading) return;
+		heart (collectibleInfo.itemId).then (res => {
+			setCollectibleInfo ({
+				...collectibleInfo,
+				hearts: res.hearts
+			});
+			setIsLoading (false);
+		}).catch (err => {
+			bread (err.toString ());
+			setIsLoading (false);
+		});
 	};
+
+	useEffect (() => {
+		if (collectibleInfo.hearts.includes (JSON.parse(localStorage.getItem("auth"))?.auth.address)) {
+			setIsHearted (true);
+		} else {
+			setIsHearted (false);
+		}
+	}, [collectibleInfo.hearts]);
 	return (
 		<BtnContainer>
 			<m.div
@@ -448,15 +470,16 @@ const HeartBtn = () => {
 				title="Heart"
 				className="btn btn__heart"
 			>
-				<svg
+				{!isLoading ? <svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 24 24"
 					fill="currentColor"
 				>
 					<path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path>
-				</svg>
+				</svg> : <LoadingIcon/>
+				}
 			</m.div>
-			<p className="popup">Heart</p>
+			<p className="popup">{isHearted ? 'Unheart' : 'Heart' }</p>
 		</BtnContainer>
 	);
 };

@@ -1,6 +1,8 @@
+import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import PropertiesSection from "@elements/Collectible/PropertiesSection";
 import useActiveTabs from "@utils/useActiveTabs";
 import React, { useState } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 //eslint-disable-next-line
 import BidsSection from "./BidsSection";
@@ -27,6 +29,13 @@ const Navbar = styled.nav`
 	border-radius: 0.1rem;
 	margin-bottom: 0.5rem;
 	user-select: none;
+	div {
+		align-self: center;
+		font-size: 1.1rem;
+		font-weight: bold;
+		flex: 1;
+		text-align: right;
+	}
 `;
 
 const NavContent = styled.p`
@@ -82,6 +91,7 @@ const InfoContainer = () => {
 	]);
 
 	const replacer = useActiveTabs({ navRoutes, setNavRoutes });
+	const { collectibleInfo } = useContext (CollectibleContext);
 
 	return (
 		<Container>
@@ -98,6 +108,7 @@ const InfoContainer = () => {
 						{navRoutes.length > 1 && item.name}
 					</NavContent>
 				))}
+				<div>❤ {collectibleInfo.hearts?.length || 0}</div>
 			</Navbar>
 			{navRoutes.find(item => item.isActive).component}
 		</Container>
