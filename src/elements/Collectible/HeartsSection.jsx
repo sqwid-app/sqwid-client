@@ -15,7 +15,6 @@ const HeartContainer = styled.a`
     margin-top: .25rem;
     text-decoration: none;
     color: var(--app-container-text-primary);
-    width: 100%;
     gap: 0.5rem;
     transition: all 0.1s ease-in-out;
     :hover {
@@ -87,7 +86,7 @@ class CustomScrollbar extends Component {
 
 	renderView({ style, ...props }) {
 		const viewStyle = {
-			paddingRight: "1rem"
+			paddingRight: "3rem"
 		};
 		return <div style={{ ...style, ...viewStyle }} {...props} />;
 	}
@@ -118,11 +117,11 @@ const HeartsSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext);
 	return (
 		<LazyMotion features={domAnimation}>
-                <CustomScrollbar style = {{ minHeight: "30vh" }}>
-                        {collectibleInfo.hearts && collectibleInfo.hearts.map((heart, index) => (
-                            <Heart key={index} user={heart}/>
-                        ))}
-                </CustomScrollbar>
+            <CustomScrollbar style = {{ minHeight: "30vh" }}>
+                {collectibleInfo.hearts && collectibleInfo.hearts.map((heart, index) => (
+                    <Heart key={index} user={heart}/>
+                ))}
+            </CustomScrollbar>
 		</LazyMotion>
 	);
 };

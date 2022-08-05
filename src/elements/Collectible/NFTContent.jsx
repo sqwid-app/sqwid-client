@@ -473,7 +473,7 @@ const HeartBtn = () => {
 					scale: 0.95,
 				}}
 				onClick={handleHeartClick}
-				title="Heart"
+				title={ isHearted ? 'Unheart' : 'Heart' }
 				className="btn btn__heart"
 			>
 				{
@@ -486,7 +486,7 @@ const HeartBtn = () => {
 					</svg>
 				}
 			</m.div>
-			<p className="popup">{isHearted ? 'Unheart' : 'Heart' }</p>
+			<p className="popup">{ isHearted ? 'Unheart' : 'Heart' }</p>
 		</BtnContainer>
 	);
 };
