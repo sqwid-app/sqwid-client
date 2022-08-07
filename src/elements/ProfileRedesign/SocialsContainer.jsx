@@ -4,9 +4,13 @@ import styled from "styled-components";
 const Container = styled.div`
 	display: flex;
 	align-items: center;
+	flex-direction: row;
+	justify-content: flex-end;
 	gap: 0.75rem;
 	color: var(--app-container-text-primary-hover);
 	flex: 1;
+	width: 100%;
+	// padding-top: 0.5rem;
 `;
 
 const SVG = styled.svg`

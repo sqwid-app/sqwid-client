@@ -101,6 +101,7 @@ const Tooltip = styled.div`
 const Description = styled.p`
 	margin: 0;
 	margin-top: 1rem;
+	margin-bottom: 1rem;
 	font-weight: 200;
 	width: 75%;
 	color: var(--app-container-text-primary-hover);
