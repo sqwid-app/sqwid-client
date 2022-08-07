@@ -5,7 +5,8 @@ const Container = styled.div`
 	display: flex;
 	align-items: center;
 	flex-direction: row;
-	justify-content: flex-end;
+	// justify-content: flex-end;
+	justify-content: center;
 	gap: 0.75rem;
 	color: var(--app-container-text-primary-hover);
 	flex: 1;
