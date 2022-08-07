@@ -30,6 +30,9 @@ import shortenIfAddress from "@utils/shortenIfAddress";
 // import { convertREEFtoUSD } from "@utils/convertREEFtoUSD";
 
 import SocialsContainer from "./SocialsContainer";
+import AvailableSection from "./Sections/AvailableSection";
+import DottedHeading from "@elements/Default/DottedHeading";
+import OnSaleSection from "./Sections/OnSaleSection";
 
 const Card = styled.div`
 	display: flex;
@@ -789,6 +792,23 @@ const EditSection = ({ userData }) => {
 	);
 };
 
+const ProfileWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+	.heading {
+		margin: 1rem;
+	}
+`;
+
+const QuickSectionHeading = styled(DottedHeading)`
+	font-size: 1.5rem;
+	margin-bottom: 1rem;
+	margin-top: 1rem;
+`;
+
 const ProfileCard = () => {
 	const [tooltipVisible, setTooltipVisible] = useState(false);
 	const [isOwnAccount, setIsOwnAccount] = useState(false);
@@ -869,77 +889,73 @@ const ProfileCard = () => {
 		<Card>
 			{!editIsActive ? (
 				!isLoading ? (
-					<Container>
-						<ProfilePicture
-							src={userData.avatar ? userData.avatar : null}
-						/>
-						<ContentContainer>
-							<Name>
-								{info.name.length
-									? shortenIfAddress(info.name)
-									: shortenIfAddress(userData.name)}
-							</Name>
-							<AddressContainer>
-								<label title={userData.address}>
-									<Address>
-										{truncateAddress(userData.address, 6)}
-									</Address>
-								</label>
-								{/* {window.isSecureContext && (
-									<CopyIcon
-										onClick={copyAddress}
-									/>
-								)} */}
-								<Tooltip
-									style={{ display: "none" }}
-									ref={tooltipRef}
-									remove={!tooltipVisible}
-								>
-									Copied to clipboard!
-								</Tooltip>
-							</AddressContainer>
-							<Description>
-								{clamp(
-									info.description.length
-										? info.description
-										: userData.description
-								)}
-							</Description>
-						</ContentContainer>
-
-						<AdditionalDetailsContainer>
-							{/* <LazyMotion features={domAnimation}>
-								<Btn onClick={() => bread('hi')}>Follow</Btn>
-							</LazyMotion>
-							<MetadataContainer
-								followers={0}
-								collections={0}
-								nfts={0}
-							/> */}
-							<SocialsContainer
-								// instagram={userData?.socials?.instagram || 'insta'}
-								// twitter={userData?.socials?.twitter || 'twitter'}
-								// tiktok={userData?.socials?.tiktok || 'tiktok'}
-								// github={userData?.socials?.github || 'github'}
-								// website={userData?.socials?.website || 'website'}
-								{...userData.socials}
+					<ProfileWrapper>
+						<Container>
+							<ProfilePicture
+								src={userData.avatar ? userData.avatar : null}
 							/>
-							{isOwnAccount && (
-								<>
-									<EditDetailsContainer
-										onClick={() => setEditIsActive(true)}
-										title={`${
-											!editIsActive ? `Enter` : `Exit`
-										} Edit Mode`}
+							<ContentContainer>
+								<Name>
+									{info.name.length
+										? shortenIfAddress(info.name)
+										: shortenIfAddress(userData.name)}
+								</Name>
+								<AddressContainer>
+									<label title={userData.address}>
+										<Address>
+											{truncateAddress(userData.address, 6)}
+										</Address>
+									</label>
+									{/* {window.isSecureContext && (
+										<CopyIcon
+											onClick={copyAddress}
+										/>
+									)} */}
+									<Tooltip
+										style={{ display: "none" }}
+										ref={tooltipRef}
+										remove={!tooltipVisible}
 									>
-										<span>Edit Profile Details</span>
-										<EditIcon />
-									</EditDetailsContainer>
-									{/* <Withdraw /> */}
-								</>
-							)}
-						</AdditionalDetailsContainer>
-					</Container>
+										Copied to clipboard!
+									</Tooltip>
+								</AddressContainer>
+								<Description>
+									{clamp(
+										info.description.length
+											? info.description
+											: userData.description
+									)}
+								</Description>
+							</ContentContainer>
+							<AdditionalDetailsContainer>
+								<SocialsContainer
+									{...userData.socials}
+								/>
+								{isOwnAccount && (
+									<>
+										<EditDetailsContainer
+											onClick={() => setEditIsActive(true)}
+											title={`${
+												!editIsActive ? `Enter` : `Exit`
+											} Edit Mode`}
+										>
+											<span>Edit Profile Details</span>
+											<EditIcon />
+										</EditDetailsContainer>
+										{/* <Withdraw /> */}
+									</>
+								)}
+							</AdditionalDetailsContainer>
+
+						</Container>
+						<QuickSectionHeading>{isOwnAccount ? 'Available items' : 'Items on sale'}</QuickSectionHeading>
+						{isOwnAccount ? (
+							<AvailableSection/>
+						) : (
+							<OnSaleSection/>
+						)}
+						
+					</ProfileWrapper>
 				) : (
 					<Header>Loading...</Header>
 				)
