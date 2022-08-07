@@ -5,7 +5,7 @@ import CopyIcon from "@static/svg/CopyIcon";
 import EditIcon from "@static/svg/EditIcon";
 import { clamp, truncateAddress } from "@utils/textUtils";
 import axios from "axios";
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useEffect, useContext, Suspense } from "react";
 import { useParams } from "react-router";
 import styled, { css, keyframes } from "styled-components";
 // import Loading from "@elements/Default/Loading";
@@ -30,9 +30,14 @@ import shortenIfAddress from "@utils/shortenIfAddress";
 // import { convertREEFtoUSD } from "@utils/convertREEFtoUSD";
 
 import SocialsContainer from "./SocialsContainer";
-import AvailableSection from "./Sections/AvailableSection";
-import DottedHeading from "@elements/Default/DottedHeading";
-import OnSaleSection from "./Sections/OnSaleSection";
+// import AvailableSection from "./Sections/AvailableSection";
+// import DottedHeading from "@elements/Default/DottedHeading";
+// import OnSaleSection from "@elements/Explore/Sections/OnSaleSection";
+import ChevronRight from "@static/svg/ChevronRight";
+import { NavLink } from "react-router-dom";
+// import CardSectionContainer from "@elements/Default/CardSectionContainer";
+// import { fetchUserItems } from "@utils/marketplace";
+// import OnSaleSection from "./Sections/OnSaleSection";
 
 const Card = styled.div`
 	display: flex;
@@ -803,17 +808,85 @@ const ProfileWrapper = styled.div`
 	}
 `;
 
-const QuickSectionHeading = styled(DottedHeading)`
-	font-size: 1.5rem;
-	margin-bottom: 1rem;
-	margin-top: 1rem;
+// const QuickSectionHeading = styled(DottedHeading)`
+// 	font-size: 1.5rem;
+// 	margin-bottom: 1rem;
+// 	margin-top: 1rem;
+// `;
+
+const SalesCard = React.lazy(() =>
+	import("@elements/Explore/Cards/Sales/SalesCard")
+);
+
+const QuickContainer = styled.div`
+	width: 100%;
+	margin-top: 2rem;
 `;
+
+const QuickHeader = styled.h1`
+	font-weight: 900;
+	// padding-left: 20rem;
+	// padding-right: 20rem;
+`;
+
+const QuickHeaderSection = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding-right: 5rem;
+	padding-left: 5rem;
+`;
+
+const StyledNavLink = styled(NavLink)`
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	color: var(--app-container-text-primary-hover);
+	font-size: 1rem;
+	font-weight: 800;
+	transition: color 0.2s ease;
+	&:hover {
+		color: var(--app-text);
+	}
+`;
+
+const QuickCardSectionContainer = styled.div`
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(0, 16rem));
+	width: 100%;
+	justify-content: center;
+	padding: 1.5rem 1.25rem;
+	grid-gap: 2rem 1rem;
+	overflow-x: hidden;
+`;
+
+const QuickSection = ({ items, title, link }) => {
+	return (
+		<QuickContainer>
+			<QuickHeaderSection>
+				<QuickHeader>{title}</QuickHeader>
+				<StyledNavLink to={link}>
+					View All <ChevronRight />
+				</StyledNavLink>
+			</QuickHeaderSection>
+			<QuickCardSectionContainer>
+				<Suspense>
+					{items.map((item, index) => (
+						<SalesCard key={index} data={item} />
+					))}
+				</Suspense>
+			</QuickCardSectionContainer>
+		</QuickContainer>
+	);
+};
 
 const ProfileCard = () => {
 	const [tooltipVisible, setTooltipVisible] = useState(false);
 	const [isOwnAccount, setIsOwnAccount] = useState(false);
 	const [editIsActive, setEditIsActive] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [quickItems, setQuickItems] = useState([]);
 	const { info } = useContext(EditDetailsContext);
 	const { id } = useParams();
 	const { auth } = useContext(AuthContext);
@@ -825,6 +898,24 @@ const ProfileCard = () => {
 		socials: {}
 	};
 	const [userData, setUserData] = useState(initialState);
+
+	// fetch quick items
+	useEffect (() => {
+		const fetchQuickItems = async () => {
+			const address = id || auth?.evmAddress;
+			const state = (!id || auth?.evmAddress === id) ? 0 : 1; // available for auth, sales for non-auth
+			try {
+				const response = await axios(
+					`${getBackend()}/get/marketplace/by-owner/${address}/${state}?limit=4&startFrom=0`
+					);
+				setQuickItems(response.data?.items);
+			} catch (error) {
+				bread ('Failed to load quick items');
+			}
+		}
+		fetchQuickItems();
+		// eslint-disable-next-line
+	}, [])
 	useEffect(() => {
 		if (!editIsActive) {
 			let address = id ? id : auth.address;
@@ -948,12 +1039,18 @@ const ProfileCard = () => {
 							</AdditionalDetailsContainer>
 
 						</Container>
-						<QuickSectionHeading>{isOwnAccount ? 'Available items' : 'Items on sale'}</QuickSectionHeading>
-						{isOwnAccount ? (
+						{/* <QuickSectionHeading>{isOwnAccount ? 'Available items' : 'Items on sale'}</QuickSectionHeading> */}
+						{/* {isOwnAccount ? (
 							<AvailableSection/>
+
 						) : (
 							<OnSaleSection/>
-						)}
+						)} */}
+						<QuickSection
+							items={quickItems}
+							title={isOwnAccount ? `Available items` : `Items on sale`}
+							link={isOwnAccount ? `?tab=Available` : `?tab=On%20Sale`}
+						/>
 						
 					</ProfileWrapper>
 				) : (
