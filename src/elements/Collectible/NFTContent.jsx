@@ -15,6 +15,7 @@ import { capitalize } from "@utils/textUtils";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { heart } from "@utils/heart";
 import bread from "@utils/bread";
+import AuthContext from "@contexts/Auth/AuthContext";
 
 const Container = styled.div`
 	display: grid;
@@ -434,10 +435,12 @@ const HeartBtn = () => {
 	const [isHearted, setIsHearted] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
-	const evmAddress = JSON.parse(localStorage.getItem("auth"))?.auth.evmAddress;
+	const { auth } = useContext(AuthContext);
+	const evmAddress = auth.evmAddress;
 	const handleHeartClick = () => {
-		setIsLoading(true);
 		if (isLoading) return;
+		setIsLoading(true);
+		setIsHearted(!isHearted);
 		heart (collectibleInfo.itemId).then (res => {
 			if (isHearted) {
 				const newHearts = collectibleInfo.hearts.filter(heart => heart.address !== evmAddress);
@@ -456,12 +459,12 @@ const HeartBtn = () => {
 	};
 
 	useEffect (() => {
-		if (collectibleInfo.hearts?.find (h => h.address === JSON.parse(localStorage.getItem("auth"))?.auth.evmAddress)) {
+		if (collectibleInfo.hearts?.find (h => h.address === evmAddress)) {
 			setIsHearted (true);
 		} else {
 			setIsHearted (false);
 		}
-	}, [collectibleInfo.hearts]);
+	}, [collectibleInfo.hearts, evmAddress]);
 	return (
 		<BtnContainer>
 			<m.div
@@ -493,11 +496,12 @@ const HeartBtn = () => {
 
 //eslint-disable-next-line
 const Utility = () => {
+	const { auth } = useContext(AuthContext);
 	return (
 		<UtilityWrapper className="utility-wrapper">
 			<LazyMotion features={domAnimation}>
 				<UtilityContainer>
-					<HeartBtn />
+					{auth && <HeartBtn />}
 					<ShareBtn />
 				</UtilityContainer>
 			</LazyMotion>
