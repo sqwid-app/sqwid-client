@@ -1,6 +1,6 @@
 {
 	"name": "sqwid-client",
-	"version": "0.3.5",
+	"version": "0.3.11",
 	"license": "MIT",
 	"private": true,
 	"dependencies": {
