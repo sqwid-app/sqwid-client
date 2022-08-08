@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import { Link } from "react-router-dom";
-import { getCloudflareURL } from "@utils/getIPFSURL";
+import { getInfuraURL } from "@utils/getIPFSURL";
 
 const Wrapper = styled.div`
 	position: relative;
@@ -104,7 +104,7 @@ const CardHeaderIcons = ({ data }) => {
 				/>
 				<AnimatedIcons
 					to={collection.id !== 'ASwOXeRM5DfghnURP4g2' ? `/collections/${collection.id}` : '#'}
-					url={getCloudflareURL(collection.image)}
+					url={getInfuraURL(collection.thumbnail || collection.image)}
 					tooltip={`Collection: ${collection.name}`}
 				/>
 			</Wrapper>
