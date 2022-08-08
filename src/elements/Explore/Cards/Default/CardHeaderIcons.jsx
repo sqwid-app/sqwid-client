@@ -89,7 +89,6 @@ const AnimatedIcons = props => {
 
 const CardHeaderIcons = ({ data }) => {
 	const { owner, collection, creator } = data;
-	console.log (collection);
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
