@@ -154,7 +154,7 @@ const InfoSection = () => {
 						<Logo
 							url = {
 								getInfuraURL (
-									collectibleInfo.collection.thumbnail || collectibleInfo.collection.image
+									collectibleInfo.collection.image
 								)
 							}
 						/>

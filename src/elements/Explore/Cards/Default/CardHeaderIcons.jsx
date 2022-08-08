@@ -89,6 +89,7 @@ const AnimatedIcons = props => {
 
 const CardHeaderIcons = ({ data }) => {
 	const { owner, collection, creator } = data;
+	console.log (collection);
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
@@ -104,7 +105,7 @@ const CardHeaderIcons = ({ data }) => {
 				/>
 				<AnimatedIcons
 					to={collection.id !== 'ASwOXeRM5DfghnURP4g2' ? `/collections/${collection.id}` : '#'}
-					url={getInfuraURL(collection.thumbnail || collection.image)}
+					url={getInfuraURL(collection.image)}
 					tooltip={`Collection: ${collection.name}`}
 				/>
 			</Wrapper>
