@@ -29,12 +29,13 @@ import shortenIfAddress from "@utils/shortenIfAddress";
 // import { getWithdrawableBalance, withdrawBalance } from "@utils/marketplace";
 // import { convertREEFtoUSD } from "@utils/convertREEFtoUSD";
 
-import SocialsContainer from "./SocialsContainer";
+// import SocialsContainer from "./SocialsContainer";
 // import AvailableSection from "./Sections/AvailableSection";
 // import DottedHeading from "@elements/Default/DottedHeading";
 // import OnSaleSection from "@elements/Explore/Sections/OnSaleSection";
 import ChevronRight from "@static/svg/ChevronRight";
 import { NavLink } from "react-router-dom";
+import Background from "./Background";
 // import CardSectionContainer from "@elements/Default/CardSectionContainer";
 // import { fetchUserItems } from "@utils/marketplace";
 // import OnSaleSection from "./Sections/OnSaleSection";
@@ -258,6 +259,7 @@ const AdditionalDetailsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
+	align-self: flex-start;
 	gap: 1rem;
 `;
 
@@ -833,10 +835,8 @@ const QuickHeader = styled.h1`
 const QuickHeaderSection = styled.div`
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: space-around;
 	width: 100%;
-	padding-right: 5rem;
-	padding-left: 5rem;
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -978,110 +978,113 @@ const ProfileCard = () => {
 	}, [tooltipVisible]);
 	const tooltipRef = useRef();
 	return (
-		<Card>
-			{!editIsActive ? (
-				!isLoading ? (
-					<ProfileWrapper>
-						<Container>
-							<ProfilePicture
-								src={userData.avatar ? userData.avatar : null}
-							/>
-							<ContentContainer>
-								<Name>
-									{info.name.length
-										? shortenIfAddress(info.name)
-										: shortenIfAddress(userData.name)}
-								</Name>
-								<AddressContainer>
-									<label title={userData.address}>
-										<Address>
-											{truncateAddress(userData.address, 6)}
-										</Address>
-									</label>
-									{/* {window.isSecureContext && (
-										<CopyIcon
-											onClick={copyAddress}
-										/>
-									)} */}
-									<Tooltip
-										style={{ display: "none" }}
-										ref={tooltipRef}
-										remove={!tooltipVisible}
-									>
-										Copied to clipboard!
-									</Tooltip>
-								</AddressContainer>
-								<Description>
-									{clamp(
-										info.description.length
-											? info.description
-											: userData.description
-									)}
-								</Description>
-							</ContentContainer>
-							<AdditionalDetailsContainer>
-								<SocialsContainer
-									{...userData.socials}
+		<>
+			<Background socials = {userData.socials}/>
+			<Card>
+				{!editIsActive ? (
+					!isLoading ? (
+						<ProfileWrapper>
+							<Container>
+								<ProfilePicture
+									src={userData.avatar ? userData.avatar : null}
 								/>
-								{isOwnAccount && (
-									<>
-										<EditDetailsContainer
-											onClick={() => setEditIsActive(true)}
-											title={`${
-												!editIsActive ? `Enter` : `Exit`
-											} Edit Mode`}
+								<ContentContainer>
+									<Name>
+										{info.name.length
+											? shortenIfAddress(info.name)
+											: shortenIfAddress(userData.name)}
+									</Name>
+									<AddressContainer>
+										<label title={userData.address}>
+											<Address>
+												{truncateAddress(userData.address, 6)}
+											</Address>
+										</label>
+										{/* {window.isSecureContext && (
+											<CopyIcon
+												onClick={copyAddress}
+											/>
+										)} */}
+										<Tooltip
+											style={{ display: "none" }}
+											ref={tooltipRef}
+											remove={!tooltipVisible}
 										>
-											<span>Edit Profile Details</span>
-											<EditIcon />
-										</EditDetailsContainer>
-										{/* <Withdraw /> */}
-									</>
-								)}
-							</AdditionalDetailsContainer>
+											Copied to clipboard!
+										</Tooltip>
+									</AddressContainer>
+									<Description>
+										{clamp(
+											info.description.length
+												? info.description
+												: userData.description
+										)}
+									</Description>
+								</ContentContainer>
+								<AdditionalDetailsContainer>
+									{/* <SocialsContainer
+										{...userData.socials}
+									/> */}
+									{isOwnAccount && (
+										<>
+											<EditDetailsContainer
+												onClick={() => setEditIsActive(true)}
+												title={`${
+													!editIsActive ? `Enter` : `Exit`
+												} Edit Mode`}
+											>
+												<span>Edit Profile Details</span>
+												<EditIcon />
+											</EditDetailsContainer>
+											{/* <Withdraw /> */}
+										</>
+									)}
+								</AdditionalDetailsContainer>
 
-						</Container>
-						{/* <QuickSectionHeading>{isOwnAccount ? 'Available items' : 'Items on sale'}</QuickSectionHeading> */}
-						{/* {isOwnAccount ? (
-							<AvailableSection/>
+							</Container>
+							{/* <QuickSectionHeading>{isOwnAccount ? 'Available items' : 'Items on sale'}</QuickSectionHeading> */}
+							{/* {isOwnAccount ? (
+								<AvailableSection/>
 
-						) : (
-							<OnSaleSection/>
-						)} */}
-						<QuickSection
-							items={quickItems}
-							title={isOwnAccount ? `Available items` : `Items on sale`}
-							link={isOwnAccount ? `?tab=Available` : `?tab=On%20Sale`}
-						/>
-						
-					</ProfileWrapper>
+							) : (
+								<OnSaleSection/>
+							)} */}
+							<QuickSection
+								items={quickItems}
+								title={isOwnAccount ? `Available items` : `Items on sale`}
+								link={isOwnAccount ? `?tab=Available` : `?tab=On%20Sale`}
+							/>
+							
+						</ProfileWrapper>
+					) : (
+						<Header>Loading...</Header>
+					)
 				) : (
-					<Header>Loading...</Header>
-				)
-			) : (
-				<HeaderContainer>
-					<HeaderSection>
-						<Header>Edit Details</Header>
-						{isOwnAccount && (
-							<EditDetailsContainer
-								onClick={() => setEditIsActive(false)}
-								title={`${
-									!editIsActive ? `Enter` : `Exit`
-								} Edit Mode`}
-							>
-								<span>Exit Edit Mode</span>
-								<EditIcon />
-							</EditDetailsContainer>
-						)}
-					</HeaderSection>
-					<EditContainer>
-						<EditSection
-							userData={userData}
-							setUserData={setUserData}
-						/>
-					</EditContainer>
-				</HeaderContainer>
-			)}
-		</Card>
+					<HeaderContainer>
+						<HeaderSection>
+							<Header>Edit Details</Header>
+							{isOwnAccount && (
+								<EditDetailsContainer
+									onClick={() => setEditIsActive(false)}
+									title={`${
+										!editIsActive ? `Enter` : `Exit`
+									} Edit Mode`}
+								>
+									<span>Exit Edit Mode</span>
+									<EditIcon />
+								</EditDetailsContainer>
+							)}
+						</HeaderSection>
+						<EditContainer>
+							<EditSection
+								userData={userData}
+								setUserData={setUserData}
+							/>
+						</EditContainer>
+					</HeaderContainer>
+				)}
+			</Card>
+		</>
 	);
 };
 

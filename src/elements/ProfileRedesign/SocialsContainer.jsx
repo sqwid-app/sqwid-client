@@ -1,5 +1,18 @@
 import React from "react";
 import styled from "styled-components";
+import { respondTo } from "@styles/styledMediaQuery";
+// const Container = styled.div`
+// 	display: flex;
+// 	align-items: center;
+// 	flex-direction: row;
+// 	// justify-content: flex-end;
+// 	justify-content: center;
+// 	gap: 0.75rem;
+// 	color: var(--app-container-text-primary-hover);
+// 	flex: 1;
+// 	width: 100%;
+// 	// padding-top: 0.5rem;
+// `;
 
 const Container = styled.div`
 	display: flex;
@@ -10,12 +23,15 @@ const Container = styled.div`
 	gap: 0.75rem;
 	color: var(--app-container-text-primary-hover);
 	flex: 1;
-	width: 100%;
+	// width: 100%;
 	// padding-top: 0.5rem;
 `;
 
 const SVG = styled.svg`
-	fill: var(--app-container-text-primary);
+	fill: rgba(255, 255, 255, .45);
+	${respondTo.md`
+		fill: rgba(255, 255, 255, .75);
+	`}
 	height: 1.5rem;
 	width: 1.5rem;
 	transition: all 0.1s ease-in-out;
