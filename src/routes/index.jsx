@@ -8,6 +8,7 @@ import Sac from "@pages/Sac";
 import explorePages from "@routes/explorePages";
 import ToS from "@pages/ToS";
 import Privacy from "@pages/Privacy";
+import { CollectionsSearch, UsersSearch } from "@pages/Search";
 
 const Explore = React.lazy(() => import("@pages/Explore"));
 const Collectible = React.lazy(() => import("@pages/Collectible"));
@@ -53,6 +54,8 @@ const Routes = () => {
 						</CollectibleProvider>
 					</Route>
 					<Route path="/dashboard/featured" exact component={FeaturedDashboard} />
+					<Route path="/search/collections/:query" exact component={CollectionsSearch} />
+					<Route path="/search/users/:query" exact component={UsersSearch} />
 					<Route component={NotFound} />
 				</Switch>
 				<BreadContainer />

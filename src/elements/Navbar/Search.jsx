@@ -185,8 +185,8 @@ const Search = () => {
 		return () => clearTimeout(delayDebounceFn);
 	}, [searchText]);
 	const handleChange = e => {
+		setIsLoading (true);
 		setSearchText(e.target.value);
-		
 	}
 	const handleSubmit = e => {
 		if (e.key === "Enter" && searchText.length) {
@@ -219,12 +219,14 @@ const Search = () => {
 								<>
 									<CategoryBreaker
 										title = "Users"
-										to = {`/search/users/${searchText}`}
+										to = {`/search/users/${encodeURIComponent(searchText)}`}
 									/>
 									{results.users.map (user => (
 										<UserResult onClick={
 											() => history.push (`/profile/${user.evmAddress}`)
-										}>
+										}
+										key = {user.evmAddress}
+										>
 											<img alt = "User Avatar" src={getAvatarFromId (user.evmAddress)} />
 											<UserResultText>
 												<span>{user.displayName}</span>
@@ -238,12 +240,14 @@ const Search = () => {
 								<>
 									<CategoryBreaker
 										title = "Collections"
-										to = {`/search/collections/${searchText}`}
+										to = {`/search/collections/${encodeURIComponent(searchText)}`}
 									/>
 									{results.collections.map (collection => (
 										<CollectionResult onClick={
 											() => window.location.href = `/collections/${collection.id}`
-										}>
+										}
+										key = {collection.id}
+										>
 											<img alt = "Collection" src={getInfuraURL (collection.image)} />
 											<span>{collection.name}</span>
 										</CollectionResult>
