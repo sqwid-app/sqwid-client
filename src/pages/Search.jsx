@@ -119,44 +119,93 @@ const UserListItem = styled.div`
 //     }
 // `;
 
+// const CollectionListItem = styled.div`
+//     display: flex;
+//     flex-direction: column;
+//     align-items: left;
+//     justify-content: flex-end;
+//     width: 100%;
+//     height: 10rem;
+//     margin: 0 auto;
+//     padding: .25rem;
+//     padding-left: 1rem;
+//     border-radius: 0.5rem;
+//     background: linear-gradient(
+//         0deg,
+//         rgba(0, 0, 0, .8) 0%,
+//         rgba(0, 0, 0, 0) 70%
+//     ),
+//     url(${props => props.background});
+//     background-size: cover;
+//     background-position: center;
+//     background-repeat: no-repeat;
+//     transition: all 0.2s ease-in-out;
+//     &:hover {
+//         cursor: pointer;
+//         background: linear-gradient(
+//             0deg,
+//             rgba(0, 0, 0, .9) 0%,
+//             rgba(0, 0, 0, 0) 90%
+//         ),
+//         url(${props => props.background});
+//         background-size: cover;
+//         background-position: bottom;
+//     }
+//     overflow: hidden;
+//     & > * {
+//         text-overflow: ellipsis;
+//         overflow: hidden;
+//         white-space: nowrap;
+//     }
+// `;
+
 const CollectionListItem = styled.div`
+    border-radius: 1rem;
+    overflow: hidden;
+    padding: 0;
+    height: 10rem;
+    position: relative;
+    &:hover > img {
+        transform: scale(1.05);
+    }
+`;
+const CollectionTextWrapper = styled.div`
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: left;
     justify-content: flex-end;
-    width: 100%;
-    height: 10rem;
-    margin: 0 auto;
+    align-items: left;
     padding: .25rem;
     padding-left: 1rem;
-    border-radius: 0.5rem;
     background: linear-gradient(
         0deg,
         rgba(0, 0, 0, .8) 0%,
         rgba(0, 0, 0, 0) 70%
-    ),
-    url(${props => props.background});
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    );
     transition: all 0.2s ease-in-out;
-    &:hover {
-        cursor: pointer;
-        background: linear-gradient(
-            0deg,
-            rgba(0, 0, 0, .9) 0%,
-            rgba(0, 0, 0, 0) 90%
-        ),
-        url(${props => props.background});
-        background-size: cover;
-        background-position: bottom;
-    }
-    overflow: hidden;
     & > * {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
     }
+    &:hover {
+        // background: linear-gradient(
+        //     0deg,
+        //     rgba(0, 0, 0, .9) 0%,
+        //     rgba(0, 0, 0, 0) 90%
+        // );
+        cursor: pointer;
+    }
+`;
+
+const CollectionImage = styled.img`
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    transition: all 0.1s ease-in-out;
 `;
 
 const CollectionName = styled.h2`
@@ -192,7 +241,7 @@ const CollectionsSearch = () => {
     const [collections, setCollections] = useState ([]);
     const [isLoading, setIsLoading] = useState (true);
     const [isFinished, setIsFinished] = useState (false);
-    const perPage = 1;
+    const perPage = 6;
     const fetchMore = async () => {
         if (isFinished) return;
         setIsLoading (true);
@@ -200,6 +249,7 @@ const CollectionsSearch = () => {
             const newCollections = [...collections, ...res.collections];
             setCollections (newCollections);
             setIsLoading (false);
+            console.log (res.total, newCollections.length);
             if (res.total === newCollections.length) {
                 setIsFinished (true);
             }
@@ -229,11 +279,14 @@ const CollectionsSearch = () => {
                     {collections.map (collection => (
                         <CollectionListItem
                         key = {collection.id}
-                        background = {getInfuraURL(collection.thumbnail || collection.image)}
+                        // background = {getInfuraURL(collection.thumbnail || collection.image)}
                         onClick = {() => window.location.href = `/collections/${collection.id}`}
                         >
-                            <CollectionName>{collection.name}</CollectionName>
-                            <CollectionDescription>{collection.description}</CollectionDescription>
+                            <CollectionImage src = {getInfuraURL(collection.thumbnail || collection.image)} />
+                            <CollectionTextWrapper>
+                                <CollectionName>{collection.name}</CollectionName>
+                                <CollectionDescription>{collection.description}</CollectionDescription>
+                            </CollectionTextWrapper>
                         </CollectionListItem>
                     ))}
                     {/* {collections.map (user => (
@@ -262,7 +315,7 @@ const UsersSearch = () => {
     const [users, setUsers] = useState ([]);
     const [isLoading, setIsLoading] = useState (true);
     const [isFinished, setIsFinished] = useState (false);
-    const usersPerPage = 1;
+    const usersPerPage = 10;
     const fetchMore = async () => {
         if (isFinished) return;
         setIsLoading (true);
