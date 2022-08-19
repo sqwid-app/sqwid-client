@@ -249,7 +249,6 @@ const CollectionsSearch = () => {
             const newCollections = [...collections, ...res.collections];
             setCollections (newCollections);
             setIsLoading (false);
-            console.log (res.total, newCollections.length);
             if (res.total === newCollections.length) {
                 setIsFinished (true);
             }
