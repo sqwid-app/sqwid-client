@@ -77,6 +77,20 @@ span.emoji {
 	display: none !important;
 }
 
+.ErrorModal {
+	height: fit-content !important;
+	width: 100%;
+	display: grid;
+	place-items: center;
+}
+
+.ReactModal__Body--open {
+	overflow: hidden;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+}
+
 // React Modal Transition
 
 .ReactModal__Overlay {
@@ -84,7 +98,6 @@ span.emoji {
 	transform: translateY(2rem);
 	transition: all 0.15s ease;
 }
-
 .ReactModal__Overlay--after-open {
 	opacity: 1;
 	transform: translateY(0px);
