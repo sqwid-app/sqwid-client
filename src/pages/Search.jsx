@@ -1,6 +1,5 @@
 import Wrapper from "@components/Default/Wrapper";
 import LoadingIcon from "@static/svg/LoadingIcon";
-// import SearchIcon from "@static/svg/SearchIcon";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { getInfuraURL } from "@utils/getIPFSURL";
 import { fetchCollectionsPaginated, fetchUsersPaginated } from "@utils/search";
@@ -16,15 +15,6 @@ const Container = styled.div`
 	ul {
 		list-style-position: inside;
 	}
-	// h1,
-	// h2 {
-	// 	margin: 0.75rem 0;
-	// }
-	// h1 {
-	// 	font-size: 2rem;
-	// 	font-weight: 800;
-	// 	margin-bottom: 2rem;
-	// }
 	p,
 	ul {
 		color: var(--app-container-text-primary-hover);
@@ -107,58 +97,6 @@ const UserListItem = styled.div`
     }
 `;
 
-// const bgSizeAnim = keyframes`
-//     0% {
-//         background-size: 100%;
-//     }
-//     50% {
-//         background-size: 105%;
-//     }
-//     100% {
-//         background-size: 100%;
-//     }
-// `;
-
-// const CollectionListItem = styled.div`
-//     display: flex;
-//     flex-direction: column;
-//     align-items: left;
-//     justify-content: flex-end;
-//     width: 100%;
-//     height: 10rem;
-//     margin: 0 auto;
-//     padding: .25rem;
-//     padding-left: 1rem;
-//     border-radius: 0.5rem;
-//     background: linear-gradient(
-//         0deg,
-//         rgba(0, 0, 0, .8) 0%,
-//         rgba(0, 0, 0, 0) 70%
-//     ),
-//     url(${props => props.background});
-//     background-size: cover;
-//     background-position: center;
-//     background-repeat: no-repeat;
-//     transition: all 0.2s ease-in-out;
-//     &:hover {
-//         cursor: pointer;
-//         background: linear-gradient(
-//             0deg,
-//             rgba(0, 0, 0, .9) 0%,
-//             rgba(0, 0, 0, 0) 90%
-//         ),
-//         url(${props => props.background});
-//         background-size: cover;
-//         background-position: bottom;
-//     }
-//     overflow: hidden;
-//     & > * {
-//         text-overflow: ellipsis;
-//         overflow: hidden;
-//         white-space: nowrap;
-//     }
-// `;
-
 const CollectionListItem = styled.div`
     border-radius: 1rem;
     overflow: hidden;
@@ -192,11 +130,6 @@ const CollectionTextWrapper = styled.div`
         white-space: nowrap;
     }
     &:hover {
-        // background: linear-gradient(
-        //     0deg,
-        //     rgba(0, 0, 0, .9) 0%,
-        //     rgba(0, 0, 0, 0) 90%
-        // );
         cursor: pointer;
     }
 `;
@@ -278,7 +211,6 @@ const CollectionsSearch = () => {
                     {collections.map (collection => (
                         <CollectionListItem
                         key = {collection.id}
-                        // background = {getInfuraURL(collection.thumbnail || collection.image)}
                         onClick = {() => window.location.href = `/collections/${collection.id}`}
                         >
                             <CollectionImage src = {getInfuraURL(collection.thumbnail || collection.image)} />
@@ -288,18 +220,6 @@ const CollectionsSearch = () => {
                             </CollectionTextWrapper>
                         </CollectionListItem>
                     ))}
-                    {/* {collections.map (user => (
-                        <UserListItem
-                            key={user.evmAddress}
-                            onClick={() => window.location.href = `/profile/${user.evmAddress}`}
-                        >
-                            <img src={getAvatarFromId (user.evmAddress)} alt="user" />
-                            <div>
-                                <h2>{user.displayName}</h2>
-                                <p>{user.evmAddress}</p>
-                            </div>
-                        </UserListItem>
-                    ))} */}
                 </UserListWrapper>
                 {!isFinished ? (
                 !isLoading ? <LoadMoreButton onClick={fetchMore}>Load more</LoadMoreButton> : <LoadingIcon />
