@@ -10,7 +10,13 @@ export const getDwebURL = url => `https://${getCIDv1(url)}.ipfs.dweb.link/`;
 
 export const getInfuraURL = url => {
 	let base = url.split ('/')[2] || url;
-	return `https://sqwid.infura-ipfs.io/ipfs/${getCIDv1(base)}/${url.split ('/')[3] || ''}`;
+	let cid;
+	try {
+		cid = getCIDv1 (base);
+	} catch (e) {
+		cid = base;
+	}
+	return `https://sqwid.infura-ipfs.io/ipfs/${cid}/${url.split ('/')[3] || ''}`;
 }
 
 const getIPFSURL = url => `https://ipfs.io/ipfs/${url.replace("ipfs://", "")}`;

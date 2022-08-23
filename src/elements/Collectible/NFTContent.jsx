@@ -67,7 +67,7 @@ const ImageWrapper = styled.div`
 	.utility-wrapper {
 		transition: all 0.15s ease 0.075s;
 		opacity: 0;
-		transform: translateY(100%);
+		transform: translateY(-100%);
 	}
 	img:hover + .utility-wrapper,
 	.utility-wrapper:hover {
@@ -224,12 +224,12 @@ const UtilityWrapper = styled.div`
 	place-items: center;
 	position: absolute;
 	z-index: 2;
-	bottom: 0;
+	top: 0;
 	width: 100%;
 	border-radius: 0 0 0.75rem 0.75rem;
 	padding: 0.5rem;
 	min-height: 4rem;
-	background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.65));
+	background: linear-gradient(0deg, transparent, rgba(0, 0, 0, 0.65));
 `;
 
 const UtilityContainer = styled.div`
@@ -245,10 +245,10 @@ const UtilityContainer = styled.div`
 const BtnContainer = styled.div`
 	position: relative;
 	.popup {
-		padding-top: 0.25rem;
+		padding-bottom: 0.25rem;
 		position: absolute;
 		font-weight: 800;
-		bottom: calc(-50% - 0.125rem);
+		top: calc(-50% - 0.125rem);
 		left: 50%;
 		transform: translateX(-50%);
 		opacity: 0;
