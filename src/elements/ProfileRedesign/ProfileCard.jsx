@@ -864,21 +864,23 @@ const QuickCardSectionContainer = styled.div`
 
 const QuickSection = ({ items, title, link }) => {
 	return (
-		<QuickContainer>
-			<QuickHeaderSection>
-				<QuickHeader>{title}</QuickHeader>
-				<StyledNavLink to={link}>
-					View All <ChevronRight />
-				</StyledNavLink>
-			</QuickHeaderSection>
-			<QuickCardSectionContainer>
-				<Suspense>
-					{items.map((item, index) => (
-						<SalesCard key={index} data={item} />
-					))}
-				</Suspense>
-			</QuickCardSectionContainer>
-		</QuickContainer>
+		<>
+			{items?.length ? <QuickContainer>
+				<QuickHeaderSection>
+					<QuickHeader>{title}</QuickHeader>
+					<StyledNavLink to={link}>
+						View All <ChevronRight />
+					</StyledNavLink>
+				</QuickHeaderSection>
+				<QuickCardSectionContainer>
+					<Suspense>
+						{items.map((item, index) => (
+							<SalesCard key={index} data={item} />
+						))}
+					</Suspense>
+				</QuickCardSectionContainer>
+			</QuickContainer> : null}
+		</>
 	);
 };
 
