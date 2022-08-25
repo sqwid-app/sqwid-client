@@ -564,7 +564,7 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 							)}
 						</NavContainer>
 					<ContentWrapper>
-						<FilterSection>
+						{Object.keys (collectionInfo.traits).length ? <FilterSection>
 							<TraitsTitle>Traits</TraitsTitle>
 							{Object.keys (collectionInfo.traits).map((item, index) => (
 								<FilterItem
@@ -574,7 +574,7 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 									setTraits={setItemTraits}
 								/>
 							))}
-						</FilterSection>
+						</FilterSection> : null }
 						{navRoutes.find(item => item.isActive).component}
 					</ContentWrapper>
 				</Section>
