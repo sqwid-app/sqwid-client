@@ -564,7 +564,7 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 							)}
 						</NavContainer>
 					<ContentWrapper>
-						{Object.keys (collectionInfo.traits).length ? <FilterSection>
+						{Object.keys (collectionInfo?.traits || {}).length ? <FilterSection>
 							<TraitsTitle>Traits</TraitsTitle>
 							{Object.keys (collectionInfo.traits).map((item, index) => (
 								<FilterItem
