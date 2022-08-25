@@ -1,4 +1,5 @@
 import Navbar from "@components/Default/Navbar";
+import FilterProvider from "@contexts/Filter/FilterProvider";
 import FullPageLoading from "@elements/Default/FullPageLoading";
 import { fetchCollectionInfo, fetchCollectionStats } from "@utils/marketplace";
 import React, { Suspense, useEffect, useState } from "react";
@@ -69,13 +70,15 @@ const Collections = () => {
 				<Suspense
 					fallback={<FullPageLoading init component="collections" />}
 				>
-					<Wrapper>
-						<HeroSection
-							collectionInfo={collection}
-							isLoading={isLoading}
-							setIsLoading={setIsLoading}
-						/>
-					</Wrapper>
+					<FilterProvider>
+						<Wrapper>
+							<HeroSection
+								collectionInfo={collection}
+								isLoading={isLoading}
+								setIsLoading={setIsLoading}
+							/>
+						</Wrapper>
+					</FilterProvider>
 				</Suspense>
 			) : (
 				<NotFound stack={`Not a valid collections id`} />

@@ -101,12 +101,12 @@ const fetchUserItems = async (address, state = -1, startFrom) => {
 };
 
 // returns collection-wise items
-const fetchCollectionItems = async (address, state = -1, startFrom) => {
+const fetchCollectionItems = async (address, state = -1, startFrom, filterQuery = '') => {
 	let limit = constants.EXPLORE_PAGINATION_LIMIT;
 	const res = await axios(
 		`${getBackend()}/get/marketplace/by-collection/${address}${
 			state >= 0 ? `/${state}` : ""
-		}?limit=${limit}&startFrom=${startFrom}`
+		}?limit=${limit}&startFrom=${startFrom}${filterQuery ? `&` + filterQuery : ''}`
 	);
 	const { data } = res;
 	if (data.error) {
@@ -560,22 +560,30 @@ const fetchRoyalties = async tokenId => {
 };
 
 const fetchCollectionStats = async id => {
-	try {
-		const res = await axios(
-			`${getBackend()}/statswatch/collection/${id}/all`
-		);
-		const { data } = res;
-		return data;
-	} catch (e) {
-		return {
-			volume: 0,
-			average: 0,
-			lastSale: 0,
-			salesAmount: 0,
-			items: 0,
-			owners: 0
-		};
-	}
+	// try {
+	// 	const res = await axios(
+	// 		`${getBackend()}/statswatch/collection/${id}/all`
+	// 	);
+	// 	const { data } = res;
+	// 	return data;
+	// } catch (e) {
+	// 	return {
+	// 		volume: 0,
+	// 		average: 0,
+	// 		lastSale: 0,
+	// 		salesAmount: 0,
+	// 		items: 0,
+	// 		owners: 0
+	// 	};
+	// }
+	return {
+		volume: 0,
+		average: 0,
+		lastSale: 0,
+		salesAmount: 0,
+		items: 0,
+		owners: 0
+	};
 }
 
 const fetchCollectibleStats = async id => {

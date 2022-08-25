@@ -17,6 +17,8 @@ import useActiveTabs from "@utils/useActiveTabs";
 import shortenIfAddress from "@utils/shortenIfAddress";
 import ReefIcon from "@static/svg/ReefIcon";
 import { numberSeparator } from "@utils/numberSeparator";
+import { useContext } from "react";
+import FilterContext from "@contexts/Filter/FilterContext";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -166,7 +168,7 @@ const CollectionDescription = styled.div`
 
 const NavContainer = styled.div`
 	${respondTo.md`
-		margin: 1rem 0;
+		margin: 1rem auto;
 		margin-left: auto;
 	`}
 `;
@@ -228,6 +230,128 @@ const Price = styled.div`
 	margin: 0 auto;
 `;
 
+const ContentWrapper = styled.div`
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	gap: 0.5rem;
+	${respondTo.md`
+		flex-direction: column;
+		align-items: center;
+	`}
+`;
+
+const FilterSection = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	min-width: 12rem;
+	max-width: 12rem;
+	margin-top: 0.5rem;
+	gap: 0.5rem;
+	${respondTo.md`
+		align-items: center;
+		justify-content: space-between;
+	`}
+	user-select: none;
+	transition: all 0.2s ease;
+`;
+
+const FilterLabel = styled.label`
+	width: 100%;
+	font-size: .9rem;
+	font-weight: 600;
+	color: var(--app-container-text-primary-hover);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 0.5rem;
+	overflow: hidden;
+	& > span {
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+`;
+
+const FilterItemContent = styled.div`
+	display: ${props => (props.active ? `flex` : `none`)};
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.5rem;
+	width: 100%;
+	padding: 0.5rem;
+	overflow: hidden;
+`;
+
+const FilterTitle = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: 900;
+	font-size: 1rem;
+	width: 100%;
+	padding: 0.5rem;
+	color: var(--app-container-text-primary);
+	cursor: pointer;
+	border-radius: 0.25rem;
+	border: 0.1rem solid var(--app-container-bg-primary);
+	&:hover {
+		background-color: var(--app-container-bg-primary);
+		color: var(--app-container-text-primary-hover);
+	}
+`;
+
+const TraitsTitle = styled.div`
+	font-weight: 900;
+	font-size: 1.25rem;
+	color: var(--app-container-text-primary-hover);
+	width: 100%;
+	padding: 0.5rem;
+`;
+const FilterCheckbox = ({ onChange, name }) => {
+	const [checked, setChecked] = useState(false);
+	const handleChange = () => {
+		setChecked(!checked);
+		onChange(name, !checked);
+	}
+	return (
+		<FilterLabel>
+			<input
+				onChange = {handleChange}
+				checked = {checked}
+				type="checkbox"
+			/>
+			<span>{name}</span>
+		</FilterLabel>
+	);
+}
+
+const FilterItem = ({ title, options, setTraits }) => {
+	const [active, setActive] = useState(false);
+	const handleClick = () => {
+		setActive(!active);
+	}
+	const handleOption = (option, state) => {
+		setTraits(title, option, state);
+	}
+	return (
+		<>
+			<FilterTitle onClick={handleClick}>
+				{title}
+				<span>{options.length}</span>
+			</FilterTitle>
+			<FilterItemContent active = {active}>
+				{options.map(option => (
+					<FilterCheckbox name = {option} key={option} type="checkbox" onChange={handleOption} />
+				))}
+			</FilterItemContent>
+		</>
+	);
+}
+
 const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 	const [navRoutes, setNavRoutes] = useState([
 		{
@@ -262,6 +386,8 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 		},
 	]);
 
+	const { setFilterDetails } = useContext (FilterContext);
+
 	const replacer = useActiveTabs({ navRoutes, setNavRoutes });
 
 	const options = navRoutes.map(route => ({
@@ -284,6 +410,62 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 	}, [navRoutes]);
 
 	const isTabletOrMobile = useIsTabletOrMobile();
+
+	const [traits, setTraits] = useState ([]);
+
+	useEffect (() => {
+		if (collectionInfo?.traits) {
+			setTraits (Object.keys (collectionInfo?.traits).map (key => {
+				return collectionInfo.traits[key].map (k => {
+					return {
+						trait: key,
+						option: k,
+						selected: false
+					}
+				});
+			}).reduce ((prev, cur) => [...prev, ...cur], []))
+		}
+	} , [collectionInfo?.traits]);
+
+	const setItemTraits = (trait, option, state) => {
+		setTraits(traits.map(item => {
+			if (item.trait === trait && item.option === option) {
+				return {
+					...item,
+					selected: state
+				}
+			}
+			return item;
+		}));
+	}
+
+	useEffect (() => {
+		setFilterDetails (traits);
+		// eslint-disable-next-line
+	} , [traits]);
+
+	// useEffect (() => {
+	// 	if (traits) {
+	// 		const query = {};
+	// 		traits.forEach(item => {
+	// 			if (item.selected) {
+	// 				if (!query[item.trait]) {
+	// 					query[item.trait] = [];
+	// 				}
+	// 				query[item.trait].push(item.option);
+	// 			}
+	// 		}
+	// 		);
+	// 		const queryString = Object.keys(query).map(key => {
+	// 			return `trait[${key}]=${query[key].join(`&trait[${key}]=`)}`;
+	// 		}
+	// 		).join("&");
+
+	// 		history.replace ({
+	// 			search: `?tab=${q.get ('tab')}` + '&' + queryString
+	// 		})
+	// 	}
+	// }, [traits]);
 
 	return (
 		<>
@@ -381,7 +563,20 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 								</Navbar>
 							)}
 						</NavContainer>
-					<>{navRoutes.find(item => item.isActive).component}</>
+					<ContentWrapper>
+						<FilterSection>
+							<TraitsTitle>Traits</TraitsTitle>
+							{Object.keys (collectionInfo.traits).map((item, index) => (
+								<FilterItem
+									key={index}
+									title={item}
+									options={collectionInfo.traits[item]}
+									setTraits={setItemTraits}
+								/>
+							))}
+						</FilterSection>
+						{navRoutes.find(item => item.isActive).component}
+					</ContentWrapper>
 				</Section>
 			)}
 		</>
