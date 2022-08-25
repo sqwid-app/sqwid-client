@@ -268,6 +268,7 @@ const FilterLabel = styled.label`
 	align-items: center;
 	gap: 0.5rem;
 	overflow: hidden;
+	justify-content: space-between;
 	& > span {
 		overflow-x: hidden;
 		text-overflow: ellipsis;
@@ -319,12 +320,12 @@ const FilterCheckbox = ({ onChange, name }) => {
 	}
 	return (
 		<FilterLabel>
+			<span>{name}</span>
 			<input
 				onChange = {handleChange}
 				checked = {checked}
 				type="checkbox"
 			/>
-			<span>{name}</span>
 		</FilterLabel>
 	);
 }
