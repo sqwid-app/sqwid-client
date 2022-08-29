@@ -13,6 +13,7 @@ const Explore = React.lazy(() => import("@pages/Explore"));
 const Collectible = React.lazy(() => import("@pages/Collectible"));
 const Collections = React.lazy(() => import("@pages/Collections"));
 const Create = React.lazy(() => import("@pages/Create"));
+const CreateBulk = React.lazy(() => import("@pages/CreateBulk"));
 const Landing = React.lazy(() => import("@pages/Landing"));
 const Profile = React.lazy(() => import("@pages/Profile"));
 const Lagoon = React.lazy(() => import("@pages/Lagoon"));
@@ -43,6 +44,7 @@ const Routes = () => {
 					/>
 					<Route path="/profile/:id?" exact component={Profile} />
 					<Route path="/create" exact component={Create} />
+					<Route path="/create-bulk" exact component={CreateBulk} />
 					<Route path="/lagoon" exact component={Lagoon} />
 					<Route path="/sac/:id" exact component={Sac} />
 					<Route path="/terms-of-service" exact component={ToS} />
