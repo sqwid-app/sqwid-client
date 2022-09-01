@@ -649,14 +649,14 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 						{!auth && (
 							<>
 								<DividerHorizontal />
-								<NetworkSwitchButton />
+								{ window.location.host !== 'sqwid.app' ? <NetworkSwitchButton /> : null }
 							</>
 						)}
 						{auth && (
 							<>
 								<DividerHorizontal />
 								<ButtonsContainer>
-									<NetworkSwitchButton />
+								{ window.location.host !== 'sqwid.app' ? <NetworkSwitchButton /> : null }
 									<Button
 										whileHover={{
 											y: -5,
