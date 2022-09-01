@@ -2,11 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion";
-import {
-	createBulkCollectibles,
-	upload,
-	uploadChunk,
-} from "@utils/createBulkCollectibles";
+import { uploadChunk } from "@utils/createBulkCollectibles";
+import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
 
 const Wrapper = styled.div`
 	.dropzone {
@@ -18,7 +15,7 @@ const Wrapper = styled.div`
 		padding: 2rem;
 		margin-top: 1rem;
 		width: 100%;
-		height: 15rem;
+		height: 9rem;
 		background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='16' ry='16' stroke='%23787987FF' stroke-width='4' stroke-dasharray='6%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
 		border-radius: 1rem;
 		outline: none;
@@ -56,6 +53,9 @@ const DropzoneButton = styled(m.a)`
 const CHUNK_SIZE = 524288; // 512 bytes
 
 const Dropzone = props => {
+	const { collectionBulkData, setCollectionBulkData } = useContext(
+		CollectionBulkContext
+	);
 	const initialDragText = "ZIP. Max 1gb.";
 	const [file, setFile] = useState();
 	const [totalChunks, setTotalChunks] = useState(0);
@@ -127,7 +127,10 @@ const Dropzone = props => {
 						const isLastChunk = currentChunkIndex === chunks;
 						if (isLastChunk) {
 							setCurrentChunkIndex(-1);
-							upload(file.name);
+							setCollectionBulkData({
+								...collectionBulkData,
+								zipFile: file.name,
+							});
 						} else {
 							setCurrentChunkIndex(currentChunkIndex + 1);
 						}

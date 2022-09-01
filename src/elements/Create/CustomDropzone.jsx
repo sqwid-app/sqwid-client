@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import FileContext from "@contexts/File/FileContext";
+import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
 import { sanitize } from "@utils/textUtils";
 import constants from "@utils/constants";
 
@@ -57,8 +58,13 @@ const DropzoneButton = styled(m.a)`
 const Dropzone = props => {
 	// const initialDragText = props.modal ? "PNG, JPEG, GIF or WEBP. Max 30mb." : "PNG, GIF, WEBP, MP4, or MP3. Max 30mb."
 	// const initialDragText = "PNG or JPEG. Max 30mb.";
-	const initialDragText = "PNG, JPEG, MP4. Max 30mb.";
+	const initialDragText = props.cover
+		? "PNG, JPEG, GIF or WEBP. Max 30mb."
+		: "PNG, JPEG, MP4. Max 30mb.";
 	const { fileData, setFileData } = useContext(FileContext);
+	const { collectionBulkData, setCollectionBulkData } = useContext(
+		CollectionBulkContext
+	);
 	const [dragText, setDragText] = useState(initialDragText);
 	const {
 		getRootProps,
@@ -72,18 +78,27 @@ const Dropzone = props => {
 		noKeyboard: true,
 		maxFiles: 1,
 		// accept: `image/jpeg, image/gif, image/png, image/webp, ${!props.modal&&`audio/mpeg, video/mp4`}`,
-		accept: `${constants.CREATE_ACCEPTED_MIMETYPES.join(", ")}`,
+		accept: props.cover
+			? `${constants.COVER_ACCEPTED_MIMETYPES.join(", ")}`
+			: `${constants.CREATE_ACCEPTED_MIMETYPES.join(", ")}`,
 		maxSize: props.maxSize,
 	});
 	useEffect(() => {
 		if (acceptedFiles.length) {
 			let file = acceptedFiles[0];
-			setFileData({
-				...fileData,
-				file: new File([file], sanitize(file.name), {
-					type: file.type,
-				}),
-			});
+			props.cover
+				? setCollectionBulkData({
+						...collectionBulkData,
+						coverFile: new File([file], sanitize(file.name), {
+							type: file.type,
+						}),
+				  })
+				: setFileData({
+						...fileData,
+						file: new File([file], sanitize(file.name), {
+							type: file.type,
+						}),
+				  });
 		}
 		//eslint-disable-next-line
 	}, [acceptedFiles]);
@@ -126,11 +141,11 @@ const Dropzone = props => {
 	);
 };
 
-const CustomDropzone = ({ modal }) => {
+const CustomDropzone = ({ modal, cover }) => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
-				<Dropzone modal={modal} maxSize={30000000} />
+				<Dropzone modal={modal} maxSize={30000000} cover={cover} />
 			</Wrapper>
 		</LazyMotion>
 	);

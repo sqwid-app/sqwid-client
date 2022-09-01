@@ -1,11 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import FileProvider from "@contexts/File/FileProvider";
 import UploadSection from "@elements/Create/UploadSection";
-import TitleSection from "@elements/Create/TitleSection";
-import DescriptionSection from "@elements/Create/DescriptionSection";
-import Changes from "@elements/Create/Changes";
 import { CreateBulkButton } from "@elements/Create/CreateBulkButton";
+import CollectionNameSection from "@elements/Create/CollectionNameSection";
+import CollectionDescriptionSection from "@elements/Create/CollectionDescriptionSection";
+import RoyaltyReceiverSection from "@elements/Create/RoyaltyReceiverSection";
+import RoyaltySection from "@elements/Create/RoyaltySection";
+import CopiesSection from "@elements/Create/CopiesSection";
+import PreviewCoverSection from "@elements/Create/PreviewCoverSection";
+import ChangesBulk from "@elements/Create/ChangesBulk";
+import CollectionBulkProvider from "@contexts/CollectionBulk/CollectionBulkProvider";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -27,7 +31,7 @@ const MainSection = styled.div`
 	width: 75vw;
 	height: 100%;
 	display: grid;
-	grid-template-columns: 2fr repeat(2, 1fr);
+	grid-template-columns: repeat(2, 1fr);
 	gap: 4rem;
 `;
 
@@ -55,16 +59,24 @@ const MainPage = () => {
 	return (
 		<MainSection>
 			<LeftContainer>
-				<Group>
-					<UploadContainer>
-						<UploadSection zipFile={true} />
-					</UploadContainer>
-				</Group>
-				<Changes />
+				<UploadContainer>
+					<UploadSection title="Upload ZIP File" fileType="zip" />
+				</UploadContainer>
+				<RoyaltyReceiverSection bulk={true} />
+				<RoyaltySection bulk={true} />
+				<CopiesSection bulk={true} />
+				<ChangesBulk />
 			</LeftContainer>
 			<RightContainer>
-				<TitleSection />
-				<DescriptionSection />
+				<CollectionNameSection bulk={true} />
+				<CollectionDescriptionSection bulk={true} />
+				<UploadContainer>
+					<UploadSection
+						title="Collection Cover Image"
+						fileType="cover"
+					/>
+				</UploadContainer>
+				<PreviewCoverSection />
 				<CreateBulkButton />
 			</RightContainer>
 		</MainSection>
@@ -79,14 +91,14 @@ const HeaderSection = styled.div`
 
 const HeroSection = () => {
 	return (
-		<FileProvider>
+		<CollectionBulkProvider>
 			<Wrapper>
 				<HeaderSection>
 					<Title>Create Collection</Title>
 				</HeaderSection>
 				<MainPage />
 			</Wrapper>
-		</FileProvider>
+		</CollectionBulkProvider>
 	);
 };
 

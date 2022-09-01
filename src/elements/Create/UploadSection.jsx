@@ -1,4 +1,5 @@
 import FileContext from "@contexts/File/FileContext";
+import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
 import React, { useContext } from "react";
 import styled from "styled-components";
 import CustomDropzone from "./CustomDropzone";
@@ -11,14 +12,23 @@ const Title = styled.h1`
 	font-weight: 900;
 `;
 
-const UploadSection = ({ zipFile = false }) => {
+const UploadSection = ({ title = "Upload File", fileType = "" }) => {
 	const { fileData } = useContext(FileContext);
+	const { collectionBulkData } = useContext(CollectionBulkContext);
+
 	return (
 		<>
-			{fileData.file === null && (
+			{(fileType === "zip" ||
+				(fileType === "cover" &&
+					collectionBulkData.coverFile === null) ||
+				(fileType === "" && fileData.file === null)) && (
 				<Container>
-					<Title>Upload File</Title>
-					{zipFile ? <CustomZipDropzone /> : <CustomDropzone />}
+					<Title>{title}</Title>
+					{fileType === "zip" ? (
+						<CustomZipDropzone />
+					) : (
+						<CustomDropzone cover={fileType === "cover"} />
+					)}
 				</Container>
 			)}
 		</>

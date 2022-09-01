@@ -1,4 +1,4 @@
-import FileContext from "@contexts/File/FileContext";
+import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
 import bread from "@utils/bread";
@@ -18,7 +18,6 @@ const BtnContainer = styled.div`
 
 const Btn = styled(BtnBaseAnimated)`
 	height: 3rem;
-	width: 50%;
 	min-width: fit-content;
 	display: grid;
 	place-items: center;
@@ -52,7 +51,7 @@ const AnimBtn = ({ children, onClick, disabled }) => (
 );
 
 export const CreateBulkButton = () => {
-	const { files, fileData } = useContext(FileContext);
+	const { collectionBulkData } = useContext(CollectionBulkContext);
 	const [buttonText, setButtonText] = useState("Create Collection");
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const history = useHistory();
@@ -60,11 +59,14 @@ export const CreateBulkButton = () => {
 		setButtonText(<FadeLoaderIcon />);
 		setIsSubmitting(true);
 
-		console.log("fileData", fileData);
-		console.log("files", files);
+		console.log("collectionBulkData", collectionBulkData);
 
-		if (fileData.file && files.name.length) {
-			createBulkCollectibles({ ...files, ...fileData })
+		if (
+			collectionBulkData.coverFile &&
+			collectionBulkData.collectionName.length &&
+			collectionBulkData.zipFile.length
+		) {
+			createBulkCollectibles({ ...collectionBulkData })
 				.then(res => {
 					if (!res.error) history.push(`/collections/${res}`);
 					else {

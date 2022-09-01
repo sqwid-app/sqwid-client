@@ -25,6 +25,12 @@ const constants = {
 		loan: "",
 	},
 	CREATE_ACCEPTED_MIMETYPES: ["image/jpeg", "image/png", "video/mp4"],
+	COVER_ACCEPTED_MIMETYPES: [
+		"image/jpeg",
+		"image/gif",
+		"image/png",
+		"image/webp",
+	],
 	DOCUMENTATION: {
 		base: "https://github.com/sqwid-app/sqwid-docs",
 		sale: "https://github.com/sqwid-app/sqwid-docs/blob/main/market_interaction/regular_sale.md",
