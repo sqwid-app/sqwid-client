@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.3.13 (2022-09-01)
+
+
+### Features
+
+* hide network switch on main site ([ab765b1](https://github.com/boidushya/sqwid-client/commit/ab765b1290369292ea5f8bb44bfed0cfa5d557d7))
+
 ### 0.3.12 (2022-08-08)
 
 ### 0.3.11 (2022-06-29)
