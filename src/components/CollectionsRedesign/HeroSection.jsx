@@ -499,7 +499,7 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 								</span>
 							</Creator>
 						</HeaderContainer>
-						<StatsWrapper>
+						{false && <StatsWrapper>
 							<StatContainer>
 								<Price>
 									<span>{numberSeparator(collectionInfo.stats.items)}</span>
@@ -533,6 +533,7 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 								<ContainerTitle>Volume</ContainerTitle>
 							</StatContainer>
 						</StatsWrapper>
+						}
 					</HeaderWrapper>
 					<CollectionDescription>{collectionInfo.description}</CollectionDescription>
 					<NavContainer>
