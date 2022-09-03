@@ -1,12 +1,13 @@
 import FileContext from "@contexts/File/FileContext";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
-import bread from "@utils/bread";
+// import bread from "@utils/bread";
 import { createCollectible } from "@utils/createCollectible";
 import { domAnimation, LazyMotion } from "framer-motion";
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
 const BtnContainer = styled.div`
 	flex: 1;
@@ -56,6 +57,8 @@ export const CreateButton = () => {
 	const [buttonText, setButtonText] = useState("Create Item");
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const history = useHistory();
+	const { showErrorModal } = useErrorModalHelper();
+
 	const handleClick = () => {
 		localStorage.removeItem("properties");
 		setButtonText(<FadeLoaderIcon />);
@@ -69,16 +72,20 @@ export const CreateButton = () => {
 
 			createCollectible({ ...files, ...fileData })
 				.then(res => {
-					if (!res.error) history.push(`/collectible/${res}`);
+					if (!res.error)
+						// showErrorModal("Smack the goofy outta you 🤓");
+						history.push(`/collectible/${res}`);
 					else {
 						// eslint-disable-next-line
 						console.log(res.error);
-						bread("Error creating collectible");
+						showErrorModal("Error creating collectible");
+						// bread("Error creating collectible");
 					}
 				})
 				.catch(err => {
+					showErrorModal(err.toString());
 					// bread(err.response.data.error);
-					bread(err.toString ());
+					// bread(err.toString());
 				});
 
 			// .finally(()=>{

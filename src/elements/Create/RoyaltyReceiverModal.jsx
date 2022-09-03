@@ -4,8 +4,8 @@ import "simplebar/dist/simplebar.min.css";
 import { LazyMotion, domAnimation } from "framer-motion";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { getCurrentNetwork } from "@utils/network";
-import bread from "@utils/bread";
 import CancelIcon from "@static/svg/CancelIcon";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -99,6 +99,7 @@ const RoyaltyReceiverModal = ({ isVisible, setIsVisible, selectedAddress }) => {
 	const [elemIsVisible, setElemIsVisible] = useState(isVisible);
 	const [isLoading, setIsLoading] = useState(true);
 	const modalRef = useRef();
+	const { showErrorModal } = useErrorModalHelper();
 	//eslint-disable-next-line
 	useEffect(() => {
 		if (!isVisible) {
@@ -153,7 +154,7 @@ const RoyaltyReceiverModal = ({ isVisible, setIsVisible, selectedAddress }) => {
 
 	function onIframeError(error) {
 		// console.log("iframe error", error);
-		bread("Error loading Splitz page");
+		showErrorModal("Error loading Splitz page");
 		setElemIsVisible(false);
 		setIsVisible(false);
 		setIsLoading(true);

@@ -10,10 +10,10 @@ import { LazyMotion, domAnimation, m } from "framer-motion";
 import axios from "axios";
 import { acceptBid, cancelBid } from "@utils/marketplace";
 import Loading from "@elements/Default/Loading";
-import bread from "@utils/bread";
 import { respondTo } from "@styles/styledMediaQuery";
 import { Link } from "react-router-dom";
 import { getBackend } from "@utils/network";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
 const Wrapper = styled(SimpleBarReact)`
 	overflow: auto;
@@ -169,6 +169,7 @@ const BidsCard = info => {
 	const isBidder = auth && auth.evmAddress === info.bidder.id && !isSeller;
 
 	const [isLoading, setIsLoading] = useState(false);
+	const { showErrorModal } = useErrorModalHelper();
 
 	const handleAccept = () => {
 		if (!isLoading) {
@@ -185,7 +186,7 @@ const BidsCard = info => {
 					});
 				})
 				.catch(err => {
-					bread(err.response.data.error);
+					showErrorModal(err.response.data.error);
 				});
 		}
 	};
@@ -205,7 +206,7 @@ const BidsCard = info => {
 					});
 				})
 				.catch(err => {
-					bread(err.response.data.error);
+					showErrorModal(err.response.data.error);
 				});
 		}
 	};

@@ -26,6 +26,7 @@ import axios from "axios";
 import { getBackend } from "@utils/network";
 import bread from "@utils/bread";
 import { respondTo } from "@styles/styledMediaQuery";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
 const Container = styled.div`
 	width: 70%;
@@ -267,7 +268,9 @@ export function SortableItem(props) {
 			<ListItem>
 				<ItemPositionId>{props.id}</ItemPositionId>
 				<Link to={`/collectible/${props.itemData?.positionId}`}>
-					<ItemTitle>{props.itemData?.meta?.name || "Missing Item"}</ItemTitle>
+					<ItemTitle>
+						{props.itemData?.meta?.name || "Missing Item"}
+					</ItemTitle>
 				</Link>
 				<ItemType>{getCorrectType(props.itemData?.state)}</ItemType>
 			</ListItem>
@@ -296,6 +299,8 @@ const FeaturedComponent = () => {
 			coordinateGetter: sortableKeyboardCoordinates,
 		})
 	);
+	const { showErrorModal } = useErrorModalHelper();
+
 	function handleDragEnd(event) {
 		const { active, over } = event;
 
@@ -349,7 +354,7 @@ const FeaturedComponent = () => {
 			);
 			bread("Featured items saved");
 		} catch (error) {
-			bread(error.toString());
+			showErrorModal(error.toString());
 		}
 	}
 

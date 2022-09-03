@@ -12,8 +12,8 @@ import Changes from "@elements/Profile/Changes";
 import EditDetailsContext from "@contexts/EditDetails/EditDetailsContext";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { respondTo } from "@styles/styledMediaQuery";
-import bread from "@utils/bread";
 import { getBackend } from "@utils/network";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
 const Card = styled.div`
 	display: flex;
@@ -370,6 +370,7 @@ const ProfileCard = () => {
 		name: "",
 	};
 	const [userData, setUserData] = useState(initialState);
+	const { showErrorModal } = useErrorModalHelper();
 	useEffect(() => {
 		let address = id ? id : auth.address;
 		axios
@@ -394,7 +395,7 @@ const ProfileCard = () => {
 				}
 			})
 			.catch(err => {
-				bread(err.response.data.error);
+				showErrorModal(err.response.data.error);
 			})
 			.finally(() => {
 				setIsLoading(false);

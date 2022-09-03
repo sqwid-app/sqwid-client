@@ -10,7 +10,7 @@ import { BidsModal, PutOnSaleModal, BuyModal, TransferModal } from "./Modals";
 
 import { removeFromSale } from "@utils/marketplace";
 import Loading from "@elements/Default/Loading";
-import bread from "@utils/bread";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
 const Container = styled.div`
 	display: flex;
@@ -163,6 +163,7 @@ const StopSale = () => {
 		useContext(CollectibleContext);
 	const [isLoading, setIsLoading] = useState(false);
 	const [buttonText, setButtonText] = useState("Stop Sale");
+	const { showErrorModal } = useErrorModalHelper();
 	const handleClick = () => {
 		// console.log("stop sale")
 		setIsLoading(true);
@@ -176,7 +177,7 @@ const StopSale = () => {
 				});
 			})
 			.catch(err => {
-				bread(err.response.data.error);
+				showErrorModal(err.response.data.error);
 			});
 	};
 	return (
