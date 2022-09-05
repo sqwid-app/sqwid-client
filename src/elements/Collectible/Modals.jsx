@@ -31,6 +31,7 @@ import AuthContext from "@contexts/Auth/AuthContext";
 import constants from "@utils/constants";
 import axios from "axios";
 import { getBackend } from "@utils/network";
+import { numberSeparator } from "@utils/numberSeparator";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -99,9 +100,17 @@ const InputTitle = styled.h1`
 	font-size: 1.125rem;
 	font-weight: 900;
 	span {
-		color: var(--app-container-text-primary);
 		font-weight: 700;
 		font-size: 1rem;
+		background: linear-gradient(
+			110deg,
+			var(--app-theme-primary) 0%,
+			var(--app-theme-secondary) 100%
+		);
+		color: var(--app-text) !important;
+		border-radius: 1rem;
+		padding: 0.1rem 0.5rem;
+		float: right;
 	}
 `;
 
@@ -202,6 +211,7 @@ const ToastLink = styled.a`
 	text-decoration: none;
 	color: var(--app-theme-primary);
 `;
+
 
 const InfoSection = ({ fee, link }) => {
 	return (
@@ -423,6 +433,11 @@ export const CreateAuctionModal = props => {
 		setDuration(amount < 1 ? "" : amount);
 	};
 
+	const handleCopiesInput = e => {
+		const amount = Math.min(Number(e.target.value), collectibleInfo.amount);
+		setCopies(amount || "");
+	};
+
 	const handleClick = async () => {
 		if (
 			!isLoading &&
@@ -482,7 +497,7 @@ export const CreateAuctionModal = props => {
 			<Title>Create Auction</Title>
 			<Group>
 				<InputWrapper>
-					<InputTitle>Minimum Bid</InputTitle>
+					<InputTitle>Minimum Bid <span>${numberSeparator ((collectibleInfo.conversionRate * minBid).toFixed (2))}</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={minBid}
@@ -491,13 +506,12 @@ export const CreateAuctionModal = props => {
 						}}
 						placeholder={`Minimum bid for the lot in REEF`}
 					/>
-					<InputTitle>Number of Copies</InputTitle>
+					<InputTitle>Number of Copies
+					<span>{Number (copies)} / {collectibleInfo.amount}</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={copies}
-						onChange={e => {
-							setCopies(e.target.value);
-						}}
+						onChange={handleCopiesInput}
 						placeholder={`Number of copies for the lot`}
 					/>
 					<InputTitle>Number of Minutes</InputTitle>
@@ -592,7 +606,7 @@ export const PutOnSaleModal = props => {
 			<Title>Put on sale</Title>
 			<Group>
 				<InputWrapper>
-					<InputTitle>Price</InputTitle>
+					<InputTitle>Price <span>${numberSeparator ((collectibleInfo.conversionRate * price).toFixed (2))}</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={price}
@@ -601,7 +615,7 @@ export const PutOnSaleModal = props => {
 					/>
 					<InputTitle>
 						Number of Copies{" "}
-						<span>(max {collectibleInfo.amount})</span>
+						<span>{Number (copies)} / {collectibleInfo.amount}</span>
 					</InputTitle>
 					<InputContainer
 						type="number"
@@ -703,21 +717,22 @@ export const LendModal = props => {
 			<Title>Create Loan Proposal</Title>
 			<Group>
 				<InputWrapper>
-					<InputTitle>Loan Amount</InputTitle>
+					<InputTitle>Loan Amount <span>${numberSeparator ((collectibleInfo.conversionRate * amount).toFixed (2))}</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={amount}
 						onChange={e => setAmount(e.target.value)}
 						placeholder={`Amount to borrow (in Reef)`}
 					/>
-					<InputTitle>Payback Fee</InputTitle>
+					<InputTitle>Payback Fee <span>${numberSeparator ((collectibleInfo.conversionRate * paybackFee).toFixed (2))}</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={paybackFee}
 						onChange={e => setPaybackFee(e.target.value)}
 						placeholder={`Amount to pay the lender as interest (in Reef)`}
 					/>
-					<InputTitle>Number of Copies</InputTitle>
+					<InputTitle>Number of Copies
+					<span>{Number (copies)} / {collectibleInfo.amount}</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={copies}
@@ -761,6 +776,11 @@ export const RaffleModal = props => {
 	const handleMinutesInput = e => {
 		let amount = Math.min(Number(e.target.value), 525600);
 		setDuration(amount < 1 ? "" : amount);
+	};
+
+	const handleCopiesInput = e => {
+		const amount = Math.min(Number(e.target.value), collectibleInfo.amount);
+		setCopies(amount || "");
 	};
 
 	const handleClick = async () => {
@@ -814,11 +834,12 @@ export const RaffleModal = props => {
 			<Title>Create Raffle</Title>
 			<Group>
 				<InputWrapper>
-					<InputTitle>Number of Copies</InputTitle>
+					<InputTitle>Number of Copies
+					<span>{Number (copies)} / {collectibleInfo.amount}</span></InputTitle>
 					<InputContainer
 						type="number"
 						value={copies}
-						onChange={e => setCopies(e.target.value)}
+						onChange={handleCopiesInput}
 						placeholder={`Number of copies for the lot`}
 					/>
 					<InputTitle>Duration</InputTitle>
@@ -996,7 +1017,7 @@ export const BuyModal = props => {
 			setButtonText(
 				`Buy for ${
 					amount * (collectibleInfo.sale.price / 10 ** 18)
-				} Reef`
+				} Reef / $${((amount * (collectibleInfo.sale.price / 10 ** 18)) * collectibleInfo.conversionRate).toFixed (2)}`
 			);
 		} else {
 			setButtonText(initialButtonText);
@@ -1051,7 +1072,7 @@ export const BuyModal = props => {
 			<Title>Buy</Title>
 			<Group>
 				<InputTitle>
-					Number of copies <span>(max {collectibleInfo.amount})</span>
+					Number of copies <span>{Number (copies)} / {collectibleInfo.amount}</span>
 				</InputTitle>
 				<InputContainer
 					type="number"

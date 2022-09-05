@@ -1,6 +1,7 @@
 import React, {
 	Suspense,
 	useCallback,
+	// useContext,
 	useEffect,
 	useRef,
 	useState,
@@ -16,6 +17,9 @@ import LoadingIcon from "@static/svg/LoadingIcon";
 import constants from "@utils/constants";
 import useOnScreen from "@utils/useOnScreen";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
+import { useContext } from "react";
+import FilterContext from "@contexts/Filter/FilterContext";
+// import FilterContext from "@contexts/Filter/FilterContext";
 
 const LoadingContainer = styled.div`
 	width: 100%;
@@ -60,7 +64,8 @@ const EmptySection = ({ state }) => {
 	);
 };
 
-const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
+// eslint-disable-next-line
+const PaginatedCardsScroll = ({ Card, state, profile, collection, filter }) => {
 	const loaderRef = useRef();
 	const [startFrom, setStartFrom] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
@@ -69,6 +74,7 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 	const [isFetching, setIsFetching] = useState(false);
 	const [isFinished, setIsFinished] = useState(false);
 	const { isVisible } = useOnScreen(loaderRef);
+	const [isFirstFetch, setIsFirstFetch] = useState(true);
 
 	const fetchData = useCallback(async () => {
 		setIsFetching(true);
@@ -103,8 +109,11 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 
 	useEffect(() => {
 		const getItems = async () => {
-			if (isVisible && !isFetching) {
+			if ((isFirstFetch && !isFetching) || (isVisible && !isFetching && !isFirstFetch)) {
 				await fetchData();
+				if (isFirstFetch) {
+					setIsFirstFetch(false);
+				}
 			}
 		};
 		getItems();
@@ -151,4 +160,175 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 	);
 };
 
-export default PaginatedCardsScroll;
+const NewPaginatedCardsScroll = ({ Card, state, profile, collection }) => {
+	const loaderRef = useRef();
+	const [startFrom, setStartFrom] = useState(0);
+	const [isLoading, setIsLoading] = useState(true);
+	const [isCardLoading, setIsCardLoading] = useState(true);
+	const [stateItems, setStateItems] = useState([]);
+	const [isFetching, setIsFetching] = useState(false);
+	const [isFinished, setIsFinished] = useState(false);
+	const { isVisible } = useOnScreen(loaderRef);
+	const [isFirstFetch, setIsFirstFetch] = useState(true);
+	const [shouldReset, setShouldReset] = useState(false);
+	const { filterDetails } = useContext (FilterContext);
+	const [filterQuery, setFilterQuery] = useState('');
+
+	useEffect(() => {
+		const fetchData = async () => {
+			setIsFetching(true);
+			const query = filterDetails?.filter (item => item.selected).map (item => `traits[${item.trait}]=${item.option}`).join ('&');
+
+			const items = profile
+				? await fetchUserItems(profile, state, sFrom)
+				: collection
+				? await fetchCollectionItems(collection, state, sFrom, query)
+				: await fetchStateItems(state, sFrom);
+				
+			if (shouldReset) {
+				setStateItems(items.items || []);
+			} else {
+				setStateItems([...stateItems, ...items?.items]);
+			}
+			if (!items.items || items?.items?.length === 0) {
+				setIsLoading(false);
+				setIsCardLoading(false);
+				setIsFinished(true);
+				setIsFetching(false);
+				setShouldReset(false);
+				return;
+			} else {
+				setIsFinished (false);
+			}
+			if (items.items.length < constants.EXPLORE_PAGINATION_LIMIT) {
+				setIsLoading(false);
+				setIsCardLoading(false);
+				setIsFinished(true);
+				setIsFetching(false);
+				setShouldReset(false);
+				return;
+			} else {
+				setIsFinished (false);
+			}
+			setIsLoading(false);
+			setIsCardLoading(false);
+			setStartFrom(items.pagination.lowest - 1);
+			setIsFetching(false);
+			setShouldReset(false);
+			setIsFinished(false);
+			return;
+		}
+
+		const sFrom = shouldReset ? 0 : startFrom;
+
+		if (isFinished && !shouldReset) return;
+
+		// console.log ('is first fetch', isFirstFetch, '\nis fetching', isFetching, '\nis visible', isVisible, '\nshould reset', shouldReset);
+
+		if (
+			(isFirstFetch && !isFetching && isVisible) ||
+			(isVisible && !isFetching && !isFirstFetch) ||
+			(shouldReset && !isFetching && !isFirstFetch)
+		) {
+			setStartFrom(sFrom);
+			if (isFirstFetch) {
+				setIsFirstFetch(false);
+			}
+			fetchData ();
+		}
+		// eslint-disable-next-line
+	}, [shouldReset, isVisible]);
+
+	useEffect(() => {
+		const query = filterDetails?.filter (item => item.selected).map (item => `traits[${item.trait}]=${item.option}`).join ('&');
+		if (query !== filterQuery && query !== undefined) {
+			setFilterQuery(query);
+			setShouldReset(true);
+		}
+	} , [filterDetails, filterQuery]);
+
+	// const fetchData = useCallback(async () => {
+	// 	setIsFetching(true);
+	// 	const items = profile
+	// 		? await fetchUserItems(profile, state, startFrom)
+	// 		: collection
+	// 		? await fetchCollectionItems(collection, state, startFrom)
+	// 		: await fetchStateItems(state, startFrom);
+
+	// 	if (!items.items || items?.items?.length === 0) {
+	// 		setIsLoading(false);
+	// 		setIsCardLoading(false);
+	// 		setIsFinished(true);
+	// 		setIsFetching(false);
+	// 		return;
+	// 	}
+	// 	setStateItems([...stateItems, ...items?.items]);
+	// 	if (items.items.length < constants.EXPLORE_PAGINATION_LIMIT) {
+	// 		setIsLoading(false);
+	// 		setIsCardLoading(false);
+	// 		setIsFinished(true);
+	// 		setIsFetching(false);
+	// 		return;
+	// 	}
+	// 	setIsLoading(false);
+	// 	setIsCardLoading(false);
+	// 	setStartFrom(items.pagination.lowest - 1);
+	// 	setIsFetching(false);
+	// 	return;
+	// 	//eslint-disable-next-line
+	// }, [startFrom]);
+
+	// useEffect(() => {
+	// 	const getItems = async () => {
+	// 		if ((isFirstFetch && !isFetching) || (isVisible && !isFetching && !isFirstFetch)) {
+	// 			await fetchData();
+	// 			if (isFirstFetch) {
+	// 				setIsFirstFetch(false);
+	// 			}
+	// 		}
+	// 	};
+	// 	getItems();
+	// 	// eslint-disable-next-line
+	// }, [isVisible]);
+
+	return (
+		<>
+			{isLoading ? (
+				<LoadingContainer>
+					<LoadingIcon size={64} />
+				</LoadingContainer>
+			) : (
+				<Suspense fallback={<></>}>
+					{stateItems?.length === 0 ? (
+						<EmptySection state={state} />
+					) : (
+						<>
+							<CardSectionContainer>
+								<>
+									{stateItems.map((item, index) => (
+										<Card
+											key={index}
+											data={item}
+											isLoading={isCardLoading}
+										/>
+									))}
+								</>
+							</CardSectionContainer>
+						</>
+					)}
+				</Suspense>
+			)}
+			{/* {!isFinished ? ( */}
+				<LoadMoreContainer
+					style={{ visibility: isLoading || isFinished ? "hidden" : "visible" }}
+					ref={loaderRef}
+				>
+					<span>🌊 the tide is rising</span>{" "}
+					<FadeLoaderIcon size={24} />
+				</LoadMoreContainer>
+			{/* ) : null} */}
+		</>
+	);
+};
+
+export default NewPaginatedCardsScroll;

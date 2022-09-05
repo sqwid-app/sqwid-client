@@ -101,12 +101,12 @@ const fetchUserItems = async (address, state = -1, startFrom) => {
 };
 
 // returns collection-wise items
-const fetchCollectionItems = async (address, state = -1, startFrom) => {
+const fetchCollectionItems = async (address, state = -1, startFrom, filterQuery = '') => {
 	let limit = constants.EXPLORE_PAGINATION_LIMIT;
 	const res = await axios(
 		`${getBackend()}/get/marketplace/by-collection/${address}${
 			state >= 0 ? `/${state}` : ""
-		}?limit=${limit}&startFrom=${startFrom}`
+		}?limit=${limit}&startFrom=${startFrom}${filterQuery ? `&` + filterQuery : ''}`
 	);
 	const { data } = res;
 	if (data.error) {
@@ -559,6 +559,88 @@ const fetchRoyalties = async tokenId => {
 	};
 };
 
+const fetchCollectionStats = async id => {
+	// try {
+	// 	const res = await axios(
+	// 		`${getBackend()}/statswatch/collection/${id}/all`
+	// 	);
+	// 	const { data } = res;
+	// 	return data;
+	// } catch (e) {
+	// 	return {
+	// 		volume: 0,
+	// 		average: 0,
+	// 		lastSale: 0,
+	// 		salesAmount: 0,
+	// 		items: 0,
+	// 		owners: 0
+	// 	};
+	// }
+	return {
+		volume: 0,
+		average: 0,
+		lastSale: 0,
+		salesAmount: 0,
+		items: 0,
+		owners: 0
+	};
+}
+
+const fetchCollectibleStats = async id => {
+	try {
+		const res = await axios(
+			`${getBackend()}/statswatch/collectible/${id}/all`
+		);
+		const { data } = res;
+		if (data.error) {
+			
+		}
+		return data;
+	} catch (e) {
+		return {
+			volume: 0,
+			average: 0,
+			lastSale: 0,
+			salesAmount: 0,
+			owners: 0
+		};
+	}
+}
+
+const fetchCollectibleSaleHistory = async id => {
+	try {
+		const res = await axios(
+			`${getBackend()}/statswatch/collectible/${id}/sale-history`
+		);
+		const { data } = res;
+		return data;
+	} catch (e) {
+		return {
+			sales: []
+		};
+	}
+}
+
+const fetchOngoingBids = async () => {
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	//eslint-disable-next-line
+	let jwt = address
+		? JSON.parse(localStorage.getItem("tokens")).find(
+				token => token.address === address
+		  )
+		: null;
+	if (!jwt) return 0;
+	const res = await axios (`${getBackend()}/get/marketplace/bids`, {
+		headers: {
+			Authorization: `Bearer ${jwt.token}`,
+			},
+		}
+	);
+	const { data } = res;
+	if (data.error) return [];
+	return data;
+};
+
 export {
 	unlistLoanProposal,
 	repayLoan,
@@ -583,6 +665,10 @@ export {
 	withdrawBalance,
 	fetchRoyalties,
 	fetchFeaturedItems,
+	fetchCollectionStats,
+	fetchCollectibleStats,
+	fetchCollectibleSaleHistory,
+	fetchOngoingBids,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,

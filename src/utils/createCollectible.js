@@ -10,6 +10,7 @@ import {
 } from "./marketplaceApproval";
 import { getBackend, getContract } from "./network";
 import { create as ipfsHttpClient } from "ipfs-http-client";
+import getEVMAddress from "./getEVMAddress";
 // import getMetaById from "./getMetaById";
 
 const uploadFile = async file => {
@@ -257,13 +258,14 @@ const createCollectible = async files => {
 				}
 			);
 			const meta = metadata.data?.metadata;
-			// const to = await signer.getAddress();
 			let { signer } = await Interact(address);
-			const to =
+			let to =
 				files.royaltyRecipient && files.royaltyRecipient !== ""
 					? files.royaltyRecipient
 					: await signer.getAddress();
-
+					
+			if (to.startsWith ('5')) to = await getEVMAddress (to);
+					
 			let contract = new ethers.Contract(
 				getContract("marketplace"),
 				contractABI,

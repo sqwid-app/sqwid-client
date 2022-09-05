@@ -8,7 +8,7 @@ import { createCollection } from "@utils/createCollection";
 import Loading from "@elements/Default/Loading";
 import axios from "axios";
 import AuthContext from "@contexts/Auth/AuthContext";
-import { getCloudflareURL } from "@utils/getIPFSURL";
+import { getInfuraURL } from "@utils/getIPFSURL";
 import FileContext from "@contexts/File/FileContext";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import bread from "@utils/bread";
@@ -438,6 +438,10 @@ const Existing = ({ isActive, setIsActive }) => {
 		};
 		//eslint-disable-next-line
 	}, []);
+
+	const handleNewClick = () => {
+		setIsActive ({ status: true, type: "new" });
+	}
 	return (
 		<LazyMotion features={domAnimation}>
 			<Header>Choose Collection</Header>
@@ -448,7 +452,7 @@ const Existing = ({ isActive, setIsActive }) => {
 					</LoadingContainer>
 				) : (
 					<>
-						{collections.map(item => (
+						{collections.length ? collections.map(item => (
 							<CollectionContainer
 								key={item.id}
 								whileTap={{
@@ -464,12 +468,19 @@ const Existing = ({ isActive, setIsActive }) => {
 								}}
 							>
 								<img
-									src={getCloudflareURL(item.data.image)}
+									src={getInfuraURL(item.data.image)}
 									alt={item.data.description}
 								/>
 								<p>{item.data.name}</p>
 							</CollectionContainer>
-						))}
+						)) : (
+							<AnimBtn
+								disabled={false}
+								onClick={handleNewClick}
+							>
+								Create new
+							</AnimBtn>
+						)}
 					</>
 				)}
 			</ExistingContainer>

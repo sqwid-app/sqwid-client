@@ -5,10 +5,10 @@ import CopyIcon from "@static/svg/CopyIcon";
 import EditIcon from "@static/svg/EditIcon";
 import { clamp, truncateAddress } from "@utils/textUtils";
 import axios from "axios";
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useEffect, useContext, Suspense } from "react";
 import { useParams } from "react-router";
 import styled, { css, keyframes } from "styled-components";
-import Loading from "@elements/Default/Loading";
+// import Loading from "@elements/Default/Loading";
 import Changes from "@elements/ProfileRedesign/Changes";
 import EditDetailsContext from "@contexts/EditDetails/EditDetailsContext";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
@@ -21,12 +21,24 @@ import { getBackend } from "@utils/network";
 import constants from "@utils/constants";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
 import shortenIfAddress from "@utils/shortenIfAddress";
-import { numberSeparator } from "@utils/numberSeparator";
-import { BtnBaseAnimated } from "@elements/Default/BtnBase";
-import { LazyMotion, domAnimation, m } from "framer-motion";
-import ReefIcon from "@static/svg/ReefIcon";
-import { getWithdrawableBalance, withdrawBalance } from "@utils/marketplace";
-import { convertREEFtoUSD } from "@utils/convertREEFtoUSD";
+
+// import { numberSeparator } from "@utils/numberSeparator";
+// import { BtnBaseAnimated } from "@elements/Default/BtnBase";
+// import { LazyMotion, domAnimation, m } from "framer-motion";
+// import ReefIcon from "@static/svg/ReefIcon";
+// import { getWithdrawableBalance, withdrawBalance } from "@utils/marketplace";
+// import { convertREEFtoUSD } from "@utils/convertREEFtoUSD";
+
+// import SocialsContainer from "./SocialsContainer";
+// import AvailableSection from "./Sections/AvailableSection";
+// import DottedHeading from "@elements/Default/DottedHeading";
+// import OnSaleSection from "@elements/Explore/Sections/OnSaleSection";
+import ChevronRight from "@static/svg/ChevronRight";
+import { NavLink } from "react-router-dom";
+import Background from "./Background";
+// import CardSectionContainer from "@elements/Default/CardSectionContainer";
+// import { fetchUserItems } from "@utils/marketplace";
+// import OnSaleSection from "./Sections/OnSaleSection";
 
 const Card = styled.div`
 	display: flex;
@@ -90,6 +102,7 @@ const Tooltip = styled.div`
 const Description = styled.p`
 	margin: 0;
 	margin-top: 1rem;
+	margin-bottom: 1rem;
 	font-weight: 200;
 	width: 75%;
 	color: var(--app-container-text-primary-hover);
@@ -219,6 +232,15 @@ const LoadingContainer = styled.div`
 	right: 0;
 	transform: translateY(-50%);
 `;
+const ClearContainer = styled.div`
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: translateY(-50%);
+	:hover {
+		cursor: pointer;
+	}
+`;
 
 const InputWrapper = styled.div`
 	position: relative;
@@ -237,13 +259,8 @@ const AdditionalDetailsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
-	height: 100%;
+	align-self: flex-start;
 	gap: 1rem;
-	${respondTo.md`
-		gap: 1.5rem;
-		align-items: center;
-		margin-top: 1.5rem;
-	`}
 `;
 
 const HeaderSection = styled.div`
@@ -303,6 +320,20 @@ const HeaderContainer = styled.div`
 		z-index:5;
 	`}
 `;
+/*
+const Btn = styled(BtnBaseAnimated)`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1rem;
+	font-weight: 700;
+	padding: 0 1.25rem;
+	border-radius: 1000rem;
+	height: 2.5rem;
+	min-width: 6rem;
+	z-index: 2;
+	margin-top: 1rem;
+`;
 
 const WithdrawAmount = styled.p`
 	font-weight: 900;
@@ -337,19 +368,6 @@ const WithdrawContainer = styled(m.div)`
 	}
 `;
 
-const Btn = styled(BtnBaseAnimated)`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 1rem;
-	font-weight: 700;
-	padding: 0 1.25rem;
-	border-radius: 1000rem;
-	height: 2.5rem;
-	min-width: 6rem;
-	z-index: 2;
-	margin-top: 1rem;
-`;
 
 const WithdrawHeading = styled.h3`
 	color: var(--app-container-text-primary-hover);
@@ -374,7 +392,8 @@ const AnimBtn = ({ children, ...props }) => (
 		{children}
 	</Btn>
 );
-
+*/
+/*
 const Withdraw = () => {
 	const [price, setPrice] = useState();
 	const [usdPrice, setUsdPrice] = useState();
@@ -436,7 +455,8 @@ const Withdraw = () => {
 		</>
 	);
 };
-
+*/
+/*
 const NameEditSection = ({ name, setSync }) => {
 	const { info, setInfo } = useContext(EditDetailsContext);
 	const [isLoading, setIsLoading] = useState(false);
@@ -505,7 +525,8 @@ const NameEditSection = ({ name, setSync }) => {
 		</div>
 	);
 };
-
+*/
+/*
 const DescriptionEditSection = ({ description, setSync }) => {
 	const { info, setInfo } = useContext(EditDetailsContext);
 	const [isLoading, setIsLoading] = useState(false);
@@ -578,17 +599,287 @@ const DescriptionEditSection = ({ description, setSync }) => {
 		</div>
 	);
 };
+*/
+// const ClearButton = styled.button`
+// 	background: none;
+// 	border: none;
+// 	outline: none;
+// 	cursor: pointer;
+// }`;
+const SVG = styled.svg`
+	fill: var(--app-container-text-primary);
+	height: 1.5rem;
+	width: 1.5rem;
+	transition: all 0.1s ease-in-out;
+	:hover {
+		transform: scale(1.1);
+		fill: var(--app-container-text-primary-hover);
+	}
+`;
+
+
+const FieldEditSection = ({ fieldValue, fieldTitle, fieldPlaceholder, defaultFieldPlaceholder, endpoint, hasClearButton, setSync }) => {
+	const { info, setInfo } = useContext(EditDetailsContext);
+	const [placeholder, setPlaceholder] = useState(fieldPlaceholder || defaultFieldPlaceholder);
+	const [isLoading, setIsLoading] = useState(false);
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	let jwt = address
+		? JSON.parse(localStorage.getItem("tokens")).find(
+				token => token.address === address
+		  )
+		: null;
+
+	useEffect(() => {
+		const delayDebounceFn = setTimeout(() => {
+			if (info[fieldValue]?.length) {
+				axios
+					.post(
+						`${getBackend()}/edit/user${endpoint || '/'}${fieldValue}`,
+						{
+							[fieldValue]: info[fieldValue],
+						},
+						{
+							headers: {
+								Authorization: `Bearer ${jwt.token}`,
+							},
+						}
+					)
+					.then(() => {
+						setSync(false);
+					})
+					.finally(() => {
+						setIsLoading(false);
+					});
+			} else {
+				setSync(false);
+				setIsLoading(false);
+			}
+		}, 2000);
+
+		return () => clearTimeout(delayDebounceFn);
+		//eslint-disable-next-line
+	}, [info[fieldValue]]);
+
+	const handleInput = event => {
+		setIsLoading(true);
+		setSync(true);
+		setInfo({
+			...info,
+			[fieldValue]: event.target.value,
+		});
+	};
+
+	const handleClear = () => {
+		setIsLoading(true);
+		setSync(true);
+		setInfo({
+			...info,
+			[fieldValue]: "",
+		});
+		setPlaceholder(defaultFieldPlaceholder);
+		axios
+			.post(
+				`${getBackend()}/edit/user${endpoint || '/'}${fieldValue}`,
+				{
+					[fieldValue]: "",
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${jwt.token}`,
+					},
+				}
+			)
+			.then(() => {
+				setSync(false);
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
+	}
+
+	return (
+		<div>
+			<Title>{fieldTitle}</Title>
+			<InputWrapper>
+				<InputContainer
+					value={info[fieldValue]?.length ? info[fieldValue] : ""}
+					onChange={handleInput}
+					placeholder={
+						placeholder?.length
+							? clamp(placeholder, 50)
+							: defaultFieldPlaceholder
+					}
+				/>
+				{isLoading && (
+					<LoadingContainer>
+						<FadeLoaderIcon />
+					</LoadingContainer>
+				)}
+				{((hasClearButton === true) &&
+				!isLoading &&
+				((info[fieldValue]?.length > 0) || placeholder !== defaultFieldPlaceholder)) &&
+				(
+					<ClearContainer onClick={handleClear}>
+						<SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+							<path d="m22 6.002c0-.552-.448-1-1-1h-12.628c-.437 0-.853.191-1.138.523-1.078 1.256-3.811 4.439-4.993 5.816-.16.187-.241.418-.241.65s.08.464.24.651c1.181 1.38 3.915 4.575 4.994 5.836.285.333.701.524 1.14.524h12.626c.552 0 1-.447 1-1 0-2.577 0-9.423 0-12zm-7.991 4.928 1.71-1.711c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .194-.073.385-.219.532l-1.711 1.71 1.728 1.728c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.384-.073-.531-.219l-1.728-1.728-1.728 1.728c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l1.728-1.728-1.788-1.787c-.146-.147-.219-.338-.219-.531 0-.426.346-.75.751-.75.192 0 .384.073.53.219z"/>
+						</SVG>
+					</ClearContainer>
+				)}
+			</InputWrapper>
+		</div>
+	);
+};
 
 const EditSection = ({ userData }) => {
 	const [sync, setSync] = useState(true);
 	return (
 		<>
-			<NameEditSection name={userData.name} setSync={setSync} />
-			<DescriptionEditSection
-				description={userData.description}
+			<FieldEditSection
+				fieldValue="displayName"
+				fieldTitle="Display Name"
+				endpoint="/"
+				fieldPlaceholder={userData.name}
+				setSync={setSync}
+			/>
+			<FieldEditSection
+				fieldValue="bio"
+				fieldTitle="Description"
+				endpoint="/"
+				hasClearButton
+				fieldPlaceholder={userData.description}
+				defaultFieldPlaceholder="Enter your bio here"
+				setSync={setSync}
+			/>
+			<FieldEditSection
+				fieldValue="instagram"
+				fieldTitle="Instagram"
+				endpoint="/socials/"
+				hasClearButton
+				fieldPlaceholder={userData.socials?.instagram}
+				defaultFieldPlaceholder="username"
+				setSync={setSync}
+			/>
+			<FieldEditSection
+				fieldValue="twitter"
+				fieldTitle="Twitter"
+				endpoint="/socials/"
+				hasClearButton
+				fieldPlaceholder={userData.socials?.twitter}
+				defaultFieldPlaceholder="username"
+				setSync={setSync}
+			/>
+			<FieldEditSection
+				fieldValue="tiktok"
+				fieldTitle="TikTok"
+				endpoint="/socials/"
+				hasClearButton
+				fieldPlaceholder={userData.socials?.tiktok}
+				defaultFieldPlaceholder="@username"
+				setSync={setSync}
+			/>
+			<FieldEditSection
+				fieldValue="website"
+				fieldTitle="Website"
+				endpoint="/socials/"
+				hasClearButton
+				fieldPlaceholder={userData.socials?.website}
+				defaultFieldPlaceholder="https://www.example.com"
+				setSync={setSync}
+			/>
+			<FieldEditSection
+				fieldValue="github"
+				fieldTitle="Github"
+				endpoint="/socials/"
+				hasClearButton
+				fieldPlaceholder={userData.socials?.github}
+				defaultFieldPlaceholder="username"
 				setSync={setSync}
 			/>
 			<Changes sync={sync} />
+		</>
+	);
+};
+
+const ProfileWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+	.heading {
+		margin: 1rem;
+	}
+`;
+
+// const QuickSectionHeading = styled(DottedHeading)`
+// 	font-size: 1.5rem;
+// 	margin-bottom: 1rem;
+// 	margin-top: 1rem;
+// `;
+
+const SalesCard = React.lazy(() =>
+	import("@elements/Explore/Cards/Sales/SalesCard")
+);
+
+const QuickContainer = styled.div`
+	width: 100%;
+	margin-top: 2rem;
+`;
+
+const QuickHeader = styled.h1`
+	font-weight: 900;
+	// padding-left: 20rem;
+	// padding-right: 20rem;
+`;
+
+const QuickHeaderSection = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	width: 100%;
+`;
+
+const StyledNavLink = styled(NavLink)`
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	color: var(--app-container-text-primary-hover);
+	font-size: 1rem;
+	font-weight: 800;
+	transition: color 0.2s ease;
+	&:hover {
+		color: var(--app-text);
+	}
+`;
+
+const QuickCardSectionContainer = styled.div`
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(0, 16rem));
+	width: 100%;
+	justify-content: center;
+	padding: 1.5rem 1.25rem;
+	grid-gap: 2rem 1rem;
+	overflow-x: hidden;
+`;
+
+const QuickSection = ({ items, title, link }) => {
+	return (
+		<>
+			{items?.length ? <QuickContainer>
+				<QuickHeaderSection>
+					<QuickHeader>{title}</QuickHeader>
+					<StyledNavLink to={link}>
+						View All <ChevronRight />
+					</StyledNavLink>
+				</QuickHeaderSection>
+				<QuickCardSectionContainer>
+					<Suspense>
+						{items.map((item, index) => (
+							<SalesCard key={index} data={item} />
+						))}
+					</Suspense>
+				</QuickCardSectionContainer>
+			</QuickContainer> : null}
 		</>
 	);
 };
@@ -598,6 +889,7 @@ const ProfileCard = () => {
 	const [isOwnAccount, setIsOwnAccount] = useState(false);
 	const [editIsActive, setEditIsActive] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [quickItems, setQuickItems] = useState([]);
 	const { info } = useContext(EditDetailsContext);
 	const { id } = useParams();
 	const { auth } = useContext(AuthContext);
@@ -606,8 +898,27 @@ const ProfileCard = () => {
 		address: "",
 		description: "",
 		name: "",
+		socials: {}
 	};
 	const [userData, setUserData] = useState(initialState);
+
+	// fetch quick items
+	useEffect (() => {
+		const fetchQuickItems = async () => {
+			const address = id || auth?.evmAddress;
+			const state = (!id || auth?.evmAddress === id) ? 0 : 1; // available for auth, sales for non-auth
+			try {
+				const response = await axios(
+					`${getBackend()}/get/marketplace/by-owner/${address}/${state}?limit=4&startFrom=0`
+					);
+				setQuickItems(response.data?.items);
+			} catch (error) {
+				bread ('Failed to load quick items');
+			}
+		}
+		fetchQuickItems();
+		// eslint-disable-next-line
+	}, [])
 	useEffect(() => {
 		if (!editIsActive) {
 			let address = id ? id : auth.address;
@@ -620,6 +931,7 @@ const ProfileCard = () => {
 							name: data.displayName,
 							description: data.bio,
 							address: id,
+							socials: data.socials || {},
 							avatar: getAvatarFromId(id),
 						});
 					} else if (auth) {
@@ -629,6 +941,7 @@ const ProfileCard = () => {
 							name: data.displayName,
 							avatar: getAvatarFromId(auth.address),
 							description: data.bio,
+							socials: data.socials || {}
 						});
 					}
 				})
@@ -667,100 +980,113 @@ const ProfileCard = () => {
 	}, [tooltipVisible]);
 	const tooltipRef = useRef();
 	return (
-		<Card>
-			{!editIsActive ? (
-				!isLoading ? (
-					<Container>
-						<ProfilePicture
-							src={userData.avatar ? userData.avatar : null}
-						/>
-						<ContentContainer>
-							<Name>
-								{info.name.length
-									? shortenIfAddress(info.name)
-									: shortenIfAddress(userData.name)}
-							</Name>
-							<AddressContainer>
-								<label title={userData.address}>
-									<Address>
-										{truncateAddress(userData.address, 6)}
-									</Address>
-								</label>
-								{/* {window.isSecureContext && (
-									<CopyIcon
-										onClick={copyAddress}
-									/>
-								)} */}
-								<Tooltip
-									style={{ display: "none" }}
-									ref={tooltipRef}
-									remove={!tooltipVisible}
-								>
-									Copied to clipboard!
-								</Tooltip>
-							</AddressContainer>
-							<Description>
-								{clamp(
-									info.description.length
-										? info.description
-										: userData.description
-								)}
-							</Description>
-						</ContentContainer>
+		<>
+			<Background socials = {userData.socials}/>
+			<Card>
+				{!editIsActive ? (
+					!isLoading ? (
+						<ProfileWrapper>
+							<Container>
+								<ProfilePicture
+									src={userData.avatar ? userData.avatar : null}
+								/>
+								<ContentContainer>
+									<Name>
+										{info.name.length
+											? shortenIfAddress(info.name)
+											: shortenIfAddress(userData.name)}
+									</Name>
+									<AddressContainer>
+										<label title={userData.address}>
+											<Address>
+												{truncateAddress(userData.address, 6)}
+											</Address>
+										</label>
+										{/* {window.isSecureContext && (
+											<CopyIcon
+												onClick={copyAddress}
+											/>
+										)} */}
+										<Tooltip
+											style={{ display: "none" }}
+											ref={tooltipRef}
+											remove={!tooltipVisible}
+										>
+											Copied to clipboard!
+										</Tooltip>
+									</AddressContainer>
+									<Description>
+										{clamp(
+											info.description.length
+												? info.description
+												: userData.description
+										)}
+									</Description>
+								</ContentContainer>
+								<AdditionalDetailsContainer>
+									{/* <SocialsContainer
+										{...userData.socials}
+									/> */}
+									{isOwnAccount && (
+										<>
+											<EditDetailsContainer
+												onClick={() => setEditIsActive(true)}
+												title={`${
+													!editIsActive ? `Enter` : `Exit`
+												} Edit Mode`}
+											>
+												<span>Edit Profile Details</span>
+												<EditIcon />
+											</EditDetailsContainer>
+											{/* <Withdraw /> */}
+										</>
+									)}
+								</AdditionalDetailsContainer>
 
-						<AdditionalDetailsContainer>
-							{/* <LazyMotion features={domAnimation}>
-								<Btn onClick={() => wipBread()}>Follow</Btn>
-							</LazyMotion>
-							<MetadataContainer
-								followers={0}
-								collections={0}
-								nfts={0}
-							/> */}
-							{isOwnAccount && (
-								<>
-									<EditDetailsContainer
-										onClick={() => setEditIsActive(true)}
-										title={`${
-											!editIsActive ? `Enter` : `Exit`
-										} Edit Mode`}
-									>
-										<span>Edit Profile Details</span>
-										<EditIcon />
-									</EditDetailsContainer>
-									<Withdraw />
-								</>
-							)}
-						</AdditionalDetailsContainer>
-					</Container>
+							</Container>
+							{/* <QuickSectionHeading>{isOwnAccount ? 'Available items' : 'Items on sale'}</QuickSectionHeading> */}
+							{/* {isOwnAccount ? (
+								<AvailableSection/>
+
+							) : (
+								<OnSaleSection/>
+							)} */}
+							<QuickSection
+								items={quickItems}
+								title={isOwnAccount ? `Available items` : `Items on sale`}
+								link={isOwnAccount ? `?tab=Available` : `?tab=On%20Sale`}
+							/>
+							
+						</ProfileWrapper>
+					) : (
+						<Header>Loading...</Header>
+					)
 				) : (
-					<Header>Loading...</Header>
-				)
-			) : (
-				<HeaderContainer>
-					<HeaderSection>
-						<Header>Edit Details</Header>
-						{isOwnAccount && (
-							<EditDetailsContainer
-								onClick={() => setEditIsActive(false)}
-								title={`${
-									!editIsActive ? `Enter` : `Exit`
-								} Edit Mode`}
-							>
-								<span>Exit Edit Mode</span>
-								<EditIcon />
-							</EditDetailsContainer>
-						)}
-					</HeaderSection>
-					<EditContainer>
-						<EditSection
-							userData={userData}
-							setUserData={setUserData}
-						/>
-					</EditContainer>
-				</HeaderContainer>
-			)}
-		</Card>
+					<HeaderContainer>
+						<HeaderSection>
+							<Header>Edit Details</Header>
+							{isOwnAccount && (
+								<EditDetailsContainer
+									onClick={() => setEditIsActive(false)}
+									title={`${
+										!editIsActive ? `Enter` : `Exit`
+									} Edit Mode`}
+								>
+									<span>Exit Edit Mode</span>
+									<EditIcon />
+								</EditDetailsContainer>
+							)}
+						</HeaderSection>
+						<EditContainer>
+							<EditSection
+								userData={userData}
+								setUserData={setUserData}
+							/>
+						</EditContainer>
+					</HeaderContainer>
+				)}
+			</Card>
+		</>
 	);
 };
 

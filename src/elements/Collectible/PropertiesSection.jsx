@@ -24,7 +24,7 @@ const Property = styled(m.div)`
 	padding: 0.5rem 1rem;
 	border-radius: 1rem;
 	border: 0.1rem solid var(--app-container-bg-primary);
-	max-width: 6rem;
+	max-width: 20rem;
 	cursor: pointer;
 	p {
 		color: var(--app-text);

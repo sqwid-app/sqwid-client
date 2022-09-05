@@ -85,9 +85,23 @@ const BalanceWrapper = styled.div`
 
 const Button = styled(NotStyledLink)`
 	margin-left: auto;
-	font-size: 0.875rem;
-	background: var(--app-container-bg-secondary);
-	color: var(--app-container-text-primary-hover);
+	font-size: 1rem;
+	background-image: linear-gradient(
+		110deg,
+		var(--app-theme-primary) 0%,
+		var(--app-theme-secondary) 50%,
+		var(--app-theme-primary) 100%
+	);
+	background-size: 200%;
+	transition: background-position 0.4s ease 0.1s;
+	&[disabled] {
+		background: var(--app-theme-primary-disabled);
+		pointer-events: none;
+	}
+	&:hover {
+		background-position: right center;
+	}
+	color: var(--app-text);
 	padding: 0.25rem 0.75rem;
 	border-radius: 0.375rem;
 `;
@@ -95,6 +109,7 @@ const Button = styled(NotStyledLink)`
 const ButtonContainer = styled(m.div)`
 	padding: 0.375rem 0;
 	width: 100%;
+	margin-top: .25rem;
 `;
 
 const WithdrawWrapper = styled(m.div)`

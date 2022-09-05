@@ -1,18 +1,21 @@
-import React, { useContext, useMemo, useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import styled, { css } from "styled-components";
+import React, { useContext, useMemo, useState, useRef, useEffect } from "react";
+// import { Link } from "react-router-dom";
+import styled, { css, keyframes } from "styled-components";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { respondTo } from "@styles/styledMediaQuery";
 import Plyr from "@elements/Default/Plyr";
 import "@styles/plyr.css";
 import { CSSTransition } from "react-transition-group";
-import { getDwebURL, getInfuraURL } from "@utils/getIPFSURL";
+import { getInfuraURL } from "@utils/getIPFSURL";
 import ModalComponent from "./ModalComponent";
 import { LazyMotion, m, domAnimation } from "framer-motion";
-import { wipBread } from "@utils/bread";
+// import { wipBread } from "@utils/bread";
 import constants from "@utils/constants";
 import { capitalize } from "@utils/textUtils";
 import LoadingIcon from "@static/svg/LoadingIcon";
+import { heart } from "@utils/heart";
+import bread from "@utils/bread";
+import AuthContext from "@contexts/Auth/AuthContext";
 
 const Container = styled.div`
 	display: grid;
@@ -64,7 +67,7 @@ const ImageWrapper = styled.div`
 	.utility-wrapper {
 		transition: all 0.15s ease 0.075s;
 		opacity: 0;
-		transform: translateY(100%);
+		transform: translateY(-100%);
 	}
 	img:hover + .utility-wrapper,
 	.utility-wrapper:hover {
@@ -152,10 +155,15 @@ const VideoWrapper = styled.div`
 	.utility-wrapper {
 		transition: all 0.15s ease 0.075s;
 		opacity: 0;
-		transform: translateY(100%);
+		// transform: translateY(100%);
+		// z-index: 5;
 	}
-	img:hover + .utility-wrapper,
-	.utility-wrapper:hover {
+	// img:hover + .utility-wrapper,
+	// .utility-wrapper:hover {
+	// 	opacity: 1;
+	// 	transform: translateY(0);
+	// }
+	:hover > .utility-wrapper {
 		opacity: 1;
 		transform: translateY(0);
 	}
@@ -216,12 +224,12 @@ const UtilityWrapper = styled.div`
 	place-items: center;
 	position: absolute;
 	z-index: 2;
-	bottom: 0;
+	top: 0;
 	width: 100%;
 	border-radius: 0 0 0.75rem 0.75rem;
 	padding: 0.5rem;
 	min-height: 4rem;
-	background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.65));
+	background: linear-gradient(0deg, transparent, rgba(0, 0, 0, 0.65));
 `;
 
 const UtilityContainer = styled.div`
@@ -237,10 +245,10 @@ const UtilityContainer = styled.div`
 const BtnContainer = styled.div`
 	position: relative;
 	.popup {
-		padding-top: 0.25rem;
+		padding-bottom: 0.25rem;
 		position: absolute;
 		font-weight: 800;
-		bottom: calc(-50% - 0.125rem);
+		top: calc(-50% - 0.125rem);
 		left: 50%;
 		transform: translateX(-50%);
 		opacity: 0;
@@ -253,31 +261,144 @@ const BtnContainer = styled.div`
 	}
 `;
 
+const swipeDownwards = keyframes`
+	0% {
+		opacity:0;
+		transform: translateX(-25%);
+	}
+	100% {
+		opacity:1;
+		transform: translateX(1rem);
+	}
+`;
+
+const swipeUpwards = keyframes`
+	0% {
+		opacity: 1;
+		transform: translateX(1rem);
+	}
+	100% {
+		opacity:0;
+		transform: translateX(-25%);
+	}
+`;
+
+const entryAnim = css`
+	animation: ${swipeDownwards} 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
+		forwards;
+`;
+
+const exitAnim = css`
+	animation: ${swipeUpwards} 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
+		forwards;
+`;
+
+const Tooltip = styled.div`
+	position: absolute;
+	top: 0;
+	left: 100%;
+	bottom: 0;
+	right: 0;
+	padding: 0.5rem 0.75rem;
+	border-radius: 0.5rem;
+	box-shadow: 0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	background: var(--app-container-bg-primary);
+	user-select: none;
+	z-index: 15;
+	white-space: nowrap;
+	width: fit-content;
+	place-items: center;
+	${props => (!props.remove ? entryAnim : exitAnim)};
+`;
+
+// const ShareBtn = ({ to }) => {
+// 	const MotionLink = m(Link);
+// 	return (
+// 		<BtnContainer>
+// 			<MotionLink
+// 				whileHover={{
+// 					scale: 1.1,
+// 				}}
+// 				whileTap={{
+// 					scale: 0.95,
+// 				}}
+// 				title="Share"
+// 				className="btn btn__share"
+// 				to="/"
+// 			>
+// 				<svg
+// 					xmlns="http://www.w3.org/2000/svg"
+// 					viewBox="0 0 24 24"
+// 					fill="currentColor"
+// 				>
+// 					<path d="M3 12c0 1.654 1.346 3 3 3 .794 0 1.512-.315 2.049-.82l5.991 3.424c-.018.13-.04.26-.04.396 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3c-.794 0-1.512.315-2.049.82L8.96 12.397c.018-.131.04-.261.04-.397s-.022-.266-.04-.397l5.991-3.423c.537.505 1.255.82 2.049.82 1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .136.022.266.04.397L8.049 9.82A2.982 2.982 0 0 0 6 9c-1.654 0-3 1.346-3 3z"></path>
+// 				</svg>
+// 				{/* <span>Share</span> */}
+// 			</MotionLink>
+// 			<p className="popup">Share</p>
+// 		</BtnContainer>
+// 	);
+// };
+
 const ShareBtn = ({ to }) => {
-	const MotionLink = m(Link);
+	const tooltipRef = useRef();
+	const [tooltipVisible, setTooltipVisible] = useState(false);
+	useEffect(() => {
+		if (tooltipVisible) tooltipRef.current.style.display = "grid";
+		else {
+			setTimeout(() => {
+				if (tooltipRef.current)
+					tooltipRef.current.style.display = "none";
+			}, 400);
+		}
+	}, [tooltipVisible]);
+
+	const copyAddress = () => {
+		navigator.clipboard.writeText(window.location.href).then(() => {
+			setTooltipVisible(true);
+			setTimeout(() => {
+				setTooltipVisible(false);
+			}, 1000);
+		});
+	};
+
 	return (
 		<BtnContainer>
-			<MotionLink
-				whileHover={{
-					scale: 1.1,
-				}}
-				whileTap={{
-					scale: 0.95,
-				}}
-				title="Share"
-				className="btn btn__share"
-				to="/"
+			{window.isSecureContext && (
+				<>
+					<m.div
+						whileHover={{
+							// y: -2.5,
+							scale: 1.1
+						}}
+						whileTap={{
+							scale: 0.95,
+						}}
+						onClick={copyAddress}
+						title="Share"
+						className="btn btn__share"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="currentColor"
+						>
+							<path d="M3 12c0 1.654 1.346 3 3 3 .794 0 1.512-.315 2.049-.82l5.991 3.424c-.018.13-.04.26-.04.396 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3c-.794 0-1.512.315-2.049.82L8.96 12.397c.018-.131.04-.261.04-.397s-.022-.266-.04-.397l5.991-3.423c.537.505 1.255.82 2.049.82 1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .136.022.266.04.397L8.049 9.82A2.982 2.982 0 0 0 6 9c-1.654 0-3 1.346-3 3z"></path>
+						</svg>
+						{/* <span>Share</span> */}
+					</m.div>
+					<p className="popup">Share</p>
+				</>
+			)}
+			<Tooltip
+				style={{ display: "none" }}
+				ref={tooltipRef}
+				remove={!tooltipVisible}
 			>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 24 24"
-					fill="currentColor"
-				>
-					<path d="M3 12c0 1.654 1.346 3 3 3 .794 0 1.512-.315 2.049-.82l5.991 3.424c-.018.13-.04.26-.04.396 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3c-.794 0-1.512.315-2.049.82L8.96 12.397c.018-.131.04-.261.04-.397s-.022-.266-.04-.397l5.991-3.423c.537.505 1.255.82 2.049.82 1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .136.022.266.04.397L8.049 9.82A2.982 2.982 0 0 0 6 9c-1.654 0-3 1.346-3 3z"></path>
-				</svg>
-				{/* <span>Share</span> */}
-			</MotionLink>
-			<p className="popup">Share</p>
+				{" "}
+				Copied to clipboard!
+			</Tooltip>
 		</BtnContainer>
 	);
 };
@@ -311,11 +432,39 @@ const ReportBtn = () => {
 };
 
 const HeartBtn = () => {
-	const [isHearted, setIsHearted] = useState(true);
+	const [isHearted, setIsHearted] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+	const { auth } = useContext(AuthContext);
+	const evmAddress = auth.evmAddress;
 	const handleHeartClick = () => {
+		if (isLoading) return;
+		setIsLoading(true);
 		setIsHearted(!isHearted);
-		!isHearted && wipBread();
+		heart (collectibleInfo.itemId).then (res => {
+			if (isHearted) {
+				const newHearts = collectibleInfo.hearts.filter(heart => heart.address !== evmAddress);
+				setCollectibleInfo({ ...collectibleInfo, hearts: newHearts });
+			} else {
+				setCollectibleInfo({ ...collectibleInfo, hearts: [...collectibleInfo.hearts, {
+					address: evmAddress,
+					name: res.name
+				}] });
+			}
+			setIsLoading (false);
+		}).catch (err => {
+			bread (err.toString ());
+			setIsLoading (false);
+		});
 	};
+
+	useEffect (() => {
+		if (collectibleInfo.hearts?.find (h => h.address === evmAddress)) {
+			setIsHearted (true);
+		} else {
+			setIsHearted (false);
+		}
+	}, [collectibleInfo.hearts, evmAddress]);
 	return (
 		<BtnContainer>
 			<m.div
@@ -327,30 +476,32 @@ const HeartBtn = () => {
 					scale: 0.95,
 				}}
 				onClick={handleHeartClick}
-				title="Heart"
+				title={ isHearted ? 'Unheart' : 'Heart' }
 				className="btn btn__heart"
 			>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 24 24"
-					fill="currentColor"
-				>
-					<path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path>
-				</svg>
-				{/* <span>Report</span> */}
+				{
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+					>
+						<path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path>
+					</svg>
+				}
 			</m.div>
-			<p className="popup">Heart</p>
+			<p className="popup">{ isHearted ? 'Unheart' : 'Heart' }</p>
 		</BtnContainer>
 	);
 };
 
 //eslint-disable-next-line
 const Utility = () => {
+	const { auth } = useContext(AuthContext);
 	return (
 		<UtilityWrapper className="utility-wrapper">
 			<LazyMotion features={domAnimation}>
 				<UtilityContainer>
-					<HeartBtn />
+					{auth && <HeartBtn />}
 					<ShareBtn />
 				</UtilityContainer>
 			</LazyMotion>
@@ -388,7 +539,7 @@ const ImageContainer = ({ title, isBlurred, setIsBlurred, ...props }) => {
 					draggable={false}
 				/>
 				{/* PRERELEASE 🚧 */}
-				{/* <Utility /> */}
+				<Utility />
 			</ImageWrapper>
 		</>
 	);
@@ -401,7 +552,7 @@ const VideoContainer = ({ data, blur }) => {
 			type: type,
 			sources: [
 				{
-					src: getDwebURL(data.media),
+					src: getInfuraURL(data.media),
 				},
 			],
 		}),
@@ -547,6 +698,7 @@ const NFTContentSection = () => {
 						blur={isBlurred}
 						data={collectibleInfo.meta}
 					/>
+					<Utility />
 				</VideoWrapper>
 			)}
 		</Container>

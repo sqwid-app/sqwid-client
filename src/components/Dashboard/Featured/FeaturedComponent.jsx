@@ -259,7 +259,7 @@ export function SortableItem(props) {
 			<ItemIcon
 				title="Preview"
 				url={
-					props.itemData
+					props.itemData?.meta
 						? getInfuraURL(props.itemData?.meta?.image)
 						: ""
 				}
@@ -267,7 +267,7 @@ export function SortableItem(props) {
 			<ListItem>
 				<ItemPositionId>{props.id}</ItemPositionId>
 				<Link to={`/collectible/${props.itemData?.positionId}`}>
-					<ItemTitle>{props.itemData?.meta?.name}</ItemTitle>
+					<ItemTitle>{props.itemData?.meta?.name || "Missing Item"}</ItemTitle>
 				</Link>
 				<ItemType>{getCorrectType(props.itemData?.state)}</ItemType>
 			</ListItem>

@@ -13,6 +13,10 @@ import {
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
 import ZoomPlugin from "chartjs-plugin-zoom";
+import { fetchCollectibleSaleHistory } from "@utils/marketplace";
+import { useContext } from "react";
+import CollectibleContext from "@contexts/Collectible/CollectibleContext";
+import { format } from "date-fns";
 
 const Utils = {
 	id: "utils",
@@ -39,26 +43,19 @@ ChartJS.register(
 
 const DetailsChart = () => {
 	const chartRef = useRef();
-
-	const labels = [
-		"January",
-		"February",
-		"March",
-		"April",
-		"May",
-		"June",
-		"July",
-	];
+	const { collectibleInfo, setCollectibleInfo } = useContext (CollectibleContext);
 
 	const randomNumberInRange = (min, max) =>
 		Math.floor(Math.random() * (max - min + 1)) + min;
 
+	// eslint-disable-next-line
 	const getRandomData = options =>
 		Array(options.size)
 			.fill(0)
 			.map(() => randomNumberInRange(options.min, options.max));
 
 	const accentColor = "13, 104, 216";
+	const amountColor = "255, 250, 110";
 	const borderColor = "120, 121, 135";
 
 	const options = {
@@ -73,7 +70,19 @@ const DetailsChart = () => {
 				ticks: {
 					color: `rgba(${borderColor},1)`,
 				},
+				beginAtZero: true
 			},
+			y1: {
+				ticks: {
+					color: `rgba(${borderColor},1)`,
+				},
+				beginAtZero: true,
+				grid: {
+					drawOnChartArea: false, // only want the grid lines for one axis to show up
+				},
+				position: 'right',
+				suggestedMax: 25
+			}
 		},
 		plugins: {
 			tooltip: {
@@ -114,7 +123,7 @@ const DetailsChart = () => {
 	};
 
 	const [data, setData] = useState({
-		labels,
+		labels: [],
 		datasets: [],
 	});
 
@@ -179,23 +188,96 @@ const DetailsChart = () => {
 		gradient.addColorStop(0.2, `rgba(${accentColor}, 0.25)`);
 		gradient.addColorStop(1, `rgba(${accentColor}, 0)`);
 
-		setData({
-			...data,
-			datasets: [
-				{
-					backgroundColor: gradient,
-					pointBackgroundColor: `rgba(${accentColor}, 1)`,
-					label: "Price",
-					data: getRandomData({
-						size: labels.length,
-						min: 0,
-						max: 1000,
-					}),
-				},
-			],
-		});
+		let amountGradient = chart.ctx.createLinearGradient(
+			0,
+			0,
+			0,
+			chart.height - gradientBottomOffset
+		);
+		amountGradient.addColorStop(0, `rgba(${amountColor}, 0.75)`);
+		amountGradient.addColorStop(0.2, `rgba(${amountColor}, 0.25)`);
+		amountGradient.addColorStop(1, `rgba(${amountColor}, 0)`);
+
+		// setData({
+		// 	...data,
+		// 	datasets: [
+		// 		{
+		// 			backgroundColor: gradient,
+		// 			pointBackgroundColor: `rgba(${accentColor}, 1)`,
+		// 			label: "Price",
+		// 			data: getRandomData({
+		// 				size: labels.length,
+		// 				min: 0,
+		// 				max: 1000,
+		// 			}),
+		// 		},
+		// 	],
+		// });
+
+		const fetchData = async () => {
+			let response;
+			if (collectibleInfo.sales) response = collectibleInfo.sales;
+			else response = (await fetchCollectibleSaleHistory (collectibleInfo.itemId)).sales;
+			setCollectibleInfo ({
+				...collectibleInfo,
+				sales: response,
+			});
+			const labels = response.map ((item) => format (new Date (item.timestamp * 1000), "MMM dd"));
+			let days = [];
+			for (let i = 0; i < labels.length; i++) {
+				if (days.indexOf (labels[i]) === -1) days.push (labels[i]);
+			}
+			let dataset = [];
+			for (let i = 0; i < days.length; i++) {
+				dataset[i] = {
+					amounts: [],
+					prices: [],
+				};
+				for (let j = 0; j < response.length; j++) {
+					if (format (new Date (response[j].timestamp * 1000), "MMM dd") === days[i]) {
+						dataset[i].amounts.push (response[j].amount);
+						dataset[i].prices.push (response[j].price);
+					}
+				}
+			}
+			for (let i = 0; i < dataset.length; i++) {
+				dataset[i].weightedAverage = 0;
+				dataset[i].amount = dataset[i].amounts.reduce ((a, b) => a + b, 0);
+				for (let j = 0; j < dataset[i].amounts.length; j++) {
+					dataset[i].weightedAverage += dataset[i].amounts[j] * dataset[i].prices[j];
+				}
+				dataset[i].weightedAverage /= dataset[i].amount;
+			}
+			setData ({
+				labels: days,
+				datasets: [
+					{
+						backgroundColor: gradient,
+						pointBackgroundColor: `rgba(${accentColor}, 1)`,
+						label: "Average Price",
+						data: dataset.map ((item) => item.weightedAverage),
+						yAxisID: 'y',
+					},
+					{
+						backgroundColor: amountGradient,
+						pointBackgroundColor: `rgba(${amountColor}, 1)`,
+						borderColor: `rgba(${amountColor}, 1)`,
+						label: "Amount",
+						data: dataset.map ((item) => item.amount),
+						yAxisID: 'y1',
+
+					}
+				],
+			});
+		}
+		fetchData();
 		//eslint-disable-next-line
 	}, []);
+
+	// useEffect(() => {
+		
+	// 	//eslint-disable-next-line
+	// }, []);
 
 	return (
 		<Chart ref={chartRef} type="ShadowLine" options={options} data={data} />

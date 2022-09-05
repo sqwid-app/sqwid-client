@@ -3,11 +3,14 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import AuthContext from "@contexts/Auth/AuthContext";
 import ReefIcon from "@static/svg/ReefIcon";
 import constants from "@utils/constants";
-import getIPFSURL from "@utils/getIPFSURL";
+import { getInfuraURL } from "@utils/getIPFSURL";
 import { LazyMotion, m, domAnimation } from "framer-motion";
 import React, { useContext } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { respondTo } from "@styles/styledMediaQuery";
+import { fetchCollectibleStats } from "@utils/marketplace";
+import { numberSeparator } from "@utils/numberSeparator";
+import LoadingIcon from "@static/svg/LoadingIcon";
 const Wrapper = styled.div``;
 
 const Container = styled.div`
@@ -28,6 +31,8 @@ const LinksContainer = styled.div`
 	flex-direction: column;
 	gap: 0.75rem;
 	color: var(--app-container-text-primary-hover);
+	flex: 1;
+	width: 100%;
 `;
 
 const StatusContainer = styled.div`
@@ -60,6 +65,25 @@ const HTMLLinkWrapper = styled.a`
 	}
 `;
 
+const TextWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	text-decoration: none;
+	color: inherit;
+	svg {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+	span {
+		font-size: 1.25rem;
+	}
+	div {
+		flex: 1;
+		text-align: right;
+	}
+`;
+
 const StatusWrapper = styled.div`
 	display: flex;
 	align-items: center;
@@ -74,6 +98,21 @@ const StatusWrapper = styled.div`
 		font-size: 1.25rem;
 		font-weight: 800;
 	}
+`;
+
+const MiddleContainer = styled.div`
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1rem 0;
+	color: var(--app-container-text-primary-hover);
+	border-top: solid 0.1rem var(--app-container-bg-primary);
+	${respondTo.md`
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.75rem;
+	`}
 `;
 
 const BottomContainer = styled.div`
@@ -181,6 +220,44 @@ const entryAnim = css`
 const exitAnim = css`
 	animation: ${swipeUpwards} 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
 		forwards;
+`;
+
+const Price = styled.div`
+	font-weight: 900;
+	svg {
+		display: inline-block;
+		vertical-align: bottom;
+	}
+	margin: 0 auto;
+`;
+
+const StatContainer = styled.div`
+	width: 100%;
+	border-radius: 1rem;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-between;
+	flex: 1;
+	margin-top: .2rem;
+	margin-bottom: .2rem;
+	gap: 0.5rem;
+	text-decoration: none;
+	color: inherit;
+	svg {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+	span {
+		font-size: 1.25rem;
+	}
+`;
+
+const StatName = styled.div`
+	font-weight: 700;
+	font-size: 1.1rem;
+	color: var(--app-container-text-primary-hover);
+	flex: 1;
 `;
 
 const StatusSection = () => {
@@ -344,7 +421,7 @@ const ReportBtn = () => {
 
 const MetadataSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext);
-	const url = getIPFSURL(collectibleInfo?.meta?.uri);
+	const url = getInfuraURL(collectibleInfo?.meta?.uri);
 	return (
 		<HTMLLinkWrapper target="_blank" rel="noopener noreferrer" href={url}>
 			<svg
@@ -367,25 +444,99 @@ const ScanSection = () => {
 	return (
 		<HTMLLinkWrapper target="_blank" rel="noopener noreferrer" href={url}>
 			<ReefIcon />
-			<span>ReefScan</span>
+			<span>Token Contract</span>
 		</HTMLLinkWrapper>
 	);
 };
 
 const IPFSSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext);
-	const url = getIPFSURL(collectibleInfo?.meta?.media);
+	const url = getInfuraURL(collectibleInfo?.meta?.media);
 	return (
 		<HTMLLinkWrapper target="_blank" rel="noopener noreferrer" href={url}>
 			<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor">
 				<path d="M2.165 19.551c.186.28.499.449.835.449h15c.4 0 .762-.238.919-.606l3-7A.998.998 0 0 0 21 11h-1V8c0-1.103-.897-2-2-2h-6.655L8.789 4H4c-1.103 0-2 .897-2 2v13h.007a1 1 0 0 0 .158.551zM18 8v3H6c-.4 0-.762.238-.919.606L4 14.129V8h14z"></path>
 			</svg>
-			<span>IPFS</span>
+			<span>Media on IPFS</span>
 		</HTMLLinkWrapper>
 	);
 };
 
+const ItemIdSection = () => {
+	const { collectibleInfo } = useContext(CollectibleContext);
+	return (
+		<TextWrapper>
+			<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+				<path d="m21 7.702-8.5 4.62v9.678c1.567-.865 6.379-3.517 7.977-4.399.323-.177.523-.519.523-.891zm-9.5 4.619-8.5-4.722v9.006c0 .37.197.708.514.887 1.59.898 6.416 3.623 7.986 4.508zm-8.079-5.629 8.579 4.763 8.672-4.713s-6.631-3.738-8.186-4.614c-.151-.085-.319-.128-.486-.128-.168 0-.335.043-.486.128-1.555.876-8.093 4.564-8.093 4.564z"/>
+			</svg>
+			<span>{collectibleInfo.itemId}</span>
+			<div>
+				Marketplace Item ID
+			</div>
+		</TextWrapper>
+	);
+};
+
+const TokenIdSection = () => {
+	const { collectibleInfo } = useContext(CollectibleContext);
+	return (
+		<TextWrapper>
+			<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 26 26">
+				<path d="M11.574 3.712c.195-.323.662-.323.857 0l9.37 15.545c.2.333-.039.757-.429.757l-18.668-.006c-.385 0-.629-.422-.428-.758l9.298-15.538zm.429-2.483c-.76 0-1.521.37-1.966 1.111l-9.707 16.18c-.915 1.523.182 3.472 1.965 3.472h19.416c1.783 0 2.879-1.949 1.965-3.472l-9.707-16.18c-.446-.741-1.205-1.111-1.966-1.111z"/>
+			</svg>
+			<span>{collectibleInfo.tokenId}</span>
+			<div>
+				NFT Token ID
+			</div>
+		</TextWrapper>
+	);
+};
+
+const PositionIdSection = () => {
+	const { collectibleInfo } = useContext(CollectibleContext);
+	return (
+		<TextWrapper>
+			<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 26 26">
+				<path d="M22.548 9l.452-2h-5.364l1.364-6h-2l-1.364 6h-5l1.364-6h-2l-1.364 6h-6.184l-.452 2h6.182l-1.364 6h-5.36l-.458 2h5.364l-1.364 6h2l1.364-6h5l-1.364 6h2l1.364-6h6.185l.451-2h-6.182l1.364-6h5.366zm-8.73 6h-5l1.364-6h5l-1.364 6z"/>
+			</svg>
+			<span>{collectibleInfo.positionId}</span>
+			<div>
+				Marketplace Position ID
+			</div>
+		</TextWrapper>
+	);
+};
+
+// const VolumeSection = () => {
+// 	const { collectibleInfo } = useContext(CollectibleContext);
+// 	return (
+// 		<StatContainer>
+// 			<StatName>Volume</StatName>
+// 			<Price>
+// 				<ReefIcon centered size={24} />{" "}
+// 				<span>{numberSeparator(collectibleInfo.stats?.volume || 0)}</span>
+// 			</Price>
+// 		</StatContainer>
+// 	);
+// };
+
 const DetailsSection = () => {
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+
+	useEffect (() => {
+		const fetchData = async () => {
+			if (!collectibleInfo.stats) {
+				const data = await fetchCollectibleStats (collectibleInfo.itemId);
+				setCollectibleInfo ({
+					...collectibleInfo,
+					stats: data,
+				});
+			}
+		}
+		fetchData ();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [collectibleInfo.itemId]);
+
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
@@ -399,6 +550,52 @@ const DetailsSection = () => {
 						<StatusSection />
 					</StatusContainer>
 				</Container>
+				<MiddleContainer>
+					<LinksContainer>
+						<TokenIdSection />
+						<ItemIdSection />
+						<PositionIdSection />
+					</LinksContainer>
+				</MiddleContainer>
+				<MiddleContainer>
+					{collectibleInfo.stats ? (
+						<LinksContainer>
+							<StatContainer>
+								<StatName>Volume</StatName>
+								<Price>
+									<ReefIcon centered size={24} />{" "}
+									<span>{collectibleInfo.stats ? numberSeparator(collectibleInfo.stats?.volume || 0) : <LoadingIcon/>}</span>
+								</Price>
+							</StatContainer>
+							<StatContainer>
+								<StatName>Average sale</StatName>
+								<Price>
+									<ReefIcon centered size={24} />{" "}
+									<span>{collectibleInfo.stats ? numberSeparator(collectibleInfo.stats?.average || 0) : <LoadingIcon/>}</span>
+								</Price>
+							</StatContainer>
+							<StatContainer>
+								<StatName>Last sale</StatName>
+								<Price>
+									<ReefIcon centered size={24} />{" "}
+									<span>{collectibleInfo.stats ? numberSeparator(collectibleInfo.stats?.lastSale || 0) : <LoadingIcon/>}</span>
+								</Price>
+							</StatContainer>
+							<StatContainer>
+								<StatName># of owners</StatName>
+								<Price>
+									<span>{collectibleInfo.stats ? numberSeparator(collectibleInfo.stats?.owners || 0) : <LoadingIcon/>}</span>
+								</Price>
+							</StatContainer>
+							<StatContainer>
+								<StatName># of sales</StatName>
+								<Price>
+									<span>{collectibleInfo.stats ? numberSeparator(collectibleInfo.stats?.salesAmount || 0) : <LoadingIcon/>}</span>
+								</Price>
+							</StatContainer>
+						</LinksContainer>
+					) : <LoadingIcon/>}
+				</MiddleContainer>
 				<BottomContainer>
 					<ReportBtn />
 					<ShareBtn to="/" />

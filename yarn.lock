@@ -2242,9 +2242,9 @@
     mobx "^5.15.7"
     mobx-utils "^5.6.2"
 
-"@open-web3/dev-config@^0.1.13":
+"@open-web3/dev-config@0.1.13":
   version "0.1.13"
-  resolved "https://registry.npmjs.org/@open-web3/dev-config/-/dev-config-0.1.13.tgz"
+  resolved "https://registry.yarnpkg.com/@open-web3/dev-config/-/dev-config-0.1.13.tgz#5d8581be5d853c938a61ca95ada4f9c5837e62fb"
   integrity sha512-vkfwMeV23vhQ7VWfP6sXax8XRIVUQnvHXd3tkg8oFUqxnYhgTDs69MiuhRjirXDTYOL4TTbf/R/B8tPQFGDiGA==
   dependencies:
     "@babel/cli" "^7.12.1"
@@ -2333,9 +2333,9 @@
   dependencies:
     "@open-web3/orml-type-definitions" "1.0.1"
 
-"@open-web3/scanner@^1.0.1":
+"@open-web3/scanner@1.0.1":
   version "1.0.1"
-  resolved "https://registry.npmjs.org/@open-web3/scanner/-/scanner-1.0.1.tgz"
+  resolved "https://registry.yarnpkg.com/@open-web3/scanner/-/scanner-1.0.1.tgz#4593db0ef7c70cee5e3a811ffff4869933aa4939"
   integrity sha512-Abc88uNGf2Ef5ms+6cyzU18shIKiQoMgsvXPTzaqiDDdZCXaLTrDQPzvRwvM+ceTxSB3C9NZTTcx32OyQu1HDw==
 
 "@pmmmwh/react-refresh-webpack-plugin@0.4.3":
@@ -3268,13 +3268,13 @@
     "@reef-defi/api-derive" "^1.0.1"
     "@reef-defi/types" "^1.0.1"
 
-"@reef-defi/evm-provider@1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@reef-defi/evm-provider/-/evm-provider-1.0.6.tgz#d5aece508731f2a3a913a114be178d632b992276"
-  integrity sha512-jSJvixJ/jleNYVUKg91e4/6GV7i/GbPQ+SM6eW508fNKsOieS5HUUqySf2NhY3UvSKgv8lMoFatteylZneK6Bg==
+"@reef-defi/evm-provider@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@reef-defi/evm-provider/-/evm-provider-1.0.7.tgz#cfb35495e5328ff68675be8edbab3585d5e51d00"
+  integrity sha512-Knbvlyu7e1d2THGwgia+ZwbK3aQ1NF8F41TnifqWKpxDKcaLW9GrRJA8A7VU0TifSYPiG/w9rZz5VOBqt7HurQ==
   dependencies:
-    "@open-web3/dev-config" "^0.1.13"
-    "@open-web3/scanner" "^1.0.1"
+    "@open-web3/dev-config" "0.1.13"
+    "@open-web3/scanner" "1.0.1"
     "@polkadot/api" "~6.4.2"
     "@polkadot/keyring" "~7.9.2"
     "@polkadot/rpc-provider" "~6.4.2"
@@ -3285,6 +3285,7 @@
     "@reef-defi/api-derive" "^1.0.4"
     "@reef-defi/type-definitions" "^1.0.4"
     "@reef-defi/types" "^1.0.4"
+    "@typescript-eslint/eslint-plugin" "4.8.1"
     blakejs "~1.1.0"
     ethers "~5.5.0"
 
