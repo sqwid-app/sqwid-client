@@ -59,8 +59,6 @@ export const CreateBulkButton = () => {
 		setButtonText(<FadeLoaderIcon />);
 		setIsSubmitting(true);
 
-		console.log("collectionBulkData", collectionBulkData);
-
 		if (
 			collectionBulkData.coverFile &&
 			collectionBulkData.collectionName.length &&
@@ -73,16 +71,21 @@ export const CreateBulkButton = () => {
 						// eslint-disable-next-line
 						console.log(res.error);
 						bread("Error creating collection");
+						// setButtonText("Create Collection");
+						// setIsSubmitting(false);
 					}
 				})
 				.catch(err => {
 					bread(err.toString());
+					// setButtonText("Create Collection");
+					// setIsSubmitting(false);
 				});
 		} else {
 			setButtonText("Create Collection");
 			setIsSubmitting(false);
 		}
 	};
+
 	return (
 		<BtnContainer>
 			<LazyMotion features={domAnimation}>

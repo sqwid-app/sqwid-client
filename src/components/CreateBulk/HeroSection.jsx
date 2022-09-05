@@ -46,13 +46,6 @@ const UploadContainer = styled.div`
 	width: 100%;
 `;
 
-const Group = styled.div`
-	height: 100%;
-	display: flex;
-	gap: 2.75rem;
-	flex-direction: column;
-`;
-
 const RightContainer = styled(LeftContainer)``;
 
 const MainPage = () => {

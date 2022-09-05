@@ -52,13 +52,6 @@ const createBulkCollectibles = async collectionBulkData => {
 	data.append("coverFile", coverFile);
 	data.append("zipFile", zipFile);
 
-	console.log("data", data);
-	console.log("royaltyRecipient", royaltyRecipient);
-	console.log("royalty", royalty);
-	console.log("copies", copies);
-
-	return;
-
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 	let jwt = address
 		? JSON.parse(localStorage.getItem("tokens")).find(
@@ -72,7 +65,7 @@ const createBulkCollectibles = async collectionBulkData => {
 
 	if (jwt) {
 		try {
-			const metadata = await axios.post(
+			const createRes = await axios.post(
 				`${getBackend()}/create/bulk/create`,
 				data,
 				{
@@ -82,54 +75,74 @@ const createBulkCollectibles = async collectionBulkData => {
 				}
 			);
 
-			console.log("metadata URI => ", metadata);
+			const collectionId = createRes.data?.collectionId;
+			const meta = createRes.data?.metadata;
+			const mimetype = createRes.data?.mimetype;
+			const numItems = createRes.data?.numItems;
+			let { signer } = await Interact(address);
+			let to =
+				royaltyRecipient && royaltyRecipient !== ""
+					? royaltyRecipient
+					: await signer.getAddress();
 
-			// const meta = metadata.data?.metadata;
-			// let { signer } = await Interact(address);
-			// let to =
-			// 	files.royaltyRecipient && files.royaltyRecipient !== ""
-			// 		? files.royaltyRecipient
-			// 		: await signer.getAddress();
+			if (to.startsWith("5")) to = await getEVMAddress(to);
 
-			// if (to.startsWith ('5')) to = await getEVMAddress(to);
+			let contract = new ethers.Contract(
+				getContract("marketplace"),
+				contractABI,
+				signer
+			);
 
-			// let contract = new ethers.Contract(
-			// 	getContract("marketplace"),
-			// 	contractABI,
-			// 	signer
-			// );
-			// try {
-			// 	const nft = await contract.mintBatch(
-			// 		[copies],
-			// 		[meta],
-			// 		[file.type.split("/")[0]],
-			// 		[to],
-			// 		[royalty]
-			// 	);
-			// 	// eslint-disable-next-line
-			// 	const receipt = await nft.wait();
-			// 	// eslint-disable-next-line
-			// 	const itemId = receipt.events[1].args["itemId"].toNumber();
-			// 	// eslint-disable-next-line
-			// 	const positionId = receipt.events[1].args["positionId"].toNumber();
+			const copiesArray = [];
+			const metaArray = [];
+			const mimetypeArray = [];
+			const toArray = [];
+			const royaltyArray = [];
 
-			// 	await axios.post(
-			// 		`${getBackend()}/create/collectible/verify`,
-			// 		{
-			// 			id: itemId,
-			// 			collection: collection,
-			// 		},
-			// 		{
-			// 			headers: {
-			// 				Authorization: `Bearer ${jwt.token}`,
-			// 				"Content-Type": "application/json",
-			// 			},
-			// 		}
-			// 	);
-			// 	return positionId;
-			// } catch (err) {
-			// 	return { error: err };
-			// }
+			for (let i = 0; i < numItems; i++) {
+				copiesArray.push(copies);
+				metaArray.push(
+					`${meta}/${(i + 1).toString(16).padStart(64, "0")}.json`
+				);
+				mimetypeArray.push(mimetype);
+				toArray.push(to);
+				royaltyArray.push(royalty);
+			}
+
+			try {
+				const nfts = await contract.mintBatch(
+					copiesArray,
+					metaArray,
+					mimetypeArray,
+					toArray,
+					royaltyArray
+				);
+				// eslint-disable-next-line
+				const receipt = await nfts.wait();
+
+				const itemIds = [];
+				for (let i = 1; i < receipt.events.length; i += 2) {
+					// eslint-disable-next-line
+					itemIds.push(receipt.events[i].args["itemId"].toNumber());
+				}
+
+				await axios.post(
+					`${getBackend()}/create/bulk/verify`,
+					{
+						itemIds,
+						collectionId,
+					},
+					{
+						headers: {
+							Authorization: `Bearer ${jwt.token}`,
+							"Content-Type": "application/json",
+						},
+					}
+				);
+				return collectionId;
+			} catch (err) {
+				return { error: err };
+			}
 		} catch (err) {
 			return { error: err };
 		}

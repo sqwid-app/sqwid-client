@@ -136,12 +136,12 @@ const Dropzone = props => {
 						}
 					})
 					.catch(err => {
-						console.log(err);
 						setCurrentChunkIndex(-1);
 						// TODO: HANDLE ERROR
 					});
 			reader.readAsDataURL(blob);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentChunkIndex]);
 
 	return (
