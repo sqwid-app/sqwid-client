@@ -83,7 +83,17 @@ export const CreateButton = () => {
 					}
 				})
 				.catch(err => {
-					showErrorModal(err.toString());
+					if (
+						err
+							.toString()
+							.endsWith("{ index: 6, error: 2, message: None }")
+					) {
+						showErrorModal(
+							"This account does not have enough balance to execute the transaction"
+						);
+					} else {
+						showErrorModal(err.toString());
+					}
 					// bread(err.response.data.error);
 					// bread(err.toString());
 				});

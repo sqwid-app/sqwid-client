@@ -68,7 +68,17 @@ const Header = styled.div`
 export const useErrorModalHelper = () => {
 	const { setErrorModalIsOpen, setErrorMessage } = useContext(ErrorContext);
 	const showErrorModal = message => {
-		setErrorMessage(message);
+		// eslint-disable-next-line no-console
+		console.log(
+			"%c[DEBUGGER]",
+			"color: #dd0055",
+			...(Array.isArray(message) ? message : [message])
+		);
+		if (typeof message === "object") {
+			setErrorMessage(message.message || message.toString());
+		} else {
+			setErrorMessage(message);
+		}
 		setErrorModalIsOpen(true);
 	};
 
