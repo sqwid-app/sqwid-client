@@ -68,17 +68,18 @@ export const CreateBulkButton = () => {
 				.then(res => {
 					if (!res.error) history.push(`/collections/${res}`);
 					else {
-						// eslint-disable-next-line
-						console.log(res.error);
-						bread("Error creating collection");
-						// setButtonText("Create Collection");
-						// setIsSubmitting(false);
+						const message = res.error.response?.data?.error
+							? res.error.response.data.error
+							: "Error creating bulk collectibles";
+						bread(message);
+						setButtonText("Create Collection");
+						setIsSubmitting(false);
 					}
 				})
 				.catch(err => {
 					bread(err.toString());
-					// setButtonText("Create Collection");
-					// setIsSubmitting(false);
+					setButtonText("Create Collection");
+					setIsSubmitting(false);
 				});
 		} else {
 			setButtonText("Create Collection");

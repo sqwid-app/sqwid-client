@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import { uploadChunk } from "@utils/createBulkCollectibles";
 import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
+import ProgressBar from "@elements/Sac/ProgressBar";
+import bread from "@utils/bread";
 
 const Wrapper = styled.div`
 	.dropzone {
@@ -50,7 +52,7 @@ const DropzoneButton = styled(m.a)`
 	user-select: none;
 `;
 
-const CHUNK_SIZE = 524288; // 512 bytes
+const CHUNK_SIZE = 20000000; // 20MB
 
 const Dropzone = props => {
 	const { collectionBulkData, setCollectionBulkData } = useContext(
@@ -123,9 +125,14 @@ const Dropzone = props => {
 					totalChunks
 				)
 					.then(response => {
-						const chunks = totalChunks - 1;
-						const isLastChunk = currentChunkIndex === chunks;
-						if (isLastChunk) {
+						if (response.error) {
+							setFile(null);
+							setCurrentChunkIndex(-1);
+							setTotalChunks(0);
+							bread("An error occured uploading zip file");
+							return;
+						}
+						if (currentChunkIndex === totalChunks - 1) {
 							setCurrentChunkIndex(-1);
 							setCollectionBulkData({
 								...collectionBulkData,
@@ -136,8 +143,10 @@ const Dropzone = props => {
 						}
 					})
 					.catch(err => {
+						setFile(null);
 						setCurrentChunkIndex(-1);
-						// TODO: HANDLE ERROR
+						setTotalChunks(0);
+						bread("An error occured uploading zip file");
 					});
 			reader.readAsDataURL(blob);
 		}
@@ -147,20 +156,37 @@ const Dropzone = props => {
 	return (
 		<div {...getRootProps({ className: "dropzone" })}>
 			<input {...getInputProps()} />
-			<DropzoneText>{dragText}</DropzoneText>
-			<DropzoneButton
-				onClick={open}
-				whileHover={{
-					y: -5,
-					x: 0,
-					scale: 1.02,
-				}}
-				whileTap={{
-					scale: 0.99,
-				}}
-			>
-				Choose File
-			</DropzoneButton>
+			{!file && (
+				<>
+					<DropzoneText>{dragText}</DropzoneText>
+					<DropzoneButton
+						onClick={open}
+						whileHover={{
+							y: -5,
+							x: 0,
+							scale: 1.02,
+						}}
+						whileTap={{
+							scale: 0.99,
+						}}
+					>
+						Choose File
+					</DropzoneButton>
+				</>
+			)}
+			{file && currentChunkIndex > -1 && (
+				<>
+					<DropzoneText>Uploading file</DropzoneText>
+					<ProgressBar
+						percent={Math.round(
+							(currentChunkIndex / totalChunks) * 100
+						)}
+					/>
+				</>
+			)}
+			{file && currentChunkIndex === -1 && (
+				<DropzoneText>File {file.name} uploaded</DropzoneText>
+			)}
 		</div>
 	);
 };
@@ -169,7 +195,7 @@ const CustomZipDropzone = () => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
-				<Dropzone maxSize={1073741824} />
+				<Dropzone maxSize={1000000000} />
 			</Wrapper>
 		</LazyMotion>
 	);
