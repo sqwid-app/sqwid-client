@@ -1,5 +1,7 @@
 import ErrorContext from "@contexts/Error/ErrorContext";
 import CancelIcon from "@static/svg/CancelIcon";
+import constants from "@utils/constants";
+import extractJSON from "@utils/extractJSON";
 // import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
 import { useContext } from "react";
 import Modal from "react-modal";
@@ -65,6 +67,18 @@ const Header = styled.div`
 // 	);
 // };
 
+export const errorParser = err => {
+	const errDetails = extractJSON(err.toString());
+	try {
+		let specificErrorDetails = errDetails[0];
+		return constants.ERROR_MAP[specificErrorDetails.index][
+			specificErrorDetails.error
+		];
+	} catch {
+		return err.toString();
+	}
+};
+
 export const useErrorModalHelper = () => {
 	const { setErrorModalIsOpen, setErrorMessage } = useContext(ErrorContext);
 	const showErrorModal = message => {
@@ -74,11 +88,7 @@ export const useErrorModalHelper = () => {
 			"color: #dd0055",
 			...(Array.isArray(message) ? message : [message])
 		);
-		if (typeof message === "object") {
-			setErrorMessage(message.message || message.toString());
-		} else {
-			setErrorMessage(message);
-		}
+		setErrorMessage(errorParser(message));
 		setErrorModalIsOpen(true);
 	};
 

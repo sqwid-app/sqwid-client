@@ -50,6 +50,11 @@ const constants = {
 		"Humanity is like an ocean; if a few drops of the ocean are dirty, the ocean does not become dirty - Mahatma Gandhi",
 	],
 	DEFAULT_CONTRACT_STORAGE_LIMIT: 2000,
+	ERROR_MAP: {
+		6: {
+			2: "This account does not have enough balance to execute the transaction",
+		},
+	},
 };
 
 export default constants;
