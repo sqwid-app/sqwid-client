@@ -102,7 +102,7 @@ const Navbar = React.memo(() => {
 					<>
 						<LinkGroups />
 						<Divider />
-						<Search/>
+						<Search />
 						<SignInBtn />
 					</>
 				) : (

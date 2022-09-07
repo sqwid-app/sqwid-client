@@ -83,7 +83,7 @@ export const CreateButton = () => {
 					}
 				})
 				.catch(err => {
-					showErrorModal(err.toString());
+					showErrorModal(err);
 					// bread(err.response.data.error);
 					// bread(err.toString());
 				});
