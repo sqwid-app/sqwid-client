@@ -57,7 +57,7 @@ const DropzoneButton = styled(m.a)`
 const Dropzone = props => {
 	// const initialDragText = props.modal ? "PNG, JPEG, GIF or WEBP. Max 30mb." : "PNG, GIF, WEBP, MP4, or MP3. Max 30mb."
 	// const initialDragText = "PNG or JPEG. Max 30mb.";
-	const initialDragText = "PNG, JPEG, MP4. Max 30mb.";
+	const initialDragText = "PNG, JPEG, GIF, WEBP or MP4. Max 100mb.";
 	const { fileData, setFileData } = useContext(FileContext);
 	const [dragText, setDragText] = useState(initialDragText);
 	const {

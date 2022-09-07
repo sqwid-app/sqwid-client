@@ -519,7 +519,7 @@ export const CreateAuctionModal = props => {
 						placeholder={`Minimum bid for the lot in REEF`}
 					/>
 					<InputTitle>
-						Number of Copies
+						Number of copies
 						<span>
 							{Number(copies)} / {collectibleInfo.amount}
 						</span>
@@ -640,7 +640,7 @@ export const PutOnSaleModal = props => {
 						placeholder={`Enter Price (in Reef)`}
 					/>
 					<InputTitle>
-						Number of Copies{" "}
+						Number of copies{" "}
 						<span>
 							{Number(copies)} / {collectibleInfo.amount}
 						</span>
@@ -780,7 +780,7 @@ export const LendModal = props => {
 						placeholder={`Amount to pay the lender as interest (in Reef)`}
 					/>
 					<InputTitle>
-						Number of Copies
+						Number of copies
 						<span>
 							{Number(copies)} / {collectibleInfo.amount}
 						</span>
@@ -887,7 +887,7 @@ export const RaffleModal = props => {
 			<Group>
 				<InputWrapper>
 					<InputTitle>
-						Number of Copies
+						Number of copies
 						<span>
 							{Number(copies)} / {collectibleInfo.amount}
 						</span>

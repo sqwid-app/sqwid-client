@@ -158,7 +158,7 @@ const Properties = () => {
 						<Input
 							type="text"
 							value={item.key}
-							placeholder="key"
+							placeholder="e.g. Color"
 							onChange={e => {
 								let newVal = [...properties];
 								newVal[idx].key = e.target.value;
@@ -178,7 +178,7 @@ const Properties = () => {
 						<Input
 							type="text"
 							value={item.value}
-							placeholder="value"
+							placeholder="e.g. Blue"
 							onChange={e => {
 								let newVal = [...properties];
 								newVal[idx].value = e.target.value;

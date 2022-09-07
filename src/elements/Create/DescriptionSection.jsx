@@ -46,7 +46,7 @@ const DescriptionSection = () => {
 			<InputContainer
 				value={files.description}
 				onChange={handleInput}
-				placeholder={`e.g “My rendition of the Bob Ross painting”`}
+				placeholder={`e.g. “Mountain sunshine”`}
 			/>
 		</Container>
 	);

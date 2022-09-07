@@ -40,7 +40,7 @@ const TitleSection = () => {
 			<InputContainer
 				value={files.name}
 				onChange={handleInput}
-				placeholder={`e.g "Mountain Retreat"`}
+				placeholder={`e.g. "Mountain Retreat"`}
 			/>
 		</Container>
 	);

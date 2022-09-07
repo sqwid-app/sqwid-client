@@ -360,7 +360,7 @@ const New = ({ isActive, setIsActive }) => {
 				<InputContainer
 					value={info.name}
 					onChange={e => setInfo({ ...info, name: e.target.value })}
-					placeholder={`e.g "Doggo collection"`}
+					placeholder={`e.g. "Doggo collection"`}
 				/>
 				<Title>Description</Title>
 				<InputContainer
@@ -368,7 +368,7 @@ const New = ({ isActive, setIsActive }) => {
 					onChange={e =>
 						setInfo({ ...info, description: e.target.value })
 					}
-					placeholder={`e.g "Pics of my heckin doggo"`}
+					placeholder={`e.g. "Pics of my doggo"`}
 				/>
 				<Title>
 					Cover Image
