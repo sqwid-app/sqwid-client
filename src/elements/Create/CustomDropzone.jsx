@@ -96,7 +96,7 @@ const Dropzone = props => {
 	useEffect(() => {
 		if (fileRejections.length) {
 			fileRejections[0].errors[0].code === "file-too-large"
-				? setDragText("File cannot be larger than 30mb")
+				? setDragText("File cannot be larger than 100mb")
 				: setDragText(fileRejections[0].errors[0].message);
 			setTimeout(() => {
 				setDragText(initialDragText);
@@ -130,7 +130,7 @@ const CustomDropzone = ({ modal }) => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
-				<Dropzone modal={modal} maxSize={30000000} />
+				<Dropzone modal={modal} maxSize={100000000} />
 			</Wrapper>
 		</LazyMotion>
 	);
