@@ -8,6 +8,7 @@ import {
 } from "./marketplaceApproval";
 import { getBackend, getContract } from "./network";
 import getEVMAddress from "./getEVMAddress";
+import bread from "./bread";
 
 const uploadChunk = async (data, fileName, chunk, totalChunks) => {
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
@@ -33,6 +34,39 @@ const uploadChunk = async (data, fileName, chunk, totalChunks) => {
 			return { error: err };
 		}
 	} else return null;
+};
+
+const buildCall = (
+	contract,
+	copies,
+	to,
+	royalty,
+	meta,
+	mimetype,
+	start,
+	end
+) => {
+	const copiesArray = [];
+	const metaArray = [];
+	const mimetypeArray = [];
+	const toArray = [];
+	const royaltyArray = [];
+	for (let i = start; i < end; i++) {
+		copiesArray.push(copies);
+		metaArray.push(
+			`${meta}/${(i + 1).toString(16).padStart(64, "0")}.json`
+		);
+		mimetypeArray.push(mimetype);
+		toArray.push(to);
+		royaltyArray.push(royalty);
+	}
+	return contract.mintBatch(
+		copiesArray,
+		metaArray,
+		mimetypeArray,
+		toArray,
+		royaltyArray
+	);
 };
 
 const createBulkCollectibles = async collectionBulkData => {
@@ -62,6 +96,27 @@ const createBulkCollectibles = async collectionBulkData => {
 	if (!approved) {
 		await approveMarketplace();
 	}
+
+	// // TODO remove
+	// let { signer } = await Interact(address);
+	// const receipt = (
+	// 	await buildCall(
+	// 		new ethers.Contract(
+	// 			getContract("marketplace"),
+	// 			contractABI,
+	// 			signer
+	// 		),
+	// 		copies,
+	// 		await signer.getAddress(),
+	// 		royalty,
+	// 		"ipfs://test",
+	// 		"image",
+	// 		0,
+	// 		99
+	// 	)
+	// ).wait();
+	// console.log(receipt);
+	// debugger;
 
 	if (jwt) {
 		try {
@@ -93,37 +148,46 @@ const createBulkCollectibles = async collectionBulkData => {
 				signer
 			);
 
-			const copiesArray = [];
-			const metaArray = [];
-			const mimetypeArray = [];
-			const toArray = [];
-			const royaltyArray = [];
-
-			for (let i = 0; i < numItems; i++) {
-				copiesArray.push(copies);
-				metaArray.push(
-					`${meta}/${(i + 1).toString(16).padStart(64, "0")}.json`
-				);
-				mimetypeArray.push(mimetype);
-				toArray.push(to);
-				royaltyArray.push(royalty);
-			}
+			const MAX_ITEMS_PER_TX = 30;
+			const txs = [];
+			bread(
+				`You need to sign a total of ${Math.ceil(
+					numItems / MAX_ITEMS_PER_TX
+				)} transactions.`
+			);
 
 			try {
-				const nfts = await contract.mintBatch(
-					copiesArray,
-					metaArray,
-					mimetypeArray,
-					toArray,
-					royaltyArray
-				);
-				// eslint-disable-next-line
-				const receipt = await nfts.wait();
+				for (let i = 0; i < numItems; i += MAX_ITEMS_PER_TX) {
+					txs.push(
+						(
+							await buildCall(
+								contract,
+								copies,
+								to,
+								royalty,
+								meta,
+								mimetype,
+								i,
+								Math.min(numItems, i + MAX_ITEMS_PER_TX)
+							)
+						).wait()
+					);
+				}
+
+				const receipts = await Promise.all(txs);
 
 				const itemIds = [];
-				for (let i = 1; i < receipt.events.length; i += 2) {
-					// eslint-disable-next-line
-					itemIds.push(receipt.events[i].args["itemId"].toNumber());
+				for (let iRec = 0; iRec < receipts.length; iRec++) {
+					for (
+						let iEv = 1;
+						iEv < receipts[iRec].events.length;
+						iEv += 2
+					) {
+						// eslint-disable-next-line
+						itemIds.push(
+							receipts[iRec].events[iEv].args["itemId"].toNumber()
+						);
+					}
 				}
 
 				await axios.post(

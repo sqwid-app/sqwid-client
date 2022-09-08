@@ -66,8 +66,13 @@ export const CreateBulkButton = () => {
 		) {
 			createBulkCollectibles({ ...collectionBulkData })
 				.then(res => {
-					if (!res.error) history.push(`/collections/${res}`);
-					else {
+					if (!res.error) {
+						bread(
+							"Collection created successfully. The items will be visible after content moderation. Please allow a few minutes for Sqwid to approve them."
+						);
+						history.push(`/collections/${res}`);
+					} else {
+						console.log(res.error);
 						const message = res.error.response?.data?.error
 							? res.error.response.data.error
 							: "Error creating bulk collectibles";
