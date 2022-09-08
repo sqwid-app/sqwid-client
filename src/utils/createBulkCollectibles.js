@@ -36,16 +36,7 @@ const uploadChunk = async (data, fileName, chunk, totalChunks) => {
 	} else return null;
 };
 
-const buildCall = (
-	contract,
-	copies,
-	to,
-	royalty,
-	meta,
-	mimetype,
-	start,
-	end
-) => {
+const buildCall = (contract, copies, to, royalty, meta, start, end) => {
 	const copiesArray = [];
 	const metaArray = [];
 	const mimetypeArray = [];
@@ -56,7 +47,7 @@ const buildCall = (
 		metaArray.push(
 			`${meta}/${(i + 1).toString(16).padStart(64, "0")}.json`
 		);
-		mimetypeArray.push(mimetype);
+		mimetypeArray.push("image");
 		toArray.push(to);
 		royaltyArray.push(royalty);
 	}
@@ -132,7 +123,6 @@ const createBulkCollectibles = async collectionBulkData => {
 
 			const collectionId = createRes.data?.collectionId;
 			const meta = createRes.data?.metadata;
-			const mimetype = createRes.data?.mimetype;
 			const numItems = createRes.data?.numItems;
 			let { signer } = await Interact(address);
 			let to =
@@ -166,7 +156,6 @@ const createBulkCollectibles = async collectionBulkData => {
 								to,
 								royalty,
 								meta,
-								mimetype,
 								i,
 								Math.min(numItems, i + MAX_ITEMS_PER_TX)
 							)
