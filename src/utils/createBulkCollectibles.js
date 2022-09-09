@@ -10,6 +10,11 @@ import { getBackend, getContract } from "./network";
 import getEVMAddress from "./getEVMAddress";
 import bread from "./bread";
 
+const MAX_ITEMS_PER_TX = 75;
+const BASE_GAS = 1_000_000;
+const GAS_PER_UNIT = 420_000;
+const STORAGE_PER_UNIT = 1_500;
+
 const uploadChunk = async (data, fileName, chunk, totalChunks) => {
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 	let jwt = address
@@ -44,9 +49,7 @@ const buildCall = (contract, copies, to, royalty, meta, start, end) => {
 	const royaltyArray = [];
 	for (let i = start; i < end; i++) {
 		copiesArray.push(copies);
-		metaArray.push(
-			`${meta}/${(i + 1).toString(16).padStart(64, "0")}.json`
-		);
+		metaArray.push(`${meta}/${(i + 1).toString(16).padStart(5, "0")}.json`);
 		mimetypeArray.push("image");
 		toArray.push(to);
 		royaltyArray.push(royalty);
@@ -56,7 +59,13 @@ const buildCall = (contract, copies, to, royalty, meta, start, end) => {
 		metaArray,
 		mimetypeArray,
 		toArray,
-		royaltyArray
+		royaltyArray,
+		{
+			gasLimit: BASE_GAS + copiesArray.length * GAS_PER_UNIT,
+			customData: {
+				storageLimit: copiesArray.length * STORAGE_PER_UNIT,
+			},
+		}
 	);
 };
 
@@ -88,29 +97,11 @@ const createBulkCollectibles = async collectionBulkData => {
 		await approveMarketplace();
 	}
 
-	// // TODO remove
-	// let { signer } = await Interact(address);
-	// const receipt = (
-	// 	await buildCall(
-	// 		new ethers.Contract(
-	// 			getContract("marketplace"),
-	// 			contractABI,
-	// 			signer
-	// 		),
-	// 		copies,
-	// 		await signer.getAddress(),
-	// 		royalty,
-	// 		"ipfs://test",
-	// 		"image",
-	// 		0,
-	// 		99
-	// 	)
-	// ).wait();
-	// console.log(receipt);
-	// debugger;
-
 	if (jwt) {
 		try {
+			bread(
+				"Uploading items to IPFS. This may take some time. Please, don't close this window."
+			);
 			const createRes = await axios.post(
 				`${getBackend()}/create/bulk/create`,
 				data,
@@ -138,12 +129,13 @@ const createBulkCollectibles = async collectionBulkData => {
 				signer
 			);
 
-			const MAX_ITEMS_PER_TX = 30;
 			const txs = [];
 			bread(
-				`You need to sign a total of ${Math.ceil(
-					numItems / MAX_ITEMS_PER_TX
-				)} transactions.`
+				numItems > MAX_ITEMS_PER_TX
+					? `You need to sign a total of ${Math.ceil(
+							numItems / MAX_ITEMS_PER_TX
+					  )} transactions.`
+					: "You need to sign a transaction."
 			);
 
 			try {
@@ -179,6 +171,7 @@ const createBulkCollectibles = async collectionBulkData => {
 					}
 				}
 
+				bread("Collectibles minted. Verifying collectibles in server.");
 				await axios.post(
 					`${getBackend()}/create/bulk/verify`,
 					{
