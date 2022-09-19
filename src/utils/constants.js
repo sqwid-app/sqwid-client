@@ -8,6 +8,7 @@ const constants = {
 	SOCIAL: {
 		TWITTER_HANDLE: "sqwid_app",
 		GITHUB_HANDLE: "sqwid-app",
+		DISCORD_CODE: "FtkZE9aK8Z",
 	},
 	STATE_TYPES: ["Available", "Sale", "Auction", "Raffle", "Loan"],
 	STATE_EMPTY_MESSAGE_MAP: [
@@ -24,7 +25,13 @@ const constants = {
 		raffle: "",
 		loan: "",
 	},
-	CREATE_ACCEPTED_MIMETYPES: ["image/jpeg", "image/png", "video/mp4", "image/webp", "image/gif"],
+	CREATE_ACCEPTED_MIMETYPES: [
+		"image/jpeg",
+		"image/png",
+		"video/mp4",
+		"image/webp",
+		"image/gif",
+	],
 	DOCUMENTATION: {
 		base: "https://github.com/sqwid-app/sqwid-docs",
 		sale: "https://github.com/sqwid-app/sqwid-docs/blob/main/market_interaction/regular_sale.md",
