@@ -5,7 +5,13 @@ import CopyIcon from "@static/svg/CopyIcon";
 import EditIcon from "@static/svg/EditIcon";
 import { clamp, truncateAddress } from "@utils/textUtils";
 import axios from "axios";
-import React, { useState, useRef, useEffect, useContext, Suspense } from "react";
+import React, {
+	useState,
+	useRef,
+	useEffect,
+	useContext,
+	Suspense,
+} from "react";
 import { useParams } from "react-router";
 import styled, { css, keyframes } from "styled-components";
 // import Loading from "@elements/Default/Loading";
@@ -36,6 +42,7 @@ import shortenIfAddress from "@utils/shortenIfAddress";
 import ChevronRight from "@static/svg/ChevronRight";
 import { NavLink } from "react-router-dom";
 import Background from "./Background";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 // import CardSectionContainer from "@elements/Default/CardSectionContainer";
 // import { fetchUserItems } from "@utils/marketplace";
 // import OnSaleSection from "./Sections/OnSaleSection";
@@ -617,10 +624,19 @@ const SVG = styled.svg`
 	}
 `;
 
-
-const FieldEditSection = ({ fieldValue, fieldTitle, fieldPlaceholder, defaultFieldPlaceholder, endpoint, hasClearButton, setSync }) => {
+const FieldEditSection = ({
+	fieldValue,
+	fieldTitle,
+	fieldPlaceholder,
+	defaultFieldPlaceholder,
+	endpoint,
+	hasClearButton,
+	setSync,
+}) => {
 	const { info, setInfo } = useContext(EditDetailsContext);
-	const [placeholder, setPlaceholder] = useState(fieldPlaceholder || defaultFieldPlaceholder);
+	const [placeholder, setPlaceholder] = useState(
+		fieldPlaceholder || defaultFieldPlaceholder
+	);
 	const [isLoading, setIsLoading] = useState(false);
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 	let jwt = address
@@ -634,7 +650,9 @@ const FieldEditSection = ({ fieldValue, fieldTitle, fieldPlaceholder, defaultFie
 			if (info[fieldValue]?.length) {
 				axios
 					.post(
-						`${getBackend()}/edit/user${endpoint || '/'}${fieldValue}`,
+						`${getBackend()}/edit/user${
+							endpoint || "/"
+						}${fieldValue}`,
 						{
 							[fieldValue]: info[fieldValue],
 						},
@@ -679,7 +697,7 @@ const FieldEditSection = ({ fieldValue, fieldTitle, fieldPlaceholder, defaultFie
 		setPlaceholder(defaultFieldPlaceholder);
 		axios
 			.post(
-				`${getBackend()}/edit/user${endpoint || '/'}${fieldValue}`,
+				`${getBackend()}/edit/user${endpoint || "/"}${fieldValue}`,
 				{
 					[fieldValue]: "",
 				},
@@ -695,7 +713,7 @@ const FieldEditSection = ({ fieldValue, fieldTitle, fieldPlaceholder, defaultFie
 			.finally(() => {
 				setIsLoading(false);
 			});
-	}
+	};
 
 	return (
 		<div>
@@ -715,16 +733,19 @@ const FieldEditSection = ({ fieldValue, fieldTitle, fieldPlaceholder, defaultFie
 						<FadeLoaderIcon />
 					</LoadingContainer>
 				)}
-				{((hasClearButton === true) &&
-				!isLoading &&
-				((info[fieldValue]?.length > 0) || placeholder !== defaultFieldPlaceholder)) &&
-				(
-					<ClearContainer onClick={handleClear}>
-						<SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-							<path d="m22 6.002c0-.552-.448-1-1-1h-12.628c-.437 0-.853.191-1.138.523-1.078 1.256-3.811 4.439-4.993 5.816-.16.187-.241.418-.241.65s.08.464.24.651c1.181 1.38 3.915 4.575 4.994 5.836.285.333.701.524 1.14.524h12.626c.552 0 1-.447 1-1 0-2.577 0-9.423 0-12zm-7.991 4.928 1.71-1.711c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .194-.073.385-.219.532l-1.711 1.71 1.728 1.728c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.384-.073-.531-.219l-1.728-1.728-1.728 1.728c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l1.728-1.728-1.788-1.787c-.146-.147-.219-.338-.219-.531 0-.426.346-.75.751-.75.192 0 .384.073.53.219z"/>
-						</SVG>
-					</ClearContainer>
-				)}
+				{hasClearButton === true &&
+					!isLoading &&
+					(info[fieldValue]?.length > 0 ||
+						placeholder !== defaultFieldPlaceholder) && (
+						<ClearContainer onClick={handleClear}>
+							<SVG
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 24 24"
+							>
+								<path d="m22 6.002c0-.552-.448-1-1-1h-12.628c-.437 0-.853.191-1.138.523-1.078 1.256-3.811 4.439-4.993 5.816-.16.187-.241.418-.241.65s.08.464.24.651c1.181 1.38 3.915 4.575 4.994 5.836.285.333.701.524 1.14.524h12.626c.552 0 1-.447 1-1 0-2.577 0-9.423 0-12zm-7.991 4.928 1.71-1.711c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .194-.073.385-.219.532l-1.711 1.71 1.728 1.728c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.384-.073-.531-.219l-1.728-1.728-1.728 1.728c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l1.728-1.728-1.788-1.787c-.146-.147-.219-.338-.219-.531 0-.426.346-.75.751-.75.192 0 .384.073.53.219z" />
+							</SVG>
+						</ClearContainer>
+					)}
 			</InputWrapper>
 		</div>
 	);
@@ -865,21 +886,23 @@ const QuickCardSectionContainer = styled.div`
 const QuickSection = ({ items, title, link }) => {
 	return (
 		<>
-			{items?.length ? <QuickContainer>
-				<QuickHeaderSection>
-					<QuickHeader>{title}</QuickHeader>
-					<StyledNavLink to={link}>
-						View All <ChevronRight />
-					</StyledNavLink>
-				</QuickHeaderSection>
-				<QuickCardSectionContainer>
-					<Suspense>
-						{items.map((item, index) => (
-							<SalesCard key={index} data={item} />
-						))}
-					</Suspense>
-				</QuickCardSectionContainer>
-			</QuickContainer> : null}
+			{items?.length ? (
+				<QuickContainer>
+					<QuickHeaderSection>
+						<QuickHeader>{title}</QuickHeader>
+						<StyledNavLink to={link}>
+							View All <ChevronRight />
+						</StyledNavLink>
+					</QuickHeaderSection>
+					<QuickCardSectionContainer>
+						<Suspense>
+							{items.map((item, index) => (
+								<SalesCard key={index} data={item} />
+							))}
+						</Suspense>
+					</QuickCardSectionContainer>
+				</QuickContainer>
+			) : null}
 		</>
 	);
 };
@@ -898,27 +921,28 @@ const ProfileCard = () => {
 		address: "",
 		description: "",
 		name: "",
-		socials: {}
+		socials: {},
 	};
 	const [userData, setUserData] = useState(initialState);
+	const { showErrorModal } = useErrorModalHelper();
 
 	// fetch quick items
-	useEffect (() => {
+	useEffect(() => {
 		const fetchQuickItems = async () => {
 			const address = id || auth?.evmAddress;
-			const state = (!id || auth?.evmAddress === id) ? 0 : 1; // available for auth, sales for non-auth
+			const state = !id || auth?.evmAddress === id ? 0 : 1; // available for auth, sales for non-auth
 			try {
 				const response = await axios(
 					`${getBackend()}/get/marketplace/by-owner/${address}/${state}?limit=4&startFrom=0`
-					);
+				);
 				setQuickItems(response.data?.items);
 			} catch (error) {
-				bread ('Failed to load quick items');
+				bread("Failed to load quick items");
 			}
-		}
+		};
 		fetchQuickItems();
 		// eslint-disable-next-line
-	}, [])
+	}, []);
 	useEffect(() => {
 		if (!editIsActive) {
 			let address = id ? id : auth.address;
@@ -941,12 +965,12 @@ const ProfileCard = () => {
 							name: data.displayName,
 							avatar: getAvatarFromId(auth.address),
 							description: data.bio,
-							socials: data.socials || {}
+							socials: data.socials || {},
 						});
 					}
 				})
 				.catch(err => {
-					bread(err.response.data.error);
+					showErrorModal(err.response.data.error);
 				})
 				.finally(() => {
 					setIsLoading(false);
@@ -981,14 +1005,16 @@ const ProfileCard = () => {
 	const tooltipRef = useRef();
 	return (
 		<>
-			<Background socials = {userData.socials}/>
+			<Background socials={userData.socials} />
 			<Card>
 				{!editIsActive ? (
 					!isLoading ? (
 						<ProfileWrapper>
 							<Container>
 								<ProfilePicture
-									src={userData.avatar ? userData.avatar : null}
+									src={
+										userData.avatar ? userData.avatar : null
+									}
 								/>
 								<ContentContainer>
 									<Name>
@@ -999,7 +1025,10 @@ const ProfileCard = () => {
 									<AddressContainer>
 										<label title={userData.address}>
 											<Address>
-												{truncateAddress(userData.address, 6)}
+												{truncateAddress(
+													userData.address,
+													6
+												)}
 											</Address>
 										</label>
 										{/* {window.isSecureContext && (
@@ -1030,19 +1059,24 @@ const ProfileCard = () => {
 									{isOwnAccount && (
 										<>
 											<EditDetailsContainer
-												onClick={() => setEditIsActive(true)}
+												onClick={() =>
+													setEditIsActive(true)
+												}
 												title={`${
-													!editIsActive ? `Enter` : `Exit`
+													!editIsActive
+														? `Enter`
+														: `Exit`
 												} Edit Mode`}
 											>
-												<span>Edit Profile Details</span>
+												<span>
+													Edit Profile Details
+												</span>
 												<EditIcon />
 											</EditDetailsContainer>
 											{/* <Withdraw /> */}
 										</>
 									)}
 								</AdditionalDetailsContainer>
-
 							</Container>
 							{/* <QuickSectionHeading>{isOwnAccount ? 'Available items' : 'Items on sale'}</QuickSectionHeading> */}
 							{/* {isOwnAccount ? (
@@ -1053,10 +1087,17 @@ const ProfileCard = () => {
 							)} */}
 							<QuickSection
 								items={quickItems}
-								title={isOwnAccount ? `Available items` : `Items on sale`}
-								link={isOwnAccount ? `?tab=Available` : `?tab=On%20Sale`}
+								title={
+									isOwnAccount
+										? `Available items`
+										: `Items on sale`
+								}
+								link={
+									isOwnAccount
+										? `?tab=Available`
+										: `?tab=On%20Sale`
+								}
 							/>
-							
 						</ProfileWrapper>
 					) : (
 						<Header>Loading...</Header>

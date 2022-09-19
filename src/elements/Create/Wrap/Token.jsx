@@ -49,7 +49,7 @@ const Token = ({ wrapDetails, setWrapDetails }) => {
 				value={wrapDetails.token}
 				onChange={handleInput}
 				type="number"
-				placeholder={`e.g "100000"`}
+				placeholder={`e.g. "100000"`}
 			/>
 		</Container>
 	);

@@ -2,12 +2,13 @@ const constants = {
 	APP_NAME: "Sqwid",
 	APP_DESCRIPTION: "An ocean of possibilities",
 	APP_ABOUT:
-		"%APP_NAME% aims to build a new creative economy — a world where creators can use the Reef blockchain to value their work in entirely new ways, and build stronger connections with their supporters.",
+		"%APP_NAME% seeks to create a safe and accessible environment, one in which artists can utilize the Reef blockchain to distribute their work in novel ways and forge closer bonds with their followers.",
 	APP_WEBSITE: "https://sqwid.app",
 	APP_SCAN_BASE_URL: "https://reefscan.com",
 	SOCIAL: {
-		TWITTER_HANDLE: "sqwid-app",
+		TWITTER_HANDLE: "sqwid_app",
 		GITHUB_HANDLE: "sqwid-app",
+		DISCORD_CODE: "FtkZE9aK8Z",
 	},
 	STATE_TYPES: ["Available", "Sale", "Auction", "Raffle", "Loan"],
 	STATE_EMPTY_MESSAGE_MAP: [
@@ -24,7 +25,13 @@ const constants = {
 		raffle: "",
 		loan: "",
 	},
-	CREATE_ACCEPTED_MIMETYPES: ["image/jpeg", "image/png", "video/mp4"],
+	CREATE_ACCEPTED_MIMETYPES: [
+		"image/jpeg",
+		"image/png",
+		"video/mp4",
+		"image/webp",
+		"image/gif",
+	],
 	DOCUMENTATION: {
 		base: "https://github.com/sqwid-app/sqwid-docs",
 		sale: "https://github.com/sqwid-app/sqwid-docs/blob/main/market_interaction/regular_sale.md",
@@ -50,6 +57,11 @@ const constants = {
 		"Humanity is like an ocean; if a few drops of the ocean are dirty, the ocean does not become dirty - Mahatma Gandhi",
 	],
 	DEFAULT_CONTRACT_STORAGE_LIMIT: 2000,
+	ERROR_MAP: {
+		6: {
+			2: "This account does not have enough balance to execute the transaction",
+		},
+	},
 };
 
 export default constants;

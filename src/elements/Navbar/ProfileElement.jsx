@@ -14,6 +14,7 @@ import { truncateAddress } from "@utils/textUtils";
 import { m, LazyMotion, domAnimation } from "framer-motion";
 import { getWithdrawableBalance, withdrawBalance } from "@utils/marketplace";
 import { convertREEFtoUSD } from "@utils/convertREEFtoUSD";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
 const BasicDetailsContainer = styled.div`
 	display: flex;
@@ -109,7 +110,7 @@ const Button = styled(NotStyledLink)`
 const ButtonContainer = styled(m.div)`
 	padding: 0.375rem 0;
 	width: 100%;
-	margin-top: .25rem;
+	margin-top: 0.25rem;
 `;
 
 const WithdrawWrapper = styled(m.div)`
@@ -196,6 +197,7 @@ const Withdraw = () => {
 	const [price, setPrice] = useState();
 	const [usdPrice, setUsdPrice] = useState();
 	const [loading, setLoading] = useState(false);
+	const { showErrorModal } = useErrorModalHelper();
 
 	useEffect(() => {
 		const fetchPrice = async () => {
@@ -216,7 +218,7 @@ const Withdraw = () => {
 			setUsdPrice(0);
 		} catch (err) {
 			if (err.message.includes("No Reef to be claimed")) {
-				bread("Not enough REEF to withdraw");
+				showErrorModal("Not enough REEF to withdraw");
 			}
 		} finally {
 			setLoading(false);

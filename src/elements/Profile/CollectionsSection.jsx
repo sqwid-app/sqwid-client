@@ -9,8 +9,8 @@ import { getCloudflareURL } from "@utils/getIPFSURL";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { respondTo } from "@styles/styledMediaQuery";
 import useIsTabletOrMobile from "@utils/useIsTabletOMobile";
-import bread from "@utils/bread";
 import { getBackend } from "@utils/network";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
 const Wrapper = styled.div`
 	position: relative;
@@ -65,6 +65,8 @@ const CollectionsSection = () => {
 	);
 	const [isLoading, setIsLoading] = useState(true);
 	const isTabletOrMobile = useIsTabletOrMobile();
+	const { showErrorModal } = useErrorModalHelper();
+
 	useEffect(() => {
 		axios
 			.get(`${getBackend()}/get/collections/owner/${userID}`)
@@ -84,7 +86,7 @@ const CollectionsSection = () => {
 				);
 			})
 			.catch(err => {
-				bread(err.response.data.error);
+				showErrorModal(err.response.data.error);
 			})
 			.finally(() => {
 				setIsLoading(false);

@@ -93,7 +93,7 @@ const CollectionSection = () => {
 						<ButtonText>{`${
 							files.collectionName.length
 								? files.collectionName
-								: `Choose from existing`
+								: `Choose existing`
 						}`}</ButtonText>
 					</ChooseBtn>
 					<NewBtn

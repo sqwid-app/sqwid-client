@@ -11,9 +11,9 @@ import AuthContext from "@contexts/Auth/AuthContext";
 import { getInfuraURL } from "@utils/getIPFSURL";
 import FileContext from "@contexts/File/FileContext";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
-import bread from "@utils/bread";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { getBackend } from "@utils/network";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -325,6 +325,8 @@ const New = ({ isActive, setIsActive }) => {
 		}
 		//eslint-disable-next-line
 	}, [info.file]);
+	const { showErrorModal } = useErrorModalHelper();
+
 	const handleClick = () => {
 		setButtonText(<Loading size="24" />);
 		setIsSubmitting(true);
@@ -338,7 +340,7 @@ const New = ({ isActive, setIsActive }) => {
 					setIsSubmitting(false);
 				})
 				.catch(err => {
-					bread(err.response.data.error);
+					showErrorModal(err.response.data.error);
 				})
 				.finally(() => {
 					setTimeout(() => {
@@ -358,7 +360,7 @@ const New = ({ isActive, setIsActive }) => {
 				<InputContainer
 					value={info.name}
 					onChange={e => setInfo({ ...info, name: e.target.value })}
-					placeholder={`e.g "Doggo collection"`}
+					placeholder={`e.g. "Doggo collection"`}
 				/>
 				<Title>Description</Title>
 				<InputContainer
@@ -366,7 +368,7 @@ const New = ({ isActive, setIsActive }) => {
 					onChange={e =>
 						setInfo({ ...info, description: e.target.value })
 					}
-					placeholder={`e.g "Pics of my heckin doggo"`}
+					placeholder={`e.g. "Pics of my doggo"`}
 				/>
 				<Title>
 					Cover Image
@@ -417,6 +419,7 @@ const Existing = ({ isActive, setIsActive }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const { auth } = useContext(AuthContext);
 	const { files, setFiles } = useContext(FileContext);
+	const { showErrorModal } = useErrorModalHelper();
 	useEffect(() => {
 		axios
 			.get(`${getBackend()}/get/collections/owner/${auth.evmAddress}`)
@@ -428,7 +431,7 @@ const Existing = ({ isActive, setIsActive }) => {
 				setCollections(res.data.collections);
 			})
 			.catch(err => {
-				bread(err.response.data.error);
+				showErrorModal(err.response.data.error);
 			})
 			.finally(() => {
 				setIsLoading(false);
@@ -440,8 +443,8 @@ const Existing = ({ isActive, setIsActive }) => {
 	}, []);
 
 	const handleNewClick = () => {
-		setIsActive ({ status: true, type: "new" });
-	}
+		setIsActive({ status: true, type: "new" });
+	};
 	return (
 		<LazyMotion features={domAnimation}>
 			<Header>Choose Collection</Header>
@@ -452,32 +455,34 @@ const Existing = ({ isActive, setIsActive }) => {
 					</LoadingContainer>
 				) : (
 					<>
-						{collections.length ? collections.map(item => (
-							<CollectionContainer
-								key={item.id}
-								whileTap={{
-									scale: 0.99,
-								}}
-								onClick={() => {
-									setFiles({
-										...files,
-										collection: item.id,
-										collectionName: item.data.name,
-									});
-									setIsActive({ ...isActive, status: false });
-								}}
-							>
-								<img
-									src={getInfuraURL(item.data.image)}
-									alt={item.data.description}
-								/>
-								<p>{item.data.name}</p>
-							</CollectionContainer>
-						)) : (
-							<AnimBtn
-								disabled={false}
-								onClick={handleNewClick}
-							>
+						{collections.length ? (
+							collections.map(item => (
+								<CollectionContainer
+									key={item.id}
+									whileTap={{
+										scale: 0.99,
+									}}
+									onClick={() => {
+										setFiles({
+											...files,
+											collection: item.id,
+											collectionName: item.data.name,
+										});
+										setIsActive({
+											...isActive,
+											status: false,
+										});
+									}}
+								>
+									<img
+										src={getInfuraURL(item.data.image)}
+										alt={item.data.description}
+									/>
+									<p>{item.data.name}</p>
+								</CollectionContainer>
+							))
+						) : (
+							<AnimBtn disabled={false} onClick={handleNewClick}>
 								Create new
 							</AnimBtn>
 						)}

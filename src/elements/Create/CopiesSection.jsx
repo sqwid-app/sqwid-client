@@ -44,7 +44,7 @@ const CopiesSection = () => {
 	};
 	return (
 		<Container>
-			<Title>Number of Copies</Title>
+			<Title>Number of copies</Title>
 			<InputContainer
 				value={files.copies}
 				onChange={handleInput}
