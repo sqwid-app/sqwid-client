@@ -2,7 +2,7 @@ import React, { Suspense, useContext } from "react";
 import FullPageLoading from "@elements/Default/FullPageLoading";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CollectibleProvider from "@contexts/Collectible/CollectibleProvider";
-import TopBanner from "@components/Default/TopBanner";
+// import TopBanner from "@components/Default/TopBanner";
 import BreadContainer from "@components/Default/BreadContainer";
 import Sac from "@pages/Sac";
 import explorePages from "@routes/explorePages";
@@ -35,7 +35,7 @@ const Routes = () => {
 					setModalIsOpen={setErrorModalIsOpen}
 					message={errorMessage}
 				/>
-				<TopBanner />
+				{/* <TopBanner /> */}
 				<Switch>
 					<Route path="/" exact component={Landing} />
 					{explorePaths.map(path => (
