@@ -3,6 +3,7 @@ import FullPageLoading from "@elements/Default/FullPageLoading";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CollectibleProvider from "@contexts/Collectible/CollectibleProvider";
 // import TopBanner from "@components/Default/TopBanner";
+// Removed top banner from routes
 import BreadContainer from "@components/Default/BreadContainer";
 import Sac from "@pages/Sac";
 import explorePages from "@routes/explorePages";
