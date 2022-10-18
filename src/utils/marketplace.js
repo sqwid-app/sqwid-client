@@ -380,6 +380,23 @@ const unlistLoanProposal = async positionId => {
 	}
 };
 
+const burnCollectible = async (tokenId, amount) => {
+	await checkAndApproveMarketplace();
+	try {
+		const address = JSON.parse(localStorage.getItem("auth"))?.auth?.evmAddress;
+		const { signer } = await Interact();
+		const collectibleContractInstance = collectibleContract (signer);
+		const tx = await collectibleContractInstance.burn(address, tokenId, amount,
+			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
+		);
+		const receipt = await tx.wait();
+		return receipt;
+	} catch (error) {
+		// console.error (error);
+		return null;
+	}
+}
+
 export const fetchRaffleEntries = async positionId => {
 	try {
 		const { signer } = await Interact();
@@ -669,6 +686,7 @@ export {
 	fetchCollectibleStats,
 	fetchCollectibleSaleHistory,
 	fetchOngoingBids,
+	burnCollectible,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,

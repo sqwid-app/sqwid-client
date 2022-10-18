@@ -9,6 +9,7 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import {
 	//eslint-disable-next-line
 	addBid,
+	burnCollectible,
 	//eslint-disable-next-line
 	buyNow,
 	createBid,
@@ -172,6 +173,26 @@ const Btn = styled(BtnBaseAnimated)`
 	min-width: 6rem;
 `;
 
+const BurnBtn = styled(BtnBaseAnimated)`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1rem;
+	font-weight: 700;
+	padding: 0 1.25rem;
+	border-radius: 1000rem;
+	height: 2.5rem;
+	min-width: 6rem;
+	margin-top: 1.5rem;
+	z-index: 2;
+	background-image: linear-gradient(
+		110deg,
+		rgb(255,0,0) 0%,
+		rgb(150,0,0) 50%,
+		rgb(255,0,0) 100%
+	) !important;
+`;
+
 const InfoWrapper = styled.div`
 	display: flex;
 	align-items: center;
@@ -247,6 +268,17 @@ const AnimBtn = ({ children, ...props }) => (
 	>
 		{children}
 	</Btn>
+);
+
+const BurnAnimBtn = ({ children, ...props }) => (
+	<BurnBtn
+		whileTap={{
+			scale: 0.97,
+		}}
+		{...props}
+	>
+		{children}
+	</BurnBtn>
 );
 
 const elemContains = (rect, x, y) => {
@@ -1146,6 +1178,51 @@ export const BuyModal = props => {
 				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					{buttonText}
 				</AnimBtn>
+			</Group>
+		</ModalContainer>
+	);
+};
+
+
+export const BurnModal = props => {
+	const history = useHistory();
+	const initialButtonText = "Burn";
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	const { showErrorModal } = useErrorModalHelper();
+	//eslint-disable-next-line
+	const { collectibleInfo, setCollectibleInfo } =
+		useContext(CollectibleContext);
+	const handleClick = async () => {
+		if (!isLoading) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			const receipt = await burnCollectible(
+				collectibleInfo.tokenId,
+				collectibleInfo.amount
+			);
+			if (receipt) {
+				bread ('Collectible burned!');
+				setTimeout (() => {
+					history.push(`/profile`);
+				}, 1000);
+			} else {
+				setIsLoading(false);
+				setButtonText(initialButtonText);
+				showErrorModal('Something went wrong. Please try again later.');
+			}
+		}
+	};
+	return (
+		<ModalContainer {...props}>
+			<Title style = {{ textAlign: 'center' }}>Burn - THIS IS PERMANENT !</Title>
+			<Group>
+				<div style = {{ textAlign: 'center' }}>
+					Are you sure you want to permanently burn this collectible?
+				</div>
+				<BurnAnimBtn disabled={isLoading} onClick={handleClick}>
+					{buttonText}
+				</BurnAnimBtn>
 			</Group>
 		</ModalContainer>
 	);
