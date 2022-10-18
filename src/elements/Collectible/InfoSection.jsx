@@ -2,6 +2,7 @@
 import AuthContext from "@contexts/Auth/AuthContext";
 import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import { respondTo } from "@styles/styledMediaQuery";
+import constants from "@utils/constants";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { getInfuraURL } from "@utils/getIPFSURL";
 import shortenIfAddress from "@utils/shortenIfAddress";
@@ -10,6 +11,8 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { css } from "styled-components";
+import { useEffect } from "react";
+import { PickCollectionModal } from "./Modals";
 
 const Group = styled.div`
 	display: flex;
@@ -113,10 +116,24 @@ const CollectionSection = styled.div``;
 
 const OwnerSection = styled.div``;
 
+const EditCollectionButton = styled.a`
+	padding: 0.5rem 0rem;
+	color: var(--app-container-text-primary);
+	cursor: pointer;
+	text-decoration: underline;
+	font-size: 1rem;
+	align-self: flex-end;
+	:hover {
+		color: var(--app-container-text-primary-hover);
+	}
+`;
+
 const InfoSection = () => {
 	//eslint-disable-next-line
 	const { ownerID } = useParams();
 	const { collectibleInfo } = useContext(CollectibleContext);
+	const { auth } = useContext(AuthContext);
+	const [ showPickCollectionModal, setShowPickCollectionModal ] = React.useState(false);
 	// use collectibleInfo.creator.royalty (0-100)
 	// Do stuff to handle change uhhh idk lmao
 	//
@@ -125,6 +142,12 @@ const InfoSection = () => {
 	// 	setCurrentOwner(owner?owner:collectibleInfo.owners[0])
 	// //eslint-disable-next-line
 	// }, [collectibleInfo, auth])
+	const [isOwner, setIsOwner] = React.useState(false);
+	useEffect (() => {
+		if (auth && collectibleInfo) {
+			setIsOwner (collectibleInfo.owner.address === auth.evmAddress);
+		}
+	}, [auth, collectibleInfo]);
 	return (
 		<GroupContainer>
 			<Group>
@@ -150,7 +173,9 @@ const InfoSection = () => {
 				</CreatorSection>
 				<CollectionSection>
 					<Heading align="right">Collection</Heading>
-					<Content>
+					<Content style={{
+						justifyContent: "flex-end"
+					}}>
 						<Logo
 							url = {
 								getInfuraURL (
@@ -159,11 +184,18 @@ const InfoSection = () => {
 							}
 						/>
 						<NotStyledLink
-							to={collectibleInfo.collection.id !== 'ASwOXeRM5DfghnURP4g2' ? `/collections/${collectibleInfo.collection.id}` : '#'}
+							to={collectibleInfo.collection.id !== constants.DEFAULT_COLLECTION_ID ? `/collections/${collectibleInfo.collection.id}` : '#'}
 						>
 							{collectibleInfo.collection.name}
 						</NotStyledLink>
 					</Content>
+					{
+					(isOwner && collectibleInfo.collection.id === constants.DEFAULT_COLLECTION_ID) && <Content>
+						<EditCollectionButton onClick={() => setShowPickCollectionModal (true)}>
+							Move to another collection
+						</EditCollectionButton>
+					</Content>
+					}
 				</CollectionSection>
 			</Group>
 			<Group>
@@ -194,6 +226,10 @@ const InfoSection = () => {
 					</Content>
 				</OwnerSection>
 			</Group>
+			<PickCollectionModal
+				isActive={showPickCollectionModal}
+				setIsActive={setShowPickCollectionModal}
+			/>
 		</GroupContainer>
 	);
 };

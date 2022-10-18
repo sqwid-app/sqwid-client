@@ -34,6 +34,10 @@ import axios from "axios";
 import { getBackend } from "@utils/network";
 import { numberSeparator } from "@utils/numberSeparator";
 import { useErrorModalHelper } from "@elements/Default/ErrorModal";
+import { getInfuraURL } from "@utils/getIPFSURL";
+import Scrollbars from "react-custom-scrollbars";
+import { Component } from "react";
+import { moveCollectibleToCollection } from "@utils/moveCollectibleToCollection";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -1224,6 +1228,192 @@ export const BurnModal = props => {
 					{buttonText}
 				</BurnAnimBtn>
 			</Group>
+		</ModalContainer>
+	);
+};
+
+const SelectorWrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	border: .1rem solid ${props => props.active ? 'var(--app-text)' : 'var(--app-container-text-primary)'};
+	padding: 0 rem .5rem;
+	padding-left: 0;
+	border-radius: .5rem;
+	margin-bottom: .5rem;
+	overflow: hidden;
+	padding-right: 1rem;
+	gap: 1rem;
+	cursor: pointer;
+	transiton: all .2s ease-in-out;
+	:hover {
+		border: .1rem solid var(--app-text);
+	};
+	div {
+		transition: all .2s ease-in-out;
+		transform: translate(${props => props.active ? '-1rem' : '0'}, 0);
+	};
+	img {
+		transition: all .2s ease-in-out;
+		transform: scale(${props => props.active ? '1.2' : '1'});
+	}
+`;
+
+const SelectorImage = styled.img`
+	width: 3.25rem;
+	height: 3.25rem;
+	object-fit: cover;
+`;
+
+class CustomScrollbar extends Component {
+	constructor(props, ...rest) {
+		super(props, ...rest);
+		this.renderView = this.renderView.bind(this);
+		this.renderThumb = this.renderThumb.bind(this);
+		this.scrollbars = React.createRef();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.move !== prevProps.move) {
+			let scrollbars = this.scrollbars;
+			if (
+				this.props.move > 0 &&
+				this.props.move < scrollbars.getThumbHorizontalWidth()
+			) {
+				let left = this.props.move;
+				scrollbars.scrollLeft(left);
+			}
+		}
+	}
+
+	renderView({ style, ...props }) {
+		const viewStyle = {
+			paddingRight: "1rem"
+		};
+		return <div style={{ ...style, ...viewStyle }} {...props} />;
+	}
+
+	renderThumb({ style, ...props }) {
+		const thumbStyle = {
+			backgroundColor: "rgb(255 255 255 / 25%)",
+			borderRadius: "1000rem",
+		};
+		return <div style={{ ...style, ...thumbStyle }} {...props} />;
+	}
+
+	render() {
+		return (
+			<Scrollbars
+				renderView={this.renderView}
+				renderThumbHorizontal={this.renderThumb}
+				renderThumbVertical={this.renderThumb}
+				ref={this.scrollbars}
+				className="custom-scrollbars"
+				{...this.props}
+			/>
+		);
+	}
+}
+
+const ItemSelector = ({ item, selectedItem, setSelectedItem, isLoading }) => {
+	const [isActive, setIsActive] = useState(false);
+	useEffect (() => {
+		if (item.id === selectedItem) {
+			setIsActive(true);
+		} else {
+			setIsActive(false);
+		}
+	}, [selectedItem, item.id]);
+
+	const handleClick = () => {
+		!isLoading && setSelectedItem(item.id);
+	};
+	return (
+		<SelectorWrapper active = {isActive} onClick = {handleClick}>
+			<SelectorImage src = {getInfuraURL (item.data.thumbnail || item.data.image)} alt = {item.data.name} />
+			<div>{item.data.name}</div>
+		</SelectorWrapper>
+	);
+};
+
+export const PickCollectionModal = props => {
+	const initialButtonText = "Select a new collection";
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	const [collections, setCollections] = useState([]);
+	const { showErrorModal } = useErrorModalHelper();
+	const { auth } = useContext(AuthContext);
+	const [selectedItem, setSelectedItem] = useState(null);
+	//eslint-disable-next-line
+	const { collectibleInfo, setCollectibleInfo } =
+		useContext(CollectibleContext);
+	const handleClick = async () => {
+		if (!isLoading && selectedItem) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			try {
+				const res = await moveCollectibleToCollection (collectibleInfo.itemId, selectedItem);
+				if (res && !res.error) {
+					setButtonText ('Collectible moved!');
+					setTimeout (() => {
+						window.location.reload ();
+					}, 1000);
+				} else {
+					setIsLoading(false);
+					setButtonText(initialButtonText);
+					showErrorModal('Something went wrong. Please try again later.');
+				}
+			} catch (error) {
+				setIsLoading(false);
+				setSelectedItem (null);
+				setButtonText(initialButtonText);
+				showErrorModal(error.toString ());
+			}
+		}
+	};
+
+	useEffect (() => {
+		if (selectedItem) setButtonText (`Move collectible to ${collections.find (item => item.id === selectedItem).data.name}`);
+	}, [selectedItem, collections]);
+
+	useEffect(() => {
+		// console.log (auth);
+		if (auth) {
+			axios
+				.get(`${getBackend()}/get/collections/owner/${auth.evmAddress}`)
+				.then(res => {
+					setCollections(res.data.collections);
+				})
+				.catch(err => {
+					showErrorModal(err);
+				})
+				.finally(() => {
+					setIsLoading(false);
+				});
+		}
+		return () => {
+			setCollections([]);
+		};
+		//eslint-disable-next-line
+	}, []);
+	return (
+		<ModalContainer {...props}>
+			<Title style = {{ textAlign: 'center' }}>Pick new collection</Title>
+			<CustomScrollbar style = {{ minHeight: "40vh", maxWidth: "30vw" }}>
+				{collections.map (collection => <ItemSelector
+					item = {collection}
+					selectedItem = {selectedItem}
+					setSelectedItem = {setSelectedItem}
+					isLoading = {isLoading}
+					key = {collection.id}
+				/>)}
+			</CustomScrollbar>
+			<AnimBtn style = {{
+				marginTop: '.5rem',
+			}} onClick = {handleClick}>
+				{buttonText}
+			</AnimBtn>
 		</ModalContainer>
 	);
 };

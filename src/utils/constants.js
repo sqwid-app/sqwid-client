@@ -62,6 +62,7 @@ const constants = {
 			2: "This account does not have enough balance to execute the transaction",
 		},
 	},
+	DEFAULT_COLLECTION_ID: 'ASwOXeRM5DfghnURP4g2'
 };
 
 export default constants;
