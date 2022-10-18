@@ -134,6 +134,7 @@ const InfoSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext);
 	const { auth } = useContext(AuthContext);
 	const [ showPickCollectionModal, setShowPickCollectionModal ] = React.useState(false);
+	console.log (collectibleInfo);
 	// use collectibleInfo.creator.royalty (0-100)
 	// Do stuff to handle change uhhh idk lmao
 	//

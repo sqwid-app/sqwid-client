@@ -38,6 +38,7 @@ import { getInfuraURL } from "@utils/getIPFSURL";
 import Scrollbars from "react-custom-scrollbars";
 import { Component } from "react";
 import { moveCollectibleToCollection } from "@utils/moveCollectibleToCollection";
+import { BigNumber } from "ethers";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -1105,10 +1106,11 @@ export const BuyModal = props => {
 	const handleCopiesInput = e => {
 		const amount = Math.min(Number(e.target.value), collectibleInfo.amount);
 		setCopies(amount || "");
+		console.log (collectibleInfo.sale.price);
 		if (amount) {
 			setButtonText(
 				`Buy for ${
-					amount * (collectibleInfo.sale.price / 10 ** 18)
+					BigNumber.from (amount).mul(BigNumber.from (collectibleInfo.sale.price.toLocaleString('fullwide', {useGrouping:false})).div (BigNumber.from ('10').pow (18))).toString()
 				} Reef / $${(
 					amount *
 					(collectibleInfo.sale.price / 10 ** 18) *
@@ -1127,7 +1129,8 @@ export const BuyModal = props => {
 			const receipt = await createSale(
 				collectibleInfo.positionId,
 				Number(copies),
-				Number(collectibleInfo.sale.price) / 10 ** 18
+				// Number(collectibleInfo.sale.price) / 10 ** 18
+				BigNumber.from (collectibleInfo.sale.price.toLocaleString('fullwide', {useGrouping:false}))
 			);
 			if (receipt) {
 				if (Number(copies) === collectibleInfo.amount) {

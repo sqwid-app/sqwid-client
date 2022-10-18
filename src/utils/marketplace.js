@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import marketplaceContractABI from "../constants/contracts/SqwidMarketplace";
 import utilityContractABI from "../constants/contracts/SqwidUtility";
 import collectibleContractABI from "../constants/contracts/SqwidERC1155";
@@ -263,19 +263,22 @@ const createBid = async (itemId, amount) => {
 		return null;
 	}
 };
-
 const createSale = async (positionId, tokenAmount, price) => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
+		// console.log (price.toLocaleString('fullwide', {useGrouping:false}));
+		// console.log (tokenAmount, price, ethers.utils.parseEther(
+		// 	(BigNumber.from (tokenAmount).mul (BigNumber.from (price.toLocaleString('fullwide', {useGrouping:false})))).toString()));
 		const tx = await marketplaceContractInstance.createSale(
 			positionId,
 			tokenAmount,
 			{
-				value: ethers.utils.parseEther(
-					(Number(tokenAmount) * Number(price)).toString()
-				),
+				// value: ethers.utils.parseEther(
+				// 	(BigNumber.from (tokenAmount).mul (BigNumber.from (price.toLocaleString('fullwide', {useGrouping:false})))).toString()
+				// ),
+				value: BigNumber.from (tokenAmount).mul (price),
 				customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
 			}
 		);
