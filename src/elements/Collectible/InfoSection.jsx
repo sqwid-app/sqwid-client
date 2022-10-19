@@ -134,7 +134,7 @@ const InfoSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext);
 	const { auth } = useContext(AuthContext);
 	const [ showPickCollectionModal, setShowPickCollectionModal ] = React.useState(false);
-	console.log (collectibleInfo);
+	// console.log (collectibleInfo);
 	// use collectibleInfo.creator.royalty (0-100)
 	// Do stuff to handle change uhhh idk lmao
 	//
@@ -144,9 +144,11 @@ const InfoSection = () => {
 	// //eslint-disable-next-line
 	// }, [collectibleInfo, auth])
 	const [isOwner, setIsOwner] = React.useState(false);
+	const [isCreator, setIsCreator] = React.useState(false);
 	useEffect (() => {
 		if (auth && collectibleInfo) {
 			setIsOwner (collectibleInfo.owner.address === auth.evmAddress);
+			setIsCreator (collectibleInfo.creator.address === auth.evmAddress);
 		}
 	}, [auth, collectibleInfo]);
 	return (
@@ -191,7 +193,7 @@ const InfoSection = () => {
 						</NotStyledLink>
 					</Content>
 					{
-					(isOwner && collectibleInfo.collection.id === constants.DEFAULT_COLLECTION_ID) && <Content>
+					(isOwner && isCreator && collectibleInfo.collection.id === constants.DEFAULT_COLLECTION_ID) && <Content>
 						<EditCollectionButton onClick={() => setShowPickCollectionModal (true)}>
 							Move to another collection
 						</EditCollectionButton>

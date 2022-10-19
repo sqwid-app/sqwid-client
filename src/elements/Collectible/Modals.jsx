@@ -1106,7 +1106,7 @@ export const BuyModal = props => {
 	const handleCopiesInput = e => {
 		const amount = Math.min(Number(e.target.value), collectibleInfo.amount);
 		setCopies(amount || "");
-		console.log (collectibleInfo.sale.price);
+		// console.log (collectibleInfo.sale.price);
 		if (amount) {
 			setButtonText(
 				`Buy for ${
