@@ -125,7 +125,7 @@ const CustomDropzoneModal = ({ modal, info, setInfo }) => {
 					info={info}
 					setInfo={setInfo}
 					modal={modal}
-					maxSize={30000000}
+					maxSize={100000000}
 				/>
 			</Wrapper>
 		</LazyMotion>

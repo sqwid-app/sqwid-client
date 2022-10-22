@@ -50,7 +50,7 @@ const CopiesSection = ({ bulk = false }) => {
 	};
 	return (
 		<Container>
-			<Title>Number of Copies</Title>
+			<Title>Number of copies</Title>
 			<InputContainer
 				value={bulk ? collectionBulkData.copies : files.copies}
 				onChange={handleInput}

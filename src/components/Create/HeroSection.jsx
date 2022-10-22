@@ -207,7 +207,7 @@ const HeroSection = () => {
 		{
 			name: "Create",
 			isActive: true,
-			title: "Create a Collectible",
+			title: "Create a collectible",
 			component: <MainPageRedesign />,
 		},
 		{

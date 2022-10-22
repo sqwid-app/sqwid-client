@@ -3,7 +3,6 @@ import InfoContent from "@elements/Collectible/InfoContent";
 import NFTContent from "@elements/Collectible/NFTContent";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { respondTo } from "@styles/styledMediaQuery";
-import bread from "@utils/bread";
 import constants from "@utils/constants";
 
 import {
@@ -21,6 +20,7 @@ import { useParams } from "react-router";
 import styled from "styled-components";
 import { getBackend } from "@utils/network";
 import useStateInfo from "@utils/useStateInfo";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -82,6 +82,7 @@ const HeroSection = () => {
 		useContext(CollectibleContext);
 	const [isLoading, setIsLoading] = useState(true);
 	const { addr } = useParams();
+	const { showErrorModal } = useErrorModalHelper();
 
 	useEffect(() => {
 		// Axios request goes here ebin...
@@ -99,7 +100,7 @@ const HeroSection = () => {
 					let price = res.data["reef"].usd;
 					conversionRate = Number(price);
 				} catch (err) {
-					bread(err.response.data.error);
+					showErrorModal(err.response.data.error);
 				}
 				setCollectibleInfo({
 					...data,
@@ -144,7 +145,7 @@ const HeroSection = () => {
 					setIsLoading(false);
 				}
 			} catch (err) {
-				bread(err);
+				showErrorModal(err);
 				setCollectibleInfo({
 					...collectibleInfo,
 					isValidCollectible: false,

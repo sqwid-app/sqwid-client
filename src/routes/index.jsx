@@ -1,13 +1,17 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useContext } from "react";
 import FullPageLoading from "@elements/Default/FullPageLoading";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CollectibleProvider from "@contexts/Collectible/CollectibleProvider";
-import TopBanner from "@components/Default/TopBanner";
+// import TopBanner from "@components/Default/TopBanner";
+// Removed top banner from routes
 import BreadContainer from "@components/Default/BreadContainer";
 import Sac from "@pages/Sac";
 import explorePages from "@routes/explorePages";
 import ToS from "@pages/ToS";
 import Privacy from "@pages/Privacy";
+import { CollectionsSearch, UsersSearch } from "@pages/Search";
+import ErrorModal from "@elements/Default/ErrorModal";
+import ErrorContext from "@contexts/Error/ErrorContext";
 
 const Explore = React.lazy(() => import("@pages/Explore"));
 const Collectible = React.lazy(() => import("@pages/Collectible"));
@@ -22,10 +26,17 @@ const NotFound = React.lazy(() => import("@pages/NotFound"));
 const explorePaths = explorePages.map(item => item.path);
 
 const Routes = () => {
+	const { errorModalIsOpen, setErrorModalIsOpen, errorMessage } =
+		useContext(ErrorContext);
 	return (
 		<Router>
 			<Suspense fallback={<FullPageLoading init component="routes" />}>
-				<TopBanner />
+				<ErrorModal
+					modalIsOpen={errorModalIsOpen}
+					setModalIsOpen={setErrorModalIsOpen}
+					message={errorMessage}
+				/>
+				{/* <TopBanner /> */}
 				<Switch>
 					<Route path="/" exact component={Landing} />
 					{explorePaths.map(path => (
@@ -56,6 +67,16 @@ const Routes = () => {
 						path="/dashboard/featured"
 						exact
 						component={FeaturedDashboard}
+					/>
+					<Route
+						path="/search/collections/:query"
+						exact
+						component={CollectionsSearch}
+					/>
+					<Route
+						path="/search/users/:query"
+						exact
+						component={UsersSearch}
 					/>
 					<Route component={NotFound} />
 				</Switch>

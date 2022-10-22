@@ -164,7 +164,7 @@ const RoyaltyReceiverSection = ({ bulk = false }) => {
 					</BtnContainer>
 				</LazyMotion>
 			</ButtonsContainer>
-			<HelperText>Leave blank to use current address.</HelperText>
+			<HelperText>Leave blank to use current address</HelperText>
 			<RoyaltyReceiverModal
 				isVisible={isRoyaltyModalVisible}
 				setIsVisible={setIsRoyaltyModalVisible}

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import marketplaceContractABI from "../constants/contracts/SqwidMarketplace";
 import utilityContractABI from "../constants/contracts/SqwidUtility";
 import collectibleContractABI from "../constants/contracts/SqwidERC1155";
@@ -101,12 +101,12 @@ const fetchUserItems = async (address, state = -1, startFrom) => {
 };
 
 // returns collection-wise items
-const fetchCollectionItems = async (address, state = -1, startFrom) => {
+const fetchCollectionItems = async (address, state = -1, startFrom, filterQuery = '') => {
 	let limit = constants.EXPLORE_PAGINATION_LIMIT;
 	const res = await axios(
 		`${getBackend()}/get/marketplace/by-collection/${address}${
 			state >= 0 ? `/${state}` : ""
-		}?limit=${limit}&startFrom=${startFrom}`
+		}?limit=${limit}&startFrom=${startFrom}${filterQuery ? `&` + filterQuery : ''}`
 	);
 	const { data } = res;
 	if (data.error) {
@@ -263,19 +263,22 @@ const createBid = async (itemId, amount) => {
 		return null;
 	}
 };
-
 const createSale = async (positionId, tokenAmount, price) => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
+		// console.log (price.toLocaleString('fullwide', {useGrouping:false}));
+		// console.log (tokenAmount, price, ethers.utils.parseEther(
+		// 	(BigNumber.from (tokenAmount).mul (BigNumber.from (price.toLocaleString('fullwide', {useGrouping:false})))).toString()));
 		const tx = await marketplaceContractInstance.createSale(
 			positionId,
 			tokenAmount,
 			{
-				value: ethers.utils.parseEther(
-					(Number(tokenAmount) * Number(price)).toString()
-				),
+				// value: ethers.utils.parseEther(
+				// 	(BigNumber.from (tokenAmount).mul (BigNumber.from (price.toLocaleString('fullwide', {useGrouping:false})))).toString()
+				// ),
+				value: BigNumber.from (tokenAmount).mul (price),
 				customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
 			}
 		);
@@ -379,6 +382,23 @@ const unlistLoanProposal = async positionId => {
 		return null;
 	}
 };
+
+const burnCollectible = async (tokenId, amount) => {
+	await checkAndApproveMarketplace();
+	try {
+		const address = JSON.parse(localStorage.getItem("auth"))?.auth?.evmAddress;
+		const { signer } = await Interact();
+		const collectibleContractInstance = collectibleContract (signer);
+		const tx = await collectibleContractInstance.burn(address, tokenId, amount,
+			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
+		);
+		const receipt = await tx.wait();
+		return receipt;
+	} catch (error) {
+		// console.error (error);
+		return null;
+	}
+}
 
 export const fetchRaffleEntries = async positionId => {
 	try {
@@ -560,22 +580,30 @@ const fetchRoyalties = async tokenId => {
 };
 
 const fetchCollectionStats = async id => {
-	try {
-		const res = await axios(
-			`${getBackend()}/statswatch/collection/${id}/all`
-		);
-		const { data } = res;
-		return data;
-	} catch (e) {
-		return {
-			volume: 0,
-			average: 0,
-			lastSale: 0,
-			salesAmount: 0,
-			items: 0,
-			owners: 0
-		};
-	}
+	// try {
+	// 	const res = await axios(
+	// 		`${getBackend()}/statswatch/collection/${id}/all`
+	// 	);
+	// 	const { data } = res;
+	// 	return data;
+	// } catch (e) {
+	// 	return {
+	// 		volume: 0,
+	// 		average: 0,
+	// 		lastSale: 0,
+	// 		salesAmount: 0,
+	// 		items: 0,
+	// 		owners: 0
+	// 	};
+	// }
+	return {
+		volume: 0,
+		average: 0,
+		lastSale: 0,
+		salesAmount: 0,
+		items: 0,
+		owners: 0
+	};
 }
 
 const fetchCollectibleStats = async id => {
@@ -661,6 +689,7 @@ export {
 	fetchCollectibleStats,
 	fetchCollectibleSaleHistory,
 	fetchOngoingBids,
+	burnCollectible,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,

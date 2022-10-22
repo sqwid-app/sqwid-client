@@ -14,8 +14,8 @@ import constants from "@utils/constants";
 import { capitalize } from "@utils/textUtils";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { heart } from "@utils/heart";
-import bread from "@utils/bread";
 import AuthContext from "@contexts/Auth/AuthContext";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
 const Container = styled.div`
 	display: grid;
@@ -67,7 +67,7 @@ const ImageWrapper = styled.div`
 	.utility-wrapper {
 		transition: all 0.15s ease 0.075s;
 		opacity: 0;
-		transform: translateY(100%);
+		transform: translateY(-100%);
 	}
 	img:hover + .utility-wrapper,
 	.utility-wrapper:hover {
@@ -224,12 +224,12 @@ const UtilityWrapper = styled.div`
 	place-items: center;
 	position: absolute;
 	z-index: 2;
-	bottom: 0;
+	top: 0;
 	width: 100%;
 	border-radius: 0 0 0.75rem 0.75rem;
 	padding: 0.5rem;
 	min-height: 4rem;
-	background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.65));
+	background: linear-gradient(0deg, transparent, rgba(0, 0, 0, 0.65));
 `;
 
 const UtilityContainer = styled.div`
@@ -245,10 +245,10 @@ const UtilityContainer = styled.div`
 const BtnContainer = styled.div`
 	position: relative;
 	.popup {
-		padding-top: 0.25rem;
+		padding-bottom: 0.25rem;
 		position: absolute;
 		font-weight: 800;
-		bottom: calc(-50% - 0.125rem);
+		top: calc(-50% - 0.125rem);
 		left: 50%;
 		transform: translateX(-50%);
 		opacity: 0;
@@ -370,7 +370,7 @@ const ShareBtn = ({ to }) => {
 					<m.div
 						whileHover={{
 							// y: -2.5,
-							scale: 1.1
+							scale: 1.1,
 						}}
 						whileTap={{
 							scale: 0.95,
@@ -434,35 +434,51 @@ const ReportBtn = () => {
 const HeartBtn = () => {
 	const [isHearted, setIsHearted] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
+	const { collectibleInfo, setCollectibleInfo } =
+		useContext(CollectibleContext);
 	const { auth } = useContext(AuthContext);
 	const evmAddress = auth.evmAddress;
+	const { showErrorModal } = useErrorModalHelper();
+
 	const handleHeartClick = () => {
 		if (isLoading) return;
 		setIsLoading(true);
 		setIsHearted(!isHearted);
-		heart (collectibleInfo.itemId).then (res => {
-			if (isHearted) {
-				const newHearts = collectibleInfo.hearts.filter(heart => heart.address !== evmAddress);
-				setCollectibleInfo({ ...collectibleInfo, hearts: newHearts });
-			} else {
-				setCollectibleInfo({ ...collectibleInfo, hearts: [...collectibleInfo.hearts, {
-					address: evmAddress,
-					name: res.name
-				}] });
-			}
-			setIsLoading (false);
-		}).catch (err => {
-			bread (err.toString ());
-			setIsLoading (false);
-		});
+		heart(collectibleInfo.itemId)
+			.then(res => {
+				if (isHearted) {
+					const newHearts = collectibleInfo.hearts.filter(
+						heart => heart.address !== evmAddress
+					);
+					setCollectibleInfo({
+						...collectibleInfo,
+						hearts: newHearts,
+					});
+				} else {
+					setCollectibleInfo({
+						...collectibleInfo,
+						hearts: [
+							...collectibleInfo.hearts,
+							{
+								address: evmAddress,
+								name: res.name,
+							},
+						],
+					});
+				}
+				setIsLoading(false);
+			})
+			.catch(err => {
+				showErrorModal(err.toString());
+				setIsLoading(false);
+			});
 	};
 
-	useEffect (() => {
-		if (collectibleInfo.hearts?.find (h => h.address === evmAddress)) {
-			setIsHearted (true);
+	useEffect(() => {
+		if (collectibleInfo.hearts?.find(h => h.address === evmAddress)) {
+			setIsHearted(true);
 		} else {
-			setIsHearted (false);
+			setIsHearted(false);
 		}
 	}, [collectibleInfo.hearts, evmAddress]);
 	return (
@@ -476,7 +492,7 @@ const HeartBtn = () => {
 					scale: 0.95,
 				}}
 				onClick={handleHeartClick}
-				title={ isHearted ? 'Unheart' : 'Heart' }
+				title={isHearted ? "Unheart" : "Heart"}
 				className="btn btn__heart"
 			>
 				{
@@ -489,7 +505,7 @@ const HeartBtn = () => {
 					</svg>
 				}
 			</m.div>
-			<p className="popup">{ isHearted ? 'Unheart' : 'Heart' }</p>
+			<p className="popup">{isHearted ? "Unheart" : "Heart"}</p>
 		</BtnContainer>
 	);
 };
@@ -677,7 +693,7 @@ const NFTContentSection = () => {
 						onClick={() => setModalIsOpen(true)}
 						isBlurred={isBlurred}
 						setIsBlurred={setIsBlurred}
-						src={getInfuraURL (collectibleInfo.meta.image)}
+						src={getInfuraURL(collectibleInfo.meta.image)}
 					/>
 					<ModalComponent
 						modalIsOpen={modalIsOpen}

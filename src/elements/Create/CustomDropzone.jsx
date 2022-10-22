@@ -111,7 +111,7 @@ const Dropzone = props => {
 	useEffect(() => {
 		if (fileRejections.length) {
 			fileRejections[0].errors[0].code === "file-too-large"
-				? setDragText("File cannot be larger than 30mb")
+				? setDragText("File cannot be larger than 100mb")
 				: setDragText(fileRejections[0].errors[0].message);
 			setTimeout(() => {
 				setDragText(initialDragText);

@@ -7,9 +7,9 @@ import { Suspense } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Wrapper from "@elements/ProfileRedesign/Wrapper";
-import bread from "@utils/bread";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { getBackend } from "@utils/network";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
 const LoadingContainer = styled.div`
 	width: 100%;
@@ -22,6 +22,7 @@ const Collected = () => {
 	const { id } = useParams();
 	const [items, setItems] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const { showErrorModal } = useErrorModalHelper();
 
 	useEffect(() => {
 		let addressToCheck = id || auth?.evmAddress;
@@ -32,11 +33,12 @@ const Collected = () => {
 				setItems(result.data);
 			})
 			.catch(err => {
-				bread(err.response.data.error);
+				showErrorModal(err.response.data.error);
 			})
 			.finally(() => {
 				setIsLoading(false);
 			});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [auth, auth?.evmAddress, id]);
 	return (
 		<Wrapper>
