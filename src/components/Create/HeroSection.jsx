@@ -17,6 +17,12 @@ import UnwrapSection from "./UnwrapSection";
 import useActiveTabs from "@utils/useActiveTabs";
 import { CreateButton } from "@elements/Create/CreateButton";
 import RoyaltyReceiverSection from "@elements/Create/RoyaltyReceiverSection";
+import { CreateBulkButton } from "@elements/Create/CreateBulkButton";
+import CollectionNameSection from "@elements/Create/CollectionNameSection";
+import CollectionDescriptionSection from "@elements/Create/CollectionDescriptionSection";
+import PreviewCoverSection from "@elements/Create/PreviewCoverSection";
+import ChangesBulk from "@elements/Create/ChangesBulk";
+import CollectionBulkProvider from "@contexts/CollectionBulk/CollectionBulkProvider";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -39,6 +45,16 @@ const MainSection = styled.div`
 	height: 100%;
 	display: grid;
 	grid-template-columns: 2fr repeat(2, 1fr);
+	gap: 4rem;
+`;
+
+const MainBulkSection = styled.div`
+	margin: 0 2rem;
+	padding: 3rem 0 1rem;
+	width: 75vw;
+	height: 100%;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
 	gap: 4rem;
 `;
 
@@ -118,6 +134,34 @@ const MainPageRedesign = () => {
 	);
 };
 
+const BulkPage = () => {
+	return (
+		<MainBulkSection>
+			<LeftContainer>
+				<UploadContainer>
+					<UploadSection title="Upload ZIP File" fileType="zip" />
+				</UploadContainer>
+				<RoyaltyReceiverSection bulk={true} />
+				<RoyaltySection bulk={true} />
+				<CopiesSection bulk={true} />
+				<ChangesBulk />
+			</LeftContainer>
+			<RightContainer>
+				<CollectionNameSection bulk={true} />
+				<CollectionDescriptionSection bulk={true} />
+				<UploadContainer>
+					<UploadSection
+						title="Collection Cover Image"
+						fileType="cover"
+					/>
+				</UploadContainer>
+				<PreviewCoverSection />
+				<CreateBulkButton />
+			</RightContainer>
+		</MainBulkSection>
+	);
+};
+
 const Navbar = styled.nav`
 	display: flex;
 	gap: 0.5rem;
@@ -166,6 +210,12 @@ const HeroSection = () => {
 			title: "Create a collectible",
 			component: <MainPageRedesign />,
 		},
+		{
+			name: "Create bulk",
+			isActive: false,
+			title: "Create bulk Collectibles",
+			component: <BulkPage />,
+		},
 		// {
 		// 	name: "Wrap",
 		// 	isActive: false,
@@ -185,28 +235,32 @@ const HeroSection = () => {
 
 	return (
 		<FileProvider>
-			<Wrapper>
-				<HeaderSection>
-					<Title>{navRoutes.find(item => item.isActive).title}</Title>
-					{navRoutes.length > 1 && (
-						<Navbar>
-							{navRoutes.map((item, index) => (
-								<NavContent
-									key={index}
-									active={item.isActive}
-									disabled={item.isActive}
-									onClick={() => {
-										replacer(item.name);
-									}}
-								>
-									{item.name}
-								</NavContent>
-							))}
-						</Navbar>
-					)}
-				</HeaderSection>
-				<>{navRoutes.find(item => item.isActive).component}</>
-			</Wrapper>
+			<CollectionBulkProvider>
+				<Wrapper>
+					<HeaderSection>
+						<Title>
+							{navRoutes.find(item => item.isActive).title}
+						</Title>
+						{navRoutes.length > 1 && (
+							<Navbar>
+								{navRoutes.map((item, index) => (
+									<NavContent
+										key={index}
+										active={item.isActive}
+										disabled={item.isActive}
+										onClick={() => {
+											replacer(item.name);
+										}}
+									>
+										{item.name}
+									</NavContent>
+								))}
+							</Navbar>
+						)}
+					</HeaderSection>
+					<>{navRoutes.find(item => item.isActive).component}</>
+				</Wrapper>
+			</CollectionBulkProvider>
 		</FileProvider>
 	);
 };
