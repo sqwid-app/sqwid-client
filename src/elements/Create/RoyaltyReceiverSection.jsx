@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import FileContext from "@contexts/File/FileContext";
+import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
 import RoyaltyReceiverModal from "./RoyaltyReceiverModal";
 import bread from "@utils/bread";
 
@@ -97,18 +98,23 @@ const HelperText = styled.p`
 	padding: 0.0675rem 0;
 `;
 
-const RoyaltyReceiverSection = () => {
+const RoyaltyReceiverSection = ({ bulk = false }) => {
 	const [isRoyaltyModalVisible, setIsRoyaltyModalVisible] = useState(false);
 	const { files, setFiles } = useContext(FileContext);
+	const { collectionBulkData, setCollectionBulkData } = useContext(
+		CollectionBulkContext
+	);
 	const signer = JSON.parse(localStorage.getItem("auth"))?.auth;
 	const selectedAddress =
 		signer && signer.evmAddress ? signer.evmAddress : "";
 
 	const handleInput = e => {
-		setFiles({
-			...files,
-			royaltyRecipient: e.target.value,
-		});
+		bulk
+			? setCollectionBulkData({
+					...collectionBulkData,
+					royaltyRecipient: e.target.value,
+			  })
+			: setFiles({ ...files, royaltyRecipient: e.target.value });
 	};
 
 	return (
@@ -117,15 +123,21 @@ const RoyaltyReceiverSection = () => {
 			<ButtonsContainer>
 				<LazyMotion features={domAnimation}>
 					<InputContainer
-						value={files.royaltyRecipient}
+						value={
+							bulk
+								? collectionBulkData.royaltyRecipient
+								: files.royaltyRecipient
+						}
 						onChange={handleInput}
 						placeholder={`Receiver address`}
 						onBlur={e =>
 							e.target.value === "" &&
-							setFiles({
-								...files,
-								royaltyRecipient: "",
-							})
+							(bulk
+								? setCollectionBulkData({
+										...collectionBulkData,
+										royaltyRecipient: "",
+								  })
+								: setFiles({ ...files, royaltyRecipient: "" }))
 						}
 					/>
 					<BtnContainer>
