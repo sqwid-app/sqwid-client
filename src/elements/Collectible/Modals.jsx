@@ -1407,20 +1407,29 @@ export const PickCollectionModal = props => {
 	return (
 		<ModalContainer {...props}>
 			<Title style = {{ textAlign: 'center' }}>Pick new collection</Title>
-			<CustomScrollbar style = {{ minHeight: "40vh", maxWidth: "30vw" }}>
-				{collections.map (collection => <ItemSelector
-					item = {collection}
-					selectedItem = {selectedItem}
-					setSelectedItem = {setSelectedItem}
-					isLoading = {isLoading}
-					key = {collection.id}
-				/>)}
-			</CustomScrollbar>
-			<AnimBtn style = {{
-				marginTop: '.5rem',
-			}} onClick = {handleClick}>
-				{buttonText}
-			</AnimBtn>
+			{collections.length > 0 ? (
+				<>
+					<CustomScrollbar style = {{ minHeight: "40vh", maxWidth: "30vw" }}>
+						{collections.map (collection => <ItemSelector
+							item = {collection}
+							selectedItem = {selectedItem}
+							setSelectedItem = {setSelectedItem}
+							isLoading = {isLoading}
+							key = {collection.id}
+						/>)}
+					</CustomScrollbar>
+					<AnimBtn style = {{
+						marginTop: '.5rem',
+					}} onClick = {handleClick}>
+						{buttonText}
+					</AnimBtn>
+				</>
+			) : (
+				<div style = {{ textAlign: "center" }}>
+					You don't have any collections yet. Create one to move your collectible.
+				</div>
+			)}
+			
 		</ModalContainer>
 	);
 };
