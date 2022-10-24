@@ -143,11 +143,11 @@ const InfoSection = () => {
 	// 	setCurrentOwner(owner?owner:collectibleInfo.owners[0])
 	// //eslint-disable-next-line
 	// }, [collectibleInfo, auth])
-	const [isOwner, setIsOwner] = React.useState(false);
+	// const [isOwner, setIsOwner] = React.useState(false);
 	const [isCreator, setIsCreator] = React.useState(false);
 	useEffect (() => {
 		if (auth && collectibleInfo) {
-			setIsOwner (collectibleInfo.owner.address === auth.evmAddress);
+			// setIsOwner (collectibleInfo.owner.address === auth.evmAddress);
 			setIsCreator (collectibleInfo.creator.address === auth.evmAddress);
 		}
 	}, [auth, collectibleInfo]);
@@ -193,7 +193,7 @@ const InfoSection = () => {
 						</NotStyledLink>
 					</Content>
 					{
-					(isOwner && isCreator && collectibleInfo.collection.id === constants.DEFAULT_COLLECTION_ID) && <Content>
+					(isCreator && collectibleInfo.collection.id === constants.DEFAULT_COLLECTION_ID) && <Content>
 						<EditCollectionButton onClick={() => setShowPickCollectionModal (true)}>
 							Move to another collection
 						</EditCollectionButton>
@@ -229,10 +229,10 @@ const InfoSection = () => {
 					</Content>
 				</OwnerSection>
 			</Group>
-			<PickCollectionModal
+			{ isCreator && <PickCollectionModal
 				isActive={showPickCollectionModal}
 				setIsActive={setShowPickCollectionModal}
-			/>
+			/> }
 		</GroupContainer>
 	);
 };

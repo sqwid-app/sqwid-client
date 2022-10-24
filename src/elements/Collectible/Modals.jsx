@@ -1389,7 +1389,11 @@ export const PickCollectionModal = props => {
 					setCollections(res.data.collections);
 				})
 				.catch(err => {
-					showErrorModal(err);
+					if (err.toString().includes('404')) {
+						setCollections([]);
+					} else {
+						showErrorModal(err.toString());
+					}
 				})
 				.finally(() => {
 					setIsLoading(false);
