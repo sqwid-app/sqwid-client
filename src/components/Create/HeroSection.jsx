@@ -23,6 +23,8 @@ import CollectionDescriptionSection from "@elements/Create/CollectionDescription
 import PreviewCoverSection from "@elements/Create/PreviewCoverSection";
 import ChangesBulk from "@elements/Create/ChangesBulk";
 import CollectionBulkProvider from "@contexts/CollectionBulk/CollectionBulkProvider";
+import VerifyProvider from "@contexts/Verify/VerifyProvider";
+import { VerifyBulkButton } from "@elements/Create/VerifyBulkButton";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -162,6 +164,30 @@ const BulkPage = () => {
 	);
 };
 
+const VerifyPage = () => {
+	return (
+		<MainSection>
+			<LeftContainer>
+				<Group>
+					<div style = {{ textAlign: "left" }} >Use this to verify items you've minted directly on the <b>Sqwid Marketplace</b> contract.</div>
+					<UploadContainer>
+						<UploadSection title = "Upload JSON file" fileType="json" />
+					</UploadContainer>
+					<pre>{`
+JSON format:
+
+{
+	"collectionId": "your collection id",
+	"itemIds": [1, 2, 3, ...]
+}
+					`}</pre>
+					<VerifyBulkButton/>
+				</Group>
+			</LeftContainer>
+		</MainSection>
+	);
+};
+
 const Navbar = styled.nav`
 	display: flex;
 	gap: 0.5rem;
@@ -213,9 +239,15 @@ const HeroSection = () => {
 		{
 			name: "Create bulk",
 			isActive: false,
-			title: "Create bulk Collectibles",
+			title: "Create bulk collectibles",
 			component: <BulkPage />,
 		},
+		{
+			name: "Verify",
+			isActive: false,
+			title: "Verify collectibles (advanced)",
+			component: <VerifyPage />,
+		}
 		// {
 		// 	name: "Wrap",
 		// 	isActive: false,
@@ -235,32 +267,34 @@ const HeroSection = () => {
 
 	return (
 		<FileProvider>
-			<CollectionBulkProvider>
-				<Wrapper>
-					<HeaderSection>
-						<Title>
-							{navRoutes.find(item => item.isActive).title}
-						</Title>
-						{navRoutes.length > 1 && (
-							<Navbar>
-								{navRoutes.map((item, index) => (
-									<NavContent
-										key={index}
-										active={item.isActive}
-										disabled={item.isActive}
-										onClick={() => {
-											replacer(item.name);
-										}}
-									>
-										{item.name}
-									</NavContent>
-								))}
-							</Navbar>
-						)}
-					</HeaderSection>
-					<>{navRoutes.find(item => item.isActive).component}</>
-				</Wrapper>
-			</CollectionBulkProvider>
+			<VerifyProvider>
+				<CollectionBulkProvider>
+					<Wrapper>
+						<HeaderSection>
+							<Title>
+								{navRoutes.find(item => item.isActive).title}
+							</Title>
+							{navRoutes.length > 1 && (
+								<Navbar>
+									{navRoutes.map((item, index) => (
+										<NavContent
+											key={index}
+											active={item.isActive}
+											disabled={item.isActive}
+											onClick={() => {
+												replacer(item.name);
+											}}
+										>
+											{item.name}
+										</NavContent>
+									))}
+								</Navbar>
+							)}
+						</HeaderSection>
+						<>{navRoutes.find(item => item.isActive).component}</>
+					</Wrapper>
+				</CollectionBulkProvider>
+			</VerifyProvider>
 		</FileProvider>
 	);
 };

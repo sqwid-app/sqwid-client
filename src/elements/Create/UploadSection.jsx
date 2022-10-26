@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import CustomDropzone from "./CustomDropzone";
 import CustomZipDropzone from "./CustomZipDropzone";
+import CustomVerificationDropzone from "./CustomVerificationDropzone";
 
 const Container = styled.div``;
 
@@ -18,7 +19,7 @@ const UploadSection = ({ title = "Upload File", fileType = "" }) => {
 
 	return (
 		<>
-			{(fileType === "zip" ||
+			{(fileType === "zip" || fileType === "json" ||
 				(fileType === "cover" &&
 					collectionBulkData.coverFile === null) ||
 				(fileType === "" && fileData.file === null)) && (
@@ -26,9 +27,12 @@ const UploadSection = ({ title = "Upload File", fileType = "" }) => {
 					<Title>{title}</Title>
 					{fileType === "zip" ? (
 						<CustomZipDropzone />
+					) : 
+					(fileType === "json" ? (
+						<CustomVerificationDropzone />
 					) : (
 						<CustomDropzone cover={fileType === "cover"} />
-					)}
+					))}
 				</Container>
 			)}
 		</>

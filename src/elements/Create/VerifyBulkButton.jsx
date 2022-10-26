@@ -1,12 +1,16 @@
-import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
+// import FileContext from "@contexts/File/FileContext";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
-import bread from "@utils/bread";
-import { createBulkCollectibles } from "@utils/createBulkCollectibles";
+// import bread from "@utils/bread";
+// import { createCollectible } from "@utils/createCollectible";
 import { domAnimation, LazyMotion } from "framer-motion";
 import React, { useContext, useState } from "react";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { useErrorModalHelper } from "@elements/Default/ErrorModal";
+import VerifyContext from "@contexts/Verify/Verify";
+import verifyBulk from "@utils/verifyBulk";
+import bread from "@utils/bread";
 
 const BtnContainer = styled.div`
 	flex: 1;
@@ -18,6 +22,7 @@ const BtnContainer = styled.div`
 
 const Btn = styled(BtnBaseAnimated)`
 	height: 3rem;
+	width: 50%;
 	min-width: fit-content;
 	display: grid;
 	place-items: center;
@@ -50,48 +55,45 @@ const AnimBtn = ({ children, onClick, disabled }) => (
 	</Btn>
 );
 
-export const CreateBulkButton = () => {
-	const { collectionBulkData } = useContext(CollectionBulkContext);
-	const [buttonText, setButtonText] = useState("Create Collection");
+export const VerifyBulkButton = () => {
+	// const { files, fileData } = useContext(FileContext);
+	const initialButtonText = "Verify";
+	const { verifyData, setVerifyData } = useContext(VerifyContext);
+	const [buttonText, setButtonText] = useState(initialButtonText);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const history = useHistory();
+	// const history = useHistory();
+	const { showErrorModal } = useErrorModalHelper();
+
 	const handleClick = () => {
 		setButtonText(<FadeLoaderIcon />);
 		setIsSubmitting(true);
-
 		if (
-			collectionBulkData.coverFile &&
-			collectionBulkData.collectionName.length &&
-			collectionBulkData.zipFile.length
+			verifyData.json
 		) {
-			createBulkCollectibles({ ...collectionBulkData })
-				.then(res => {
-					if (!res.error) {
-						bread(
-							"Collection created successfully. The items will be visible after content moderation. Please allow a few minutes for Sqwid to approve them."
-						);
-						history.push(`/collections/${res}`);
-					} else {
-						// console.log(res.error);
-						const message = res.error.response?.data?.error
-							? res.error.response.data.error
-							: "Error creating bulk collectibles";
-						bread(message);
-						setButtonText("Create Collection");
-						setIsSubmitting(false);
-					}
+			verifyBulk (verifyData.json).then (res => {
+				setButtonText(initialButtonText);
+				if (res.error) {
+					showErrorModal (res.error);
+				} else {
+					bread("Collectibles have been verified");
+				}
+				setIsSubmitting(false);
+			}).catch (err => {
+				setButtonText(initialButtonText);
+				setIsSubmitting(false);
+				showErrorModal(err.toString ());
+			}).finally (() => {
+				setVerifyData ({
+					...verifyData,
+					json: null,
 				})
-				.catch(err => {
-					bread(err.toString());
-					setButtonText("Create Collection");
-					setIsSubmitting(false);
-				});
+			});
+			
 		} else {
-			setButtonText("Create Collection");
+			setButtonText(initialButtonText);
 			setIsSubmitting(false);
 		}
 	};
-
 	return (
 		<BtnContainer>
 			<LazyMotion features={domAnimation}>

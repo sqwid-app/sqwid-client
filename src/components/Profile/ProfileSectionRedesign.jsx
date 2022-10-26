@@ -14,7 +14,7 @@ import AuctionSection from "@elements/ProfileRedesign/Sections/AuctionSection";
 import RaffleSection from "@elements/ProfileRedesign/Sections/RaffleSection";
 import LoanSection from "@elements/ProfileRedesign/Sections/LoanSection";
 import useActiveTabs from "@utils/useActiveTabs";
-import OngoingBidsSection from "@elements/ProfileRedesign/Sections/ActivitySection";
+import ActivitySection from "@elements/ProfileRedesign/Sections/ActivitySection";
 import { useParams } from "react-router-dom";
 
 const Section = styled.section`
@@ -156,10 +156,10 @@ const ProfileSection = () => {
 			setNavRoutes ([
 				...navRoutes,
 				{
-					name: "Activity",
+					name: "Claimables",
 					isActive: false,
-					title: <>Activity</>,
-					component: <OngoingBidsSection />
+					title: <>Claimables</>,
+					component: <ActivitySection />
 				}
 			]);
 		}
