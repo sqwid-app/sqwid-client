@@ -661,6 +661,65 @@ const fetchOngoingBids = async () => {
 	return data;
 };
 
+const fetchClaimables = async () => {
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	//eslint-disable-next-line
+	let jwt = address
+		? JSON.parse(localStorage.getItem("tokens")).find(
+				token => token.address === address
+		  )
+		: null;
+	if (!jwt) return 0;
+	try {
+		const res = await axios (`${getBackend()}/get/marketplace/claimables`, {
+			headers: {
+				Authorization: `Bearer ${jwt.token}`,
+				},
+			}
+		);
+		const { data } = res;
+		if (data.error) return [];
+		return data;
+	} catch (e) {
+		return [];
+	}
+};
+
+const claimClaimables = async (itemId, tokenId) => {
+	await checkAndApproveMarketplace();
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	//eslint-disable-next-line
+	let jwt = address
+		? JSON.parse(localStorage.getItem("tokens")).find(
+				token => token.address === address
+		  )
+		: null;
+	if (!jwt) return 0;
+	try {
+		const { signer } = await Interact();
+		const marketplaceContractInstance = marketplaceContract(signer);
+		const tx = await marketplaceContractInstance.addAvailableTokens(itemId);
+		const receipt = await tx.wait();
+		const res = await axios.post(`${getBackend()}/claim/${tokenId}`, {}, {
+			headers: {
+				Authorization: `Bearer ${jwt.token}`,
+				},
+			}
+		);
+		const { data } = res;
+		if (data.error) return {
+			error: true,
+			message: res.error.toString ()
+		};
+		return receipt;
+	} catch (e) {
+		return {
+			error: true,
+			message: e.toString ()
+		};
+	}
+};
+
 export {
 	unlistLoanProposal,
 	repayLoan,
@@ -690,6 +749,8 @@ export {
 	fetchCollectibleSaleHistory,
 	fetchOngoingBids,
 	burnCollectible,
+	fetchClaimables,
+	claimClaimables,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,
