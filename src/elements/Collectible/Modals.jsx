@@ -534,7 +534,7 @@ export const TransferModal = props => {
 						type="text"
 						value={address}
 						onChange={handleInput}
-						placeholder={`Recipient EVM address (0x...)`}
+						placeholder={`Search for recipient...`}
 					/>
 					{(results.users?.length && !addressSelected && address.length) ? <ResultsContainer>
 						{results.users?.map((user, i) => (
@@ -568,7 +568,7 @@ export const TransferModal = props => {
 						placeholder={`Number of copies to send`}
 					/>
 				</InputWrapper>
-				<AnimBtn disabled={isLoading} onClick={handleClick}>
+				<AnimBtn disabled={isLoading || !addressSelected} onClick={handleClick}>
 					{buttonText}
 				</AnimBtn>
 			</Group>

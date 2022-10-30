@@ -243,9 +243,9 @@ const HeroSection = () => {
 			component: <BulkPage />,
 		},
 		{
-			name: "Verify",
+			name: "Register",
 			isActive: false,
-			title: "Verify collectibles (advanced)",
+			title: "Register collectibles (advanced)",
 			component: <VerifyPage />,
 		}
 		// {
