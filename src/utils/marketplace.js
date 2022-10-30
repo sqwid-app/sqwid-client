@@ -685,6 +685,28 @@ const fetchClaimables = async () => {
 	}
 };
 
+const fetchClaimablesCount = async () => {
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	//eslint-disable-next-line
+	let jwt = address
+		? JSON.parse(localStorage.getItem("tokens")).find(
+				token => token.address === address
+		)
+		: null;
+	if (!jwt) return 0;
+	try {
+		const res = await axios (`${getBackend()}/get/marketplace/claimables/count`, {
+			headers: {
+				Authorization: `Bearer ${jwt.token}`,
+			},
+		});
+		const { data } = res;
+		if (data.error) return 0;
+		return data.count;
+	} catch (e) {
+		return 0;
+	}
+};
 const claimClaimables = async (itemId, tokenId) => {
 	await checkAndApproveMarketplace();
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
@@ -750,6 +772,7 @@ export {
 	fetchOngoingBids,
 	burnCollectible,
 	fetchClaimables,
+	fetchClaimablesCount,
 	claimClaimables,
 	// these are old, need to be removed
 	marketplaceItemExists,

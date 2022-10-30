@@ -16,6 +16,7 @@ import LoanSection from "@elements/ProfileRedesign/Sections/LoanSection";
 import useActiveTabs from "@utils/useActiveTabs";
 import ActivitySection from "@elements/ProfileRedesign/Sections/ActivitySection";
 import { useParams } from "react-router-dom";
+import { fetchClaimablesCount } from "@utils/marketplace";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -74,6 +75,21 @@ const NavContent = styled.p`
 	}
 `;
 
+const Badge = styled.div`
+	position: absolute;
+	top: -.85rem;
+	right: -.85rem;
+	//background-color: ${props => props.type === "info" ? "var(--app-theme-primary)" : "var(--app-theme-primary)"};
+	background-color: var(--app-theme-primary);
+	color: var(--app-text);
+	font-size: 0.8rem;
+	font-weight: 900;
+	min-width: 1.5rem;
+	padding: 0.1rem 0.35rem;
+	text-align: center;
+	border-radius: 1rem;
+`;
+
 const StyledSelect = styled(Select)`
 	min-width: 8rem;
 	z-index: 6;
@@ -128,8 +144,6 @@ const ProfileSection = () => {
 		}
 	]);
 
-	
-
 	const replacer = useActiveTabs({ navRoutes, setNavRoutes });
 
 	const options = navRoutes.map(route => ({
@@ -153,15 +167,20 @@ const ProfileSection = () => {
 
 	useEffect(() => {
 		if (!id) {
-			setNavRoutes ([
-				...navRoutes,
-				{
-					name: "Claimables",
-					isActive: false,
-					title: <>Claimables</>,
-					component: <ActivitySection />
-				}
-			]);
+			const fetchClaimData = async () => {
+				const response = await fetchClaimablesCount ();
+				setNavRoutes ([
+					...navRoutes,
+					{
+						name: "Claimables",
+						isActive: false,
+						title: <>Claimables</>,
+						badge: response || null,
+						component: <ActivitySection />
+					}
+				]);
+			};
+			fetchClaimData();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id]);
@@ -197,7 +216,10 @@ const ProfileSection = () => {
 											replacer(item.name);
 										}}
 									>
-										{item.name}
+										<>
+											{item.name}
+											{item.badge ? <Badge>{item.badge}</Badge> : null}
+										</>
 									</NavContent>
 								))}
 							</Navbar>

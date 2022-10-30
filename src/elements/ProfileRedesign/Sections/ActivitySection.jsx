@@ -160,9 +160,14 @@ const CardInfo = ({ data, claiming, setClaiming, setIsClaimed }) => {
 	);
 };
 
-const Claimable = ({item}) => {
+const Claimable = ({item, handleClaimed}) => {
 	const [claiming, setClaiming] = useState (false);
 	const [isClaimed, setIsClaimed] = useState (false);
+	useEffect (() => {
+		if (isClaimed) {
+			handleClaimed (item);
+		}
+	}, [isClaimed, handleClaimed, item]);
 	return (
 		<>
 			{!isClaimed && <LazyMotion features={domAnimation}>
@@ -176,7 +181,6 @@ const Claimable = ({item}) => {
 						data={item}
 						claiming = {claiming}
 						setClaiming = {setClaiming}
-						// isClaimed = {isClaimed}
 						setIsClaimed = {setIsClaimed}/>
 				</CardWrapper>
 			</LazyMotion>}
@@ -193,12 +197,15 @@ const ActivitySection = () => {
 		}
 		fetchData ();
 	}, []);
+
+	const handleClaimed = (item) => {
+		setClaimables (claimables.filter (i => i.itemId !== item.itemId));
+	}
 	return (
 		<>
 			<StyledWrapper>
-
 				{claimables.length ? <CardSectionContainer>
-					{claimables.map ((item) => <Claimable key = {item.itemId} item = {item} />)}
+					{claimables.map ((item) => <Claimable key = {item.itemId} item = {item} handleClaimed = {handleClaimed} />)}
 				</CardSectionContainer> : (<EmptySectionContainer>
 					<EmptySectionText>
 						Looks like there is nothing to be claimed right now. Check back later! 😊
