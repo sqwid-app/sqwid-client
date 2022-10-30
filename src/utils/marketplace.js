@@ -718,22 +718,38 @@ const claimClaimables = async (itemId, tokenId) => {
 		: null;
 	if (!jwt) return 0;
 	try {
-		const { signer } = await Interact();
-		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.addAvailableTokens(itemId);
-		const receipt = await tx.wait();
-		const res = await axios.post(`${getBackend()}/claim/${tokenId}`, {}, {
-			headers: {
-				Authorization: `Bearer ${jwt.token}`,
-				},
-			}
-		);
-		const { data } = res;
-		if (data.error) return {
-			error: true,
-			message: res.error.toString ()
-		};
-		return receipt;
+		let receipt;
+		try {
+			const { signer } = await Interact();
+			const marketplaceContractInstance = marketplaceContract(signer);
+			const tx = await marketplaceContractInstance.addAvailableTokens(itemId);
+			receipt = await tx.wait();
+			const res = await axios.post(`${getBackend()}/claim/${tokenId}`, {}, {
+				headers: {
+					Authorization: `Bearer ${jwt.token}`,
+					},
+				}
+			);
+			const { data } = res;
+			if (data.error) return {
+				error: true,
+				message: res.error.toString ()
+			};
+			return receipt;
+		} catch (e) {
+			await axios.post(`${getBackend()}/claim/${tokenId}`, {
+				remove: true
+			}, {
+				headers: {
+					Authorization: `Bearer ${jwt.token}`,
+					},
+				}
+			);
+			return {
+				error: true,
+				message: e.toString ()
+			};
+		}
 	} catch (e) {
 		return {
 			error: true,
