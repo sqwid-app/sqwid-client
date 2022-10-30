@@ -742,6 +742,20 @@ const claimClaimables = async (itemId, tokenId) => {
 	}
 };
 
+const transferCollectible = async (to, tokenId, amount) => {
+	const { signer } = await Interact();
+	const from = await signer.getAddress();
+	const collectibleContractInstance = collectibleContract(signer);
+	const tx = await collectibleContractInstance.safeTransferFrom(
+		from,
+		to,
+		Number (tokenId),
+		Number (amount),
+		"0x"
+	);
+	const receipt = await tx.wait();
+	return receipt;
+}
 export {
 	unlistLoanProposal,
 	repayLoan,
@@ -774,6 +788,7 @@ export {
 	fetchClaimables,
 	fetchClaimablesCount,
 	claimClaimables,
+	transferCollectible,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,

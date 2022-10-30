@@ -25,6 +25,7 @@ import {
 	LendModal,
 	PutOnSaleModal,
 	RaffleModal,
+	TransferModal,
 } from "./Modals";
 import { Link } from "react-router-dom";
 import AuthContext from "@contexts/Auth/AuthContext";
@@ -626,6 +627,7 @@ const Config2 = () => {
 	const [showLendModal, setShowLendModal] = useState(false);
 	const [showRaffleModal, setShowRaffleModal] = useState(false);
 	const [showBurnModal, setShowBurnModal] = useState(false);
+	const [showTransferModal, setShowTransferModal] = useState(false);
 
 	return (
 		<BottomContainer>
@@ -641,7 +643,10 @@ const Config2 = () => {
 			<AnimBtn onClick={() => setShowRaffleModal(!showRaffleModal)}>
 				Create Raffle
 			</AnimBtn>
-			<BurnAnimBtn onClick={() => setShowBurnModal(!showPutOnSaleModal)}>
+			<AnimBtn onClick={() => setShowTransferModal(!showTransferModal)}>
+				Transfer
+			</AnimBtn>
+			<BurnAnimBtn onClick={() => setShowBurnModal(!showBurnModal)}>
 				Burn
 			</BurnAnimBtn>
 			<CreateAuctionModal
@@ -668,6 +673,10 @@ const Config2 = () => {
 				fee={2.5}
 				isActive={showBurnModal}
 				setIsActive={setShowBurnModal}
+			/>
+			<TransferModal
+				isActive={showTransferModal}
+				setIsActive={setShowTransferModal}
 			/>
 		</BottomContainer>
 	);

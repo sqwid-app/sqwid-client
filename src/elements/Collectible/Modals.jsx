@@ -21,6 +21,7 @@ import {
 	putItemOnSale,
 	//eslint-disable-next-line
 	putOnSale,
+	transferCollectible,
 } from "@utils/marketplace";
 //eslint-disable-next-line
 import bread from "@utils/bread";
@@ -39,6 +40,10 @@ import Scrollbars from "react-custom-scrollbars";
 import { Component } from "react";
 import { moveCollectibleToCollection } from "@utils/moveCollectibleToCollection";
 import { BigNumber } from "ethers";
+import { briefSearchAll } from "@utils/search";
+import { UserResult, UserResultText } from "@elements/Navbar/Search";
+import { getAvatarFromId } from "@utils/getAvatarFromId";
+import shortenIfAddress from "@utils/shortenIfAddress";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -340,6 +345,7 @@ const ModalContainer = ({ isActive, setIsActive, ...props }) => {
 	);
 };
 
+/*
 export const TransferModal = props => {
 	const [value, setValue] = useState({
 		address: "",
@@ -399,6 +405,171 @@ export const TransferModal = props => {
 				</InputWrapper>
 				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					Transfer
+				</AnimBtn>
+			</Group>
+		</ModalContainer>
+	);
+};
+*/
+
+// const SearchResults = ({ results, setResults, setIsActive }) => {
+// 	const [isLoading, setIsLoading] = useState(false);
+// 	const [value, setValue] = useState({
+// 		address: "",
+// 		amount: "",
+// 	});
+
+const ResultsContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	background-color: var(--app-background);
+	z-index: 1;
+	border-radius: 1rem;
+	gap: .5rem;
+	padding: .5rem;
+	max-width: 20rem;
+`;
+
+const SearchUserResult = styled(UserResult)`
+	border-radius: 1rem;
+	&:hover {
+		cursor: pointer;
+	}
+	&:hover span {
+		color: var(--app-container-text-primary-hover);
+	}
+`;
+
+export const TransferModal = props => {
+	const history = useHistory();
+	const [address, setAddress] = useState("");
+	const [displayName, setDisplayName] = useState("");
+	const [copies, setCopies] = useState("");
+	const initialButtonText = "Submit";
+	const [isLoading, setIsLoading] = useState(false);
+	const [addressSelected, setAddressSelected] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	const [results, setResults] = useState({});
+	const { collectibleInfo, setCollectibleInfo } =
+		useContext(CollectibleContext);
+	const { showErrorModal } = useErrorModalHelper ();
+
+	useEffect (() => {
+		const delayDebounceFn = setTimeout(() => {
+			if (address.length) {
+				briefSearchAll (address).then (res => {
+					setResults (res);
+				});
+			}
+		}, 500);
+
+		return () => clearTimeout(delayDebounceFn);
+	}, [address]);
+
+	const handleInput = e => {
+		setAddressSelected (false);
+		setAddress(e.target.value);
+		if (e.target.value === "") {
+			setResults({});
+		}
+	};
+	const handleCopiesInput = e => {
+		const amount = Math.min(Number(e.target.value), collectibleInfo.amount);
+		setCopies(amount || "");
+	};
+	const handleClick = async () => {
+		if (!isLoading && Number(copies) >= 1) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			try {
+				const receipt = await transferCollectible(
+					address,
+					collectibleInfo.tokenId,
+					copies
+				);
+				if (receipt) {
+					if (Number(copies) === collectibleInfo.amount) {
+						history.push('/profile');
+					} else {
+						setCollectibleInfo({
+							...collectibleInfo,
+							amount: collectibleInfo.amount - Number(copies),
+						});
+						setIsLoading(false);
+						setButtonText(initialButtonText);
+						setAddress("");
+						setCopies("");
+						props.setIsActive(false);
+						bread(
+							<div>
+								Collectible sent!
+							</div>
+						);
+					}
+				} else {
+					setIsLoading(false);
+					setButtonText(initialButtonText);
+				}
+			} catch (err) {
+				setIsLoading(false);
+				setButtonText(initialButtonText);
+				showErrorModal(err.toString ());
+			}
+		}
+	};
+	return (
+		<ModalContainer {...props}>
+			<Title>Transfer collectible</Title>
+			<Group>
+				<InputWrapper>
+					<InputTitle>
+						Recipient{" "}
+						{addressSelected && (
+							<span>
+								{shortenIfAddress (displayName)}
+							</span>
+						)}
+					</InputTitle>
+					<InputContainer
+						type="text"
+						value={address}
+						onChange={handleInput}
+						placeholder={`Recipient EVM address (0x...)`}
+					/>
+					{(results.users?.length && !addressSelected && address.length) ? <ResultsContainer>
+						{results.users?.map((user, i) => (
+							<SearchUserResult
+								onClick = {() => {
+									setAddress(user.evmAddress);
+									setDisplayName(user.displayName);
+									setAddressSelected (true);
+									setResults ({});
+								}}
+								key = {user.evmAddress}
+							>
+								<img alt = "User Avatar" src={getAvatarFromId (user.evmAddress)} />
+								<UserResultText>
+									<span>{user.displayName}</span>
+									<span>{user.evmAddress}</span>
+								</UserResultText>
+							</SearchUserResult>
+						))}
+					</ResultsContainer> : null}
+					<InputTitle>
+						Number of copies{" "}
+						<span>
+							{Number(copies)} / {collectibleInfo.amount}
+						</span>
+					</InputTitle>
+					<InputContainer
+						type="number"
+						value={copies}
+						onChange={handleCopiesInput}
+						placeholder={`Number of copies to send`}
+					/>
+				</InputWrapper>
+				<AnimBtn disabled={isLoading} onClick={handleClick}>
+					{buttonText}
 				</AnimBtn>
 			</Group>
 		</ModalContainer>
