@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion";
-import FileContext from "@contexts/File/FileContext";
-import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
+// import FileContext from "@contexts/File/FileContext";
+// import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
 import { sanitize } from "@utils/textUtils";
-import constants from "@utils/constants";
+// import constants from "@utils/constants";
+import VerifyContext from "@contexts/Verify/Verify";
 
 const Wrapper = styled.div`
 	.dropzone {
@@ -58,13 +59,10 @@ const DropzoneButton = styled(m.a)`
 const Dropzone = props => {
 	// const initialDragText = props.modal ? "PNG, JPEG, GIF or WEBP. Max 30mb." : "PNG, GIF, WEBP, MP4, or MP3. Max 30mb."
 	// const initialDragText = "PNG or JPEG. Max 30mb.";
-	const initialDragText = props.cover
-		? "PNG, JPEG, GIF or WEBP. Max 30mb."
-		: "PNG, JPEG, MP4. Max 30mb.";
-	const { fileData, setFileData } = useContext(FileContext);
-	const { collectionBulkData, setCollectionBulkData } = useContext(
-		CollectionBulkContext
-	);
+	const initialDragText = "JSON file. Max 5mb.";
+	// const [file, setFile] = useState(null);
+	// const { fileData, setFileData } = useContext(FileContext);
+	const { verifyData, setVerifyData } = useContext(VerifyContext);
 	const [dragText, setDragText] = useState(initialDragText);
 	const {
 		getRootProps,
@@ -78,30 +76,25 @@ const Dropzone = props => {
 		noKeyboard: true,
 		maxFiles: 1,
 		// accept: `image/jpeg, image/gif, image/png, image/webp, ${!props.modal&&`audio/mpeg, video/mp4`}`,
-		accept: props.cover
-			? `${constants.COVER_ACCEPTED_MIMETYPES.join(", ")}`
-			: `${constants.CREATE_ACCEPTED_MIMETYPES.join(", ")}`,
+		accept: 'application/json',
 		maxSize: props.maxSize,
 	});
 	useEffect(() => {
 		if (acceptedFiles.length) {
 			let file = acceptedFiles[0];
-			props.cover
-				? setCollectionBulkData({
-						...collectionBulkData,
-						coverFile: new File([file], sanitize(file.name), {
-							type: file.type,
-						}),
-				  })
-				: setFileData({
-						...fileData,
-						file: new File([file], sanitize(file.name), {
-							type: file.type,
-						}),
-				  });
+			setDragText (`${file.name} (${file.size} bytes)`);
+			setVerifyData({
+				...verifyData,
+				json: new File([file], sanitize(file.name), {
+					type: file.type,
+				}),
+			});
 		}
 		//eslint-disable-next-line
 	}, [acceptedFiles]);
+	useEffect(() => {
+		if (!verifyData.json) setDragText (initialDragText);
+	}, [verifyData])
 	useEffect(() => {
 		isDragActive
 			? setDragText(`Drop your files here`)
@@ -111,7 +104,7 @@ const Dropzone = props => {
 	useEffect(() => {
 		if (fileRejections.length) {
 			fileRejections[0].errors[0].code === "file-too-large"
-				? setDragText("File cannot be larger than 100mb")
+				? setDragText("File cannot be larger than 5mb")
 				: setDragText(fileRejections[0].errors[0].message);
 			setTimeout(() => {
 				setDragText(initialDragText);
@@ -124,7 +117,6 @@ const Dropzone = props => {
 			<input {...getInputProps()} />
 			<DropzoneText>{dragText}</DropzoneText>
 			<DropzoneButton
-				modal={props.modal}
 				onClick={open}
 				whileHover={{
 					y: -5,
@@ -141,14 +133,14 @@ const Dropzone = props => {
 	);
 };
 
-const CustomDropzone = ({ modal, cover }) => {
+const CustomVerificationDropzone = () => {
 	return (
 		<LazyMotion features={domAnimation}>
 			<Wrapper>
-				<Dropzone modal={modal} maxSize={30000000} cover={cover} />
+				<Dropzone maxSize={5000000} />
 			</Wrapper>
 		</LazyMotion>
 	);
 };
 
-export default CustomDropzone;
+export default CustomVerificationDropzone;

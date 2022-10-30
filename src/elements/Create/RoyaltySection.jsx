@@ -1,4 +1,5 @@
 import FileContext from "@contexts/File/FileContext";
+import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
 import React, { useContext } from "react";
 import styled from "styled-components";
 
@@ -58,22 +59,24 @@ const HelperText = styled.p`
 	padding: 0.0675rem 0;
 `;
 
-const RoyaltySection = () => {
+const RoyaltySection = ({ bulk = false }) => {
 	const { files, setFiles } = useContext(FileContext);
+	const { collectionBulkData, setCollectionBulkData } = useContext(
+		CollectionBulkContext
+	);
 	const handleInput = e => {
 		let { value, min, max } = e.target;
 		value = Math.max(Number(min), Math.min(Number(max), Number(value)));
-		setFiles({
-			...files,
-			royalty: value,
-		});
+		bulk
+			? setCollectionBulkData({ ...collectionBulkData, royalty: value })
+			: setFiles({ ...files, royalty: value });
 	};
 	return (
 		<Container>
 			<Title>Royalties value</Title>
 			<InputWrapper>
 				<InputContainer
-					value={files.royalty}
+					value={bulk ? collectionBulkData.royalty : files.royalty}
 					onChange={handleInput}
 					placeholder={`e.g 10`}
 					type="number"
@@ -81,10 +84,12 @@ const RoyaltySection = () => {
 					max="50"
 					onBlur={e =>
 						e.target.value === "0" &&
-						setFiles({
-							...files,
-							royalty: "",
-						})
+						(bulk
+							? setCollectionBulkData({
+									...collectionBulkData,
+									royalty: "",
+							  })
+							: setFiles({ ...files, royalty: "" }))
 					}
 				/>
 			</InputWrapper>

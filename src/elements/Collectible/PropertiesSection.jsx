@@ -53,6 +53,33 @@ const Heading = styled.h3`
 	font-size: 1rem;
 `;
 
+// NOT COMPLETE
+const ClickableProperty = ({ item }) => {
+	const { collectibleInfo } = useContext(CollectibleContext);
+	const handleClick = () => {
+		window.open(`${window.location.origin}/collections/${collectibleInfo.collection.id}?traits[${item.trait_type.toUpperCase ()}]=${item.value.toUpperCase ()}`, "_blank");
+	};
+
+	return (
+		<Property
+			onClick={handleClick}
+			whileHover={{
+				y: -5,
+				x: 0,
+				scale: 1.02,
+			}}
+		>
+			<label title={item.key}>
+				<h3>{item.trait_type}</h3>
+			</label>
+			<label title={item.value}>
+				<p>{item.value}</p>
+			</label>
+		</Property>
+	);
+};
+			
+
 const PropertiesSection = () => {
 	const { collectibleInfo } = useContext(CollectibleContext);
 	return (
@@ -65,21 +92,10 @@ const PropertiesSection = () => {
 							<LazyMotion features={domAnimation}>
 								{collectibleInfo.meta.attributes.map(
 									(item, index) => (
-										<Property
-											whileHover={{
-												y: -5,
-												x: 0,
-												scale: 1.02,
-											}}
+										<ClickableProperty
 											key={index}
-										>
-											<label title={item.key}>
-												<h3>{item.trait_type}</h3>
-											</label>
-											<label title={item.value}>
-												<p>{item.value}</p>
-											</label>
-										</Property>
+											item={item}
+										/>
 									)
 								)}
 							</LazyMotion>

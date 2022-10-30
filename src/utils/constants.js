@@ -25,12 +25,12 @@ const constants = {
 		raffle: "",
 		loan: "",
 	},
-	CREATE_ACCEPTED_MIMETYPES: [
+	CREATE_ACCEPTED_MIMETYPES: ["image/jpeg", "image/png", "video/mp4"],
+	COVER_ACCEPTED_MIMETYPES: [
 		"image/jpeg",
-		"image/png",
-		"video/mp4",
-		"image/webp",
 		"image/gif",
+		"image/png",
+		"image/webp",
 	],
 	DOCUMENTATION: {
 		base: "https://github.com/sqwid-app/sqwid-docs",
@@ -62,6 +62,7 @@ const constants = {
 			2: "This account does not have enough balance to execute the transaction",
 		},
 	},
+	DEFAULT_COLLECTION_ID: "ASwOXeRM5DfghnURP4g2",
 };
 
 export default constants;

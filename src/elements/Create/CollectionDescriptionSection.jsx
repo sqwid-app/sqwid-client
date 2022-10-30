@@ -8,6 +8,10 @@ const Container = styled.div``;
 const Title = styled.h1`
 	font-size: 1.125rem;
 	font-weight: 900;
+	span {
+		font-weight: 700;
+		color: var(--app-container-text-primary);
+	}
 `;
 
 const InputContainer = styled.input`
@@ -21,21 +25,13 @@ const InputContainer = styled.input`
 	padding: 0.5rem 0;
 	border-bottom: 0.125rem solid var(--app-container-text-primary);
 	width: 100%;
-	margin-bottom: 0.5rem;
 	transition: border-bottom 0.2s ease;
 	&:focus {
 		border-bottom: 0.125rem solid var(--app-container-text-primary-hover);
 	}
 `;
 
-const HelperText = styled.p`
-	font-weight: 700;
-	font-size: 0.75rem;
-	color: var(--app-container-text-primary);
-	padding: 0.0675rem 0;
-`;
-
-const CopiesSection = ({ bulk = false }) => {
+const CollectionDescriptionSection = ({ bulk = false }) => {
 	const { files, setFiles } = useContext(FileContext);
 	const { collectionBulkData, setCollectionBulkData } = useContext(
 		CollectionBulkContext
@@ -44,21 +40,26 @@ const CopiesSection = ({ bulk = false }) => {
 		bulk
 			? setCollectionBulkData({
 					...collectionBulkData,
-					copies: e.target.value,
+					collectionDescription: e.target.value,
 			  })
-			: setFiles({ ...files, copies: e.target.value });
+			: setFiles({ ...files, description: e.target.value });
 	};
 	return (
 		<Container>
-			<Title>Number of copies</Title>
+			<Title>
+				Collection description <span>(optional)</span>
+			</Title>
 			<InputContainer
-				value={bulk ? collectionBulkData.copies : files.copies}
+				value={
+					bulk
+						? collectionBulkData.collectionDescription
+						: files.description
+				}
 				onChange={handleInput}
-				placeholder={`e.g 10`}
+				placeholder={`e.g “Pics of my heckin doggo”`}
 			/>
-			<HelperText>Amount of tokens</HelperText>
 		</Container>
 	);
 };
 
-export default CopiesSection;
+export default CollectionDescriptionSection;

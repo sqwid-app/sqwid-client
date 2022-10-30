@@ -431,7 +431,12 @@ const Existing = ({ isActive, setIsActive }) => {
 				setCollections(res.data.collections);
 			})
 			.catch(err => {
-				showErrorModal(err.response.data.error);
+				// showErrorModal(err.response.data.error);
+				if (err.toString ().includes ("404")) {
+					setCollections([]);
+				} else {
+					showErrorModal(err.toString ());
+				}
 			})
 			.finally(() => {
 				setIsLoading(false);
