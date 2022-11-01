@@ -63,7 +63,7 @@ const constants = {
 		},
 	},
 	DEFAULT_COLLECTION_ID: "ASwOXeRM5DfghnURP4g2",
-	MAINTENANCE_MODE_ACTIVE: true,
+	MAINTENANCE_MODE_ACTIVE: false,
 };
 
 export default constants;
