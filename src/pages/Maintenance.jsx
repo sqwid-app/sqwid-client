@@ -1,3 +1,4 @@
+import { respondTo } from "@styles/styledMediaQuery";
 import React from "react";
 import Wave from "react-wavify";
 import styled from "styled-components";
@@ -23,6 +24,10 @@ const Main = styled.main`
 	width: 100vw;
 	overflow: hidden;
 	position: relative;
+	text-align: center;
+	${respondTo.md`
+		padding-inline: 1rem;
+	`}
 	z-index: 1;
 	* {
 		line-height: 1;
@@ -63,6 +68,9 @@ const BoxWindow = styled.div`
 	--dot2: rgb(255, 189, 46);
 	--dot3: rgb(40, 201, 65);
 	overflow: hidden;
+	${respondTo.md`
+		width: 100%;
+	`}
 	.wrench-hammer {
 		position: absolute;
 		top: 50%;
@@ -70,6 +78,7 @@ const BoxWindow = styled.div`
 		transform: translate(-50%, -50%);
 		width: 12rem;
 		color: #dbe3ff;
+		z-index: 2;
 		fill: rgba(11, 12, 17, 0.1);
 	}
 	&:before {
