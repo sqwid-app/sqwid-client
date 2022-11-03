@@ -621,6 +621,66 @@ export const AddFeaturedModal = props => {
 		</ModalContainer>
 	);
 };
+// move to a different file later
+export const EditCollectionModal = props => {
+	const initialButtonText = "Update";
+	const [name, setName] = useState(null);
+	const [description, setDescription] = useState(null);
+	// eslint-disable-next-line
+	const [isLoading, setIsLoading] = useState(false);
+	// eslint-disable-next-line
+	const [buttonText, setButtonText] = useState(initialButtonText);
+
+	useEffect (() => {
+		if (name === null) setName (props.collection.name);
+		if (description === null) setDescription (props.collection.description);
+	}, [props.collection, name, description]);
+	// const { showErrorModal } = useErrorModalHelper();
+	const handleClick = async () => {
+		// if (!isLoading && Number(positionId) >= 1) {
+		// 	setIsLoading(true);
+		// 	setButtonText(<Loading />);
+		// 	const res = await axios.get(
+		// 		`${getBackend()}/get/marketplace/position/${positionId}`
+		// 	);
+		// 	setIsLoading(false);
+		// 	setButtonText(initialButtonText);
+		// 	setPositionId("");
+		// 	if (res.data.error) showErrorModal(res.data.error);
+		// 	else {
+		// 		props.setIsActive(false);
+		// 		props.addItemInfo(res.data);
+		// 	}
+		// } else {
+		// 	setIsLoading(false);
+		// 	setButtonText(initialButtonText);
+		// }
+	};
+	return (
+		<ModalContainer {...props}>
+			<Title>Edit collection</Title>
+			<Group>
+				<InputTitle>Name</InputTitle>
+				<InputContainer
+					type="text"
+					value={name}
+					onChange={e => setName(e.target.value)}
+					placeholder={`Name`}
+				/><br/>
+				<InputTitle>Description</InputTitle>
+				<InputContainer	
+					type="text"
+					value={description}
+					onChange={e => setDescription(e.target.value)}
+					placeholder={`Description`}
+				/>
+				<AnimBtn disabled={isLoading} onClick={handleClick}>
+					{buttonText}
+				</AnimBtn>
+			</Group>
+		</ModalContainer>
+	);
+};
 
 /*
 	Need to add more modals based on https://res.cloudinary.com/etjfo/image/upload/v1643994671/sqwid/modals.jpg
