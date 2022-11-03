@@ -57,25 +57,37 @@ const AnimBtn = ({ children, onClick, disabled }) => (
 
 export const VerifyBulkButton = () => {
 	// const { files, fileData } = useContext(FileContext);
-	const initialButtonText = "Verify";
+	const initialButtonText = "Register";
 	const { verifyData, setVerifyData } = useContext(VerifyContext);
 	const [buttonText, setButtonText] = useState(initialButtonText);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	// const history = useHistory();
 	const { showErrorModal } = useErrorModalHelper();
 
+	// useEffect (() => {
+	// 	const setButtonTextToCollection = async () => {
+	// 		const text = await verifyData.json.text ();
+	// 		const json = JSON.parse (text);
+	// 		const collection = json.collectionId;
+	// 		// setButtonText (`Verify items in ${collection}`);
+	// 	};
+	// 	if (verifyData.json) {
+	// 		setButtonTextToCollection ();
+	// 	} else {
+	// 		// setButtonText (initialButtonText);
+	// 	}
+	// }, [verifyData]);
+
 	const handleClick = () => {
 		setButtonText(<FadeLoaderIcon />);
 		setIsSubmitting(true);
-		if (
-			verifyData.json
-		) {
+		if (verifyData.json && !isSubmitting) {
 			verifyBulk (verifyData.json).then (res => {
 				setButtonText(initialButtonText);
 				if (res.error) {
 					showErrorModal (res.error);
 				} else {
-					bread("Collectibles have been verified");
+					bread("Collectibles have been registered");
 				}
 				setIsSubmitting(false);
 			}).catch (err => {
@@ -98,7 +110,7 @@ export const VerifyBulkButton = () => {
 		<BtnContainer>
 			<LazyMotion features={domAnimation}>
 				<AnimBtn
-					disabled={isSubmitting ? true : false}
+					disabled={(isSubmitting || !verifyData.json) ? true : false}
 					onClick={handleClick}
 				>
 					{buttonText}

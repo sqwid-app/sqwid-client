@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import FileProvider from "@contexts/File/FileProvider";
 import UploadSection from "@elements/Create/UploadSection";
@@ -25,6 +25,8 @@ import ChangesBulk from "@elements/Create/ChangesBulk";
 import CollectionBulkProvider from "@contexts/CollectionBulk/CollectionBulkProvider";
 import VerifyProvider from "@contexts/Verify/VerifyProvider";
 import { VerifyBulkButton } from "@elements/Create/VerifyBulkButton";
+import VerifyContext from "@contexts/Verify/Verify";
+import { useEffect } from "react";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -165,6 +167,36 @@ const BulkPage = () => {
 };
 
 const VerifyPage = () => {
+	const initialInfoText = (
+		<pre>{`
+JSON format:
+
+{
+	"collectionId": "your collection id",
+	"itemIds": [1, 2, 3, ...]
+}
+		`}</pre>
+	);
+	const { verifyData } = useContext(VerifyContext);
+	const [infoText, setInfoText] = useState(initialInfoText);
+	useEffect (() => {
+		const setButtonTextToCollection = async () => {
+			const text = await verifyData.json.text ();
+			const json = JSON.parse (text);
+			const collection = json.collectionId;
+			setInfoText ((
+				<pre>{`
+Register ${json.itemIds.length} items to collection with ID ${collection}
+				`}</pre>
+			));
+		};
+		if (verifyData.json) {
+			setButtonTextToCollection ();
+		} else {
+			setInfoText (initialInfoText);
+		}
+		// eslint-disable-next-line
+	}, [verifyData]);
 	return (
 		<MainSection>
 			<LeftContainer>
@@ -173,14 +205,7 @@ const VerifyPage = () => {
 					<UploadContainer>
 						<UploadSection title = "Upload JSON file" fileType="json" />
 					</UploadContainer>
-					<pre>{`
-JSON format:
-
-{
-	"collectionId": "your collection id",
-	"itemIds": [1, 2, 3, ...]
-}
-					`}</pre>
+					{infoText}
 					<VerifyBulkButton/>
 				</Group>
 			</LeftContainer>
