@@ -19,6 +19,9 @@ import ReefIcon from "@static/svg/ReefIcon";
 import { numberSeparator } from "@utils/numberSeparator";
 import { useContext } from "react";
 import FilterContext from "@contexts/Filter/FilterContext";
+// import EditIcon from "@static/svg/EditIcon";
+import AuthContext from "@contexts/Auth/AuthContext";
+import { EditCollectionModal } from "@elements/Collectible/Modals";
 
 const Section = styled.section`
 	padding: 0 6rem;
@@ -75,8 +78,8 @@ const HeaderWrapper = styled.div`
 
 const CollectionsLogo = styled.div`
 	position: relative;
-	height: 2rem;
-	width: 2rem;
+	height: 2.5rem;
+	width: 2.5rem;
 	border-radius: 1000rem;
 	border: 3px solid var(--app-text);
 	background-color: var(--app-background);
@@ -387,6 +390,18 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 		},
 	]);
 
+	const { auth } = useContext(AuthContext);
+	// eslint-disable-next-line
+	const [isCollectionCreator, setIsCollectionCreator] = useState(false);
+
+	useEffect (() => {
+		if (auth && collectionInfo && collectionInfo.creator?.id === auth.evmAddress) {
+			setIsCollectionCreator(true);
+		}
+	}, [auth, collectionInfo]);
+
+	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
 	const { setFilterDetails } = useContext (FilterContext);
 
 	const replacer = useActiveTabs({ navRoutes, setNavRoutes });
@@ -484,6 +499,9 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 									url={getInfuraURL (collectionInfo.thumb)}
 								/>
 								<span>{collectionInfo.name}</span>
+								{/* {isCollectionCreator && <EditIcon onClick = {() => {
+									setIsEditModalOpen(!isEditModalOpen);
+								}}/>} */}
 							</Header>
 							<Creator
 								to={`/profile/${collectionInfo.creator.id}`}
@@ -518,13 +536,13 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 								</Price>
 								<ContainerTitle># of Sales</ContainerTitle>
 							</StatContainer>
-							<StatContainer>
+							{/* <StatContainer>
 								<Price>
 									<ReefIcon centered size={24} />{" "}
 									<span>{numberSeparator(collectionInfo.stats.average)}</span>
 								</Price>
 								<ContainerTitle>Average</ContainerTitle>
-							</StatContainer>
+							</StatContainer> */}
 							<StatContainer>
 								<Price>
 									<ReefIcon centered size={24} />{" "}
@@ -581,6 +599,11 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 					</ContentWrapper>
 				</Section>
 			)}
+			<EditCollectionModal
+				isActive={isEditModalOpen}
+				setIsActive={setIsEditModalOpen}
+				collection={collectionInfo}
+			/>
 		</>
 	);
 };

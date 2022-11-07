@@ -44,6 +44,7 @@ import { briefSearchAll } from "@utils/search";
 import { UserResult, UserResultText } from "@elements/Navbar/Search";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import shortenIfAddress from "@utils/shortenIfAddress";
+// import { Interact } from "@utils/connect";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -448,6 +449,7 @@ export const TransferModal = props => {
 	const initialButtonText = "Submit";
 	const [isLoading, setIsLoading] = useState(false);
 	const [addressSelected, setAddressSelected] = useState(false);
+	const [isUnknownAddress, setIsUnknownAddress] = useState(false);
 	const [buttonText, setButtonText] = useState(initialButtonText);
 	const [results, setResults] = useState({});
 	const { collectibleInfo, setCollectibleInfo } =
@@ -457,8 +459,15 @@ export const TransferModal = props => {
 	useEffect (() => {
 		const delayDebounceFn = setTimeout(() => {
 			if (address.length) {
-				briefSearchAll (address).then (res => {
+				briefSearchAll (address).then (async res => {
 					setResults (res);
+					if (res.users.length === 0 && address.length === 42 && address.startsWith ("0x")) {
+						setAddressSelected (true);
+						setDisplayName (address);
+						setIsUnknownAddress (true);
+					} else {
+						setIsUnknownAddress (false);
+					}
 				});
 			}
 		}, 500);
@@ -471,6 +480,7 @@ export const TransferModal = props => {
 		setAddress(e.target.value);
 		if (e.target.value === "") {
 			setResults({});
+			setIsUnknownAddress (false);
 		}
 	};
 	const handleCopiesInput = e => {
@@ -534,7 +544,7 @@ export const TransferModal = props => {
 						type="text"
 						value={address}
 						onChange={handleInput}
-						placeholder={`Search for recipient...`}
+						placeholder={`Username / address / EVM address...`}
 					/>
 					{(results.users?.length && !addressSelected && address.length) ? <ResultsContainer>
 						{results.users?.map((user, i) => (
@@ -555,6 +565,11 @@ export const TransferModal = props => {
 							</SearchUserResult>
 						))}
 					</ResultsContainer> : null}
+					{isUnknownAddress && (
+						<span>
+							This address is not registered on Sqwid.<br/>Are you sure you want to send to this address?
+						</span>	
+					)}
 					<InputTitle>
 						Number of copies{" "}
 						<span>
@@ -613,6 +628,66 @@ export const AddFeaturedModal = props => {
 					value={positionId}
 					onChange={e => setPositionId(e.target.value)}
 					placeholder={`Position ID`}
+				/>
+				<AnimBtn disabled={isLoading} onClick={handleClick}>
+					{buttonText}
+				</AnimBtn>
+			</Group>
+		</ModalContainer>
+	);
+};
+// move to a different file later
+export const EditCollectionModal = props => {
+	const initialButtonText = "Update";
+	const [name, setName] = useState(null);
+	const [description, setDescription] = useState(null);
+	// eslint-disable-next-line
+	const [isLoading, setIsLoading] = useState(false);
+	// eslint-disable-next-line
+	const [buttonText, setButtonText] = useState(initialButtonText);
+
+	useEffect (() => {
+		if (name === null) setName (props.collection.name);
+		if (description === null) setDescription (props.collection.description);
+	}, [props.collection, name, description]);
+	// const { showErrorModal } = useErrorModalHelper();
+	const handleClick = async () => {
+		// if (!isLoading && Number(positionId) >= 1) {
+		// 	setIsLoading(true);
+		// 	setButtonText(<Loading />);
+		// 	const res = await axios.get(
+		// 		`${getBackend()}/get/marketplace/position/${positionId}`
+		// 	);
+		// 	setIsLoading(false);
+		// 	setButtonText(initialButtonText);
+		// 	setPositionId("");
+		// 	if (res.data.error) showErrorModal(res.data.error);
+		// 	else {
+		// 		props.setIsActive(false);
+		// 		props.addItemInfo(res.data);
+		// 	}
+		// } else {
+		// 	setIsLoading(false);
+		// 	setButtonText(initialButtonText);
+		// }
+	};
+	return (
+		<ModalContainer {...props}>
+			<Title>Edit collection</Title>
+			<Group>
+				<InputTitle>Name</InputTitle>
+				<InputContainer
+					type="text"
+					value={name}
+					onChange={e => setName(e.target.value)}
+					placeholder={`Name`}
+				/><br/>
+				<InputTitle>Description</InputTitle>
+				<InputContainer	
+					type="text"
+					value={description}
+					onChange={e => setDescription(e.target.value)}
+					placeholder={`Description`}
 				/>
 				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					{buttonText}
