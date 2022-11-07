@@ -19,7 +19,7 @@ import ReefIcon from "@static/svg/ReefIcon";
 import { numberSeparator } from "@utils/numberSeparator";
 import { useContext } from "react";
 import FilterContext from "@contexts/Filter/FilterContext";
-import EditIcon from "@static/svg/EditIcon";
+// import EditIcon from "@static/svg/EditIcon";
 import AuthContext from "@contexts/Auth/AuthContext";
 import { EditCollectionModal } from "@elements/Collectible/Modals";
 
@@ -391,6 +391,7 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 	]);
 
 	const { auth } = useContext(AuthContext);
+	// eslint-disable-next-line
 	const [isCollectionCreator, setIsCollectionCreator] = useState(false);
 
 	useEffect (() => {
@@ -498,9 +499,9 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 									url={getInfuraURL (collectionInfo.thumb)}
 								/>
 								<span>{collectionInfo.name}</span>
-								{isCollectionCreator && <EditIcon onClick = {() => {
+								{/* {isCollectionCreator && <EditIcon onClick = {() => {
 									setIsEditModalOpen(!isEditModalOpen);
-								}}/>}
+								}}/>} */}
 							</Header>
 							<Creator
 								to={`/profile/${collectionInfo.creator.id}`}
@@ -516,7 +517,7 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 								</span>
 							</Creator>
 						</HeaderContainer>
-						{true && <StatsWrapper>
+						{false && <StatsWrapper>
 							<StatContainer>
 								<Price>
 									<span>{numberSeparator(collectionInfo.stats.items)}</span>
