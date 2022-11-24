@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.3.23 (2022-11-24)
+
+
+### Bug Fixes
+
+* enable maintenance ([f798220](https://github.com/boidushya/sqwid-client/commit/f798220462fe7d01f4ea8c600ee35efad155f66c))
+
 ### 0.3.22 (2022-11-07)
 
 ### 0.3.21 (2022-11-02)
