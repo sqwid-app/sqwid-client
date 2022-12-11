@@ -12,6 +12,7 @@ import Privacy from "@pages/Privacy";
 import { CollectionsSearch, UsersSearch } from "@pages/Search";
 import ErrorModal from "@elements/Default/ErrorModal";
 import ErrorContext from "@contexts/Error/ErrorContext";
+import BrandAssets from "@pages/BrandAssets";
 
 const Explore = React.lazy(() => import("@pages/Explore"));
 const Collectible = React.lazy(() => import("@pages/Collectible"));
@@ -58,6 +59,7 @@ const Routes = () => {
 					<Route path="/sac/:id" exact component={Sac} />
 					<Route path="/terms-of-service" exact component={ToS} />
 					<Route path="/privacy-policy" exact component={Privacy} />
+					<Route path="/branding" exact component={BrandAssets} />
 					<Route path="/collectible/:addr/:ownerID?" exact>
 						<CollectibleProvider>
 							<Collectible />

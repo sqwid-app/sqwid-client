@@ -55,6 +55,11 @@ const InfoBtn = () => {
 							link: constants.DOCUMENTATION.base,
 							external: true,
 						},
+						{
+							name: "Brand Assets",
+							link: "/branding",
+							external: true,
+						},
 					]}
 				/>
 			)}
