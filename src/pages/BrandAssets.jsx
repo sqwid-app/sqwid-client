@@ -347,9 +347,7 @@ const BrandAssets = () => {
 							</svg>
 							<div className="tip">
 								<CrossIcon />
-								<p>
-									Visibility less due to low contrast colors
-								</p>
+								<p>Visibility low due to low contrast colors</p>
 							</div>
 						</WrongVariant>
 						<WrongVariant>
