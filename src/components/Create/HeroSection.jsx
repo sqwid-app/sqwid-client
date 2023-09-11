@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import FileProvider from "@contexts/File/FileProvider";
 import UploadSection from "@elements/Create/UploadSection";
@@ -17,6 +17,16 @@ import UnwrapSection from "./UnwrapSection";
 import useActiveTabs from "@utils/useActiveTabs";
 import { CreateButton } from "@elements/Create/CreateButton";
 import RoyaltyReceiverSection from "@elements/Create/RoyaltyReceiverSection";
+import { CreateBulkButton } from "@elements/Create/CreateBulkButton";
+import CollectionNameSection from "@elements/Create/CollectionNameSection";
+import CollectionDescriptionSection from "@elements/Create/CollectionDescriptionSection";
+import PreviewCoverSection from "@elements/Create/PreviewCoverSection";
+import ChangesBulk from "@elements/Create/ChangesBulk";
+import CollectionBulkProvider from "@contexts/CollectionBulk/CollectionBulkProvider";
+import VerifyProvider from "@contexts/Verify/VerifyProvider";
+import { VerifyBulkButton } from "@elements/Create/VerifyBulkButton";
+import VerifyContext from "@contexts/Verify/Verify";
+import { useEffect } from "react";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -39,6 +49,16 @@ const MainSection = styled.div`
 	height: 100%;
 	display: grid;
 	grid-template-columns: 2fr repeat(2, 1fr);
+	gap: 4rem;
+`;
+
+const MainBulkSection = styled.div`
+	margin: 0 2rem;
+	padding: 3rem 0 1rem;
+	width: 75vw;
+	height: 100%;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
 	gap: 4rem;
 `;
 
@@ -118,6 +138,81 @@ const MainPageRedesign = () => {
 	);
 };
 
+const BulkPage = () => {
+	return (
+		<MainBulkSection>
+			<LeftContainer>
+				<UploadContainer>
+					<UploadSection title="Upload ZIP File" fileType="zip" />
+				</UploadContainer>
+				<RoyaltyReceiverSection bulk={true} />
+				<RoyaltySection bulk={true} />
+				<CopiesSection bulk={true} />
+				<ChangesBulk />
+			</LeftContainer>
+			<RightContainer>
+				<CollectionNameSection bulk={true} />
+				<CollectionDescriptionSection bulk={true} />
+				<UploadContainer>
+					<UploadSection
+						title="Collection Cover Image"
+						fileType="cover"
+					/>
+				</UploadContainer>
+				<PreviewCoverSection />
+				<CreateBulkButton />
+			</RightContainer>
+		</MainBulkSection>
+	);
+};
+
+const VerifyPage = () => {
+	const initialInfoText = (
+		<pre>{`
+JSON format:
+
+{
+	"collectionId": "your collection id",
+	"itemIds": [1, 2, 3, ...]
+}
+		`}</pre>
+	);
+	const { verifyData } = useContext(VerifyContext);
+	const [infoText, setInfoText] = useState(initialInfoText);
+	useEffect (() => {
+		const setButtonTextToCollection = async () => {
+			const text = await verifyData.json.text ();
+			const json = JSON.parse (text);
+			const collection = json.collectionId;
+			setInfoText ((
+				<pre>{`
+Register ${json.itemIds.length} items to collection with ID ${collection}
+				`}</pre>
+			));
+		};
+		if (verifyData.json) {
+			setButtonTextToCollection ();
+		} else {
+			setInfoText (initialInfoText);
+		}
+		// eslint-disable-next-line
+	}, [verifyData]);
+	return (
+		<MainSection>
+			<LeftContainer>
+				<Group>
+					<div style = {{ textAlign: "left" }} >Use this to verify items you've minted directly on the <b>Sqwid Marketplace</b> contract.</div>
+					<UploadContainer>
+						<UploadSection title = "Upload JSON file" fileType="json" />
+					</UploadContainer>
+					{infoText}
+					<VerifyBulkButton/>
+				</Group>
+			</LeftContainer>
+		</MainSection>
+	);
+};
+
 const Navbar = styled.nav`
 	display: flex;
 	gap: 0.5rem;
@@ -166,6 +261,18 @@ const HeroSection = () => {
 			title: "Create a collectible",
 			component: <MainPageRedesign />,
 		},
+		{
+			name: "Create bulk",
+			isActive: false,
+			title: "Create bulk collectibles",
+			component: <BulkPage />,
+		},
+		{
+			name: "Register",
+			isActive: false,
+			title: "Register collectibles (advanced)",
+			component: <VerifyPage />,
+		}
 		// {
 		// 	name: "Wrap",
 		// 	isActive: false,
@@ -185,28 +292,34 @@ const HeroSection = () => {
 
 	return (
 		<FileProvider>
-			<Wrapper>
-				<HeaderSection>
-					<Title>{navRoutes.find(item => item.isActive).title}</Title>
-					{navRoutes.length > 1 && (
-						<Navbar>
-							{navRoutes.map((item, index) => (
-								<NavContent
-									key={index}
-									active={item.isActive}
-									disabled={item.isActive}
-									onClick={() => {
-										replacer(item.name);
-									}}
-								>
-									{item.name}
-								</NavContent>
-							))}
-						</Navbar>
-					)}
-				</HeaderSection>
-				<>{navRoutes.find(item => item.isActive).component}</>
-			</Wrapper>
+			<VerifyProvider>
+				<CollectionBulkProvider>
+					<Wrapper>
+						<HeaderSection>
+							<Title>
+								{navRoutes.find(item => item.isActive).title}
+							</Title>
+							{navRoutes.length > 1 && (
+								<Navbar>
+									{navRoutes.map((item, index) => (
+										<NavContent
+											key={index}
+											active={item.isActive}
+											disabled={item.isActive}
+											onClick={() => {
+												replacer(item.name);
+											}}
+										>
+											{item.name}
+										</NavContent>
+									))}
+								</Navbar>
+							)}
+						</HeaderSection>
+						<>{navRoutes.find(item => item.isActive).component}</>
+					</Wrapper>
+				</CollectionBulkProvider>
+			</VerifyProvider>
 		</FileProvider>
 	);
 };

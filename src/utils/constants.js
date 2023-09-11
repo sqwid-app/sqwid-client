@@ -15,7 +15,7 @@ const constants = {
 		'Looks like nothing\'s "Available" here 🤔',
 		'Sorry pal, nothing\'s "On Sale" right now 😔',
 		'This place is currently "Auctioned" away 😶',
-		'This area seems to be "Raffled" off 📪',
+		'Your "Raffles" will appear here 📪',
 		'This section is on "Loan" 🤩',
 	],
 	STATE_TYPES_KEYS: ["sale", "auction", "raffle", "loan"],
@@ -25,12 +25,12 @@ const constants = {
 		raffle: "",
 		loan: "",
 	},
-	CREATE_ACCEPTED_MIMETYPES: [
+	CREATE_ACCEPTED_MIMETYPES: ["image/jpeg", "image/png", "video/mp4", "image/webp"],
+	COVER_ACCEPTED_MIMETYPES: [
 		"image/jpeg",
-		"image/png",
-		"video/mp4",
-		"image/webp",
 		"image/gif",
+		"image/png",
+		"image/webp",
 	],
 	DOCUMENTATION: {
 		base: "https://github.com/sqwid-app/sqwid-docs",
@@ -62,6 +62,8 @@ const constants = {
 			2: "This account does not have enough balance to execute the transaction",
 		},
 	},
+	DEFAULT_COLLECTION_ID: "ASwOXeRM5DfghnURP4g2",
+	MAINTENANCE_MODE_ACTIVE: false,
 };
 
 export default constants;

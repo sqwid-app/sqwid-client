@@ -21,21 +21,13 @@ const InputContainer = styled.input`
 	padding: 0.5rem 0;
 	border-bottom: 0.125rem solid var(--app-container-text-primary);
 	width: 100%;
-	margin-bottom: 0.5rem;
 	transition: border-bottom 0.2s ease;
 	&:focus {
 		border-bottom: 0.125rem solid var(--app-container-text-primary-hover);
 	}
 `;
 
-const HelperText = styled.p`
-	font-weight: 700;
-	font-size: 0.75rem;
-	color: var(--app-container-text-primary);
-	padding: 0.0675rem 0;
-`;
-
-const CopiesSection = ({ bulk = false }) => {
+const CollectionNameSection = ({ bulk = false }) => {
 	const { files, setFiles } = useContext(FileContext);
 	const { collectionBulkData, setCollectionBulkData } = useContext(
 		CollectionBulkContext
@@ -44,21 +36,20 @@ const CopiesSection = ({ bulk = false }) => {
 		bulk
 			? setCollectionBulkData({
 					...collectionBulkData,
-					copies: e.target.value,
+					collectionName: e.target.value,
 			  })
-			: setFiles({ ...files, copies: e.target.value });
+			: setFiles({ ...files, name: e.target.value });
 	};
 	return (
 		<Container>
-			<Title>Number of editions</Title>
+			<Title>Collection Name</Title>
 			<InputContainer
-				value={bulk ? collectionBulkData.copies : files.copies}
+				value={bulk ? collectionBulkData.collectionName : files.name}
 				onChange={handleInput}
-				placeholder={`e.g 10`}
+				placeholder={`e.g "Doggo collection"`}
 			/>
-			<HelperText>Amount of tokens</HelperText>
 		</Container>
 	);
 };
 
-export default CopiesSection;
+export default CollectionNameSection;

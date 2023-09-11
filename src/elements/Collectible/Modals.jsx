@@ -9,6 +9,7 @@ import CollectibleContext from "@contexts/Collectible/CollectibleContext";
 import {
 	//eslint-disable-next-line
 	addBid,
+	burnCollectible,
 	//eslint-disable-next-line
 	buyNow,
 	createBid,
@@ -20,6 +21,7 @@ import {
 	putItemOnSale,
 	//eslint-disable-next-line
 	putOnSale,
+	transferCollectible,
 } from "@utils/marketplace";
 //eslint-disable-next-line
 import bread from "@utils/bread";
@@ -33,6 +35,16 @@ import axios from "axios";
 import { getBackend } from "@utils/network";
 import { numberSeparator } from "@utils/numberSeparator";
 import { useErrorModalHelper } from "@elements/Default/ErrorModal";
+import { getInfuraURL } from "@utils/getIPFSURL";
+import Scrollbars from "react-custom-scrollbars";
+import { Component } from "react";
+import { moveCollectibleToCollection } from "@utils/moveCollectibleToCollection";
+import { BigNumber } from "ethers";
+import { briefSearchAll } from "@utils/search";
+import { UserResult, UserResultText } from "@elements/Navbar/Search";
+import { getAvatarFromId } from "@utils/getAvatarFromId";
+import shortenIfAddress from "@utils/shortenIfAddress";
+// import { Interact } from "@utils/connect";
 
 const swipeDownwards = keyframes`
 	0% {
@@ -172,6 +184,26 @@ const Btn = styled(BtnBaseAnimated)`
 	min-width: 6rem;
 `;
 
+const BurnBtn = styled(BtnBaseAnimated)`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1rem;
+	font-weight: 700;
+	padding: 0 1.25rem;
+	border-radius: 1000rem;
+	height: 2.5rem;
+	min-width: 6rem;
+	margin-top: 1.5rem;
+	z-index: 2;
+	background-image: linear-gradient(
+		110deg,
+		rgb(255,0,0) 0%,
+		rgb(150,0,0) 50%,
+		rgb(255,0,0) 100%
+	) !important;
+`;
+
 const InfoWrapper = styled.div`
 	display: flex;
 	align-items: center;
@@ -249,6 +281,17 @@ const AnimBtn = ({ children, ...props }) => (
 	</Btn>
 );
 
+const BurnAnimBtn = ({ children, ...props }) => (
+	<BurnBtn
+		whileTap={{
+			scale: 0.97,
+		}}
+		{...props}
+	>
+		{children}
+	</BurnBtn>
+);
+
 const elemContains = (rect, x, y) => {
 	return (
 		rect.x <= x &&
@@ -303,6 +346,7 @@ const ModalContainer = ({ isActive, setIsActive, ...props }) => {
 	);
 };
 
+/*
 export const TransferModal = props => {
 	const [value, setValue] = useState({
 		address: "",
@@ -367,6 +411,185 @@ export const TransferModal = props => {
 		</ModalContainer>
 	);
 };
+*/
+
+// const SearchResults = ({ results, setResults, setIsActive }) => {
+// 	const [isLoading, setIsLoading] = useState(false);
+// 	const [value, setValue] = useState({
+// 		address: "",
+// 		amount: "",
+// 	});
+
+const ResultsContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	background-color: var(--app-background);
+	z-index: 1;
+	border-radius: 1rem;
+	gap: .5rem;
+	padding: .5rem;
+	max-width: 20rem;
+`;
+
+const SearchUserResult = styled(UserResult)`
+	border-radius: 1rem;
+	&:hover {
+		cursor: pointer;
+	}
+	&:hover span {
+		color: var(--app-container-text-primary-hover);
+	}
+`;
+
+export const TransferModal = props => {
+	const history = useHistory();
+	const [address, setAddress] = useState("");
+	const [displayName, setDisplayName] = useState("");
+	const [copies, setCopies] = useState("");
+	const initialButtonText = "Submit";
+	const [isLoading, setIsLoading] = useState(false);
+	const [addressSelected, setAddressSelected] = useState(false);
+	const [isUnknownAddress, setIsUnknownAddress] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	const [results, setResults] = useState({});
+	const { collectibleInfo, setCollectibleInfo } =
+		useContext(CollectibleContext);
+	const { showErrorModal } = useErrorModalHelper ();
+
+	useEffect (() => {
+		const delayDebounceFn = setTimeout(() => {
+			if (address.length) {
+				briefSearchAll (address).then (async res => {
+					setResults (res);
+					if (res.users.length === 0 && address.length === 42 && address.startsWith ("0x")) {
+						setAddressSelected (true);
+						setDisplayName (address);
+						setIsUnknownAddress (true);
+					} else {
+						setIsUnknownAddress (false);
+					}
+				});
+			}
+		}, 500);
+
+		return () => clearTimeout(delayDebounceFn);
+	}, [address]);
+
+	const handleInput = e => {
+		setAddressSelected (false);
+		setAddress(e.target.value);
+		if (e.target.value === "") {
+			setResults({});
+			setIsUnknownAddress (false);
+		}
+	};
+	const handleCopiesInput = e => {
+		const amount = Math.min(Number(e.target.value), collectibleInfo.amount);
+		setCopies(amount || "");
+	};
+	const handleClick = async () => {
+		if (!isLoading && Number(copies) >= 1) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			try {
+				const receipt = await transferCollectible(
+					address,
+					collectibleInfo.tokenId,
+					copies
+				);
+				if (receipt) {
+					if (Number(copies) === collectibleInfo.amount) {
+						history.push('/profile');
+					} else {
+						setCollectibleInfo({
+							...collectibleInfo,
+							amount: collectibleInfo.amount - Number(copies),
+						});
+						setIsLoading(false);
+						setButtonText(initialButtonText);
+						setAddress("");
+						setCopies("");
+						props.setIsActive(false);
+						bread(
+							<div>
+								Collectible sent!
+							</div>
+						);
+					}
+				} else {
+					setIsLoading(false);
+					setButtonText(initialButtonText);
+				}
+			} catch (err) {
+				setIsLoading(false);
+				setButtonText(initialButtonText);
+				showErrorModal(err.toString ());
+			}
+		}
+	};
+	return (
+		<ModalContainer {...props}>
+			<Title>Transfer collectible</Title>
+			<Group>
+				<InputWrapper>
+					<InputTitle>
+						Recipient{" "}
+						{addressSelected && (
+							<span>
+								{shortenIfAddress (displayName)}
+							</span>
+						)}
+					</InputTitle>
+					<InputContainer
+						type="text"
+						value={address}
+						onChange={handleInput}
+						placeholder={`Username / address / EVM address...`}
+					/>
+					{(results.users?.length && !addressSelected && address.length) ? <ResultsContainer>
+						{results.users?.map((user, i) => (
+							<SearchUserResult
+								onClick = {() => {
+									setAddress(user.evmAddress);
+									setDisplayName(user.displayName);
+									setAddressSelected (true);
+									setResults ({});
+								}}
+								key = {user.evmAddress}
+							>
+								<img alt = "User Avatar" src={getAvatarFromId (user.evmAddress)} />
+								<UserResultText>
+									<span>{user.displayName}</span>
+									<span>{user.evmAddress}</span>
+								</UserResultText>
+							</SearchUserResult>
+						))}
+					</ResultsContainer> : null}
+					{isUnknownAddress && (
+						<span>
+							This address is not registered on Sqwid.<br/>Are you sure you want to send to this address?
+						</span>	
+					)}
+					<InputTitle>
+						Number of editions{" "}
+						<span>
+							{Number(copies)} / {collectibleInfo.amount}
+						</span>
+					</InputTitle>
+					<InputContainer
+						type="number"
+						value={copies}
+						onChange={handleCopiesInput}
+						placeholder={`Number of editions to send`}
+					/>
+				</InputWrapper>
+				<AnimBtn disabled={isLoading || !addressSelected} onClick={handleClick}>
+					{buttonText}
+				</AnimBtn>
+			</Group>
+		</ModalContainer>
+	);
+};
 
 // move to a different file later
 export const AddFeaturedModal = props => {
@@ -405,6 +628,66 @@ export const AddFeaturedModal = props => {
 					value={positionId}
 					onChange={e => setPositionId(e.target.value)}
 					placeholder={`Position ID`}
+				/>
+				<AnimBtn disabled={isLoading} onClick={handleClick}>
+					{buttonText}
+				</AnimBtn>
+			</Group>
+		</ModalContainer>
+	);
+};
+// move to a different file later
+export const EditCollectionModal = props => {
+	const initialButtonText = "Update";
+	const [name, setName] = useState(null);
+	const [description, setDescription] = useState(null);
+	// eslint-disable-next-line
+	const [isLoading, setIsLoading] = useState(false);
+	// eslint-disable-next-line
+	const [buttonText, setButtonText] = useState(initialButtonText);
+
+	useEffect (() => {
+		if (name === null) setName (props.collection.name);
+		if (description === null) setDescription (props.collection.description);
+	}, [props.collection, name, description]);
+	// const { showErrorModal } = useErrorModalHelper();
+	const handleClick = async () => {
+		// if (!isLoading && Number(positionId) >= 1) {
+		// 	setIsLoading(true);
+		// 	setButtonText(<Loading />);
+		// 	const res = await axios.get(
+		// 		`${getBackend()}/get/marketplace/position/${positionId}`
+		// 	);
+		// 	setIsLoading(false);
+		// 	setButtonText(initialButtonText);
+		// 	setPositionId("");
+		// 	if (res.data.error) showErrorModal(res.data.error);
+		// 	else {
+		// 		props.setIsActive(false);
+		// 		props.addItemInfo(res.data);
+		// 	}
+		// } else {
+		// 	setIsLoading(false);
+		// 	setButtonText(initialButtonText);
+		// }
+	};
+	return (
+		<ModalContainer {...props}>
+			<Title>Edit collection</Title>
+			<Group>
+				<InputTitle>Name</InputTitle>
+				<InputContainer
+					type="text"
+					value={name}
+					onChange={e => setName(e.target.value)}
+					placeholder={`Name`}
+				/><br/>
+				<InputTitle>Description</InputTitle>
+				<InputContainer	
+					type="text"
+					value={description}
+					onChange={e => setDescription(e.target.value)}
+					placeholder={`Description`}
 				/>
 				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					{buttonText}
@@ -519,7 +802,7 @@ export const CreateAuctionModal = props => {
 						placeholder={`Minimum bid for the lot in REEF`}
 					/>
 					<InputTitle>
-						Number of copies
+						Number of editions
 						<span>
 							{Number(copies)} / {collectibleInfo.amount}
 						</span>
@@ -528,7 +811,7 @@ export const CreateAuctionModal = props => {
 						type="number"
 						value={copies}
 						onChange={handleCopiesInput}
-						placeholder={`Number of copies for the lot`}
+						placeholder={`Number of editions for the lot`}
 					/>
 					<InputTitle>Number of Minutes</InputTitle>
 					<InputContainer
@@ -640,7 +923,7 @@ export const PutOnSaleModal = props => {
 						placeholder={`Enter Price (in Reef)`}
 					/>
 					<InputTitle>
-						Number of copies{" "}
+						Number of editions{" "}
 						<span>
 							{Number(copies)} / {collectibleInfo.amount}
 						</span>
@@ -649,7 +932,7 @@ export const PutOnSaleModal = props => {
 						type="number"
 						value={copies}
 						onChange={handleCopiesInput}
-						placeholder={`Number of copies for sale`}
+						placeholder={`Number of editions for sale`}
 					/>
 				</InputWrapper>
 				<InfoSection link="sale" fee={props.fee} />
@@ -780,7 +1063,7 @@ export const LendModal = props => {
 						placeholder={`Amount to pay the lender as interest (in Reef)`}
 					/>
 					<InputTitle>
-						Number of copies
+						Number of editions
 						<span>
 							{Number(copies)} / {collectibleInfo.amount}
 						</span>
@@ -789,7 +1072,7 @@ export const LendModal = props => {
 						type="number"
 						value={copies}
 						onChange={handleCopiesInput}
-						placeholder={`Number of copies for the lot`}
+						placeholder={`Number of editions for the lot`}
 					/>
 					<InputTitle>Duration</InputTitle>
 					<InputContainer
@@ -887,7 +1170,7 @@ export const RaffleModal = props => {
 			<Group>
 				<InputWrapper>
 					<InputTitle>
-						Number of copies
+						Number of editions
 						<span>
 							{Number(copies)} / {collectibleInfo.amount}
 						</span>
@@ -896,7 +1179,7 @@ export const RaffleModal = props => {
 						type="number"
 						value={copies}
 						onChange={handleCopiesInput}
-						placeholder={`Number of copies for the lot`}
+						placeholder={`Number of editions for the lot`}
 					/>
 					<InputTitle>Duration</InputTitle>
 					<InputContainer
@@ -1069,10 +1352,11 @@ export const BuyModal = props => {
 	const handleCopiesInput = e => {
 		const amount = Math.min(Number(e.target.value), collectibleInfo.amount);
 		setCopies(amount || "");
+		// console.log (collectibleInfo.sale.price);
 		if (amount) {
 			setButtonText(
 				`Buy for ${
-					amount * (collectibleInfo.sale.price / 10 ** 18)
+					BigNumber.from (amount).mul(BigNumber.from (collectibleInfo.sale.price.toLocaleString('fullwide', {useGrouping:false})).div (BigNumber.from ('10').pow (18))).toString()
 				} Reef / $${(
 					amount *
 					(collectibleInfo.sale.price / 10 ** 18) *
@@ -1091,7 +1375,8 @@ export const BuyModal = props => {
 			const receipt = await createSale(
 				collectibleInfo.positionId,
 				Number(copies),
-				Number(collectibleInfo.sale.price) / 10 ** 18
+				// Number(collectibleInfo.sale.price) / 10 ** 18
+				BigNumber.from (collectibleInfo.sale.price.toLocaleString('fullwide', {useGrouping:false}))
 			);
 			if (receipt) {
 				if (Number(copies) === collectibleInfo.amount) {
@@ -1132,7 +1417,7 @@ export const BuyModal = props => {
 			<Title>Buy</Title>
 			<Group>
 				<InputTitle>
-					Number of copies{" "}
+					Number of editions{" "}
 					<span>
 						{Number(copies)} / {collectibleInfo.amount}
 					</span>
@@ -1141,12 +1426,256 @@ export const BuyModal = props => {
 					type="number"
 					value={copies}
 					onChange={handleCopiesInput}
-					placeholder={`Number of copies to buy`}
+					placeholder={`Number of editions to buy`}
 				/>
 				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					{buttonText}
 				</AnimBtn>
 			</Group>
+		</ModalContainer>
+	);
+};
+
+
+export const BurnModal = props => {
+	const history = useHistory();
+	const initialButtonText = "Burn";
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	const { showErrorModal } = useErrorModalHelper();
+	//eslint-disable-next-line
+	const { collectibleInfo, setCollectibleInfo } =
+		useContext(CollectibleContext);
+	const handleClick = async () => {
+		if (!isLoading) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			const receipt = await burnCollectible(
+				collectibleInfo.tokenId,
+				collectibleInfo.amount
+			);
+			if (receipt) {
+				bread ('Collectible burned!');
+				setTimeout (() => {
+					history.push(`/profile`);
+				}, 1000);
+			} else {
+				setIsLoading(false);
+				setButtonText(initialButtonText);
+				showErrorModal('Something went wrong. Please try again later.');
+			}
+		}
+	};
+	return (
+		<ModalContainer {...props}>
+			<Title style = {{ textAlign: 'center' }}>Burn - THIS IS PERMANENT !</Title>
+			<Group>
+				<div style = {{ textAlign: 'center' }}>
+					Are you sure you want to permanently burn this collectible?
+				</div>
+				<BurnAnimBtn disabled={isLoading} onClick={handleClick}>
+					{buttonText}
+				</BurnAnimBtn>
+			</Group>
+		</ModalContainer>
+	);
+};
+
+const SelectorWrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	border: .1rem solid ${props => props.active ? 'var(--app-text)' : 'var(--app-container-text-primary)'};
+	padding: 0 rem .5rem;
+	padding-left: 0;
+	border-radius: .5rem;
+	margin-bottom: .5rem;
+	overflow: hidden;
+	padding-right: 1rem;
+	gap: 1rem;
+	cursor: pointer;
+	transiton: all .2s ease-in-out;
+	:hover {
+		border: .1rem solid var(--app-text);
+	};
+	div {
+		transition: all .2s ease-in-out;
+		transform: translate(${props => props.active ? '-1rem' : '0'}, 0);
+	};
+	img {
+		transition: all .2s ease-in-out;
+		transform: scale(${props => props.active ? '1.2' : '1'});
+	}
+`;
+
+const SelectorImage = styled.img`
+	width: 3.25rem;
+	height: 3.25rem;
+	object-fit: cover;
+`;
+
+class CustomScrollbar extends Component {
+	constructor(props, ...rest) {
+		super(props, ...rest);
+		this.renderView = this.renderView.bind(this);
+		this.renderThumb = this.renderThumb.bind(this);
+		this.scrollbars = React.createRef();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.move !== prevProps.move) {
+			let scrollbars = this.scrollbars;
+			if (
+				this.props.move > 0 &&
+				this.props.move < scrollbars.getThumbHorizontalWidth()
+			) {
+				let left = this.props.move;
+				scrollbars.scrollLeft(left);
+			}
+		}
+	}
+
+	renderView({ style, ...props }) {
+		const viewStyle = {
+			paddingRight: "1rem"
+		};
+		return <div style={{ ...style, ...viewStyle }} {...props} />;
+	}
+
+	renderThumb({ style, ...props }) {
+		const thumbStyle = {
+			backgroundColor: "rgb(255 255 255 / 25%)",
+			borderRadius: "1000rem",
+		};
+		return <div style={{ ...style, ...thumbStyle }} {...props} />;
+	}
+
+	render() {
+		return (
+			<Scrollbars
+				renderView={this.renderView}
+				renderThumbHorizontal={this.renderThumb}
+				renderThumbVertical={this.renderThumb}
+				ref={this.scrollbars}
+				className="custom-scrollbars"
+				{...this.props}
+			/>
+		);
+	}
+}
+
+const ItemSelector = ({ item, selectedItem, setSelectedItem, isLoading }) => {
+	const [isActive, setIsActive] = useState(false);
+	useEffect (() => {
+		if (item.id === selectedItem) {
+			setIsActive(true);
+		} else {
+			setIsActive(false);
+		}
+	}, [selectedItem, item.id]);
+
+	const handleClick = () => {
+		!isLoading && setSelectedItem(item.id);
+	};
+	return (
+		<SelectorWrapper active = {isActive} onClick = {handleClick}>
+			<SelectorImage src = {getInfuraURL (item.data.thumbnail || item.data.image)} alt = {item.data.name} />
+			<div>{item.data.name}</div>
+		</SelectorWrapper>
+	);
+};
+
+export const PickCollectionModal = props => {
+	const initialButtonText = "Select a new collection";
+	const [isLoading, setIsLoading] = useState(false);
+	const [buttonText, setButtonText] = useState(initialButtonText);
+	const [collections, setCollections] = useState([]);
+	const { showErrorModal } = useErrorModalHelper();
+	const { auth } = useContext(AuthContext);
+	const [selectedItem, setSelectedItem] = useState(null);
+	//eslint-disable-next-line
+	const { collectibleInfo, setCollectibleInfo } =
+		useContext(CollectibleContext);
+	const handleClick = async () => {
+		if (!isLoading && selectedItem) {
+			setIsLoading(true);
+			setButtonText(<Loading />);
+			try {
+				const res = await moveCollectibleToCollection (collectibleInfo.itemId, selectedItem);
+				if (res && !res.error) {
+					setButtonText ('Collectible moved!');
+					setTimeout (() => {
+						window.location.reload ();
+					}, 1000);
+				} else {
+					setIsLoading(false);
+					setButtonText(initialButtonText);
+					showErrorModal('Something went wrong. Please try again later.');
+				}
+			} catch (error) {
+				setIsLoading(false);
+				setSelectedItem (null);
+				setButtonText(initialButtonText);
+				showErrorModal(error.toString ());
+			}
+		}
+	};
+
+	useEffect (() => {
+		if (selectedItem) setButtonText (`Move collectible to ${collections.find (item => item.id === selectedItem).data.name}`);
+	}, [selectedItem, collections]);
+
+	useEffect(() => {
+		// console.log (auth);
+		if (auth) {
+			axios
+				.get(`${getBackend()}/get/collections/owner/${auth.evmAddress}`)
+				.then(res => {
+					setCollections(res.data.collections);
+				})
+				.catch(err => {
+					if (err.toString().includes('404')) {
+						setCollections([]);
+					} else {
+						showErrorModal(err.toString());
+					}
+				})
+				.finally(() => {
+					setIsLoading(false);
+				});
+		}
+		return () => {
+			setCollections([]);
+		};
+		//eslint-disable-next-line
+	}, []);
+	return (
+		<ModalContainer {...props}>
+			<Title style = {{ textAlign: 'center' }}>Pick new collection</Title>
+			{collections.length > 0 ? (
+				<>
+					<CustomScrollbar style = {{ minHeight: "40vh", maxWidth: "30vw" }}>
+						{collections.map (collection => <ItemSelector
+							item = {collection}
+							selectedItem = {selectedItem}
+							setSelectedItem = {setSelectedItem}
+							isLoading = {isLoading}
+							key = {collection.id}
+						/>)}
+					</CustomScrollbar>
+					<AnimBtn style = {{
+						marginTop: '.5rem',
+					}} onClick = {handleClick}>
+						{buttonText}
+					</AnimBtn>
+				</>
+			) : (
+				<div style = {{ textAlign: "center" }}>
+					You don't have any collections yet. Create one to move your collectible.
+				</div>
+			)}
+			
 		</ModalContainer>
 	);
 };

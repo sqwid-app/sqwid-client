@@ -267,3 +267,9 @@ const Search = () => {
 };
 
 export default Search;
+
+export {
+	ResultsContainer,
+	UserResult,
+	UserResultText,
+}

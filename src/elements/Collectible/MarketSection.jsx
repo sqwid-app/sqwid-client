@@ -18,12 +18,14 @@ import intervalToFormattedDuration from "@utils/intervalToFormattedDuration";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import {
 	BidsModal,
+	BurnModal,
 	BuyModal,
 	CreateAuctionModal,
 	EnterRaffleModal,
 	LendModal,
 	PutOnSaleModal,
 	RaffleModal,
+	TransferModal,
 } from "./Modals";
 import { Link } from "react-router-dom";
 import AuthContext from "@contexts/Auth/AuthContext";
@@ -60,6 +62,24 @@ const Btn = styled(BtnBaseAnimated)`
 	height: 2.5rem;
 	min-width: 6rem;
 	z-index: 2;
+`;
+const BurnBtn = styled(BtnBaseAnimated)`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1rem;
+	font-weight: 700;
+	padding: 0 1.25rem;
+	border-radius: 1000rem;
+	height: 2.5rem;
+	min-width: 6rem;
+	z-index: 2;
+	background-image: linear-gradient(
+		110deg,
+		rgb(255,0,0) 0%,
+		rgb(150,0,0) 50%,
+		rgb(255,0,0) 100%
+	) !important;
 `;
 const parentMargin = css`
 	${props => (!props.parent ? `margin-top: auto` : ``)}
@@ -300,6 +320,16 @@ const AnimBtn = ({ children, ...props }) => (
 	>
 		{children}
 	</Btn>
+);
+const BurnAnimBtn = ({ children, ...props }) => (
+	<BurnBtn
+		whileTap={{
+			scale: 0.97,
+		}}
+		{...props}
+	>
+		{children}
+	</BurnBtn>
 );
 
 const ConfigContainer = styled.div`
@@ -596,6 +626,8 @@ const Config2 = () => {
 	const [showPutOnSaleModal, setShowPutOnSaleModal] = useState(false);
 	const [showLendModal, setShowLendModal] = useState(false);
 	const [showRaffleModal, setShowRaffleModal] = useState(false);
+	const [showBurnModal, setShowBurnModal] = useState(false);
+	const [showTransferModal, setShowTransferModal] = useState(false);
 
 	return (
 		<BottomContainer>
@@ -611,6 +643,12 @@ const Config2 = () => {
 			<AnimBtn onClick={() => setShowRaffleModal(!showRaffleModal)}>
 				Create Raffle
 			</AnimBtn>
+			<AnimBtn onClick={() => setShowTransferModal(!showTransferModal)}>
+				Transfer
+			</AnimBtn>
+			<BurnAnimBtn onClick={() => setShowBurnModal(!showBurnModal)}>
+				Burn
+			</BurnAnimBtn>
 			<CreateAuctionModal
 				fee={2.5}
 				isActive={showAuctionModal}
@@ -630,6 +668,15 @@ const Config2 = () => {
 				fee={2.5}
 				isActive={showRaffleModal}
 				setIsActive={setShowRaffleModal}
+			/>
+			<BurnModal
+				fee={2.5}
+				isActive={showBurnModal}
+				setIsActive={setShowBurnModal}
+			/>
+			<TransferModal
+				isActive={showTransferModal}
+				setIsActive={setShowTransferModal}
 			/>
 		</BottomContainer>
 	);

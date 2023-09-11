@@ -291,5 +291,10 @@ const UsersSearch = () => {
 
 export {
     CollectionsSearch,
-    UsersSearch
+    UsersSearch,
+    CollectionListItem,
+    CollectionImage,
+    CollectionTextWrapper,
+    CollectionName,
+    CollectionDescription
 };

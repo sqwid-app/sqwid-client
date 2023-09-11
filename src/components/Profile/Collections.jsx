@@ -67,7 +67,11 @@ const CollectionsSection = () => {
 				);
 			})
 			.catch(err => {
-				showErrorModal(err.response.data.error);
+				if (err.response.status === 404) {
+					setCards([]);
+				} else {
+					showErrorModal(err);
+				}
 			})
 			.finally(() => {
 				setIsLoading(false);
@@ -111,9 +115,15 @@ const CollectionsSection = () => {
 									/>
 								</>
 							))}
+
 						</CardSectionContainer>
 					)}
 				</>
+			)}
+			{(cards.length === 0) && !isLoading && (
+				<h3 style={{ textAlign: "center" }}>
+					No collections found
+				</h3>
 			)}
 		</Wrapper>
 	);

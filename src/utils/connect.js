@@ -18,9 +18,9 @@ const Init = async () => {
 	const extensions = await web3Enable("Sqwid");
 	const accs = await web3Accounts();
 	return {
-		errorCode: extensions.length === 0 ? 1 : (accs.length === 0 ? 2 : 0),
-		accounts: accs
-	}
+		errorCode: extensions.length === 0 ? 1 : accs.length === 0 ? 2 : 0,
+		accounts: accs,
+	};
 };
 
 const Connect = async account => {
@@ -62,7 +62,8 @@ const Connect = async account => {
 				}),
 			});
 		} catch (err) {
-			// handle err like a normal person 👍
+			console.log(err);
+			throw err;
 		}
 
 		let json = res.data;
