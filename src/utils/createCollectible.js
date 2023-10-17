@@ -308,11 +308,9 @@ const createCollectible = async files => {
 			} catch (err) {
 				// console.log (err);
 				// return null;
-				console.log("err1")
 				return { error: err };
 			}
 		} catch (err) {
-			console.log("err2")
 			return { error: err };
 		}
 	} else return null;
