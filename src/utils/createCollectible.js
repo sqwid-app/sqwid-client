@@ -49,6 +49,7 @@ const createCollectibleOld = async files => {
 	}
 	data.append("properties", JSON.stringify(props));
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	
 	let jwt = address
 		? JSON.parse(localStorage.getItem("tokens")).find(
 				token => token.address === address
@@ -236,6 +237,9 @@ const createCollectible = async files => {
 	}
 	data.append("properties", JSON.stringify(attribs));
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	if (!address) {
+		throw new Error("You need to login first");
+	  }
 	let jwt = address
 		? JSON.parse(localStorage.getItem("tokens")).find(
 				token => token.address === address
