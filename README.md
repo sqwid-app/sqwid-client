@@ -40,6 +40,12 @@ taken down or tampered with.
 git clone https://github.com/sqwid-app/sqwid-client.git
 yarn && yarn start
 ```
+or you can do run it using docker
+
+```
+docker build -t sqwidapp .     
+docker run -p 3000:3000 sqwidapp
+```
 
 ## 🧔 Authors
 
