@@ -6,7 +6,7 @@ export const networks = {
 			erc1155: "0xc2F3BE4636A0a1ddf3b4D63ef22014DD41114336",
 			utility: "0x30eDebE433702029C00544615aCC4E1b445939BA",
 		},
-		backend: "https://testnet-api.sqwid.app",
+		backend: "https://reef-chain.ey.r.appspot.com",
 		// backend: "http://localhost:8080",
 	},
 	reef_mainnet: {
