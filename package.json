@@ -1,6 +1,6 @@
 {
 	"name": "sqwid-client",
-	"version": "0.3.15",
+	"version": "0.3.28",
 	"license": "MIT",
 	"private": true,
 	"dependencies": {
@@ -56,10 +56,10 @@
 		"web-vitals": "^1.0.1"
 	},
 	"scripts": {
-		"start": "craco start",
-		"build": "craco build",
-		"test": "craco test",
-		"eject": "craco eject",
+		"start": "craco --openssl-legacy-provider start",
+		"build": "craco --openssl-legacy-provider build",
+		"test": "craco --openssl-legacy-provider test",
+		"eject": "craco --openssl-legacy-provider eject",
 		"release": "standard-version"
 	},
 	"eslintConfig": {

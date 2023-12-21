@@ -5,6 +5,7 @@ const Container = styled.div`
 	display: flex;
 	align-items: center;
 	gap: 1rem;
+	min-width: ${props => props.minWidth};
 	@property --percent {
 		syntax: "<number>";
 		initial-value: 0;
@@ -39,6 +40,7 @@ const Container = styled.div`
 			height: 1rem;
 			border-radius: 1000rem;
 			box-shadow: inset 0 0.1rem 0.25rem var(--progress-shadow);
+			overflow: hidden;
 		}
 		&__bar {
 			position: absolute;
@@ -85,25 +87,27 @@ const getFormattedDate = date => {
 const ProgressBar = ({ percent, date }) => {
 	const counterRef = useRef();
 	const barRef = useRef();
-	let dateObject = new Date(date);
+	let dateObject = date ? new Date(date) : null;
 	useEffect(() => {
 		barRef.current.style.width = `${percent}%`;
 		counterRef.current.style.setProperty("--percent", percent);
 	}, [percent]);
 	return (
-		<Container>
-			<div class="progress__wrapper">
-				<div class="progress__outer">
+		<Container minWidth={date ? "auto" : "200px"}>
+			<div className="progress__wrapper">
+				<div className="progress__outer">
 					<div className="progress__bar" ref={barRef} />
 				</div>
-				<DateContainer>
-					<p className="date">{getFormattedDate(dateObject)}</p>
-					<p className="date">
-						{getFormattedDate(
-							new Date(dateObject.getTime() + 86400000)
-						)}
-					</p>
-				</DateContainer>
+				{dateObject && (
+					<DateContainer>
+						<p className="date">{getFormattedDate(dateObject)}</p>
+						<p className="date">
+							{getFormattedDate(
+								new Date(dateObject.getTime() + 86400000)
+							)}
+						</p>
+					</DateContainer>
+				)}
 			</div>
 			<span className="counter" ref={counterRef} />
 		</Container>

@@ -970,7 +970,7 @@ const ProfileCard = () => {
 					}
 				})
 				.catch(err => {
-					showErrorModal(err.response.data.error);
+					showErrorModal(err.toString ());
 				})
 				.finally(() => {
 					setIsLoading(false);

@@ -3,11 +3,16 @@ import LoanPage from "@pages/Explore/LoanPage";
 import MainPage from "@pages/Explore/MainPage";
 import RafflePage from "@pages/Explore/RafflePage";
 import SalePage from "@pages/Explore/SalePage";
+import CollectionsPage from "@pages/Explore/CollectionsPage";
 
 const pages = [
 	{
 		path: "",
 		component: <MainPage />,
+	},
+	{
+		path: "/collections",
+		component: <CollectionsPage />,
 	},
 	{
 		path: "/auctions",

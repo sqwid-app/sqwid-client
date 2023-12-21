@@ -112,4 +112,26 @@ const CardHeaderIcons = ({ data }) => {
 	);
 };
 
+const CustomCardHeaderIcons = ({ data }) => {
+	let keys = Object.keys(data);
+	return (
+		<LazyMotion features={domAnimation}>
+			<Wrapper>
+				{keys.map((key, index) => {
+					return (
+						<AnimatedIcons
+							to={data[key].link}
+							url={data[key].image}
+							tooltip={data[key].tooltip}
+							key={index}
+						/>
+					);
+				})}
+			</Wrapper>
+		</LazyMotion>
+	);
+}
+
+export { CardHeaderIcons, CustomCardHeaderIcons };
+
 export default CardHeaderIcons;

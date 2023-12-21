@@ -48,7 +48,9 @@ const Collections = () => {
 				// }
 				// setIsLoading(false);
 
-				const [collectionData, collectionStats] = await Promise.all([
+				const [collectionData,
+					collectionStats
+				] = await Promise.all([
 					fetchCollectionInfo(id),
 					fetchCollectionStats(id)
 				]);

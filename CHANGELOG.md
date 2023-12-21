@@ -2,6 +2,57 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.3.28 (2023-03-24)
+
+
+### Bug Fixes
+
+* show columns of collections on smaller resolution displays ([0d2349e](https://github.com/boidushya/sqwid-client/commit/0d2349e43f38b26fdbb0e19f79c5cfc35444f9a2))
+
+### 0.3.27 (2023-03-08)
+
+### 0.3.26 (2022-12-23)
+
+### 0.3.25 (2022-12-12)
+
+### 0.3.24 (2022-11-25)
+
+
+### Bug Fixes
+
+* disable maintenance ([4af9359](https://github.com/boidushya/sqwid-client/commit/4af9359223de08bf68b7d45b248f0d3098c88ad3))
+
+### 0.3.23 (2022-11-24)
+
+
+### Bug Fixes
+
+* enable maintenance ([f798220](https://github.com/boidushya/sqwid-client/commit/f798220462fe7d01f4ea8c600ee35efad155f66c))
+
+### 0.3.22 (2022-11-07)
+
+### 0.3.21 (2022-11-02)
+
+
+### Bug Fixes
+
+* disable maintenance ([5b363d4](https://github.com/boidushya/sqwid-client/commit/5b363d444e253d637c000e218b217f488e80b9f7))
+
+### 0.3.20 (2022-11-02)
+
+
+### Bug Fixes
+
+* enable maintenance mode ([59d8a3b](https://github.com/boidushya/sqwid-client/commit/59d8a3b369a0f6323d9ed494ddacf2e459e25d5e))
+
+### 0.3.19 (2022-11-01)
+
+### 0.3.18 (2022-10-30)
+
+### 0.3.17 (2022-10-30)
+
+### 0.3.16 (2022-09-20)
+
 ### 0.3.15 (2022-09-13)
 
 

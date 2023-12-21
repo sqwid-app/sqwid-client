@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import marketplaceContractABI from "../constants/contracts/SqwidMarketplace";
 import utilityContractABI from "../constants/contracts/SqwidUtility";
 import collectibleContractABI from "../constants/contracts/SqwidERC1155";
@@ -64,7 +64,7 @@ const fetchFeaturedItems = async () => {
 	if (data.error) {
 		return [];
 	}
-	return data.featured;
+	return data.featured.filter (item => item != null);
 }
 
 // returns collection info
@@ -263,19 +263,22 @@ const createBid = async (itemId, amount) => {
 		return null;
 	}
 };
-
 const createSale = async (positionId, tokenAmount, price) => {
 	await checkAndApproveMarketplace();
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
+		// console.log (price.toLocaleString('fullwide', {useGrouping:false}));
+		// console.log (tokenAmount, price, ethers.utils.parseEther(
+		// 	(BigNumber.from (tokenAmount).mul (BigNumber.from (price.toLocaleString('fullwide', {useGrouping:false})))).toString()));
 		const tx = await marketplaceContractInstance.createSale(
 			positionId,
 			tokenAmount,
 			{
-				value: ethers.utils.parseEther(
-					(Number(tokenAmount) * Number(price)).toString()
-				),
+				// value: ethers.utils.parseEther(
+				// 	(BigNumber.from (tokenAmount).mul (BigNumber.from (price.toLocaleString('fullwide', {useGrouping:false})))).toString()
+				// ),
+				value: BigNumber.from (tokenAmount).mul (price),
 				customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
 			}
 		);
@@ -379,6 +382,23 @@ const unlistLoanProposal = async positionId => {
 		return null;
 	}
 };
+
+const burnCollectible = async (tokenId, amount) => {
+	await checkAndApproveMarketplace();
+	try {
+		const address = JSON.parse(localStorage.getItem("auth"))?.auth?.evmAddress;
+		const { signer } = await Interact();
+		const collectibleContractInstance = collectibleContract (signer);
+		const tx = await collectibleContractInstance.burn(address, tokenId, amount,
+			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
+		);
+		const receipt = await tx.wait();
+		return receipt;
+	} catch (error) {
+		// console.error (error);
+		return null;
+	}
+}
 
 export const fetchRaffleEntries = async positionId => {
 	try {
@@ -576,14 +596,30 @@ const fetchCollectionStats = async id => {
 	// 		owners: 0
 	// 	};
 	// }
-	return {
-		volume: 0,
-		average: 0,
-		lastSale: 0,
-		salesAmount: 0,
-		items: 0,
-		owners: 0
-	};
+	// return {
+	// 	volume: 0,
+	// 	average: 0,
+	// 	lastSale: 0,
+	// 	salesAmount: 0,
+	// 	items: 0,
+	// 	owners: 0
+	// };
+	try {
+		const res = await axios(
+			`${getBackend()}/get/marketplace/collection/${id}/stats`
+		);
+		const { data } = res;
+		return data;
+	} catch (e) {
+		return {
+			volume: 0,
+			average: 0,
+			lastSale: 0,
+			itemsSold: 0,
+			items: 0,
+			owners: 0
+		};
+	}
 }
 
 const fetchCollectibleStats = async id => {
@@ -641,6 +677,138 @@ const fetchOngoingBids = async () => {
 	return data;
 };
 
+const fetchClaimables = async () => {
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	//eslint-disable-next-line
+	let jwt = address
+		? JSON.parse(localStorage.getItem("tokens")).find(
+				token => token.address === address
+		  )
+		: null;
+	if (!jwt) return 0;
+	try {
+		const res = await axios (`${getBackend()}/get/marketplace/claimables`, {
+			headers: {
+				Authorization: `Bearer ${jwt.token}`,
+				},
+			}
+		);
+		const { data } = res;
+		if (data.error) return [];
+		return data;
+	} catch (e) {
+		return [];
+	}
+};
+
+const fetchClaimablesCount = async () => {
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	//eslint-disable-next-line
+	let jwt = address
+		? JSON.parse(localStorage.getItem("tokens")).find(
+				token => token.address === address
+		)
+		: null;
+	if (!jwt) return 0;
+	try {
+		const res = await axios (`${getBackend()}/get/marketplace/claimables/count`, {
+			headers: {
+				Authorization: `Bearer ${jwt.token}`,
+			},
+		});
+		const { data } = res;
+		if (data.error) return 0;
+		return data.count;
+	} catch (e) {
+		return 0;
+	}
+};
+const claimClaimables = async (itemId, tokenId) => {
+	await checkAndApproveMarketplace();
+	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	//eslint-disable-next-line
+	let jwt = address
+		? JSON.parse(localStorage.getItem("tokens")).find(
+				token => token.address === address
+		  )
+		: null;
+	if (!jwt) return 0;
+	try {
+		let receipt;
+		try {
+			const { signer } = await Interact();
+			const marketplaceContractInstance = marketplaceContract(signer);
+			const tx = await marketplaceContractInstance.addAvailableTokens(itemId);
+			receipt = await tx.wait();
+			const res = await axios.post(`${getBackend()}/claim/${tokenId}`, {}, {
+				headers: {
+					Authorization: `Bearer ${jwt.token}`,
+					},
+				}
+			);
+			const { data } = res;
+			if (data.error) return {
+				error: true,
+				message: res.error.toString ()
+			};
+			return receipt;
+		} catch (e) {
+			// console.log (e);
+			const retry = (e.toString () === "Error: Cancelled") ||
+				(e.toString () === "Error: -32603: execution fatal: Module { index: 6, error: 2, message: None }");
+			
+			if (!retry) {
+				await axios.post(`${getBackend()}/claim/${tokenId}`, {
+					remove: true
+				}, {
+					headers: {
+						Authorization: `Bearer ${jwt.token}`,
+						},
+					}
+				);
+			}
+			return {
+				error: true,
+				message: e.toString ()
+			};
+		}
+	} catch (e) {
+		return {
+			error: true,
+			message: e.toString ()
+		};
+	}
+};
+
+const transferCollectible = async (to, tokenId, amount) => {
+	const { signer } = await Interact();
+	const from = await signer.getAddress();
+	const collectibleContractInstance = collectibleContract(signer);
+	const tx = await collectibleContractInstance.safeTransferFrom(
+		from,
+		to,
+		Number (tokenId),
+		Number (amount),
+		"0x"
+	);
+	const receipt = await tx.wait();
+	return receipt;
+}
+
+const fetchCollectionsByStats = async (order, startFrom = Infinity, startFromId = null, sort = 'desc', limit = 8) => {
+	try {
+		const res = await axios(
+			`${getBackend()}/get/collections/all/by/stats.${order}?sorting=${sort}&startAt=${startFrom}&startAtId=${startFromId}&limit=${limit}`
+		);
+		const { data } = res;
+		return data;
+	} catch (e) {
+		return {
+			collections: []
+		};
+	}
+}
+
 export {
 	unlistLoanProposal,
 	repayLoan,
@@ -669,6 +837,12 @@ export {
 	fetchCollectibleStats,
 	fetchCollectibleSaleHistory,
 	fetchOngoingBids,
+	burnCollectible,
+	fetchClaimables,
+	fetchClaimablesCount,
+	claimClaimables,
+	transferCollectible,
+	fetchCollectionsByStats,
 	// these are old, need to be removed
 	marketplaceItemExists,
 	fetchMarketplaceItem,
