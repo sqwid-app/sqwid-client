@@ -40,7 +40,7 @@ const checkAndApproveMarketplace = async () => {
 
 // returns all marketplace items
 // const fetchMarketplaceItems = async () => {
-//     const res = await axios (`${process.env.REACT_APP_API_URL}/get/r/marketplace/fetchMarketItems`);
+//     const res = await axios (`${getBackend()}/get/r/marketplace/fetchMarketItems`);
 //     const { data } = res;
 //     if (data.error) {
 //         return [];
@@ -433,7 +433,7 @@ export const fetchAuctionBids = async positionId => {
 // returns a certain marketplace item
 const fetchMarketplaceItem = async itemId => {
 	const res = await axios(
-		`${process.env.REACT_APP_API_URL}/get/r/marketplace/position/${itemId}`
+		`${getBackend()}/get/r/marketplace/position/${itemId}`
 	);
 	const { data } = res;
 	if (data.error) {
@@ -446,7 +446,7 @@ const fetchMarketplaceItem = async itemId => {
 
 const marketplaceItemExists = async itemId => {
 	const res = await axios(
-		`${process.env.REACT_APP_API_URL}/get/r/marketplace/itemExists/${itemId}`
+		`${getBackend()}/get/r/marketplace/itemExists/${itemId}`
 	);
 	const { data } = res;
 	if (data.error) {
@@ -629,7 +629,7 @@ const fetchCollectibleStats = async id => {
 		);
 		const { data } = res;
 		if (data.error) {
-			
+
 		}
 		return data;
 	} catch (e) {
@@ -756,7 +756,7 @@ const claimClaimables = async (itemId, tokenId) => {
 			// console.log (e);
 			const retry = (e.toString () === "Error: Cancelled") ||
 				(e.toString () === "Error: -32603: execution fatal: Module { index: 6, error: 2, message: None }");
-			
+
 			if (!retry) {
 				await axios.post(`${getBackend()}/claim/${tokenId}`, {
 					remove: true

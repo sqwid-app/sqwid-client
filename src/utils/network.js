@@ -8,22 +8,19 @@ export const getCurrentNetwork = () => {
 	);
 };
 
-export const getNetwork = () => {
+export const getNetworkConfig = () => {
 	const network = getCurrentNetwork();
 	return networks[network];
 };
 
 export const getRPC = () => {
-	const network = getCurrentNetwork();
-	return getNetwork(network).rpc;
+	return getNetworkConfig().rpc;
 };
 
 export const getContract = contract => {
-	const network = getCurrentNetwork();
-	return getNetwork(network).contracts[contract];
+	return getNetworkConfig().contracts[contract];
 };
 
 export const getBackend = () => {
-	const network = getCurrentNetwork();
-	return getNetwork(network).backend;
+	return getNetworkConfig().backend;
 };
