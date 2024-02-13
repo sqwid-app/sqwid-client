@@ -21,6 +21,7 @@ import styled from "styled-components";
 import { getBackend } from "@utils/network";
 import useStateInfo from "@utils/useStateInfo";
 import { useErrorModalHelper } from "@elements/Default/ErrorModal";
+import { REEF_PRICE_COINGECKO, REEF_PRICE_REEFSCAN } from "@constants/price";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -85,49 +86,23 @@ const HeroSection = () => {
 	const { showErrorModal } = useErrorModalHelper();
 
 	useEffect(() => {
-		// Axios request goes here ebin...
-		// eslint-disable-next-line
-		const getDataOld = async () => {
-			const { data } = await axios.get(
-				`${getBackend()}/get/marketplace/position/${addr}`
-			);
-			if (data && !data.error) {
-				let conversionRate = null;
-				try {
-					let res = await axios(
-						"https://api.coingecko.com/api/v3/simple/price?ids=reef&vs_currencies=usd"
-					);
-					let price = res.data["reef"].usd;
-					conversionRate = Number(price);
-				} catch (err) {
-					showErrorModal(err.response.data.error);
-				}
-				setCollectibleInfo({
-					...data,
-					conversionRate,
-					isValidCollectible: true,
-				});
-				setIsLoading(false);
-			} else {
-				setCollectibleInfo({
-					...collectibleInfo,
-					isValidCollectible: false,
-				});
-			}
-		};
-
 		const getData = async () => {
 			const collectiblePromise = axios.get(
 				`${getBackend()}/get/marketplace/position/${addr}`
 			);
 			const pricePromise = axios(
-				"https://api.coingecko.com/api/v3/simple/price?ids=reef&vs_currencies=usd"
+				REEF_PRICE_REEFSCAN
 			);
 			try {
-				const [collectible, price] = await Promise.all([
+				let [collectible, price] = await Promise.all([
 					collectiblePromise,
 					pricePromise,
 				]);
+
+				if(price.error){
+					price = await axios.get(REEF_PRICE_COINGECKO);
+				}
+
 				if (collectible.data && collectible.data.error)
 					setCollectibleInfo({
 						...collectibleInfo,
@@ -135,7 +110,8 @@ const HeroSection = () => {
 					});
 				else {
 					let conversionRate = price.data
-						? price.data["reef"].usd
+						? price.data["usd"]?price.data["usd"]:
+						price.data["reef"].usd
 						: 0;
 					setCollectibleInfo({
 						...collectible.data,
