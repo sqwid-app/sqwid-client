@@ -534,7 +534,7 @@ export const TransferModal = props => {
 				<InputWrapper>
 					<InputTitle>
 						Recipient{" "}
-						{addressSelected && (
+						{(
 							<span>
 								{shortenIfAddress (displayName)}
 							</span>
@@ -544,7 +544,7 @@ export const TransferModal = props => {
 						type="text"
 						value={address}
 						onChange={handleInput}
-						placeholder={`Username / address / EVM address...`}
+						placeholder={`Reef EVM address`}
 					/>
 					{(results.users?.length && !addressSelected && address.length) ? <ResultsContainer>
 						{results.users?.map((user, i) => (
@@ -568,7 +568,7 @@ export const TransferModal = props => {
 					{isUnknownAddress && (
 						<span>
 							This address is not registered on Sqwid.<br/>Are you sure you want to send to this address?
-						</span>	
+						</span>
 					)}
 					<InputTitle>
 						Number of editions{" "}
@@ -583,7 +583,7 @@ export const TransferModal = props => {
 						placeholder={`Number of editions to send`}
 					/>
 				</InputWrapper>
-				<AnimBtn disabled={isLoading || !addressSelected} onClick={handleClick}>
+				<AnimBtn disabled={isLoading} onClick={handleClick}>
 					{buttonText}
 				</AnimBtn>
 			</Group>
@@ -683,7 +683,7 @@ export const EditCollectionModal = props => {
 					placeholder={`Name`}
 				/><br/>
 				<InputTitle>Description</InputTitle>
-				<InputContainer	
+				<InputContainer
 					type="text"
 					value={description}
 					onChange={e => setDescription(e.target.value)}
@@ -1675,7 +1675,7 @@ export const PickCollectionModal = props => {
 					You don't have any collections yet. Create one to move your collectible.
 				</div>
 			)}
-			
+
 		</ModalContainer>
 	);
 };
