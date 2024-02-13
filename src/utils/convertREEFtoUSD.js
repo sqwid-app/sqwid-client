@@ -14,7 +14,7 @@ export const convertREEFtoUSD = async price => {
 			let conversionRate = res.data["reef"].usd ?? 0;
 			return Number(price) * Number(conversionRate);
 		} catch (error) {
-			return null;
+			return 0;
 		}
 	}
 };

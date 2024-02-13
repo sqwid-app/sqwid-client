@@ -22,6 +22,7 @@ import { getBackend } from "@utils/network";
 import useStateInfo from "@utils/useStateInfo";
 import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 import { REEF_PRICE_COINGECKO, REEF_PRICE_REEFSCAN } from "@constants/price";
+import { convertREEFtoUSD } from "@utils/convertREEFtoUSD";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -90,18 +91,11 @@ const HeroSection = () => {
 			const collectiblePromise = axios.get(
 				`${getBackend()}/get/marketplace/position/${addr}`
 			);
-			const pricePromise = axios(
-				REEF_PRICE_REEFSCAN
-			);
 			try {
 				let [collectible, price] = await Promise.all([
 					collectiblePromise,
-					pricePromise,
+					convertREEFtoUSD(1),
 				]);
-
-				if(price.error){
-					price = await axios.get(REEF_PRICE_COINGECKO);
-				}
 
 				if (collectible.data && collectible.data.error)
 					setCollectibleInfo({
@@ -109,10 +103,7 @@ const HeroSection = () => {
 						isValidCollectible: false,
 					});
 				else {
-					let conversionRate = price.data
-						? price.data["usd"]?price.data["usd"]:
-						price.data["reef"].usd
-						: 0;
+					let conversionRate = price;
 					setCollectibleInfo({
 						...collectible.data,
 						conversionRate,
