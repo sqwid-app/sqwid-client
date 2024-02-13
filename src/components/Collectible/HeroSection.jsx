@@ -21,7 +21,6 @@ import styled from "styled-components";
 import { getBackend } from "@utils/network";
 import useStateInfo from "@utils/useStateInfo";
 import { useErrorModalHelper } from "@elements/Default/ErrorModal";
-import { REEF_PRICE_COINGECKO, REEF_PRICE_REEFSCAN } from "@constants/price";
 import { convertREEFtoUSD } from "@utils/convertREEFtoUSD";
 
 const Wrapper = styled.div`
