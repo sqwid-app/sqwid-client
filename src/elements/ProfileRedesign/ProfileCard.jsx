@@ -606,7 +606,7 @@ const ProfileCard = () => {
 	const [isOwnAccount, setIsOwnAccount] = useState(false);
 	const [editIsActive, setEditIsActive] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [quickItems, setQuickItems] = useState([]);
+	const [quickItems, setQuickItems] = useState(undefined);
 	const { info } = useContext(EditDetailsContext);
 	const { id } = useParams();
 	const { auth } = useContext(AuthContext);
@@ -779,7 +779,7 @@ const ProfileCard = () => {
 							) : (
 								<OnSaleSection/>
 							)} */}
-							{quickItems.length?
+							{quickItems?
 							
 							<QuickSection
 								items={quickItems}
