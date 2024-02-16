@@ -43,6 +43,7 @@ import ChevronRight from "@static/svg/ChevronRight";
 import { NavLink } from "react-router-dom";
 import Background from "./Background";
 import { useErrorModalHelper } from "@elements/Default/ErrorModal";
+import LoadingIcon from "@static/svg/LoadingIcon";
 // import CardSectionContainer from "@elements/Default/CardSectionContainer";
 // import { fetchUserItems } from "@utils/marketplace";
 // import OnSaleSection from "./Sections/OnSaleSection";
@@ -605,7 +606,7 @@ const ProfileCard = () => {
 	const [isOwnAccount, setIsOwnAccount] = useState(false);
 	const [editIsActive, setEditIsActive] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [quickItems, setQuickItems] = useState([]);
+	const [quickItems, setQuickItems] = useState(undefined);
 	const { info } = useContext(EditDetailsContext);
 	const { id } = useParams();
 	const { auth } = useContext(AuthContext);
@@ -778,6 +779,8 @@ const ProfileCard = () => {
 							) : (
 								<OnSaleSection/>
 							)} */}
+							{quickItems?
+							
 							<QuickSection
 								items={quickItems}
 								title={
@@ -790,7 +793,14 @@ const ProfileCard = () => {
 										? `?tab=Available`
 										: `?tab=On%20Sale`
 								}
-							/>
+							/>:
+							<div style={{position:"absolute",marginTop:"500px",marginLeft:"200px"}}>
+						<LoadingContainer>
+							<LoadingIcon size={128} />
+						</LoadingContainer>
+							</div>
+							
+						}
 						</ProfileWrapper>
 					) : (
 						<Header>Loading...</Header>
