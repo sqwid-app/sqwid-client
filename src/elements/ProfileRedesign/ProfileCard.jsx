@@ -698,7 +698,7 @@ const ProfileCard = () => {
 	}, [tooltipVisible]);
 	const tooltipRef = useRef();
 	return (
-		userData.address!=""?
+		userData.address!=="" && !isLoading?
 		<>
 			<Background socials={userData.socials} />
 			<Card>
