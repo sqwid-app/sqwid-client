@@ -661,16 +661,16 @@ const Config2 = () => {
 
 	return (
 		<BottomContainer>
-			<AnimBtn onClick={() => setShowPutOnSaleModal(!showPutOnSaleModal)}>
+			<AnimBtn onClick={() => setShowPutOnSaleModal(!showPutOnSaleModal)} disabled={!isCollectibleWhitelisted}>
 				Put On Sale
 			</AnimBtn>
-			<AnimBtn onClick={() => setShowLendModal(!showLendModal)}>
+			<AnimBtn onClick={() => setShowLendModal(!showLendModal)} disabled={!isCollectibleWhitelisted}>
 				Create Loan Proposal
 			</AnimBtn>
-			<AnimBtn onClick={() => setShowAuctionModal(!showAuctionModal)}>
+			<AnimBtn onClick={() => setShowAuctionModal(!showAuctionModal)} disabled={!isCollectibleWhitelisted}>
 				Create Auction
 			</AnimBtn>
-			<AnimBtn onClick={() => setShowRaffleModal(!showRaffleModal)}>
+			<AnimBtn onClick={() => setShowRaffleModal(!showRaffleModal)} disabled={!isCollectibleWhitelisted}>
 				Create Raffle
 			</AnimBtn>
 			<AnimBtn onClick={() => setShowTransferModal(!showTransferModal)} disabled={!isCollectibleWhitelisted}>
