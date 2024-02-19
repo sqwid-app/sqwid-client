@@ -235,10 +235,10 @@ const InputContainer = styled.input`
 `;
 
 const LoadingContainer = styled.div`
-	position: absolute;
-	top: 50%;
-	right: 0;
-	transform: translateY(-50%);
+width: 100%;
+height: 10%;
+display: grid;
+place-items: center;
 `;
 const ClearContainer = styled.div`
 	position: absolute;
@@ -698,11 +698,11 @@ const ProfileCard = () => {
 	}, [tooltipVisible]);
 	const tooltipRef = useRef();
 	return (
+		userData.address!=="" && !isLoading?
 		<>
 			<Background socials={userData.socials} />
 			<Card>
 				{!editIsActive ? (
-					!isLoading ? (
 						<ProfileWrapper>
 							<Container>
 								<ProfilePicture
@@ -796,16 +796,13 @@ const ProfileCard = () => {
 							/>:
 							<div style={{position:"absolute",marginTop:"500px",marginLeft:"200px"}}>
 						<LoadingContainer>
-							<LoadingIcon size={128} />
+							<LoadingIcon size={64} />
 						</LoadingContainer>
 							</div>
 							
 						}
 						</ProfileWrapper>
 					) : (
-						<Header>Loading...</Header>
-					)
-				) : (
 					<HeaderContainer>
 						<HeaderSection>
 							<Header>Edit Details</Header>
@@ -830,7 +827,9 @@ const ProfileCard = () => {
 					</HeaderContainer>
 				)}
 			</Card>
-		</>
+		</>:<LoadingContainer>
+			<LoadingIcon size={64}/>
+		</LoadingContainer>
 	);
 };
 

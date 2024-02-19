@@ -34,10 +34,10 @@ const CardWrapper = styled(m.div)`
 `;
 
 const LoadingContainer = styled.div`
-	position: absolute;
-	top: 50%;
-	right: 0;
-	transform: translateY(-50%);
+	width: 100%;
+	height: 10%;
+	display: grid;
+	place-items: center;
 `;
 
 const Btn = styled(BtnBaseAnimated)`
@@ -214,11 +214,9 @@ const ActivitySection = () => {
 			<StyledWrapper>
 				{claimables && claimables.length ? <CardSectionContainer>
 					{claimables.map ((item) => <Claimable key = {item.itemId} item = {item} handleClaimed = {handleClaimed} />)}
-				</CardSectionContainer> : !claimables ? <div style={{ position: "absolute",top:"20%", left: "53%", transform: "translate(-50%, -50%)" }}>
-  <LoadingContainer>
-    <LoadingIcon size={64} />
-  </LoadingContainer>
-</div>
+				</CardSectionContainer> : !claimables ? <LoadingContainer>
+							<LoadingIcon />
+						</LoadingContainer>
 : (<EmptySectionContainer>
 					<EmptySectionText>
 						Looks like there is nothing to be claimed right now. Check back later! 😊
