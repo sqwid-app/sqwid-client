@@ -10,6 +10,7 @@ import { styles } from "@styles/reactSelectStyles";
 import { useEffect } from "react";
 import { fetchCollectionsByStats } from "@utils/marketplace";
 import { getInfuraURL } from "@utils/getIPFSURL";
+import LoadingIcon from "@static/svg/LoadingIcon";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -151,6 +152,12 @@ const SortContainer = styled.div`
 	gap: 1rem;
 `;
 
+const LoadingContainer = styled.div`
+	width: 100%;
+	display: grid;
+	place-items: center;
+`;
+
 // const CollectionBadge = styled.div`
 // 	position: absolute;
 // 	height: 1.5rem;
@@ -174,7 +181,7 @@ const SortContainer = styled.div`
 // `;
 
 const CollectionsPage = () => {
-	const [collections, setCollections] = React.useState([]);
+	const [collections, setCollections] = React.useState(undefined);
 	const options = [
 		{ value: "items", label: "Items" },
 		{ value: "volume", label: "Volume" },
@@ -252,7 +259,7 @@ const CollectionsPage = () => {
 						</SortContainer>
 					</HeaderContainer>
 					<CollectionsWrapper>
-						{collections.map((collection, i) => (
+						{collections?collections.map((collection, i) => (
 							<CollectionListItem
 							key = {collection.id}
 							onClick = {() => window.location.href = `/collections/${collection.id}`}
@@ -291,7 +298,11 @@ const CollectionsPage = () => {
 									</CollectionStats>
 								</CollectionTextWrapper>
 							</CollectionListItem>
-						))}
+						)):<>
+						<LoadingContainer>
+								<LoadingIcon size={64}/>
+						</LoadingContainer>
+						</>}
 					</CollectionsWrapper>
 					{!finished && <button onClick={loadMore}>load more</button>}
 				</Container>
