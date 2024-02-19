@@ -30,7 +30,7 @@ const Container = styled.div`
 
 const LoadingContainer = styled.div`
 	width: 100%;
-	height: 100%;
+	height: 10%;
 	display: grid;
 	place-items: center;
 `;
