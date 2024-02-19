@@ -245,6 +245,11 @@ const ToastLink = styled.a`
 	color: var(--app-theme-primary);
 `;
 
+const REEF_ADDRESS_SPECIFIC_STRING = "(ONLY for Reef chain!)";
+
+const removeReefSpecificStringFromAddress = (address) =>
+  address.replace(REEF_ADDRESS_SPECIFIC_STRING, "").trim();
+
 const InfoSection = ({ fee, link }) => {
 	return (
 		<InfoWrapper>
@@ -477,7 +482,7 @@ export const TransferModal = props => {
 
 	const handleInput = e => {
 		setAddressSelected (false);
-		setAddress(e.target.value);
+		setAddress(removeReefSpecificStringFromAddress(e.target.value));
 		if (e.target.value === "") {
 			setResults({});
 			setIsUnknownAddress (false);
