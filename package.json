@@ -14,7 +14,7 @@
 		"@testing-library/jest-dom": "^5.11.4",
 		"@testing-library/react": "^11.1.0",
 		"@testing-library/user-event": "^12.1.10",
-		"axios": "^0.23.0",
+		"axios": "^0.28.0",
 		"bn.js": "4.12",
 		"chart.js": "^3.7.1",
 		"chartjs-plugin-zoom": "^1.2.0",
