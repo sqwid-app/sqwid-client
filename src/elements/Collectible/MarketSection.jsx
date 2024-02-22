@@ -46,6 +46,8 @@ import {
 import Loading from "@elements/Default/Loading";
 import { useHistory } from "react-router-dom";
 import { ethers } from "ethers";
+import axios from "axios";
+import { getBackend } from "@utils/network";
 
 /*
 	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/sections.png
@@ -622,30 +624,59 @@ const Config1 = () => {
 
 const Config2 = () => {
 	// state-0 / owned
+	const { collectibleInfo } = useContext(CollectibleContext)
 	const [showAuctionModal, setShowAuctionModal] = useState(false);
 	const [showPutOnSaleModal, setShowPutOnSaleModal] = useState(false);
 	const [showLendModal, setShowLendModal] = useState(false);
 	const [showRaffleModal, setShowRaffleModal] = useState(false);
 	const [showBurnModal, setShowBurnModal] = useState(false);
 	const [showTransferModal, setShowTransferModal] = useState(false);
+	const [isCollectibleWhitelisted,setIsCollectibleWhitelisted] = useState(false);
+
+	useEffect(()=>{
+		const isWhitelisted = async (id) => {
+			const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+			//eslint-disable-next-line
+			let jwt = address
+				? JSON.parse(localStorage.getItem("tokens")).find(
+						token => token.address === address
+				  )
+				: null;
+			if (!jwt) return 0;
+			try {
+				const res = await axios (`${getBackend()}/get/marketplace/is-whitelisted/${id}`, {
+					headers: {
+						Authorization: `Bearer ${jwt.token}`,
+						},
+					}
+				);
+				const { data } = res;
+				return setIsCollectibleWhitelisted(data)
+			} catch (e) {
+				return setIsCollectibleWhitelisted(false);
+			}
+		};	
+		isWhitelisted(collectibleInfo.tokenId);
+	},[collectibleInfo])
 
 	return (
 		<BottomContainer>
-			<AnimBtn onClick={() => setShowPutOnSaleModal(!showPutOnSaleModal)}>
+			<AnimBtn onClick={() => setShowPutOnSaleModal(!showPutOnSaleModal)} disabled={!isCollectibleWhitelisted}>
 				Put On Sale
 			</AnimBtn>
-			<AnimBtn onClick={() => setShowLendModal(!showLendModal)}>
+			<AnimBtn onClick={() => setShowLendModal(!showLendModal)} disabled={!isCollectibleWhitelisted}>
 				Create Loan Proposal
 			</AnimBtn>
-			<AnimBtn onClick={() => setShowAuctionModal(!showAuctionModal)}>
+			<AnimBtn onClick={() => setShowAuctionModal(!showAuctionModal)} disabled={!isCollectibleWhitelisted}>
 				Create Auction
 			</AnimBtn>
-			<AnimBtn onClick={() => setShowRaffleModal(!showRaffleModal)}>
+			<AnimBtn onClick={() => setShowRaffleModal(!showRaffleModal)} disabled={!isCollectibleWhitelisted}>
 				Create Raffle
 			</AnimBtn>
-			<AnimBtn onClick={() => setShowTransferModal(!showTransferModal)}>
+			<AnimBtn onClick={() => setShowTransferModal(!showTransferModal)} disabled={!isCollectibleWhitelisted}>
 				Transfer
 			</AnimBtn>
+			
 			<BurnAnimBtn onClick={() => setShowBurnModal(!showBurnModal)}>
 				Burn
 			</BurnAnimBtn>

@@ -16,6 +16,7 @@ import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import Loading from "@elements/Default/Loading";
 import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 import bread from "@utils/bread";
+import LoadingIcon from "@static/svg/LoadingIcon";
 
 const CardWrapper = styled(m.div)`
 	position: relative;
@@ -30,6 +31,13 @@ const CardWrapper = styled(m.div)`
 	user-select: none;
 	text-decoration: none;
 	color: var(--app-text);
+`;
+
+const LoadingContainer = styled.div`
+	width: 100%;
+	height: 10%;
+	display: grid;
+	place-items: center;
 `;
 
 const Btn = styled(BtnBaseAnimated)`
@@ -189,7 +197,7 @@ const Claimable = ({item, handleClaimed}) => {
 }
 
 const ActivitySection = () => {
-	const [claimables, setClaimables] = useState ([]);
+	const [claimables, setClaimables] = useState (undefined);
 	useEffect (() => {
 		const fetchData = async () => {
 			const data = await fetchClaimables ();
@@ -204,9 +212,12 @@ const ActivitySection = () => {
 	return (
 		<>
 			<StyledWrapper>
-				{claimables.length ? <CardSectionContainer>
+				{claimables && claimables.length ? <CardSectionContainer>
 					{claimables.map ((item) => <Claimable key = {item.itemId} item = {item} handleClaimed = {handleClaimed} />)}
-				</CardSectionContainer> : (<EmptySectionContainer>
+				</CardSectionContainer> : !claimables ? <LoadingContainer>
+							<LoadingIcon />
+						</LoadingContainer>
+: (<EmptySectionContainer>
 					<EmptySectionText>
 						Looks like there is nothing to be claimed right now. Check back later! 😊
 					</EmptySectionText>

@@ -43,6 +43,7 @@ import ChevronRight from "@static/svg/ChevronRight";
 import { NavLink } from "react-router-dom";
 import Background from "./Background";
 import { useErrorModalHelper } from "@elements/Default/ErrorModal";
+import LoadingIcon from "@static/svg/LoadingIcon";
 // import CardSectionContainer from "@elements/Default/CardSectionContainer";
 // import { fetchUserItems } from "@utils/marketplace";
 // import OnSaleSection from "./Sections/OnSaleSection";
@@ -234,10 +235,10 @@ const InputContainer = styled.input`
 `;
 
 const LoadingContainer = styled.div`
-	position: absolute;
-	top: 50%;
-	right: 0;
-	transform: translateY(-50%);
+width: 100%;
+height: 10%;
+display: grid;
+place-items: center;
 `;
 const ClearContainer = styled.div`
 	position: absolute;
@@ -276,28 +277,6 @@ const HeaderSection = styled.div`
 	${containerEntryAnim}
 `;
 
-// const Btn = styled(BtnBaseAnimated)`
-// 	width: 10rem;
-// 	display: grid;
-// 	place-items: center;
-// 	font-family: var(--font-family);
-// 	font-size: 1rem;
-// 	font-weight: 700;
-// 	padding: 0.75rem 1.25rem;
-// 	border-radius: 1000rem;
-// 	background: var(--app-theme-primary);
-// 	color: var(--app-text);
-// 	outline: none;
-// 	border: none;
-// 	cursor: pointer;
-// 	user-select: none;
-// 	transition: background 0.2s ease;
-// 	&[disabled] {
-// 		background: var(--app-theme-primary-disabled);
-// 		pointer-events: none;
-// 	}
-// `;
-
 const EditDetailsContainer = styled.label`
 	color: var(--app-container-text-primary);
 	font-weight: 700;
@@ -327,292 +306,7 @@ const HeaderContainer = styled.div`
 		z-index:5;
 	`}
 `;
-/*
-const Btn = styled(BtnBaseAnimated)`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 1rem;
-	font-weight: 700;
-	padding: 0 1.25rem;
-	border-radius: 1000rem;
-	height: 2.5rem;
-	min-width: 6rem;
-	z-index: 2;
-	margin-top: 1rem;
-`;
 
-const WithdrawAmount = styled.p`
-	font-weight: 900;
-	font-size: 1.375rem;
-	display: flex;
-	align-items: center;
-	span {
-		max-width: 20rem;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-`;
-
-const WithdrawAmountUSD = styled.p`
-	font-size: 0.875rem;
-	font-weight: 500;
-	color: var(--app-container-text-primary);
-`;
-
-const WithdrawContainer = styled(m.div)`
-	border-radius: 0.675rem;
-	padding: 1.25rem 1rem;
-	border: 0.125rem solid var(--app-container-bg-primary);
-	background: var(--app-container-bg-primary);
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
-		rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
-	p,
-	h3 {
-		cursor: normal;
-		user-select: none;
-	}
-`;
-
-
-const WithdrawHeading = styled.h3`
-	color: var(--app-container-text-primary-hover);
-	font-size: 1rem;
-	font-weight: 900;
-	line-height: 1;
-	margin-bottom: 0.5rem;
-`;
-
-const AnimBtn = ({ children, ...props }) => (
-	<Btn
-		whileTap={{
-			scale: 0.97,
-		}}
-		whileHover={{
-			y: -5,
-			x: 0,
-			scale: 1.02,
-		}}
-		{...props}
-	>
-		{children}
-	</Btn>
-);
-*/
-/*
-const Withdraw = () => {
-	const [price, setPrice] = useState();
-	const [usdPrice, setUsdPrice] = useState();
-	const [loading, setLoading] = useState(false);
-
-	useEffect(() => {
-		const fetchPrice = async () => {
-			const availableBalance = await getWithdrawableBalance();
-			// const availableBalance = 1000;
-			const usd = await convertREEFtoUSD(availableBalance);
-			setPrice(Number(availableBalance));
-			setUsdPrice(usd.toFixed(2));
-		};
-		fetchPrice();
-	}, []);
-
-	const handleWithdraw = async () => {
-		setLoading(true);
-		try {
-			await withdrawBalance();
-		} catch (err) {
-			if (err.message.includes("No Reef to be claimed")) {
-				bread("Not enough REEF to withdraw");
-			}
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	return (
-		<>
-			{price != null && usdPrice != null && price > 0 ? (
-				<LazyMotion features={domAnimation}>
-					<WithdrawContainer
-						whileHover={{
-							y: -5,
-						}}
-					>
-						<WithdrawHeading>Available to Withdraw</WithdrawHeading>
-						<WithdrawAmount>
-							<ReefIcon size={22} />{" "}
-							<span
-								title={numberSeparator(
-									Math.trunc(price).toString()
-								)}
-							>
-								{numberSeparator(Math.trunc(price))}
-							</span>
-						</WithdrawAmount>
-						<WithdrawAmountUSD>
-							(${numberSeparator(usdPrice)})
-						</WithdrawAmountUSD>
-						<AnimBtn onClick={handleWithdraw}>
-							{loading ? <FadeLoaderIcon /> : `Withdraw`}
-						</AnimBtn>
-					</WithdrawContainer>
-				</LazyMotion>
-			) : null}
-		</>
-	);
-};
-*/
-/*
-const NameEditSection = ({ name, setSync }) => {
-	const { info, setInfo } = useContext(EditDetailsContext);
-	const [isLoading, setIsLoading] = useState(false);
-	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
-	let jwt = address
-		? JSON.parse(localStorage.getItem("tokens")).find(
-				token => token.address === address
-		  )
-		: null;
-
-	useEffect(() => {
-		const delayDebounceFn = setTimeout(() => {
-			if (info.name.length) {
-				axios
-					.post(
-						`${getBackend()}/edit/user/displayName`,
-						{
-							displayName: info.name,
-						},
-						{
-							headers: {
-								Authorization: `Bearer ${jwt.token}`,
-							},
-						}
-					)
-					.then(() => {
-						setSync(false);
-					})
-					.finally(() => {
-						setIsLoading(false);
-					});
-			} else {
-				setSync(false);
-				setIsLoading(false);
-			}
-		}, 500);
-
-		return () => clearTimeout(delayDebounceFn);
-		//eslint-disable-next-line
-	}, [info.name]);
-
-	const handleInput = event => {
-		setIsLoading(true);
-		setSync(true);
-		setInfo({
-			...info,
-			name: event.target.value,
-		});
-	};
-
-	return (
-		<div>
-			<Title>Display Name</Title>
-			<InputWrapper>
-				<InputContainer
-					value={info.name}
-					onChange={handleInput}
-					placeholder={name}
-				/>
-				{isLoading && (
-					<LoadingContainer>
-						<Loading />
-					</LoadingContainer>
-				)}
-			</InputWrapper>
-		</div>
-	);
-};
-*/
-/*
-const DescriptionEditSection = ({ description, setSync }) => {
-	const { info, setInfo } = useContext(EditDetailsContext);
-	const [isLoading, setIsLoading] = useState(false);
-	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
-	let jwt = address
-		? JSON.parse(localStorage.getItem("tokens")).find(
-				token => token.address === address
-		  )
-		: null;
-
-	useEffect(() => {
-		const delayDebounceFn = setTimeout(() => {
-			if (info.description.length) {
-				axios
-					.post(
-						`${getBackend()}/edit/user/bio`,
-						{
-							bio: info.description,
-						},
-						{
-							headers: {
-								Authorization: `Bearer ${jwt.token}`,
-							},
-						}
-					)
-					.then(() => {
-						setSync(false);
-					})
-					.finally(() => {
-						setIsLoading(false);
-					});
-			} else {
-				setSync(false);
-				setIsLoading(false);
-			}
-		}, 2000);
-
-		return () => clearTimeout(delayDebounceFn);
-		//eslint-disable-next-line
-	}, [info.description]);
-
-	const handleInput = event => {
-		setIsLoading(true);
-		setSync(true);
-		setInfo({
-			...info,
-			description: event.target.value,
-		});
-	};
-
-	return (
-		<div>
-			<Title>Description</Title>
-			<InputWrapper>
-				<InputContainer
-					value={info.description}
-					onChange={handleInput}
-					placeholder={
-						description.length
-							? clamp(description, 16)
-							: `Enter your bio here`
-					}
-				/>
-				{isLoading && (
-					<LoadingContainer>
-						<FadeLoaderIcon />
-					</LoadingContainer>
-				)}
-			</InputWrapper>
-		</div>
-	);
-};
-*/
-// const ClearButton = styled.button`
-// 	background: none;
-// 	border: none;
-// 	outline: none;
-// 	cursor: pointer;
-// }`;
 const SVG = styled.svg`
 	fill: var(--app-container-text-primary);
 	height: 1.5rem;
@@ -912,7 +606,7 @@ const ProfileCard = () => {
 	const [isOwnAccount, setIsOwnAccount] = useState(false);
 	const [editIsActive, setEditIsActive] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [quickItems, setQuickItems] = useState([]);
+	const [quickItems, setQuickItems] = useState(undefined);
 	const { info } = useContext(EditDetailsContext);
 	const { id } = useParams();
 	const { auth } = useContext(AuthContext);
@@ -1004,11 +698,11 @@ const ProfileCard = () => {
 	}, [tooltipVisible]);
 	const tooltipRef = useRef();
 	return (
+		userData.address!=="" && !isLoading?
 		<>
 			<Background socials={userData.socials} />
 			<Card>
 				{!editIsActive ? (
-					!isLoading ? (
 						<ProfileWrapper>
 							<Container>
 								<ProfilePicture
@@ -1085,6 +779,8 @@ const ProfileCard = () => {
 							) : (
 								<OnSaleSection/>
 							)} */}
+							{quickItems?
+							
 							<QuickSection
 								items={quickItems}
 								title={
@@ -1097,12 +793,16 @@ const ProfileCard = () => {
 										? `?tab=Available`
 										: `?tab=On%20Sale`
 								}
-							/>
+							/>:
+							<div style={{position:"absolute",marginTop:"500px",marginLeft:"200px"}}>
+						<LoadingContainer>
+							<LoadingIcon size={64} />
+						</LoadingContainer>
+							</div>
+							
+						}
 						</ProfileWrapper>
 					) : (
-						<Header>Loading...</Header>
-					)
-				) : (
 					<HeaderContainer>
 						<HeaderSection>
 							<Header>Edit Details</Header>
@@ -1127,7 +827,9 @@ const ProfileCard = () => {
 					</HeaderContainer>
 				)}
 			</Card>
-		</>
+		</>:<LoadingContainer>
+			<LoadingIcon size={64}/>
+		</LoadingContainer>
 	);
 };
 

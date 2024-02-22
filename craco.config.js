@@ -14,6 +14,7 @@ module.exports = {
 		presets: [
 			"@babel/preset-env",
 			["@babel/preset-react", { runtime: "automatic" }],
+			
 		],
 		plugins: [
 			["@babel/plugin-proposal-class-properties", { loose: true }],
@@ -22,6 +23,10 @@ module.exports = {
 				{ loose: true },
 			],
 			["@babel/plugin-proposal-private-methods", { loose: true }],
+			['@babel/plugin-proposal-optional-chaining',{ loose: true }],
+			 [
+				"@babel/plugin-proposal-nullish-coalescing-operator"
+			],
 		],
 	},
 	webpack: {

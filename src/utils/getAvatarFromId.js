@@ -1,2 +1,2 @@
 export const getAvatarFromId = id =>
-	`https://avatars.dicebear.com/api/identicon/${encodeURI(id)}.svg`;
+	`https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURI(id)}&scale=50`;
