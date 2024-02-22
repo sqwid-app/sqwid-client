@@ -22,4 +22,4 @@ export const networks = {
 };
 
 export const defaultNetwork =
-	process.env.NETWORK || "reef_testnet";
+	process.env.NETWORK || "reef_mainnet";
