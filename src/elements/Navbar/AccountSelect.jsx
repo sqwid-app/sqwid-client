@@ -25,6 +25,8 @@ import useEscape from "@utils/useEscape";
 import ReefIcon from "@static/svg/ReefIcon";
 import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 
+console.log('host, dev, net=',window.location.host,window.location.host.indexOf('dev'), defaultNetwork, process.env.NETWORK);
+
 const StyledSimpleBar = styled(SimpleBar)`
 	min-width: 12rem;
 	p:not(:first-child) {
