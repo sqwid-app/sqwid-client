@@ -185,7 +185,7 @@ const CollectionsPage = () => {
 	const options = [
 		{ value: "items", label: "Items" },
 		{ value: "volume", label: "Volume" },
-		{ value: "sales", label: "Sales" },
+		// { value: "sales", label: "Sales" },
 		{ value: "average", label: "Average sale" },
 	]
 	const [defaultValue, setDefaultValue] = React.useState(options[0]);
