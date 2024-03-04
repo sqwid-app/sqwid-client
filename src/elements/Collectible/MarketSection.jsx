@@ -673,8 +673,9 @@ const Config2 = () => {
 					}
 				);
 				const { data } = res;
-				console.log(data[0].amount);
-				setCollectibleInfo({...collectibleInfo,amount:data[0].amount})
+				if(data[0].amount!=collectibleInfo.amount){
+					setCollectibleInfo({...collectibleInfo,amount:data[0].amount})
+				}
 			} catch (e) {
 				console.log(e)
 			}
