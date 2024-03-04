@@ -342,7 +342,7 @@ const ConfigContainer = styled.div`
 `;
 
 const CurrentPrice = () => {
-	const { collectibleInfo } = useContext(CollectibleContext);
+	const { collectibleInfo , setCollectibleInfo} = useContext(CollectibleContext);
 	const stateInfo = useStateInfo();
 	const price = formatReefPrice(stateInfo.price || stateInfo.loanAmount);
 	const [usdPrice, setUsdPrice] = useState(
@@ -624,7 +624,7 @@ const Config1 = () => {
 
 const Config2 = () => {
 	// state-0 / owned
-	const { collectibleInfo } = useContext(CollectibleContext)
+	const { collectibleInfo,setCollectibleInfo } = useContext(CollectibleContext)
 	const [showAuctionModal, setShowAuctionModal] = useState(false);
 	const [showPutOnSaleModal, setShowPutOnSaleModal] = useState(false);
 	const [showLendModal, setShowLendModal] = useState(false);
@@ -656,7 +656,31 @@ const Config2 = () => {
 				return setIsCollectibleWhitelisted(false);
 			}
 		};	
+		const fetchCollectibleAmount = async (id,owner) => {
+			const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+			//eslint-disable-next-line
+			let jwt = address
+				? JSON.parse(localStorage.getItem("tokens")).find(
+						token => token.address === address
+				  )
+				: null;
+			if (!jwt) return 0;
+			try {
+				const res = await axios (`${getBackend()}/get/marketplace/available-collection/${owner}/${id}`, {
+					headers: {
+						Authorization: `Bearer ${jwt.token}`,
+						},
+					}
+				);
+				const { data } = res;
+				console.log(data[0].amount);
+				setCollectibleInfo({...collectibleInfo,amount:data[0].amount})
+			} catch (e) {
+				console.log(e)
+			}
+		};
 		isWhitelisted(collectibleInfo.tokenId);
+		fetchCollectibleAmount(collectibleInfo.positionId,collectibleInfo.owner.address);
 	},[collectibleInfo])
 
 	return (
