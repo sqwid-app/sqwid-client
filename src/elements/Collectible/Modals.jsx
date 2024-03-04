@@ -1446,18 +1446,20 @@ export const BurnModal = props => {
 	const history = useHistory();
 	const initialButtonText = "Burn";
 	const [isLoading, setIsLoading] = useState(false);
+	const [copies, setCopies] = useState("");
 	const [buttonText, setButtonText] = useState(initialButtonText);
 	const { showErrorModal } = useErrorModalHelper();
 	//eslint-disable-next-line
 	const { collectibleInfo, setCollectibleInfo } =
 		useContext(CollectibleContext);
 	const handleClick = async () => {
-		if (!isLoading) {
+		if (!isLoading && copies>0) {
 			setIsLoading(true);
 			setButtonText(<Loading />);
+
 			const receipt = await burnCollectible(
 				collectibleInfo.tokenId,
-				collectibleInfo.amount
+				copies
 			);
 			if (receipt) {
 				bread ('Collectible burned!');
@@ -1471,6 +1473,11 @@ export const BurnModal = props => {
 			}
 		}
 	};
+
+	const handleCopiesInput = e => {
+		const amount = Math.min(Number(e.target.value), collectibleInfo.amount);
+		setCopies(amount || "");
+	};
 	return (
 		<ModalContainer {...props}>
 			<Title style = {{ textAlign: 'center' }}>Burn - THIS IS PERMANENT !</Title>
@@ -1478,6 +1485,19 @@ export const BurnModal = props => {
 				<div style = {{ textAlign: 'center' }}>
 					Are you sure you want to permanently burn this collectible?
 				</div>
+				<br />
+				<InputTitle>
+						Number of {collectibleInfo.meta.name} to burn{" "}
+						<span>
+							{Number(copies)} / {collectibleInfo.amount}
+						</span>
+					</InputTitle>
+					<InputContainer
+						type="number"
+						value={copies}
+						onChange={handleCopiesInput}
+						placeholder={`Number of editions to burn`}
+					/>
 				<BurnAnimBtn disabled={isLoading} onClick={handleClick}>
 					{buttonText}
 				</BurnAnimBtn>
