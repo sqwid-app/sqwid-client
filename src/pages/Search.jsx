@@ -2,7 +2,7 @@ import Wrapper from "@components/Default/Wrapper";
 import LoadingIcon from "@static/svg/LoadingIcon";
 import { getAvatarFromId } from "@utils/getAvatarFromId";
 import { getInfuraURL } from "@utils/getIPFSURL";
-import { fetchCollectionsPaginated, fetchUsersPaginated } from "@utils/search";
+import { fetchCollectionsPaginated } from "@utils/search";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -229,69 +229,69 @@ const CollectionsSearch = () => {
     );
 };
 
-const UsersSearch = () => {
-    const { query } = useParams ();
-    const [users, setUsers] = useState ([]);
-    const [isLoading, setIsLoading] = useState (true);
-    const [isFinished, setIsFinished] = useState (false);
-    const usersPerPage = 10;
-    const fetchMore = async () => {
-        if (isFinished) return;
-        setIsLoading (true);
-        fetchUsersPaginated (query, Math.round (users.length / usersPerPage) + 1, usersPerPage).then (res => {
-            const newUsers = [...users, ...res.users];
-            setUsers (newUsers);
-            setIsLoading (false);
-            if (res.total === newUsers.length) {
-                setIsFinished (true);
-            }
-        });
-    };
-    const fetchNew = async () => {
-        setIsLoading (true);
-        fetchUsersPaginated (query, 1, usersPerPage).then (res => {
-            setUsers (res.users);
-            setIsLoading (false);
-            if (res.total === res.users.length) {
-                setIsFinished (true);
-            }
-        });
-    };
-    useEffect (() => {
-        setUsers ([]);
-        setIsFinished (false);
-        fetchNew ();
-        // eslint-disable-next-line
-    }, [query]);
-    return (
-        <Wrapper>
-            <Container>
-                <TitleText>User results for <Underlined>{query}</Underlined></TitleText>
-                <UserListWrapper>
-                    {users.map (user => (
-                        <UserListItem
-                            key={user.evmAddress}
-                            onClick={() => window.location.href = `/profile/${user.evmAddress}`}
-                        >
-                            <img src={getAvatarFromId (user.evmAddress)} alt="user" />
-                            <div>
-                                <h2>{user.displayName}</h2>
-                                <p>{user.evmAddress}</p>
-                            </div>
-                        </UserListItem>
-                    ))}
-                </UserListWrapper>
-                {!isFinished ? (
-                !isLoading ? <LoadMoreButton onClick={fetchMore}>Load more</LoadMoreButton> : <LoadingIcon />
-                ) : null}
-            </Container>
-        </Wrapper>
-    );
-};
+// const UsersSearch = () => {
+//     const { query } = useParams ();
+//     const [users, setUsers] = useState ([]);
+//     const [isLoading, setIsLoading] = useState (true);
+//     const [isFinished, setIsFinished] = useState (false);
+//     const usersPerPage = 10;
+//     const fetchMore = async () => {
+//         if (isFinished) return;
+//         setIsLoading (true);
+//         fetchUsersPaginated (query, Math.round (users.length / usersPerPage) + 1, usersPerPage).then (res => {
+//             const newUsers = [...users, ...res.users];
+//             setUsers (newUsers);
+//             setIsLoading (false);
+//             if (res.total === newUsers.length) {
+//                 setIsFinished (true);
+//             }
+//         });
+//     };
+//     const fetchNew = async () => {
+//         setIsLoading (true);
+//         fetchUsersPaginated (query, 1, usersPerPage).then (res => {
+//             setUsers (res.users);
+//             setIsLoading (false);
+//             if (res.total === res.users.length) {
+//                 setIsFinished (true);
+//             }
+//         });
+//     };
+//     useEffect (() => {
+//         setUsers ([]);
+//         setIsFinished (false);
+//         fetchNew ();
+//         // eslint-disable-next-line
+//     }, [query]);
+//     return (
+//         <Wrapper>
+//             <Container>
+//                 <TitleText>User results for <Underlined>{query}</Underlined></TitleText>
+//                 <UserListWrapper>
+//                     {users.map (user => (
+//                         <UserListItem
+//                             key={user.evmAddress}
+//                             onClick={() => window.location.href = `/profile/${user.evmAddress}`}
+//                         >
+//                             <img src={getAvatarFromId (user.evmAddress)} alt="user" />
+//                             <div>
+//                                 <h2>{user.displayName}</h2>
+//                                 <p>{user.evmAddress}</p>
+//                             </div>
+//                         </UserListItem>
+//                     ))}
+//                 </UserListWrapper>
+//                 {!isFinished ? (
+//                 !isLoading ? <LoadMoreButton onClick={fetchMore}>Load more</LoadMoreButton> : <LoadingIcon />
+//                 ) : null}
+//             </Container>
+//         </Wrapper>
+//     );
+// };
 
 export {
     CollectionsSearch,
-    UsersSearch,
+    // UsersSearch,
     CollectionListItem,
     CollectionImage,
     CollectionTextWrapper,

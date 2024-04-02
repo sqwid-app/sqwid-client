@@ -14,17 +14,17 @@ const briefSearchAll = async searchTerm => {
     }
 }
 
-const fetchUsersPaginated = async (searchTerm, page = 1, perPage = 10) => {
-    try {
-        const res = await axios.get (`${getBackend ()}/search/users/${searchTerm}?page=${page}&perPage=${perPage}`);
-        return res.data;
-    } catch (error) {
-        return {
-            users: [],
-            total: 0
-        }
-    }
-}
+// const fetchUsersPaginated = async (searchTerm, page = 1, perPage = 10) => {
+//     try {
+//         const res = await axios.get (`${getBackend ()}/search/users/${searchTerm}?page=${page}&perPage=${perPage}`);
+//         return res.data;
+//     } catch (error) {
+//         return {
+//             users: [],
+//             total: 0
+//         }
+//     }
+// }
 
 const fetchCollectionsPaginated = async (searchTerm, page = 1, perPage = 10) => {
     try {
@@ -40,6 +40,6 @@ const fetchCollectionsPaginated = async (searchTerm, page = 1, perPage = 10) => 
 
 export {
     briefSearchAll,
-    fetchUsersPaginated,
+    // fetchUsersPaginated,
     fetchCollectionsPaginated
 }
