@@ -206,7 +206,7 @@ const Search = () => {
 					onKeyDown={handleSubmit}
 					onFocus={() => setSelected(true)}
 					onBlur={() => setSelected(false)}
-					placeholder={`Collection or user...`}
+					placeholder={`Collection...`}
 				></input>
 				{((selected || isHovered) && searchText.length > 0) && <ResultsContainer
 				onMouseOver={() => setIsHovered (true)}

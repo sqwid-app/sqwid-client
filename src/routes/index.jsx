@@ -9,7 +9,7 @@ import Sac from "@pages/Sac";
 import explorePages from "@routes/explorePages";
 import ToS from "@pages/ToS";
 import Privacy from "@pages/Privacy";
-import { CollectionsSearch, UsersSearch } from "@pages/Search";
+import { CollectionsSearch } from "@pages/Search";
 import ErrorModal from "@elements/Default/ErrorModal";
 import ErrorContext from "@contexts/Error/ErrorContext";
 import BrandAssets from "@pages/BrandAssets";
@@ -75,11 +75,11 @@ const Routes = () => {
 						exact
 						component={CollectionsSearch}
 					/>
-					<Route
+					{/* <Route
 						path="/search/users/:query"
 						exact
 						component={UsersSearch}
-					/>
+					/> */}
 					<Route component={NotFound} />
 				</Switch>
 				<BreadContainer />
