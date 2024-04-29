@@ -245,7 +245,7 @@ const ToastLink = styled.a`
 	color: var(--app-theme-primary);
 `;
 
-const REEF_ADDRESS_SPECIFIC_STRING = "(ONLY for Reef chain!)";
+export const REEF_ADDRESS_SPECIFIC_STRING = "(ONLY for Reef chain!)";
 
 const removeReefSpecificStringFromAddress = (address) =>
   address.replace(REEF_ADDRESS_SPECIFIC_STRING, "").trim();

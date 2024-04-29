@@ -44,6 +44,7 @@ import { NavLink } from "react-router-dom";
 import Background from "./Background";
 import { useErrorModalHelper } from "@elements/Default/ErrorModal";
 import LoadingIcon from "@static/svg/LoadingIcon";
+import { REEF_ADDRESS_SPECIFIC_STRING } from "@elements/Collectible/Modals";
 // import CardSectionContainer from "@elements/Default/CardSectionContainer";
 // import { fetchUserItems } from "@utils/marketplace";
 // import OnSaleSection from "./Sections/OnSaleSection";
@@ -679,7 +680,7 @@ const ProfileCard = () => {
 
 	//eslint-disable-next-line
 	const copyAddress = () => {
-		navigator.clipboard.writeText(userData.address).then(() => {
+		navigator.clipboard.writeText(userData.address+REEF_ADDRESS_SPECIFIC_STRING).then(() => {
 			setTooltipVisible(true);
 			setTimeout(() => {
 				setTooltipVisible(false);
@@ -725,6 +726,7 @@ const ProfileCard = () => {
 												)}
 											</Address>
 										</label>
+										<CopyIcon onClick={()=>copyAddress()}/>
 										{/* {window.isSecureContext && (
 											<CopyIcon
 												onClick={copyAddress}
