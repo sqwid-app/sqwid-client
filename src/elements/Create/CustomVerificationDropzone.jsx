@@ -118,6 +118,7 @@ const Dropzone = props => {
 			<DropzoneText>{dragText}</DropzoneText>
 			<DropzoneButton
 				onClick={open}
+				
 				whileHover={{
 					y: -5,
 					x: 0,
