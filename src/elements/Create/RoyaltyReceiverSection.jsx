@@ -5,6 +5,7 @@ import FileContext from "@contexts/File/FileContext";
 import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
 import RoyaltyReceiverModal from "./RoyaltyReceiverModal";
 import bread from "@utils/bread";
+import FilesContext from "@contexts/Files/FilesContext";
 
 const Container = styled.div``;
 
@@ -101,19 +102,14 @@ const HelperText = styled.p`
 const RoyaltyReceiverSection = ({ bulk = false }) => {
 	const [isRoyaltyModalVisible, setIsRoyaltyModalVisible] = useState(false);
 	const { files, setFiles } = useContext(FileContext);
-	const { collectionBulkData, setCollectionBulkData } = useContext(
-		CollectionBulkContext
-	);
+	const { filess, setFiless } = useContext(FilesContext);
+
 	const signer = JSON.parse(localStorage.getItem("auth"))?.auth;
 	const selectedAddress =
 		signer && signer.evmAddress ? signer.evmAddress : "";
 
 	const handleInput = e => {
-		bulk
-			? setCollectionBulkData({
-					...collectionBulkData,
-					royaltyRecipient: e.target.value,
-			  })
+		bulk ? setFiless({...filess, royaltyRecipient: e.target.value })
 			: setFiles({ ...files, royaltyRecipient: e.target.value });
 	};
 
@@ -125,7 +121,7 @@ const RoyaltyReceiverSection = ({ bulk = false }) => {
 					<InputContainer
 						value={
 							bulk
-								? collectionBulkData.royaltyRecipient
+								? filess.royaltyRecipient
 								: files.royaltyRecipient
 						}
 						onChange={handleInput}
@@ -133,8 +129,8 @@ const RoyaltyReceiverSection = ({ bulk = false }) => {
 						onBlur={e =>
 							e.target.value === "" &&
 							(bulk
-								? setCollectionBulkData({
-										...collectionBulkData,
+								? setFiless({
+										...filess,
 										royaltyRecipient: "",
 								  })
 								: setFiles({ ...files, royaltyRecipient: "" }))
@@ -159,7 +155,7 @@ const RoyaltyReceiverSection = ({ bulk = false }) => {
 							+
 						</NewBtn>
 						<p className="popup">
-							Create payment splitter contract with Splitz app
+							Create payment splitter contract with Splitz app 
 						</p>
 					</BtnContainer>
 				</LazyMotion>

@@ -63,6 +63,10 @@ export const CreateButton = () => {
 		localStorage.removeItem("properties");
 		setButtonText(<FadeLoaderIcon />);
 		setIsSubmitting(true);
+		const dataTo = {
+			...files, ...fileData 
+		}
+		console.log("dataTo==", dataTo )
 		if (
 			fileData.file &&
 			files.name.length &&

@@ -2,6 +2,7 @@ import FileContext from "@contexts/File/FileContext";
 import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
 import React, { useContext } from "react";
 import styled from "styled-components";
+import FilesContext from "@contexts/Files/FilesContext";
 
 const Container = styled.div``;
 
@@ -61,14 +62,13 @@ const HelperText = styled.p`
 
 const RoyaltySection = ({ bulk = false }) => {
 	const { files, setFiles } = useContext(FileContext);
-	const { collectionBulkData, setCollectionBulkData } = useContext(
-		CollectionBulkContext
-	);
+	const { filess, setFiless } = useContext(FilesContext);
+
 	const handleInput = e => {
 		let { value, min, max } = e.target;
 		value = Math.max(Number(min), Math.min(Number(max), Number(value)));
 		bulk
-			? setCollectionBulkData({ ...collectionBulkData, royalty: value })
+			? setFiless({ ...filess, royalty: value  })
 			: setFiles({ ...files, royalty: value });
 	};
 	return (
@@ -76,7 +76,7 @@ const RoyaltySection = ({ bulk = false }) => {
 			<Title>Royalties value</Title>
 			<InputWrapper>
 				<InputContainer
-					value={bulk ? collectionBulkData.royalty : files.royalty}
+					value={bulk ? filess.royalty : files.royalty}
 					onChange={handleInput}
 					placeholder={`e.g 10`}
 					type="number"
@@ -85,8 +85,8 @@ const RoyaltySection = ({ bulk = false }) => {
 					onBlur={e =>
 						e.target.value === "0" &&
 						(bulk
-							? setCollectionBulkData({
-									...collectionBulkData,
+							? setFiless({
+									...filess,
 									royalty: "",
 							  })
 							: setFiles({ ...files, royalty: "" }))

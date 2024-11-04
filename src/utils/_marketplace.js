@@ -4,7 +4,7 @@ import collectibleContractABI from "../constants/contracts/SqwidERC1155";
 import marketplaceContractABI from "../constants/contracts/SqwidMarketplace";
 import {getDwebURL} from "./getIPFSURL";
 import axios from "axios";
-import {getBackend, getContract} from "./network";
+import {getContract} from "./network";
 
 const collectibleContract = (signerOrProvider, address = null) =>
     new ethers.Contract(
