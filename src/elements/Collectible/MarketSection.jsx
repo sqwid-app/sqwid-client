@@ -48,6 +48,8 @@ import { useHistory } from "react-router-dom";
 import { ethers } from "ethers";
 import axios from "axios";
 import { getBackend } from "@utils/network";
+import { approveCollectibleByModerator } from "@utils/approveCollectibleModerator";
+import { Interact } from "@utils/connect";
 
 /*
 	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/sections.png
@@ -632,8 +634,43 @@ const Config2 = () => {
 	const [showBurnModal, setShowBurnModal] = useState(false);
 	const [showTransferModal, setShowTransferModal] = useState(false);
 	const [isCollectibleWhitelisted,setIsCollectibleWhitelisted] = useState(false);
+	const [isValidModerator,setIsValidModerator] = useState(false);
 
 	useEffect(()=>{
+		const isValidModerator = async()=>{
+			try {
+				const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+				let { signer } = await Interact(address);
+				const evmAddress = await signer.queryEvmAddress();
+
+				//eslint-disable-next-line
+				let jwt = address
+					? JSON.parse(localStorage.getItem("tokens")).find(
+							token => token.address === address
+					)
+					: null;
+				if (!jwt) return 0;
+					
+				try {
+					const res = await axios (`${getBackend()}/get/moderators/${evmAddress}`, {
+						headers: {
+							Authorization: `Bearer ${jwt.token}`,
+							},
+						}
+					);
+					const { data } = res;
+					setIsValidModerator(data.data);
+				} catch (error) {
+					
+				}
+			
+			} catch (error) {
+				
+			}
+		}
+
+		isValidModerator();
+
 		const isWhitelisted = async (id) => {
 			const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 			//eslint-disable-next-line
@@ -680,12 +717,16 @@ const Config2 = () => {
 				console.log(e)
 			}
 		};
+
 		isWhitelisted(collectibleInfo.tokenId);
 		fetchCollectibleAmount(collectibleInfo.positionId,collectibleInfo.owner.address);
 	},[collectibleInfo])
 
 	return (
 		<BottomContainer>
+			{isValidModerator&&<AnimBtn onClick={() => approveCollectibleByModerator(collectibleInfo.itemId,collectibleInfo.collection.id)} disabled={!collectibleInfo}>
+				Whitelist
+			</AnimBtn>}
 			<AnimBtn onClick={() => setShowPutOnSaleModal(!showPutOnSaleModal)} disabled={!isCollectibleWhitelisted}>
 				Put On Sale
 			</AnimBtn>
