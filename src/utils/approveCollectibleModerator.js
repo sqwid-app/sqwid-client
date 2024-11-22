@@ -23,11 +23,6 @@ const approveCollectibleByModerator = async (itemId,collectionId) => {
 				token => token.address === address
 		  )
 		: null;
-	const approved = await isMarketplaceApproved();
-	if (!approved) {
-		await approveMarketplace();
-	}
-
 
 	if (jwt) {
 		try {
