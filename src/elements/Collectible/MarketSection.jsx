@@ -678,43 +678,8 @@ const Config2 = () => {
 	const [showBurnModal, setShowBurnModal] = useState(false);
 	const [showTransferModal, setShowTransferModal] = useState(false);
 	const [isCollectibleWhitelisted, setIsCollectibleWhitelisted] = useState(false);
-	const [isValidModerator, setIsValidModerator] = useState(false);
 
 	useEffect(() => {
-		const isValidModerator = async () => {
-			try {
-				const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
-				let { signer } = await Interact(address);
-				const evmAddress = await signer.queryEvmAddress();
-
-				//eslint-disable-next-line
-				let jwt = address
-					? JSON.parse(localStorage.getItem("tokens")).find(
-						token => token.address === address
-					)
-					: null;
-				if (!jwt) return 0;
-
-				try {
-					const res = await axios(`${getBackend()}/get/moderators/${evmAddress}`, {
-						headers: {
-							Authorization: `Bearer ${jwt.token}`,
-						},
-					}
-					);
-					const { data } = res;
-					setIsValidModerator(data.data);
-				} catch (error) {
-
-				}
-
-			} catch (error) {
-
-			}
-		}
-
-		isValidModerator();
-
 		const isWhitelisted = async (id) => {
 			const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 			//eslint-disable-next-line
@@ -1287,7 +1252,46 @@ const Config20 = () => {
 	return <Config19 />;
 };
 
-const getComponent = market => {
+const useComponent = market => {
+	const [isValidModerator, setIsValidModerator] = useState(false);
+	const { collectibleInfo } = useContext(CollectibleContext)
+
+	useEffect(()=>{
+		const isValidModerator = async () => {
+			try {
+				const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+				let { signer } = await Interact(address);
+				const evmAddress = await signer.queryEvmAddress();
+
+				//eslint-disable-next-line
+				let jwt = address
+					? JSON.parse(localStorage.getItem("tokens")).find(
+						token => token.address === address
+					)
+					: null;
+				if (!jwt) return 0;
+
+				try {
+					const res = await axios(`${getBackend()}/get/moderators/${evmAddress}`, {
+						headers: {
+							Authorization: `Bearer ${jwt.token}`,
+						},
+					}
+					);
+					const { data } = res;
+					setIsValidModerator(data.data);
+				} catch (error) {
+
+				}
+
+			} catch (error) {
+
+			}
+		}
+
+		isValidModerator();
+	},[collectibleInfo])
+
 	const showConfig = id => {
 		let configMap = [
 			// state-0 || Available
@@ -1316,10 +1320,18 @@ const getComponent = market => {
 			<Config19 />,
 			<Config20 />,
 		];
+
+
+
 		return (
+			<>
+						{isValidModerator && collectibleInfo && collectibleInfo.approved!=true && <ApproveAnimBtn onClick={() => approveCollectibleByModerator(collectibleInfo.itemId, collectibleInfo.collection.id)} disabled={!collectibleInfo}>
+				Whitelist
+			</ApproveAnimBtn>}
 			<ConfigWrapper state={market.state}>
 				{configMap[id - 1]}
 			</ConfigWrapper>
+			</>
 		);
 	};
 	if (market) {
@@ -1436,7 +1448,7 @@ const MarketSection = () => {
 	} , [])
 	*/
 	return (
-		<LazyMotion features={domAnimation}>{getComponent(market)}</LazyMotion>
+		<LazyMotion features={domAnimation}>{useComponent(market)}</LazyMotion>
 	);
 };
 
