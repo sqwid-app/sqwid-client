@@ -2,6 +2,7 @@ import FileContext from "@contexts/File/FileContext";
 import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
 import React, { useContext } from "react";
 import styled from "styled-components";
+import FilesContext from "@contexts/Files/FilesContext";
 
 const Container = styled.div``;
 
@@ -37,22 +38,17 @@ const HelperText = styled.p`
 
 const CopiesSection = ({ bulk = false }) => {
 	const { files, setFiles } = useContext(FileContext);
-	const { collectionBulkData, setCollectionBulkData } = useContext(
-		CollectionBulkContext
-	);
+	const { filess, setFiless } = useContext(FilesContext);
+	
 	const handleInput = e => {
-		bulk
-			? setCollectionBulkData({
-					...collectionBulkData,
-					copies: e.target.value,
-			  })
+		bulk ? setFiless({ ...filess, copies: e.target.value})
 			: setFiles({ ...files, copies: e.target.value });
 	};
 	return (
 		<Container>
 			<Title>Number of editions</Title>
 			<InputContainer
-				value={bulk ? collectionBulkData.copies : files.copies}
+				value={bulk ? filess.copies : files.copies}
 				onChange={handleInput}
 				placeholder={`e.g 10`}
 			/>

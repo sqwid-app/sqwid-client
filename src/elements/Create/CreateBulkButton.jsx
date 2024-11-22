@@ -1,4 +1,5 @@
 import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
+import FilesContext from "@contexts/Files/FilesContext";
 import { BtnBaseAnimated } from "@elements/Default/BtnBase";
 import FadeLoaderIcon from "@static/svg/FadeLoader";
 import bread from "@utils/bread";
@@ -52,12 +53,18 @@ const AnimBtn = ({ children, onClick, disabled }) => (
 
 export const CreateBulkButton = () => {
 	const { collectionBulkData } = useContext(CollectionBulkContext);
+	const { filess, filesData } = useContext(FilesContext);
 	const [buttonText, setButtonText] = useState("Create Collection");
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const history = useHistory();
 	const handleClick = () => {
 		setButtonText(<FadeLoaderIcon />);
 		setIsSubmitting(true);
+
+		const collectionData = {
+			...filess, ...filesData
+		}
+		console.log("collectionData==", collectionData);
 
 		if (
 			collectionBulkData.coverFile &&
@@ -86,6 +93,7 @@ export const CreateBulkButton = () => {
 					setButtonText("Create Collection");
 					setIsSubmitting(false);
 				});
+
 		} else {
 			setButtonText("Create Collection");
 			setIsSubmitting(false);

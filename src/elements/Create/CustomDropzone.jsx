@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import FileContext from "@contexts/File/FileContext";
 import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
+import FilesContext from "@contexts/Files/FilesContext";
 import { sanitize } from "@utils/textUtils";
 import constants from "@utils/constants";
 
@@ -21,8 +22,6 @@ const Wrapper = styled.div`
 		background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='16' ry='16' stroke='%23787987FF' stroke-width='4' stroke-dasharray='6%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
 		border-radius: 1rem;
 		outline: none;
-		@media (max-width: 1224px) {
-		}
 	}
 `;
 
@@ -38,117 +37,104 @@ const DropzoneText = styled.p`
 const DropzoneButton = styled(m.a)`
 	display: flex;
 	align-items: center;
-	font-family: var(--font-family);
 	font-size: 1rem;
 	font-weight: 700;
 	padding: 0.675rem 1.25rem;
 	border-radius: 1000rem;
-	background: ${props =>
-		props.modal
-			? `var(--app-modal-btn-primary)`
-			: `var(--app-container-bg-primary)`};
+	background: ${props => (props.modal ? `var(--app-modal-btn-primary)` : `var(--app-container-bg-primary)`)};
 	color: var(--app-container-text-primary);
 	outline: none;
 	border: none;
 	cursor: pointer;
-	z-index: 2;
-	user-select: none;
 `;
 
-const Dropzone = props => {
-	// const initialDragText = props.modal ? "PNG, JPEG, GIF or WEBP. Max 30mb." : "PNG, GIF, WEBP, MP4, or MP3. Max 30mb."
-	// const initialDragText = "PNG or JPEG. Max 30mb.";
-	const initialDragText = props.cover
-		? "PNG, JPEG, GIF or WEBP. Max 100mb."
-		: "PNG, JPEG, MP4, WEBP. Max 100mb.";
-	const { fileData, setFileData } = useContext(FileContext);
-	const { collectionBulkData, setCollectionBulkData } = useContext(
-		CollectionBulkContext
-	);
+const Dropzone = ({ modal, cover, acceptMultipleImages, maxSize = 100000000 }) => {
+	const initialDragText = cover ? "PNG, JPEG, GIF or WEBP. Max 100mb." : acceptMultipleImages ? "PNG, JPEG, MP4, WEBP. Max 100mb/12 files." : "PNG, JPEG, MP4, WEBP. Max 100mb";
+	const {files, setFiles, fileData, setFileData } = useContext(FileContext);
+	const {filess, setFiless, filesData, setFilesData } = useContext(FilesContext);
+	const { collectionBulkData, setCollectionBulkData } = useContext(CollectionBulkContext);
 	const [dragText, setDragText] = useState(initialDragText);
-	const {
-		getRootProps,
-		getInputProps,
-		open,
-		acceptedFiles,
-		isDragActive,
-		fileRejections,
-	} = useDropzone({
+	const { getRootProps, getInputProps, open, acceptedFiles, isDragActive, fileRejections } = useDropzone({
 		noClick: true,
 		noKeyboard: true,
-		maxFiles: 1,
-		// accept: `image/jpeg, image/gif, image/png, image/webp, ${!props.modal&&`audio/mpeg, video/mp4`}`,
-		accept: props.cover
-			? `${constants.COVER_ACCEPTED_MIMETYPES.join(", ")}`
-			: `${constants.CREATE_ACCEPTED_MIMETYPES.join(", ")}`,
-		maxSize: props.maxSize,
+		accept: cover ? constants.COVER_ACCEPTED_MIMETYPES : constants.CREATE_ACCEPTED_MIMETYPES,
+		maxSize: maxSize,
+		maxFiles: acceptMultipleImages ? 12 : 1,
 	});
-	useEffect(() => {
-		if (acceptedFiles.length) {
-			let file = acceptedFiles[0];
-			props.cover
-				? setCollectionBulkData({
-						...collectionBulkData,
-						coverFile: new File([file], sanitize(file.name), {
-							type: file.type,
-						}),
-				  })
-				: setFileData({
-						...fileData,
-						file: new File([file], sanitize(file.name), {
-							type: file.type,
-						}),
-				  });
+	console.log("acceptedFiles", acceptedFiles);
+useEffect(() => {
+	if (acceptedFiles.length) {
+		console.log("cover==", cover);
+		console.log("acceptMultipleImages==", acceptMultipleImages);
+
+		if (cover && !acceptMultipleImages) {
+			// Handle cover file only
+			const coverFile = acceptedFiles[0];
+			setFilesData(prevData => ({
+				...prevData,
+				coverFile: new File([coverFile], sanitize(coverFile.name), { type: coverFile.type }),
+			}));
+		} else if (acceptMultipleImages && !cover) {
+			// Handle multiple files, but only if it's not a cover file
+			const sanitizedFiles = acceptedFiles.map(file =>
+				new File([file], sanitize(file.name), { type: file.type })
+			);
+			setFilesData(prevData => ({
+				...prevData,
+				files: [...prevData.files, ...sanitizedFiles],
+			}));
+		} else if (!acceptMultipleImages && !cover) {
+			// Handle a single non-cover file
+			const file = acceptedFiles[0];
+			setFileData({
+				...fileData,
+				file: new File([file], sanitize(file.name), { type: file.type }),
+			});
 		}
-		//eslint-disable-next-line
-	}, [acceptedFiles]);
+	}
+}, [acceptedFiles, acceptMultipleImages, cover, fileData, setFileData, setFilesData]);
+
+
+	// console.log("file info for single file", files);
+	// console.log("file Data for single file", fileData);
+
+
+	console.log("files info for bulk", filess);
+	console.log("files Data for bulk", filesData);
+
+
 	useEffect(() => {
-		isDragActive
-			? setDragText(`Drop your files here`)
-			: setDragText(initialDragText);
-		//eslint-disable-next-line
-	}, [isDragActive]);
+		setDragText(isDragActive ? "Drop your files here" : initialDragText);
+	}, [isDragActive, initialDragText]);
+
 	useEffect(() => {
 		if (fileRejections.length) {
-			fileRejections[0].errors[0].code === "file-too-large"
-				? setDragText("File cannot be larger than 100mb")
-				: setDragText(fileRejections[0].errors[0].message);
-			setTimeout(() => {
-				setDragText(initialDragText);
-			}, 3000);
+			const errorMessage =
+				fileRejections[0].errors[0].code === "file-too-large"
+					? "File cannot be larger than 100mb"
+					: fileRejections[0].errors[0].message;
+			setDragText(errorMessage);
+			setTimeout(() => setDragText(initialDragText), 3000);
 		}
-		//eslint-disable-next-line
-	}, [fileRejections]);
+	}, [fileRejections, initialDragText]);
+
 	return (
 		<div {...getRootProps({ className: "dropzone" })}>
 			<input {...getInputProps()} />
 			<DropzoneText>{dragText}</DropzoneText>
-			<DropzoneButton
-				modal={props.modal}
-				onClick={open}
-				whileHover={{
-					y: -5,
-					x: 0,
-					scale: 1.02,
-				}}
-				whileTap={{
-					scale: 0.99,
-				}}
-			>
-				Choose File
+			<DropzoneButton modal={modal} onClick={open} whileHover={{ y: -5, scale: 1.02 }} whileTap={{ scale: 0.99 }}>
+			 Choose File{acceptMultipleImages && 's'}
 			</DropzoneButton>
 		</div>
 	);
 };
 
-const CustomDropzone = ({ modal, cover }) => {
-	return (
-		<LazyMotion features={domAnimation}>
-			<Wrapper>
-				<Dropzone modal={modal} maxSize={100000000} cover={cover} />
-			</Wrapper>
-		</LazyMotion>
-	);
-};
+const CustomDropzone = ({ modal, cover, acceptMultipleImages }) => (
+	<LazyMotion features={domAnimation}>
+		<Wrapper>
+			<Dropzone modal={modal} cover={cover} acceptMultipleImages={acceptMultipleImages} />
+		</Wrapper>
+	</LazyMotion>
+);
 
 export default CustomDropzone;

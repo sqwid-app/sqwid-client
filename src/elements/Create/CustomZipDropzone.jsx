@@ -58,7 +58,7 @@ const Dropzone = props => {
 	const { collectionBulkData, setCollectionBulkData } = useContext(
 		CollectionBulkContext
 	);
-	const initialDragText = "ZIP. Max 1gb.";
+	const initialDragText = "Max 1gb.";
 	const [file, setFile] = useState();
 	const [totalChunks, setTotalChunks] = useState(0);
 	const [currentChunkIndex, setCurrentChunkIndex] = useState(-1);
@@ -77,7 +77,8 @@ const Dropzone = props => {
 		accept: "application/zip",
 		maxSize: props.maxSize,
 	});
-
+console.log("fileRejections", fileRejections);
+console.log("dragText", dragText);
 	useEffect(() => {
 		if (acceptedFiles.length) {
 			setFile(acceptedFiles[0]);

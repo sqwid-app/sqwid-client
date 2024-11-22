@@ -192,7 +192,8 @@ const InfoContainer = () => {
 	});
 
 	const handleClick = () => {
-		!auth ? handleInit("/create") : history.push("/create");
+		// !auth ? handleInit("/create") :
+		 history.push("/create");
 	};
 
 	return (

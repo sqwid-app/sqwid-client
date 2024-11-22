@@ -27,6 +27,8 @@ import VerifyProvider from "@contexts/Verify/VerifyProvider";
 import { VerifyBulkButton } from "@elements/Create/VerifyBulkButton";
 import VerifyContext from "@contexts/Verify/Verify";
 import { useEffect } from "react";
+import FilesProvider from "@contexts/Files/FilesProvider";
+import CollectionPreviewSection from "@elements/Create/CollectionPreviewSection";
 
 const Wrapper = styled.div`
 	padding: 0 6rem;
@@ -142,9 +144,10 @@ const BulkPage = () => {
 	return (
 		<MainBulkSection>
 			<LeftContainer>
-				<UploadContainer>
-					<UploadSection title="Upload ZIP File" fileType="zip" />
+			<UploadContainer>
+					<UploadSection title="Upload Files" fileType="images" multiple={true} />
 				</UploadContainer>
+				<CollectionPreviewSection fileType="images" />
 				<RoyaltyReceiverSection bulk={true} />
 				<RoyaltySection bulk={true} />
 				<CopiesSection bulk={true} />
@@ -159,12 +162,14 @@ const BulkPage = () => {
 						fileType="cover"
 					/>
 				</UploadContainer>
+				<CollectionPreviewSection fileType="cover" />
 				<PreviewCoverSection />
 				<CreateBulkButton />
 			</RightContainer>
 		</MainBulkSection>
 	);
 };
+
 
 const VerifyPage = () => {
 	const initialInfoText = (
@@ -293,6 +298,7 @@ const HeroSection = () => {
 	return (
 		<FileProvider>
 			<VerifyProvider>
+				<FilesProvider>
 				<CollectionBulkProvider>
 					<Wrapper>
 						<HeaderSection>
@@ -319,6 +325,7 @@ const HeroSection = () => {
 						<>{navRoutes.find(item => item.isActive).component}</>
 					</Wrapper>
 				</CollectionBulkProvider>
+				</FilesProvider>
 			</VerifyProvider>
 		</FileProvider>
 	);

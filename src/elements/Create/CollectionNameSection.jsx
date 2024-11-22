@@ -2,6 +2,7 @@ import FileContext from "@contexts/File/FileContext";
 import CollectionBulkContext from "@contexts/CollectionBulk/CollectionBulk";
 import React, { useContext } from "react";
 import styled from "styled-components";
+import FilesContext from "@contexts/Files/FilesContext";
 
 const Container = styled.div``;
 
@@ -29,22 +30,17 @@ const InputContainer = styled.input`
 
 const CollectionNameSection = ({ bulk = false }) => {
 	const { files, setFiles } = useContext(FileContext);
-	const { collectionBulkData, setCollectionBulkData } = useContext(
-		CollectionBulkContext
-	);
+	const { filess, setFiless } = useContext(FilesContext);
+	
 	const handleInput = e => {
-		bulk
-			? setCollectionBulkData({
-					...collectionBulkData,
-					collectionName: e.target.value,
-			  })
+		bulk ? setFiless({ ...filess, collectionName: e.target.value  })
 			: setFiles({ ...files, name: e.target.value });
 	};
 	return (
 		<Container>
 			<Title>Collection Name</Title>
 			<InputContainer
-				value={bulk ? collectionBulkData.collectionName : files.name}
+				value={bulk ? filess.collectionName : files.name}
 				onChange={handleInput}
 				placeholder={`e.g "Doggo collection"`}
 			/>
