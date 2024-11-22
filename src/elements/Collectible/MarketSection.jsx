@@ -733,6 +733,9 @@ const Config2 = () => {
 
 	return (
 		<BottomContainer>
+			{isValidModerator && collectibleInfo && collectibleInfo.approved!=true && <ApproveAnimBtn onClick={() => approveCollectibleByModerator(collectibleInfo.itemId, collectibleInfo.collection.id)} disabled={!collectibleInfo}>
+				Whitelist
+			</ApproveAnimBtn>}
 			<AnimBtn onClick={() => setShowPutOnSaleModal(!showPutOnSaleModal)} disabled={!isCollectibleWhitelisted}>
 				Put On Sale
 			</AnimBtn>
