@@ -1255,6 +1255,7 @@ const useComponent = market => {
 
 	useEffect(()=>{
 		const checkValidModerator = async () => {
+
 			try {
 				const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 				let { signer } = await Interact(address);
