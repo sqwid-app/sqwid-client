@@ -60,10 +60,13 @@ const approveCollectibleByModerator = async (itemId,collectionId) => {
 						},
 					}
 				);
-				console.log (response.data);
+				if (response.data.data === true) {
+					window.location.reload();
+					return null;
+				} else {
+					return { error: response.data.error || 'Unknown error occurred' };
+				}
 			} catch (err) {
-				// console.log (err);
-				// return null;
 				return { error: err };
 			}
 		} catch (err) {
