@@ -680,28 +680,6 @@ const Config2 = () => {
 	const [isCollectibleWhitelisted, setIsCollectibleWhitelisted] = useState(false);
 
 	useEffect(() => {
-		const isWhitelisted = async (id) => {
-			const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
-			//eslint-disable-next-line
-			let jwt = address
-				? JSON.parse(localStorage.getItem("tokens")).find(
-					token => token.address === address
-				)
-				: null;
-			if (!jwt) return 0;
-			try {
-				const res = await axios(`${getBackend()}/get/marketplace/is-whitelisted/${id}`, {
-					headers: {
-						Authorization: `Bearer ${jwt.token}`,
-					},
-				}
-				);
-				const { data } = res;
-				return setIsCollectibleWhitelisted(data)
-			} catch (e) {
-				return setIsCollectibleWhitelisted(false);
-			}
-		};
 		const fetchCollectibleAmount = async (id, owner) => {
 			const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 			//eslint-disable-next-line
@@ -726,8 +704,7 @@ const Config2 = () => {
 				console.log(e)
 			}
 		};
-
-		isWhitelisted(collectibleInfo.tokenId);
+		setIsCollectibleWhitelisted(collectibleInfo.approved);
 		fetchCollectibleAmount(collectibleInfo.positionId, collectibleInfo.owner.address);
 	}, [collectibleInfo])
 
