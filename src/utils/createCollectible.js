@@ -140,7 +140,7 @@ const createCollectibleClient = async files => {
 
 	uploaded[0] = "ipfs://" + uploaded[0];
 	if (uploaded[1]) uploaded[1] = "ipfs://" + uploaded[1];
-
+     
 	let data = {
 		name,
 		description, // eslint-disable-next-line
@@ -149,10 +149,10 @@ const createCollectibleClient = async files => {
 		attributes: attribs,
 		mimetype: file.type,
 	};
-
+    
 	let meta = await uploadFile(JSON.stringify(data));
 	meta = "ipfs://" + meta;
-
+    
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 	//eslint-disable-next-line
 	let jwt = address
@@ -236,6 +236,9 @@ const createCollectible = async files => {
 		}
 	}
 	data.append("properties", JSON.stringify(attribs));
+	for(let pair of data.entries()) {
+		console.log(pair[0] + ": ==== " + pair[1]);
+	}
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 	if (!address) {
 		throw new Error("You need to login first");
@@ -249,7 +252,6 @@ const createCollectible = async files => {
 	if (!approved) {
 		await approveMarketplace();
 	}
-
 	if (jwt) {
 		try {
 			const metadata = await axios.post(
@@ -289,7 +291,6 @@ const createCollectible = async files => {
 				const itemId = receipt.events[1].args["itemId"].toNumber();
 				// eslint-disable-next-line
 				const positionId = receipt.events[1].args["positionId"].toNumber();
-
 				await axios.post(
 					`${getBackend()}/create/collectible/verify`,
 					{
@@ -304,7 +305,6 @@ const createCollectible = async files => {
 					}
 				);
 				return positionId;
-				// console.log (verif.status, verif.data);
 			} catch (err) {
 				// console.log (err);
 				// return null;

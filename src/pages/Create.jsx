@@ -25,7 +25,7 @@ const Wrapper = ({ children }) => {
 	);
 };
 
-const Create = () => {
+const Create = () => { 
 	useCheckJWT();
 	return (
 		<Wrapper>

@@ -4,11 +4,11 @@ import { getBackend } from "./network"
 const briefSearchAll = async searchTerm => {
     try {
         const res = await axios.get (`${getBackend ()}/search/all/${searchTerm}`);
-        return res.data;
-    } catch (error) {
+        return res.data; 
+    } catch (error) { 
         // console.log (error);
         return {
-            collections: [],
+            collections: [], 
             users: []
         }
     }
@@ -32,7 +32,7 @@ const fetchCollectionsPaginated = async (searchTerm, page = 1, perPage = 10) => 
         return res.data;
     } catch (error) {
         return {
-            collections: [],
+            collections: [], 
             total: 0
         }
     }

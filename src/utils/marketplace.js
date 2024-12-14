@@ -64,8 +64,8 @@ const fetchFeaturedItems = async () => {
 	if (data.error) {
 		return [];
 	}
-	return data.featured.filter (item => item != null);
-}
+	return data.featured.filter(item => item != null);
+};
 
 // returns collection info
 const fetchCollectionInfo = async id => {
@@ -101,12 +101,19 @@ const fetchUserItems = async (address, state = -1, startFrom) => {
 };
 
 // returns collection-wise items
-const fetchCollectionItems = async (address, state = -1, startFrom, filterQuery = '') => {
+const fetchCollectionItems = async (
+	address,
+	state = -1,
+	startFrom,
+	filterQuery = ""
+) => {
 	let limit = constants.EXPLORE_PAGINATION_LIMIT;
 	const res = await axios(
 		`${getBackend()}/get/marketplace/by-collection/${address}${
 			state >= 0 ? `/${state}` : ""
-		}?limit=${limit}&startFrom=${startFrom}${filterQuery ? `&` + filterQuery : ''}`
+		}?limit=${limit}&startFrom=${startFrom}${
+			filterQuery ? `&` + filterQuery : ""
+		}`
 	);
 	const { data } = res;
 	if (data.error) {
@@ -135,7 +142,11 @@ const unlistPositionOnSale = async positionId => {
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.unlistPositionOnSale(
 			positionId,
-			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
+			{
+				customData: {
+					storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+				},
+			}
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -154,7 +165,11 @@ const putItemOnSale = async (itemId, copies, price) => {
 			itemId,
 			copies,
 			ethers.utils.parseEther(price),
-			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
+			{
+				customData: {
+					storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+				},
+			}
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -181,7 +196,11 @@ const createItemLoan = async (
 			ethers.utils.parseEther(feeAmount),
 			tokenAmount,
 			duration,
-			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
+			{
+				customData: {
+					storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+				},
+			}
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -201,7 +220,11 @@ const createItemAuction = async (itemId, tokenAmount, duration, minBid) => {
 			tokenAmount,
 			duration,
 			ethers.utils.parseEther(minBid),
-			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
+			{
+				customData: {
+					storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+				},
+			}
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -220,7 +243,11 @@ const createItemRaffle = async (itemId, tokenAmount, duration) => {
 			itemId,
 			tokenAmount,
 			duration,
-			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
+			{
+				customData: {
+					storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+				},
+			}
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -237,7 +264,9 @@ const enterRaffle = async (itemId, amount) => {
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.enterRaffle(itemId, {
 			value: ethers.utils.parseEther(amount),
-			customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
+			customData: {
+				storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+			},
 		});
 		const receipt = await tx.wait();
 		return receipt;
@@ -254,7 +283,9 @@ const createBid = async (itemId, amount) => {
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.createBid(itemId, {
 			value: ethers.utils.parseEther(amount),
-			customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
+			customData: {
+				storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+			},
 		});
 		const receipt = await tx.wait();
 		return receipt;
@@ -278,8 +309,10 @@ const createSale = async (positionId, tokenAmount, price) => {
 				// value: ethers.utils.parseEther(
 				// 	(BigNumber.from (tokenAmount).mul (BigNumber.from (price.toLocaleString('fullwide', {useGrouping:false})))).toString()
 				// ),
-				value: BigNumber.from (tokenAmount).mul (price),
-				customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
+				value: BigNumber.from(tokenAmount).mul(price),
+				customData: {
+					storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+				},
 			}
 		);
 		const receipt = await tx.wait();
@@ -295,7 +328,11 @@ const endAuction = async positionId => {
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.endAuction(positionId, { customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } });
+		const tx = await marketplaceContractInstance.endAuction(positionId, {
+			customData: {
+				storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+			},
+		});
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
@@ -309,7 +346,11 @@ const endRaffle = async positionId => {
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.endRaffle(positionId, { customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } });
+		const tx = await marketplaceContractInstance.endRaffle(positionId, {
+			customData: {
+				storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+			},
+		});
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
@@ -325,7 +366,9 @@ const fundLoan = async (positionId, amount) => {
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.fundLoan(positionId, {
 			value: ethers.utils.parseEther(amount.toString()),
-			customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
+			customData: {
+				storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+			},
 		});
 		const receipt = await tx.wait();
 		return receipt;
@@ -340,7 +383,11 @@ const liquidateLoan = async positionId => {
 	try {
 		const { signer } = await Interact();
 		const marketplaceContractInstance = marketplaceContract(signer);
-		const tx = await marketplaceContractInstance.liquidateLoan(positionId, { customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } });
+		const tx = await marketplaceContractInstance.liquidateLoan(positionId, {
+			customData: {
+				storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+			},
+		});
 		const receipt = await tx.wait();
 		return receipt;
 	} catch (error) {
@@ -356,7 +403,9 @@ const repayLoan = async (positionId, amount) => {
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.repayLoan(positionId, {
 			value: ethers.utils.parseEther(amount.toString()),
-			customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT }
+			customData: {
+				storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+			},
 		});
 		const receipt = await tx.wait();
 		return receipt;
@@ -373,7 +422,11 @@ const unlistLoanProposal = async positionId => {
 		const marketplaceContractInstance = marketplaceContract(signer);
 		const tx = await marketplaceContractInstance.unlistLoanProposal(
 			positionId,
-			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
+			{
+				customData: {
+					storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+				},
+			}
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -386,11 +439,19 @@ const unlistLoanProposal = async positionId => {
 const burnCollectible = async (tokenId, amount) => {
 	await checkAndApproveMarketplace();
 	try {
-		const address = JSON.parse(localStorage.getItem("auth"))?.auth?.evmAddress;
+		const address = JSON.parse(localStorage.getItem("auth"))?.auth
+			?.evmAddress;
 		const { signer } = await Interact();
-		const collectibleContractInstance = collectibleContract (signer);
-		const tx = await collectibleContractInstance.burn(address, tokenId, amount,
-			{ customData: { storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT } }
+		const collectibleContractInstance = collectibleContract(signer);
+		const tx = await collectibleContractInstance.burn(
+			address,
+			tokenId,
+			amount,
+			{
+				customData: {
+					storageLimit: constants.DEFAULT_CONTRACT_STORAGE_LIMIT,
+				},
+			}
 		);
 		const receipt = await tx.wait();
 		return receipt;
@@ -398,7 +459,7 @@ const burnCollectible = async (tokenId, amount) => {
 		// console.error (error);
 		return null;
 	}
-}
+};
 
 export const fetchRaffleEntries = async positionId => {
 	try {
@@ -546,14 +607,13 @@ const getWithdrawableBalance = async () => {
 		  )
 		: null;
 	if (!jwt) return 0;
-	const res = await axios (`${getBackend()}/get/marketplace/withdrawable`, {
+	const res = await axios(`${getBackend()}/get/marketplace/withdrawable`, {
 		headers: {
 			Authorization: `Bearer ${jwt.token}`,
-			},
-		}
-	);
+		},
+	});
 	const { data } = res;
-	if (data.error) return '0.00';
+	if (data.error) return "0.00";
 	return data.balance;
 };
 
@@ -617,10 +677,10 @@ const fetchCollectionStats = async id => {
 			lastSale: 0,
 			itemsSold: 0,
 			items: 0,
-			owners: 0
+			owners: 0,
 		};
 	}
-}
+};
 
 const fetchCollectibleStats = async id => {
 	try {
@@ -629,7 +689,6 @@ const fetchCollectibleStats = async id => {
 		);
 		const { data } = res;
 		if (data.error) {
-
 		}
 		return data;
 	} catch (e) {
@@ -638,10 +697,10 @@ const fetchCollectibleStats = async id => {
 			average: 0,
 			lastSale: 0,
 			salesAmount: 0,
-			owners: 0
+			owners: 0,
 		};
 	}
-}
+};
 
 const fetchCollectibleSaleHistory = async id => {
 	try {
@@ -652,10 +711,10 @@ const fetchCollectibleSaleHistory = async id => {
 		return data;
 	} catch (e) {
 		return {
-			sales: []
+			sales: [],
 		};
 	}
-}
+};
 
 const fetchOngoingBids = async () => {
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
@@ -666,12 +725,11 @@ const fetchOngoingBids = async () => {
 		  )
 		: null;
 	if (!jwt) return 0;
-	const res = await axios (`${getBackend()}/get/marketplace/bids`, {
+	const res = await axios(`${getBackend()}/get/marketplace/bids`, {
 		headers: {
 			Authorization: `Bearer ${jwt.token}`,
-			},
-		}
-	);
+		},
+	});
 	const { data } = res;
 	if (data.error) return [];
 	return data;
@@ -687,12 +745,11 @@ const fetchClaimables = async () => {
 		: null;
 	if (!jwt) return 0;
 	try {
-		const res = await axios (`${getBackend()}/get/marketplace/claimables`, {
+		const res = await axios(`${getBackend()}/get/marketplace/claimables`, {
 			headers: {
 				Authorization: `Bearer ${jwt.token}`,
-				},
-			}
-		);
+			},
+		});
 		const { data } = res;
 		if (data.error) return [];
 		return data;
@@ -707,15 +764,18 @@ const fetchClaimablesCount = async () => {
 	let jwt = address
 		? JSON.parse(localStorage.getItem("tokens")).find(
 				token => token.address === address
-		)
+		  )
 		: null;
 	if (!jwt) return 0;
 	try {
-		const res = await axios (`${getBackend()}/get/marketplace/claimables/count`, {
-			headers: {
-				Authorization: `Bearer ${jwt.token}`,
-			},
-		});
+		const res = await axios(
+			`${getBackend()}/get/marketplace/claimables/count`,
+			{
+				headers: {
+					Authorization: `Bearer ${jwt.token}`,
+				},
+			}
+		);
 		const { data } = res;
 		if (data.error) return 0;
 		return data.count;
@@ -738,76 +798,96 @@ const claimClaimables = async (itemId, tokenId) => {
 		try {
 			const { signer } = await Interact();
 			const marketplaceContractInstance = marketplaceContract(signer);
-			const tx = await marketplaceContractInstance.addAvailableTokens(itemId);
+			const tx = await marketplaceContractInstance.addAvailableTokens(
+				itemId
+			);
 			receipt = await tx.wait();
-			const res = await axios.post(`${getBackend()}/claim/${tokenId}`, {}, {
-				headers: {
-					Authorization: `Bearer ${jwt.token}`,
+			const res = await axios.post(
+				`${getBackend()}/claim/${tokenId}`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${jwt.token}`,
 					},
 				}
 			);
 			const { data } = res;
-			if (data.error) return {
-				error: true,
-				message: res.error.toString ()
-			};
+			if (data.error)
+				return {
+					error: true,
+					message: res.error.toString(),
+				};
 			return receipt;
 		} catch (e) {
 			// console.log (e);
-			const retry = (e.toString () === "Error: Cancelled") ||
-				(e.toString () === "Error: -32603: execution fatal: Module { index: 6, error: 2, message: None }");
+			const retry =
+				e.toString() === "Error: Cancelled" ||
+				e.toString() ===
+					"Error: -32603: execution fatal: Module { index: 6, error: 2, message: None }";
 
 			if (!retry) {
-				await axios.post(`${getBackend()}/claim/${tokenId}`, {
-					remove: true
-				}, {
-					headers: {
-						Authorization: `Bearer ${jwt.token}`,
+				await axios.post(
+					`${getBackend()}/claim/${tokenId}`,
+					{
+						remove: true,
+					},
+					{
+						headers: {
+							Authorization: `Bearer ${jwt.token}`,
 						},
 					}
 				);
 			}
 			return {
 				error: true,
-				message: e.toString ()
+				message: e.toString(),
 			};
 		}
 	} catch (e) {
 		return {
 			error: true,
-			message: e.toString ()
+			message: e.toString(),
 		};
 	}
 };
 
+// Show images
+// https://sqwid.infura-ipfs.io/ipfs/QmUN9DjxdUTEAo9Sy8UuwQaZ1LhXSDQi4TtcXLcq64onH5
 const transferCollectible = async (to, tokenId, amount) => {
+	console.log("tokenId=", tokenId);
+	console.log("amount=", amount);
 	const { signer } = await Interact();
 	const from = await signer.getAddress();
 	const collectibleContractInstance = collectibleContract(signer);
 	const tx = await collectibleContractInstance.safeTransferFrom(
 		from,
 		to,
-		Number (tokenId),
-		Number (amount),
+		Number(tokenId),
+		Number(amount),   
 		"0x"
-	);
+	);     
 	const receipt = await tx.wait();
 	return receipt;
-}
+};
 
-const fetchCollectionsByStats = async (order, startFrom = Infinity, startFromId = null, sort = 'desc', limit = 8) => {
+const fetchCollectionsByStats = async (
+	order,
+	// startFrom = Infinity,
+	// startFromId = null,
+	// sort = "desc",
+	// limit = 8
+) => {
 	try {
 		const res = await axios(
-			`${getBackend()}/get/collections/all/by/stats.${order}?sorting=${sort}&startAt=${startFrom}&startAtId=${startFromId}&limit=${limit}`
+			`${getBackend()}/get/collections/all/by/stats.${order}`
 		);
 		const { data } = res;
 		return data;
 	} catch (e) {
-		return {
-			collections: []
-		};
+		console.error("Error fetching collections:", e);
+		return { collections: [] };
 	}
-}
+};
 
 export {
 	unlistLoanProposal,

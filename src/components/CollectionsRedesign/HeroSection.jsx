@@ -352,7 +352,7 @@ const FilterItem = ({ title, options, setTraits }) => {
 					<FilterCheckbox name = {option} key={option} type="checkbox" onChange={handleOption} />
 				))}
 			</FilterItemContent>
-		</>
+		</>   
 	);
 }
 
@@ -504,15 +504,15 @@ const HeroSection = ({ collectionInfo, setIsLoading, isLoading }) => {
 								}}/>} */}
 							</Header>
 							<Creator
-								to={`/profile/${collectionInfo.creator.id}`}
+								to={`/profile/${collectionInfo?.creator?.id}`}
 							>
 								by
 								<CreatorLogo
-									url={collectionInfo.creator.thumb}
+									url={collectionInfo?.creator?.thumb}
 								/>
 								<span>
 									{shortenIfAddress(
-										collectionInfo.creator.name
+										collectionInfo?.creator?.name   
 									)}
 								</span>
 							</Creator>

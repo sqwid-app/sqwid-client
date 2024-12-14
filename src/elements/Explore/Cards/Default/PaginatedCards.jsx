@@ -186,9 +186,16 @@ const NewPaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 				: await fetchStateItems(state, sFrom);
 				
 			if (shouldReset) {
-				setStateItems(items.items || []);
+				setStateItems(items?.items || []);
 			} else {
-				setStateItems([...stateItems, ...items?.items]);
+				// mine
+				if (items && Array.isArray(items.items)) {
+					setStateItems([...stateItems, ...items.items]);
+				} else {
+					console.error('Invalid data structure:', items);
+				}
+				// prvs
+				// setStateItems([...stateItems, ...items?.items]);
 			}
 			if (!items.items || items?.items?.length === 0) {
 				setIsLoading(false);
@@ -290,7 +297,6 @@ const NewPaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 	// 	getItems();
 	// 	// eslint-disable-next-line
 	// }, [isVisible]);
-
 	return (
 		<>
 			{isLoading ? (

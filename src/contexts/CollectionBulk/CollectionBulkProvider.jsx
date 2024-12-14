@@ -6,12 +6,12 @@ const CollectionBulkProvider = props => {
 	const [collectionBulkData, setCollectionBulkData] = useState(initialState);
 
 	return (
-		<CollectionBulkContext.Provider
+		<CollectionBulkContext.Provider 
 			value={{
 				collectionBulkData,
 				setCollectionBulkData,
 			}}
-		>
+		> 
 			{props.children}
 		</CollectionBulkContext.Provider>
 	);

@@ -284,7 +284,8 @@ const HeroSection = () => {
 		// 	title: "Wrap",
 		// 	// component:  <WrapSection/>
 		// 	component: <>Work in progress ⚒🚧</>
-		// }, {
+		// }, 
+		// {
 		// 	name: "Unwrap",
 		// 	isActive: false,
 		// 	title: "Unwrap",
@@ -299,7 +300,7 @@ const HeroSection = () => {
 		<FileProvider>
 			<VerifyProvider>
 				<FilesProvider>
-				<CollectionBulkProvider>
+				<CollectionBulkProvider> 
 					<Wrapper>
 						<HeaderSection>
 							<Title>

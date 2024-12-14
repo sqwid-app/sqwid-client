@@ -48,18 +48,18 @@ const DropzoneButton = styled(m.a)`
 	cursor: pointer;
 `;
 
-const Dropzone = ({ modal, cover, acceptMultipleImages, maxSize = 100000000 }) => {
-	const initialDragText = cover ? "PNG, JPEG, GIF or WEBP. Max 100mb." : acceptMultipleImages ? "PNG, JPEG, MP4, WEBP. Max 100mb/12 files." : "PNG, JPEG, MP4, WEBP. Max 100mb";
+const Dropzone = ({ modal, cover, acceptMultipleImages, maxSize = 1000000000 }) => {
+	const initialDragText = cover ? "PNG, JPEG, GIF or WEBP. Max 100mb." : acceptMultipleImages ? "PNG, JPEG, MP4, WEBP. Max 1000mbs/100 files." : "PNG, JPEG, MP4, WEBP. Max 100mb";
 	const {files, setFiles, fileData, setFileData } = useContext(FileContext);
 	const {filess, setFiless, filesData, setFilesData } = useContext(FilesContext);
-	const { collectionBulkData, setCollectionBulkData } = useContext(CollectionBulkContext);
+	// const { collectionBulkData, setCollectionBulkData } = useContext(CollectionBulkContext);
 	const [dragText, setDragText] = useState(initialDragText);
 	const { getRootProps, getInputProps, open, acceptedFiles, isDragActive, fileRejections } = useDropzone({
 		noClick: true,
 		noKeyboard: true,
 		accept: cover ? constants.COVER_ACCEPTED_MIMETYPES : constants.CREATE_ACCEPTED_MIMETYPES,
 		maxSize: maxSize,
-		maxFiles: acceptMultipleImages ? 12 : 1,
+		maxFiles: acceptMultipleImages ? 100 : 1,
 	});
 	console.log("acceptedFiles", acceptedFiles);
 useEffect(() => {

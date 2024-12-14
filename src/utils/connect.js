@@ -15,6 +15,7 @@ import { getBackend, getRPC } from "./network";
 let provider;
 
 const Init = async () => {
+	console.log("here in init")
 	const extensions = await web3Enable("Sqwid");
 	const accs = await web3Accounts();
 	return {
@@ -43,7 +44,7 @@ const Connect = async account => {
 		let { nonce } = res.data;
 
 		const sres = await signRaw({
-			address: account.address,
+			address: account.address,        
 			data: stringToHex(nonce),
 			type: "bytes",
 		});
@@ -69,14 +70,14 @@ const Connect = async account => {
 		let json = res.data;
 
 		if (json.status === "success") {
-			localStorage.removeItem("collections");
+			localStorage.removeItem("collections");   
 			let jwts = localStorage.getItem("tokens");
 			jwts = jwts ? JSON.parse(jwts) : [];
 
 			let item = jwts.find(jwt => jwt.address === account.address);
 			if (item) {
 				item.token = json.token;
-			} else {
+			} else {   
 				jwts.push({
 					name: account.meta.name,
 					address: account.address,
@@ -95,9 +96,15 @@ const Connect = async account => {
 };
 
 const Interact = async (address = null) => {
+	console.log("address ", address)
+
 	if (!address)
 		address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+	console.log("address from local", address)
+
 	const allInjected = await web3Enable("Sqwid");
+	console.log("allInjected", allInjected);
+
 	const injected = allInjected[0].signer;
 	if (!provider)
 		provider = new Provider({
@@ -107,9 +114,10 @@ const Interact = async (address = null) => {
 			},
 		});
 	await provider.api.isReady;
+	console.log("provider", provider);
 
 	const signer = new Signer(provider, address, injected);
-
+console.log("signer", signer)
 	return {
 		signer,
 		provider,

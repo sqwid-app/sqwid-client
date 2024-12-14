@@ -99,9 +99,9 @@ const CardHeaderIcons = ({ data }) => {
 					tooltip={`Owner: ${owner.name}`}
 				/>
 				<AnimatedIcons
-					to={`/profile/${creator.id}`}
-					url={creator.thumb}
-					tooltip={`Creator: ${creator.name}`}
+					to={`/profile/${creator?.id}`}
+					url={creator?.thumb}
+					tooltip={`Creator: ${creator?.name}`}
 				/>
 				<AnimatedIcons
 					to={`/collections/${collection.id}`}

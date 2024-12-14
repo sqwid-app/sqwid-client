@@ -102,7 +102,6 @@ const PaginatedCardsScroll = ({ Card, state, profile, collection }) => {
 		getItems();
 		// eslint-disable-next-line
 	}, [stateItems.length, isVisible]);
-
 	return (
 		<>
 			{isLoading ? (

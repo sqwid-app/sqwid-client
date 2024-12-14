@@ -10,7 +10,8 @@ import { getBackend, getContract } from "./network";
 import getEVMAddress from "./getEVMAddress";
 import bread from "./bread";
 
-const MAX_ITEMS_PER_TX = 75;
+// const MAX_ITEMS_PER_TX = 75;
+const MAX_ITEMS_PER_TX = 100;
 const BASE_GAS = 1_000_000;
 const GAS_PER_UNIT = 420_000;
 const STORAGE_PER_UNIT = 1_500;
@@ -49,11 +50,18 @@ const buildCall = (contract, copies, to, royalty, meta, start, end) => {
 	const royaltyArray = [];
 	for (let i = start; i < end; i++) {
 		copiesArray.push(copies);
-		metaArray.push(`${meta}/${(i + 1).toString(16).padStart(5, "0")}.json`);
+		metaArray.push(`${meta[i].cid}/${(i + 1).toString(16).padStart(5, "0")}.json`);
 		mimetypeArray.push("image");
 		toArray.push(to);
 		royaltyArray.push(royalty);
 	}
+	// for (let i = start; i < end; i++) {
+	// 	copiesArray.push(copies);
+	// 	metaArray.push(`${meta.cid}/${(i + 1).toString(16).padStart(5, "0")}.json`);
+	// 	mimetypeArray.push("image");
+	// 	toArray.push(to);
+	// 	royaltyArray.push(royalty);
+	// }
 	return contract.mintBatch(
 		copiesArray,
 		metaArray,
@@ -69,22 +77,34 @@ const buildCall = (contract, copies, to, royalty, meta, start, end) => {
 	);
 };
 
-const createBulkCollectibles = async collectionBulkData => {
+const createBulkCollectibles = async (collectionBulkData) => {
 	const {
-		collectionName,
-		collectionDescription,
-		coverFile,
-		zipFile,
-		royaltyRecipient,
+	  collectionName,
+	  collectionDescription,
+	  coverFile,
+	  royaltyRecipient,
+	  files,
 	} = collectionBulkData;
+  
 	const copies = Number(collectionBulkData.copies) || 1;
 	const royalty = (Number(collectionBulkData.royalty) || 0) * 100;
-
+  
 	const data = new FormData();
 	data.append("collectionName", collectionName);
 	data.append("collectionDescription", collectionDescription);
 	data.append("coverFile", coverFile);
-	data.append("zipFile", zipFile);
+	data.append("royaltyRecipient", royaltyRecipient);
+	data.append("copies", copies);
+	data.append("royalty", royalty);
+  
+	files.forEach((file) => {
+	  data.append("files", file);
+	});
+  
+	// Verify FormData contents
+	for (let [key, value] of data.entries()) {
+	  console.log(`${key}: ${value}`);
+	}
 
 	const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 	let jwt = address
@@ -92,6 +112,7 @@ const createBulkCollectibles = async collectionBulkData => {
 				token => token.address === address
 		  )
 		: null;
+
 	const approved = await isMarketplaceApproved();
 	if (!approved) {
 		await approveMarketplace();
@@ -113,7 +134,7 @@ const createBulkCollectibles = async collectionBulkData => {
 			);
 
 			const collectionId = createRes.data?.collectionId;
-			const meta = createRes.data?.metadata;
+			const meta = createRes.data?.metadata.files;
 			const numItems = createRes.data?.numItems;
 			let { signer } = await Interact(address);
 			let to =
@@ -187,9 +208,11 @@ const createBulkCollectibles = async collectionBulkData => {
 				);
 				return collectionId;
 			} catch (err) {
+				console.log("Error creating collection is:", err)
 				return { error: err };
 			}
 		} catch (err) {
+			console.log("Error creating collection in outer: ", err)
 			return { error: err };
 		}
 	} else return null;

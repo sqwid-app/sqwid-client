@@ -67,11 +67,11 @@ export const CreateBulkButton = () => {
 		console.log("collectionData==", collectionData);
 
 		if (
-			collectionBulkData.coverFile &&
-			collectionBulkData.collectionName.length &&
-			collectionBulkData.zipFile.length
+			collectionData.coverFile &&
+			collectionData.collectionName.length 
+			// collectionData.zipFile.length
 		) {
-			createBulkCollectibles({ ...collectionBulkData })
+			createBulkCollectibles({ ...collectionData })
 				.then(res => {
 					if (!res.error) {
 						bread(

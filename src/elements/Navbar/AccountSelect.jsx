@@ -657,14 +657,18 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 						{!auth && (
 							<>
 								<DividerHorizontal />
-								{ window.location.host.indexOf('dev')>-1 ? <NetworkSwitchButton /> : null }
+								{/* { window.location.host.indexOf('dev')>-1 ? <NetworkSwitchButton /> : null } */}
+								{ process.env.REACT_APP_ENV === 'development' ? <NetworkSwitchButton /> : null }
+
 							</>
 						)}
 						{auth && (
 							<>
 								<DividerHorizontal />
 								<ButtonsContainer>
-								{ window.location.host.indexOf('dev')>-1 ? <NetworkSwitchButton /> : null }
+								{/* { window.location.host.indexOf('dev')>-1 ? <NetworkSwitchButton /> : null } */}
+								{ process.env.REACT_APP_ENV === 'development' ? <NetworkSwitchButton /> : null }
+
 									<Button
 										whileHover={{
 											y: -5,

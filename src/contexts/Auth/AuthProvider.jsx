@@ -9,6 +9,7 @@ const AuthProvider = props => {
 	const [loading, setLoading] = useState(false);
 
 	const login = authData => {
+		console.log("authData", authData);
 		dispatch({
 			type: "LOGIN",
 			payload: authData,

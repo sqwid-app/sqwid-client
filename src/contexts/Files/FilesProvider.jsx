@@ -20,4 +20,4 @@ const FilesProvider = props => {
 	);
 };
 
-export default FilesProvider;
+export default FilesProvider;    

@@ -3,6 +3,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import useSearchParams from "./useSearchParams";
 
 const useActiveTabs = ({ navRoutes, setNavRoutes }) => {
+	console.log("navRoutes", navRoutes);
 	const query = useSearchParams();
 	const history = useHistory();
 	const location = useLocation();
