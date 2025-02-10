@@ -84,7 +84,8 @@ const Connect = async account => {
 					timestamp:new Date()
 				}
 
-				logEvent(analytics,JSON.stringify(event));
+				logEvent(analytics, "user_logged_in", event);
+
 			}
 		} catch (err) {
 			console.log(err);
