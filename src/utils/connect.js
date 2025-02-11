@@ -15,15 +15,15 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics,logEvent } from "firebase/analytics";
 
 const firebaseConfig = {
-	apiKey: "AIzaSyDm1kxfGwp7qJJVjfhEjqDcI6PgKYvy0mg",
-	authDomain: "sqwid-app-211b9.firebaseapp.com",
-	projectId: "sqwid-app-211b9",
-	storageBucket: "sqwid-app-211b9.firebasestorage.app",
-	messagingSenderId: "674272832896",
-	appId: "1:674272832896:web:df1a1a7a716a50ce78e565",
-	measurementId: "G-KMPNG2T94E"
+	apiKey: "AIzaSyDUrFraLlFQy4xuXRoFSCIizXY8agQgs4s",
+	authDomain: "sqwid-dapp-mainnet.firebaseapp.com",
+	projectId: "sqwid-dapp-mainnet",
+	storageBucket: "sqwid-dapp-mainnet.firebasestorage.app",
+	messagingSenderId: "665654784459",
+	appId: "1:665654784459:web:2f2a075b95c70b8e7b464e",
+	measurementId: "G-V3RFYG5NJX"
   };
-  
+
 
 let provider;
 
