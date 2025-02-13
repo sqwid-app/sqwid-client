@@ -27,6 +27,9 @@ module.exports = {
 			 [
 				"@babel/plugin-proposal-nullish-coalescing-operator"
 			],
+			["@babel/plugin-transform-class-static-block"],
+			["@babel/plugin-proposal-numeric-separator"],
+			["@babel/plugin-syntax-import-meta"]
 		],
 	},
 	webpack: {
@@ -39,6 +42,10 @@ module.exports = {
 							"@open-wc/webpack-import-meta-loader"
 						),
 					},
+					{
+						test: /\.m?js$/,
+						loader: require.resolve("@open-wc/webpack-import-meta-loader")
+					}
 				],
 			},
 		},

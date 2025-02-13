@@ -50,6 +50,7 @@ import axios from "axios";
 import { getBackend } from "@utils/network";
 import { approveCollectibleByModerator } from "@utils/approveCollectibleModerator";
 import { Interact } from "@utils/connect";
+import AccountSelectContext from "@contexts/AccountSelect/AccountSelectContext";
 
 /*
 	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/sections.png
