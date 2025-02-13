@@ -2,11 +2,6 @@ import { Provider, Signer } from "@reef-defi/evm-provider";
 // import { WsProvider } from "@polkadot/rpc-provider";
 import { WsProvider } from "@polkadot/api";
 // import { options } from "@reef-defi/api";
-import {
-	web3Accounts,
-	web3Enable,
-	web3FromSource,
-} from "@reef-defi/extension-dapp";
 import { stringToHex } from "@reef-defi/util";
 import axios from "axios";
 import { getBackend, getRPC } from "./network";
@@ -27,9 +22,9 @@ const firebaseConfig = {
 
 let provider;
 
-const Init = async () => {
-	const extensions = await web3Enable("Sqwid");
-	const accs = await web3Accounts();
+const Init = async (isReefSnap=false) => {
+	const extensions = isReefSnap? await extension.web3Enable("Sqwid",undefined,true):await extension.web3Enable("Sqwid");
+	const accs = await extension.web3Accounts();
 	return {
 		errorCode: extensions.length === 0 ? 1 : accs.length === 0 ? 2 : 0,
 		accounts: accs,
@@ -37,7 +32,7 @@ const Init = async () => {
 };
 
 const Connect = async account => {
-	const injector = await web3FromSource(account.meta.source);
+	const injector = await extension.web3FromSource(account.meta.source);
 
 	const signRaw = injector?.signer?.signRaw;
 
@@ -123,7 +118,8 @@ const Connect = async account => {
 const Interact = async (address = null) => {
 	if (!address)
 		address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
-	const allInjected = await web3Enable("Sqwid");
+	const isReefSnap = JSON.parse(localStorage.getItem("isWalletConnected"));
+	const allInjected = isReefSnap? await extension.web3Enable("Sqwid",undefined,true):await extension.web3Enable("Sqwid");
 	const injected = allInjected[0].signer;
 	if (!provider)
 		provider = new Provider({
