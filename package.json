@@ -21,6 +21,7 @@
 		"craco": "^0.0.3",
 		"date-fns": "^2.28.0",
 		"ethers": "^5.5.1",
+		"firebase": "^11.3.0",
 		"framer-motion": "^4.1.17",
 		"ipfs-http-client": "^55.0.0",
 		"jwt-decode": "^3.1.2",

@@ -11,6 +11,19 @@ import { stringToHex } from "@reef-defi/util";
 import axios from "axios";
 import { getBackend, getRPC } from "./network";
 // const WS_URL = 'wss://rpc-testnet.reefscan.com/ws';
+import { initializeApp } from "firebase/app";
+import { getAnalytics,logEvent } from "firebase/analytics";
+
+const firebaseConfig = {
+	apiKey: "AIzaSyDUrFraLlFQy4xuXRoFSCIizXY8agQgs4s",
+	authDomain: "sqwid-dapp-mainnet.firebaseapp.com",
+	projectId: "sqwid-dapp-mainnet",
+	storageBucket: "sqwid-dapp-mainnet.firebasestorage.app",
+	messagingSenderId: "665654784459",
+	appId: "1:665654784459:web:2f2a075b95c70b8e7b464e",
+	measurementId: "G-V3RFYG5NJX"
+  };
+
 
 let provider;
 
@@ -62,6 +75,19 @@ const Connect = async account => {
 					evmAddress: await signer.getAddress(),
 				}),
 			});
+			if(res.data.status=="success"){
+				  const app = initializeApp(firebaseConfig);
+				  const analytics = getAnalytics(app);
+
+				var event = {
+					type:"user_logged_in",
+					address:account.address,
+					timestamp:new Date()
+				}
+
+				logEvent(analytics, "user_logged_in", event);
+
+			}
 		} catch (err) {
 			console.log(err);
 			throw err;

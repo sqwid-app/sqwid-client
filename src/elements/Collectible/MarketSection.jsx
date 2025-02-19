@@ -48,6 +48,8 @@ import { useHistory } from "react-router-dom";
 import { ethers } from "ethers";
 import axios from "axios";
 import { getBackend } from "@utils/network";
+import { approveCollectibleByModerator } from "@utils/approveCollectibleModerator";
+import { Interact } from "@utils/connect";
 
 /*
 	config chart for each state: https://res.cloudinary.com/etjfo/image/upload/v1643831153/sqwid/sections.png
@@ -83,6 +85,40 @@ const BurnBtn = styled(BtnBaseAnimated)`
 		rgb(255,0,0) 100%
 	) !important;
 `;
+const ApproveBtn = styled(BtnBaseAnimated)`
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1rem;
+font-weight: 700;
+padding: 0 1.25rem;
+border-radius: 1000rem;
+height: 2.5rem;
+min-width: 6rem;
+z-index: 2;
+background-image: linear-gradient(
+	110deg,
+	rgb(0, 255, 0) 0%,
+	rgb(0, 150, 0) 50%,
+	rgb(0, 255, 0) 100%
+) !important;
+color: white;
+text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+border: none;
+cursor: pointer;
+transition: transform 0.2s, box-shadow 0.2s;
+
+&:hover {
+	transform: scale(1.05);
+	box-shadow: 0 4px 10px rgba(0, 255, 0, 0.5);
+}
+
+&:active {
+	transform: scale(0.95);
+	box-shadow: 0 2px 5px rgba(0, 255, 0, 0.3);
+}
+`;
+
 const parentMargin = css`
 	${props => (!props.parent ? `margin-top: auto` : ``)}
 `;
@@ -333,6 +369,16 @@ const BurnAnimBtn = ({ children, ...props }) => (
 		{children}
 	</BurnBtn>
 );
+const ApproveAnimBtn = ({ children, ...props }) => (
+	<ApproveBtn
+		whileTap={{
+			scale: 0.97,
+		}}
+		{...props}
+	>
+		{children}
+	</ApproveBtn>
+);
 
 const ConfigContainer = styled.div`
 	flex: 1;
@@ -342,7 +388,7 @@ const ConfigContainer = styled.div`
 `;
 
 const CurrentPrice = () => {
-	const { collectibleInfo , setCollectibleInfo} = useContext(CollectibleContext);
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext);
 	const stateInfo = useStateInfo();
 	const price = formatReefPrice(stateInfo.price || stateInfo.loanAmount);
 	const [usdPrice, setUsdPrice] = useState(
@@ -624,65 +670,43 @@ const Config1 = () => {
 
 const Config2 = () => {
 	// state-0 / owned
-	const { collectibleInfo,setCollectibleInfo } = useContext(CollectibleContext)
+	const { collectibleInfo, setCollectibleInfo } = useContext(CollectibleContext)
 	const [showAuctionModal, setShowAuctionModal] = useState(false);
 	const [showPutOnSaleModal, setShowPutOnSaleModal] = useState(false);
 	const [showLendModal, setShowLendModal] = useState(false);
 	const [showRaffleModal, setShowRaffleModal] = useState(false);
 	const [showBurnModal, setShowBurnModal] = useState(false);
 	const [showTransferModal, setShowTransferModal] = useState(false);
-	const [isCollectibleWhitelisted,setIsCollectibleWhitelisted] = useState(false);
+	const [isCollectibleWhitelisted, setIsCollectibleWhitelisted] = useState(false);
 
-	useEffect(()=>{
-		const isWhitelisted = async (id) => {
+	useEffect(() => {
+		const fetchCollectibleAmount = async (id, owner) => {
 			const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
 			//eslint-disable-next-line
 			let jwt = address
 				? JSON.parse(localStorage.getItem("tokens")).find(
-						token => token.address === address
-				  )
+					token => token.address === address
+				)
 				: null;
 			if (!jwt) return 0;
 			try {
-				const res = await axios (`${getBackend()}/get/marketplace/is-whitelisted/${id}`, {
+				const res = await axios(`${getBackend()}/get/marketplace/available-collection/${owner}/${id}`, {
 					headers: {
 						Authorization: `Bearer ${jwt.token}`,
-						},
-					}
+					},
+				}
 				);
 				const { data } = res;
-				return setIsCollectibleWhitelisted(data)
-			} catch (e) {
-				return setIsCollectibleWhitelisted(false);
-			}
-		};	
-		const fetchCollectibleAmount = async (id,owner) => {
-			const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
-			//eslint-disable-next-line
-			let jwt = address
-				? JSON.parse(localStorage.getItem("tokens")).find(
-						token => token.address === address
-				  )
-				: null;
-			if (!jwt) return 0;
-			try {
-				const res = await axios (`${getBackend()}/get/marketplace/available-collection/${owner}/${id}`, {
-					headers: {
-						Authorization: `Bearer ${jwt.token}`,
-						},
-					}
-				);
-				const { data } = res;
-				if(data[0].amount!=collectibleInfo.amount){
-					setCollectibleInfo({...collectibleInfo,amount:data[0].amount})
+				if (data[0].amount != collectibleInfo.amount) {
+					setCollectibleInfo({ ...collectibleInfo, amount: data[0].amount })
 				}
 			} catch (e) {
 				console.log(e)
 			}
 		};
-		isWhitelisted(collectibleInfo.tokenId);
-		fetchCollectibleAmount(collectibleInfo.positionId,collectibleInfo.owner.address);
-	},[collectibleInfo])
+		setIsCollectibleWhitelisted(collectibleInfo.approved);
+		fetchCollectibleAmount(collectibleInfo.positionId, collectibleInfo.owner.address);
+	}, [collectibleInfo])
 
 	return (
 		<BottomContainer>
@@ -701,7 +725,7 @@ const Config2 = () => {
 			<AnimBtn onClick={() => setShowTransferModal(!showTransferModal)} disabled={!isCollectibleWhitelisted}>
 				Transfer
 			</AnimBtn>
-			
+
 			<BurnAnimBtn onClick={() => setShowBurnModal(!showBurnModal)}>
 				Burn
 			</BurnAnimBtn>
@@ -1167,7 +1191,7 @@ const Config19 = () => {
 		const receipt = await repayLoan(
 			collectibleInfo.positionId,
 			collectibleInfo.loan.loanAmount / 10 ** 18 +
-				collectibleInfo.loan.feeAmount / 10 ** 18
+			collectibleInfo.loan.feeAmount / 10 ** 18
 		);
 		if (receipt) {
 			history.push("/profile");
@@ -1202,7 +1226,47 @@ const Config20 = () => {
 	return <Config19 />;
 };
 
-const getComponent = market => {
+const useComponent = market => {
+	const [isValidModerator, setIsValidModerator] = useState(false);
+	const { collectibleInfo } = useContext(CollectibleContext)
+
+	useEffect(()=>{
+		const checkValidModerator = async () => {
+
+			try {
+				const address = JSON.parse(localStorage.getItem("auth"))?.auth.address;
+				let { signer } = await Interact(address);
+				const evmAddress = await signer.queryEvmAddress();
+
+				//eslint-disable-next-line
+				let jwt = address
+					? JSON.parse(localStorage.getItem("tokens")).find(
+						token => token.address === address
+					)
+					: null;
+				if (!jwt) return 0;
+
+				try {
+					const res = await axios(`${getBackend()}/get/moderators/${evmAddress}`, {
+						headers: {
+							Authorization: `Bearer ${jwt.token}`,
+						},
+					}
+					);
+					const { data } = res;
+					setIsValidModerator(data.data);
+				} catch (error) {
+
+				}
+
+			} catch (error) {
+
+			}
+		}
+
+		checkValidModerator();
+	},[collectibleInfo])
+
 	const showConfig = id => {
 		let configMap = [
 			// state-0 || Available
@@ -1231,10 +1295,18 @@ const getComponent = market => {
 			<Config19 />,
 			<Config20 />,
 		];
+
+
+
 		return (
+			<>
+						{isValidModerator && collectibleInfo && collectibleInfo.approved!=true && <ApproveAnimBtn onClick={() => approveCollectibleByModerator(collectibleInfo.itemId, collectibleInfo.collection.id)} disabled={!collectibleInfo}>
+				Whitelist
+			</ApproveAnimBtn>}
 			<ConfigWrapper state={market.state}>
 				{configMap[id - 1]}
 			</ConfigWrapper>
+			</>
 		);
 	};
 	if (market) {
@@ -1351,7 +1423,7 @@ const MarketSection = () => {
 	} , [])
 	*/
 	return (
-		<LazyMotion features={domAnimation}>{getComponent(market)}</LazyMotion>
+		<LazyMotion features={domAnimation}>{useComponent(market)}</LazyMotion>
 	);
 };
 
