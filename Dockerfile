@@ -1,10 +1,11 @@
-FROM node:18 as builder
+FROM node:23.5 as builder
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get install -y node-gyp
 
 WORKDIR /usr/app
 
 COPY package.json yarn.lock ./
+RUN corepack enable && corepack prepare yarn@${YARN_VERSION}
 RUN yarn install
 COPY . ./
 
