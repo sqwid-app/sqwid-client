@@ -5,7 +5,7 @@
 	"private": true,
 	"dependencies": {
 		"@craco/craco": "^6.4.3",
-		"@dnd-kit/core": "^7.16.0",
+		"@dnd-kit/core": "^6.3.1",
 		"@dnd-kit/sortable": "^7.0.0",
 		"@open-wc/webpack-import-meta-loader": "^0.4.7",
 		"@reef-defi/api": "^1.0.3",
@@ -87,5 +87,8 @@
 		"craco-alias": "^3.0.1",
 		"prettier": "^2.5.1",
 		"standard-version": "^9.3.2"
+	},
+	"resolutions": {
+		"@babel/core": "^7.16.0"
 	}
 }
