@@ -8,6 +8,7 @@ import { getBackend, getRPC } from "./network";
 // const WS_URL = 'wss://rpc-testnet.reefscan.com/ws';
 import { initializeApp } from "firebase/app";
 import { getAnalytics,logEvent } from "firebase/analytics";
+import {extension} from "@reef-chain/util-lib";
 
 const firebaseConfig = {
 	apiKey: "AIzaSyDUrFraLlFQy4xuXRoFSCIizXY8agQgs4s",
