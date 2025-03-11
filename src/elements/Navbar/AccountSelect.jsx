@@ -399,7 +399,7 @@ const NetworkSwitchButton = () => {
 };
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
-	const { redirect, errorCode, isWalletConnected, setIsReefSnapSelected, setIsWalletConnected } = useContext(AccountSelectContext);
+	const { redirect, errorCode, isWalletConnected, setIsReefSnapSelected, setIsWalletConnected,setIsWalletConnectSelected } = useContext(AccountSelectContext);
 	const [elemIsVisible, setElemIsVisible] = useState(isActive);
 
 	const initialClaimButtonText = "I Accept";
@@ -569,7 +569,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 							{!isWalletConnected && <>
 								<ErrorMessageLine>
 									Please select a wallet
-									<div>
+									<div style={{display:'flex',flexDirection:'column'}}>
 										<div onClick={() => {
 											setIsReefSnapSelected(false);
 											setIsWalletConnected(true);
@@ -580,8 +580,6 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 											style={{ 
 												cursor: 'pointer',
 												textAlign: 'center',display:'flex',alignItems:'center',flexDirection:'column' }}
-											onMouseOver={(e) => e.target.style.opacity = 1}
-											onMouseOut={(e) => e.target.style.opacity = 0.7}
 											>
 												<img
 													src="https://s2.coinmarketcap.com/static/img/coins/200x200/6951.png"
@@ -605,8 +603,6 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 											style={{ 
 												cursor: 'pointer',
 												textAlign: 'center',display:'flex',alignItems:'center',flexDirection:'column' }}
-											onMouseOver={(e) => e.target.style.opacity = 1}
-											onMouseOut={(e) => e.target.style.opacity = 0.7}
 											>
 												<img
 													src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/2048px-MetaMask_Fox.svg.png"
@@ -617,6 +613,33 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 													style={{ opacity: 0.7,marginTop:'-10px' }}
 												>
 													Metamask
+												</div>
+											</div>
+
+
+
+										</div>
+										<div onClick={() => {
+											setIsWalletConnectSelected(true);
+											setIsWalletConnected(true);
+											localStorage.setItem("isWalletConnected", true);
+										}}>
+											<div 
+											style={{ 
+												cursor: 'pointer',
+												textAlign: 'center',display:'flex',alignItems:'center',flexDirection:'column' }}
+		
+											>
+												<img
+													src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBvOsv34Wmr5G9ZQPszyYMX9h424OlH2ZqPw&s"
+													width={30}
+													style={{borderRadius:'10px'}}
+													alt=""
+												/>
+												<div
+													style={{ opacity: 0.7,marginTop:'-10px' }}
+												>
+													WalletConnect
 												</div>
 											</div>
 

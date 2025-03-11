@@ -6,6 +6,7 @@ import { Init } from "@utils/connect";
 const AccountSelectProvider = props => {
 	const [isSelectionActive, setIsSelectionActive] = useState(initialState);
 	const [isReefSnapSelected,setIsReefSnapSelected] = useState(false);
+	const [isWalletConnectSelected,setIsWalletConnectSelected] = useState(false);
 	const [isWalletConnected,setIsWalletConnected] = useState(false);
 
 	const [redirect, setRedirect] = useState("");
@@ -36,7 +37,7 @@ const AccountSelectProvider = props => {
 				let {
 					accounts,
 					errorCode
-				} = await Init(isReefSnapSelected);
+				} = await Init(isReefSnapSelected,isWalletConnectSelected);
 				setCurrentAccounts(accounts);
 				setErrorCode(errorCode);
 			}
@@ -54,6 +55,7 @@ const AccountSelectProvider = props => {
 				handleInit,
 				isWalletConnected,setIsWalletConnected,
 				isReefSnapSelected,setIsReefSnapSelected,
+				isWalletConnectSelected,setIsWalletConnectSelected,
 				errorCode,
 				redirect,
 			}}

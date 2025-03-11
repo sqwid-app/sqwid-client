@@ -8,7 +8,8 @@ import { getBackend, getRPC } from "./network";
 // const WS_URL = 'wss://rpc-testnet.reefscan.com/ws';
 import { initializeApp } from "firebase/app";
 import { getAnalytics,logEvent } from "firebase/analytics";
-import {extension} from "@reef-chain/util-lib";
+import {extension,logoSvgUrl} from "@reef-chain/util-lib";
+import { Web3Modal } from "@web3modal/standalone";
 
 const firebaseConfig = {
 	apiKey: "AIzaSyDUrFraLlFQy4xuXRoFSCIizXY8agQgs4s",
@@ -23,9 +24,58 @@ const firebaseConfig = {
 
 let provider;
 
-const Init = async (isReefSnap=false) => {
+const connectWc = async()=>{
+	const web3Modal = new Web3Modal({
+		projectId: extension.WC_PROJECT_ID,
+		walletConnectVersion: 2,
+		enableExplorer: false,
+		explorerRecommendedWalletIds: "NONE",
+		themeMode: "light",
+		themeVariables: {
+		  "--w3m-accent-color": "#a93185",
+		  "--w3m-accent-fill-color": "#5d3bad",
+		  "--w3m-background-color": "#a93185",
+		  "--w3m-z-index": "1001",
+		  "--w3m-logo-image-url": logoSvgUrl.logoSvgUrl,
+		},
+	  });
+
+	  
+	const appMetadata = { 
+		name: 'Sqwid App',
+		description: 'Sqwid App',
+		url: window.location.origin,
+		icons: [window.location.origin + '/favicon.ico'],
+	  };
+
+	  
+	const client = await extension.initWcClient(appMetadata);
+
+	const { uri, approval } = await client.connect({
+		requiredNamespaces: extension.getWcRequiredNamespaces(),
+	});
+
+	if (uri) {
+		web3Modal.openModal({ uri });
+	} else {
+	console.log("_noUriFoundWC");
+	}
+
+	const session = await approval();
+	web3Modal.closeModal();
+	const response = { client, session };
+	extension.injectWcAsExtension(response, { name: extension.REEF_WALLET_CONNECT_IDENT, version: "1.0.0" });
+}
+
+const Init = async (isReefSnap=false,isWalletConnect=false) => {
 	const extensions = isReefSnap? await extension.web3Enable("Sqwid",undefined,true):await extension.web3Enable("Sqwid");
+
+	console.log("extensions===", extensions);
+	
+	if(isWalletConnect)await connectWc();
+
 	const accs = await extension.web3Accounts();
+	
 	return {
 		errorCode: extensions.length === 0 ? 1 : accs.length === 0 ? 2 : 0,
 		accounts: accs,
