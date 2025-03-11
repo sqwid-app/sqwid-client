@@ -309,9 +309,9 @@ const ExternalLink = ({ icon, href, title }) => {
 const elemContains = (rect, x, y) => {
 	return rect
 		? rect.x <= x &&
-				x <= rect.x + rect.width &&
-				rect.y <= y &&
-				y <= rect.y + rect.height
+		x <= rect.x + rect.width &&
+		rect.y <= y &&
+		y <= rect.y + rect.height
 		: false;
 };
 
@@ -399,7 +399,7 @@ const NetworkSwitchButton = () => {
 };
 
 const AccountSelect = ({ isActive, setIsActive, accounts }) => {
-	const { redirect, errorCode } = useContext(AccountSelectContext);
+	const { redirect, errorCode, isWalletConnected, setIsReefSnapSelected, setIsWalletConnected,setIsWalletConnectSelected } = useContext(AccountSelectContext);
 	const [elemIsVisible, setElemIsVisible] = useState(isActive);
 
 	const initialClaimButtonText = "I Accept";
@@ -516,7 +516,7 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 						</span>
 
 						{auth && <ProfileElement />}
-						{errorCode === 0 ? (
+						{errorCode === 0 && isWalletConnected ? (
 							<Title>Choose an{auth && "other"} account</Title>
 						) : null}
 						<StyledSimpleBar style={{ maxHeight: 300 }}>
@@ -524,48 +524,131 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 								<>
 									{accounts
 										? accounts
-												.filter(item =>
-													auth
-														? auth.address !==
-														  item.address
-														: true
-												)
-												.map((account, index) => {
-													return (
-														<m.p
-															className="account-name"
-															whileHover={{
-																y: -2.5,
-																x: 0,
-															}}
-															whileTap={{
-																scale: 0.99,
-															}}
-															onClick={() =>
-																_onAccountChange(
-																	account.meta
-																		.name
-																)
+											.filter(item =>
+												auth
+													? auth.address !==
+													item.address
+													: true
+											)
+											.map((account, index) => {
+												return (
+													<m.p
+														className="account-name"
+														whileHover={{
+															y: -2.5,
+															x: 0,
+														}}
+														whileTap={{
+															scale: 0.99,
+														}}
+														onClick={() =>
+															_onAccountChange(
+																account.meta
+																	.name
+															)
+														}
+														key={index}
+													>
+														{" "}
+														{account.meta.name}
+														<label
+															title={
+																account.address
 															}
-															key={index}
 														>
-															{" "}
-															{account.meta.name}
-															<label
-																title={
-																	account.address
-																}
-															>
-																{truncateAddress(
-																	account.address
-																)}
-															</label>{" "}
-														</m.p>
-													);
-												})
+															{truncateAddress(
+																account.address
+															)}
+														</label>{" "}
+													</m.p>
+												);
+											})
 										: null}
 								</>
 							)}
+							{!isWalletConnected && <>
+								<ErrorMessageLine>
+									Please select a wallet
+									<div style={{display:'flex',flexDirection:'column'}}>
+										<div onClick={() => {
+											setIsReefSnapSelected(false);
+											setIsWalletConnected(true);
+											localStorage.setItem("isWalletConnected", true);
+										}}>
+											
+											<div 
+											style={{ 
+												cursor: 'pointer',
+												textAlign: 'center',display:'flex',alignItems:'center',flexDirection:'column' }}
+											>
+												<img
+													src="https://s2.coinmarketcap.com/static/img/coins/200x200/6951.png"
+													width={30}
+													alt=""
+												/>
+												<div
+													style={{ opacity: 0.7,marginTop:'-10px' }}
+												>
+													Reef
+												</div>
+											</div>
+
+										</div>
+										<div onClick={() => {
+											setIsReefSnapSelected(true);
+											setIsWalletConnected(true);
+											localStorage.setItem("isWalletConnected", true);
+										}}>
+											<div 
+											style={{ 
+												cursor: 'pointer',
+												textAlign: 'center',display:'flex',alignItems:'center',flexDirection:'column' }}
+											>
+												<img
+													src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/2048px-MetaMask_Fox.svg.png"
+													width={30}
+													alt=""
+												/>
+												<div
+													style={{ opacity: 0.7,marginTop:'-10px' }}
+												>
+													Metamask
+												</div>
+											</div>
+
+
+
+										</div>
+										<div onClick={() => {
+											setIsWalletConnectSelected(true);
+											setIsWalletConnected(true);
+											localStorage.setItem("isWalletConnected", true);
+										}}>
+											<div 
+											style={{ 
+												cursor: 'pointer',
+												textAlign: 'center',display:'flex',alignItems:'center',flexDirection:'column' }}
+		
+											>
+												<img
+													src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBvOsv34Wmr5G9ZQPszyYMX9h424OlH2ZqPw&s"
+													width={30}
+													style={{borderRadius:'10px'}}
+													alt=""
+												/>
+												<div
+													style={{ opacity: 0.7,marginTop:'-10px' }}
+												>
+													WalletConnect
+												</div>
+											</div>
+
+
+
+										</div>
+									</div>
+								</ErrorMessageLine>
+							</>}
 							{errorCode === 1 && (
 								<>
 									<ErrorMessageLine>
@@ -657,14 +740,14 @@ const AccountSelect = ({ isActive, setIsActive, accounts }) => {
 						{!auth && (
 							<>
 								<DividerHorizontal />
-								{ window.location.host.indexOf('dev')>-1 ? <NetworkSwitchButton /> : null }
+								{window.location.host.indexOf('dev') > -1 ? <NetworkSwitchButton /> : null}
 							</>
 						)}
 						{auth && (
 							<>
 								<DividerHorizontal />
 								<ButtonsContainer>
-								{ window.location.host.indexOf('dev')>-1 ? <NetworkSwitchButton /> : null }
+									{window.location.host.indexOf('dev') > -1 ? <NetworkSwitchButton /> : null}
 									<Button
 										whileHover={{
 											y: -5,

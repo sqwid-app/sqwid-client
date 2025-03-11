@@ -3,7 +3,6 @@ import { Interact } from "./connect";
 import { ethers } from "ethers";
 import contractABI from "../constants/contracts/SqwidMarketplace";
 //eslint-disable-next-line
-import { fetchMarketplaceItem, fetchMarketplaceItems } from "./marketplace";
 import {
 	isMarketplaceApproved,
 	approveMarketplace,
