@@ -1,94 +1,94 @@
 {
-	"name": "sqwid-client",
-	"version": "0.4.1",
-	"license": "MIT",
-	"private": true,
-	"dependencies": {
-		"@craco/craco": "^6.4.3",
-		"@dnd-kit/core": "^6.3.1",
-		"@dnd-kit/sortable": "^7.0.0",
-		"@open-wc/webpack-import-meta-loader": "^0.4.7",
-		"@reef-defi/api": "^1.0.3",
-		"@reef-defi/evm-provider": "^1.0.7",
-		"@reef-defi/extension-dapp": "^0.41.4",
-		"@testing-library/jest-dom": "^5.11.4",
-		"@testing-library/react": "^11.1.0",
-		"@testing-library/user-event": "^12.1.10",
-		"axios": "^0.23.0",
-		"bn.js": "4.12",
-		"chart.js": "^3.7.1",
-		"chartjs-plugin-zoom": "^1.2.0",
-		"craco": "^0.0.3",
-		"date-fns": "^2.28.0",
-		"ethers": "^5.5.1",
-		"firebase": "^11.3.0",
-		"framer-motion": "^4.1.17",
-		"ipfs-http-client": "^55.0.0",
-		"jwt-decode": "^3.1.2",
-		"multiformats": "^9.6.3",
-		"nprogress": "^0.2.0",
-		"plyr": "^3.6.12",
-		"react": "^17.0.2",
-		"react-chartjs-2": "^4.0.1",
-		"react-countdown": "^2.3.2",
-		"react-custom-scrollbars": "^4.2.1",
-		"react-dom": "^17.0.2",
-		"react-dropzone": "^11.4.2",
-		"react-helmet-async": "^1.2.3",
-		"react-infinite-scroller": "^1.2.5",
-		"react-modal": "^3.14.4",
-		"react-paginate": "^8.1.0",
-		"react-responsive": "^9.0.0-beta.4",
-		"react-router-dom": "^5.3.0",
-		"react-scripts": "4.0.3",
-		"react-select": "^5.2.1",
-		"react-toastify": "^8.1.0",
-		"react-wavify": "^1.5.4",
-		"rebound": "^0.1.0",
-		"sass": "^1.43.2",
-		"simplebar-react": "^2.3.6",
-		"slugify": "^1.6.5",
-		"styled-components": "^5.3.1",
-		"web-vitals": "^1.0.1"
-	},
-	"scripts": {
-		"start": "craco --openssl-legacy-provider start",
-		"build": "craco --openssl-legacy-provider build",
-		"test": "craco --openssl-legacy-provider test",
-		"eject": "craco --openssl-legacy-provider eject",
-		"release": "standard-version"
-	},
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		],
-		"rules": {
-			"no-console": "warn"
-		}
-	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	},
-	"devDependencies": {
-		"@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
-		"@babel/plugin-proposal-optional-chaining": "^7.21.0",
-		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-		"@babel/preset-react": "^7.16.7",
-		"craco-alias": "^3.0.1",
-		"prettier": "^2.5.1",
-		"standard-version": "^9.3.2"
-	},
-	"resolutions": {
-		"@babel/core": "^7.16.0"
-	}
+  "name": "sqwid-client",
+  "version": "0.4.1",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@craco/craco": "^6.4.3",
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^7.0.0",
+    "@open-wc/webpack-import-meta-loader": "^0.4.7",
+    "@reef-defi/api": "^1.0.3",
+    "@reef-defi/evm-provider": "^1.0.7",
+    "@reef-defi/extension-dapp": "^0.41.4",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.23.0",
+    "bn.js": "4.12",
+    "chart.js": "^3.7.1",
+    "chartjs-plugin-zoom": "^1.2.0",
+    "craco": "^0.0.3",
+    "date-fns": "^2.28.0",
+    "ethers": "^5.5.1",
+    "firebase": "^11.3.0",
+    "framer-motion": "^4.1.17",
+    "ipfs-http-client": "^55.0.0",
+    "jwt-decode": "^3.1.2",
+    "multiformats": "^9.6.3",
+    "nprogress": "^0.2.0",
+    "plyr": "^3.6.12",
+    "react": "^17.0.2",
+    "react-chartjs-2": "^4.0.1",
+    "react-countdown": "^2.3.2",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-dom": "^17.0.2",
+    "react-dropzone": "^11.4.2",
+    "react-helmet-async": "^1.2.3",
+    "react-infinite-scroller": "^1.2.5",
+    "react-modal": "^3.14.4",
+    "react-paginate": "^8.1.0",
+    "react-responsive": "^9.0.0-beta.4",
+    "react-router-dom": "^5.3.0",
+    "react-scripts": "4.0.3",
+    "react-select": "^5.2.1",
+    "react-toastify": "^8.1.0",
+    "react-wavify": "^1.5.4",
+    "rebound": "^0.1.0",
+    "sass": "^1.43.2",
+    "simplebar-react": "^2.3.6",
+    "slugify": "^1.6.5",
+    "styled-components": "^5.3.1",
+    "web-vitals": "^1.0.1"
+  },
+  "scripts": {
+    "start": "node init && craco --openssl-legacy-provider start",
+    "build": "node init && craco --openssl-legacy-provider build",
+    "test": "craco --openssl-legacy-provider test",
+    "eject": "craco --openssl-legacy-provider eject",
+    "release": "standard-version"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "rules": {
+      "no-console": "warn"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/preset-react": "^7.16.7",
+    "craco-alias": "^3.0.1",
+    "prettier": "^2.5.1",
+    "standard-version": "^9.3.2"
+  },
+  "resolutions": {
+    "@babel/core": "^7.16.0"
+  }
 }
