@@ -1,4 +1,4 @@
-FROM node:18 as builder
+FROM node:20 as builder
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get install -y node-gyp
 
